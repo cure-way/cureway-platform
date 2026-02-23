@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../styles/global.css";
 import { Montserrat, Inter } from "next/font/google";
 import { ScrollToTop } from "@/components/shared/ScrollToTop";
+import { AuthProvider } from "@/features/auth";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -22,6 +23,10 @@ export const metadata: Metadata = {
   },
   description: "Multi-vendor medicine and pharmacy delivery platform",
   keywords: ["pharmacy", "medicine", "delivery", "healthcare"],
+  icons: {
+    icon: "/logo.ico",
+    apple: "/logo.ico",
+  },
 };
 
 export default function RootLayout({
@@ -30,11 +35,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${montserrat.variable} ${inter.variable}`}>
-        <ScrollToTop />
-        <div id="dropdown-portal" />
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${montserrat.variable} ${inter.variable}`}
+        suppressHydrationWarning
+      >
+        <AuthProvider>
+          <ScrollToTop />
+          <div id="dropdown-portal" />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

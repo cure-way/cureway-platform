@@ -14,6 +14,9 @@ export function ScrollToTop() {
 
   useEffect(() => {
     window.history.scrollRestoration = "manual";
+  }, []);
+
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 

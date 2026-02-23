@@ -34,14 +34,13 @@ export default function ForgotPasswordPage() {
 
     try {
       // TODO: Implement actual API call
-      console.log("Forgot password data:", data);
       await new Promise((resolve) => setTimeout(resolve, 1500));
       // Navigate to verify page with email
       router.push(
         `/auth/forgot-password/verify?email=${encodeURIComponent(data.email)}`,
       );
     } catch (error) {
-      console.error("Forgot password error:", error);
+      // TODO: handle error
     } finally {
       setIsLoading(false);
     }

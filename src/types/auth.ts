@@ -112,22 +112,6 @@ export interface PasswordValidation {
   hasSpecialChar: boolean;
 }
 
-export interface AuthError {
-  field?: string;
-  message: string;
-  code?: string;
-}
-
-export interface AuthResponse {
-  success: boolean;
-  message?: string;
-  data?: {
-    token?: string;
-    user?: User;
-  };
-  error?: AuthError;
-}
-
 export interface User {
   id: string;
   email: string;
@@ -135,23 +119,6 @@ export interface User {
   name?: string;
   emailVerified: boolean;
   phoneVerified: boolean;
-}
-
-// ===========================
-// OTP Types
-// ===========================
-
-export interface OTPConfig {
-  length: 4 | 6;
-  type: "email" | "phone";
-  recipient: string;
-}
-
-export interface OTPState {
-  code: string[];
-  isComplete: boolean;
-  isVerifying: boolean;
-  error?: string;
 }
 
 // ===========================
@@ -177,69 +144,6 @@ export interface CureWayUser extends User {
   // Role-specific fields
   pharmacyId?: string;
   pharmacyName?: string;
-}
-
-/**
- * Auth state for client-side state management
- */
-export interface AuthState {
-  isAuthenticated: boolean;
-  user: CureWayUser | null;
-  isLoading: boolean;
-  error?: string;
-}
-
-/**
- * Sign up data - Step 1 (Role Selection)
- */
-export interface SignUpRoleSelection {
-  role: UserRole;
-}
-
-/**
- * Sign up data - Step 2 (Account Details)
- */
-export interface SignUpAccountDetails {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-}
-
-/**
- * Sign up data - Step 3 (Pharmacy Details - for pharmacy role)
- */
-export interface SignUpPharmacyDetails {
-  pharmacyName: string;
-  pharmacyLicense: string;
-  pharmacyAddress: string;
-  pharmacyPhone: string;
-}
-
-/**
- * Complete sign up form data
- */
-export interface SignUpFormData {
-  role: UserRole;
-  account: SignUpAccountDetails;
-  pharmacy?: SignUpPharmacyDetails;
-}
-
-/**
- * Phone verification request
- */
-export interface PhoneVerificationRequest {
-  phone: string;
-}
-
-/**
- * OTP verification request
- */
-export interface OtpVerificationRequest {
-  phone: string;
-  otp: string;
 }
 
 // ===========================
@@ -279,7 +183,11 @@ export const pharmacyLicenseSchema = z.object({
     .min(1, "License number is required")
     .min(4, "License number must be at least 4 characters"),
   licenseExpiry: z.string().min(1, "License expiry date is required"),
-  licenseDocument: z.string().optional(), // File path or URL
+  licenseDocUrl: z
+    .string()
+    .url("Please enter a valid URL (e.g. https://...)")
+    .or(z.literal(""))
+    .optional(),
 });
 
 /**

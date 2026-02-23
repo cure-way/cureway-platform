@@ -3,15 +3,13 @@
 import { FaChevronDown, FaPhoneAlt } from "react-icons/fa";
 import { FiMapPin } from "react-icons/fi";
 import { HiMenu, HiX } from "react-icons/hi";
-import {
-  IoSearchOutline,
-  IoNotificationsOutline,
-  IoCartOutline,
-} from "react-icons/io5";
-import Image from "next/image";
+import { IoSearchOutline, IoNotificationsOutline } from "react-icons/io5";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { CONTACT_PHONE } from "@/lib/constants";
+import { UserMenu } from "./UserMenu";
+import { useAuth } from "@/features/auth";
 
 interface HeaderActionsProps {
   isAuthenticated: boolean;
@@ -87,21 +85,6 @@ export function HeaderActions({
         </div>
       </div>
 
-      {/* Cart - Authenticated users only */}
-      {isAuthenticated && (
-        <Link
-          href="/cart"
-          className="hidden md:flex relative p-2 hover:bg-gray-100 rounded-lg transition-colors"
-        >
-          <IoCartOutline className="w-6 h-6 text-black/60" />
-          {cartCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-              {cartCount > 9 ? "9+" : cartCount}
-            </span>
-          )}
-        </Link>
-      )}
-
       {/* Notifications - Authenticated users only */}
       {isAuthenticated && (
         <Link
@@ -117,36 +100,10 @@ export function HeaderActions({
         </Link>
       )}
 
-      {/* User avatar / Sign in */}
-      {isAuthenticated ? (
-        <Link
-          href="/profile"
-          className="w-8 h-8 md:w-10 md:h-10 rounded-full overflow-hidden bg-black/10 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
-        >
-          <Image
-            src="/logo.png"
-            alt="User"
-            width={40}
-            height={40}
-            className="object-cover"
-          />
-        </Link>
-      ) : (
-        <div className="hidden md:flex items-center gap-2">
-          <Link
-            href="/auth/sign-in"
-            className="px-4 py-2 text-sm font-medium text-black/70 hover:text-black transition-colors"
-          >
-            Sign In
-          </Link>
-          <Link
-            href="/auth/sign-up"
-            className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Sign Up
-          </Link>
-        </div>
-      )}
+      {/* User avatar + dropdown / Sign in — auth-aware via context */}
+      <div className="hidden md:flex items-center">
+        <UserMenu cartCount={cartCount} />
+      </div>
     </div>
   );
 }
@@ -156,7 +113,15 @@ interface MobileMenuProps {
   isAuthenticated: boolean;
 }
 
-export function MobileMenu({ isOpen, isAuthenticated }: MobileMenuProps) {
+export function MobileMenu({ isOpen }: MobileMenuProps) {
+  const { isAuthed, user, logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await logout();
+    router.push("/");
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -213,8 +178,18 @@ export function MobileMenu({ isOpen, isAuthenticated }: MobileMenuProps) {
               >
                 Nearby Pharmacies
               </Link>
-              {isAuthenticated ? (
+              {isAuthed ? (
                 <>
+                  {user && (
+                    <div className="px-2 py-2 border-t border-gray-200 mt-2">
+                      <p className="text-sm font-semibold text-gray-900 truncate">
+                        {user.name}
+                      </p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {user.email}
+                      </p>
+                    </div>
+                  )}
                   <Link
                     href="/orders"
                     className="block px-2 py-2 text-sm font-medium text-black/80 hover:bg-gray-100 rounded-lg transition-colors"
@@ -233,6 +208,12 @@ export function MobileMenu({ isOpen, isAuthenticated }: MobileMenuProps) {
                   >
                     Profile
                   </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-2 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                  >
+                    Sign Out
+                  </button>
                 </>
               ) : (
                 <div className="pt-2 space-y-2 border-t border-gray-200">

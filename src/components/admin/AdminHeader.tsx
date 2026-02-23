@@ -5,6 +5,7 @@ import { Menu, User, FileText, Settings, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSidebar } from "@/contexts/SidebarContext";
 import { useClickOutside } from "@/hooks";
+import { useAuth } from "@/features/auth";
 import { transition } from "@/components/admin/shared/motion";
 import {
   HeaderSearchIcon,
@@ -17,13 +18,29 @@ import {
 
 export default function AdminHeader() {
   const { open } = useSidebar();
+  const { user, logout } = useAuth();
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useClickOutside<HTMLDivElement>(() =>
     setProfileOpen(false),
   );
 
+  const displayName = user?.name ?? "Admin";
+  const initials = displayName
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+  const email = user?.email ?? "";
+  const roleLabel =
+    user?.role === "PHARMACY"
+      ? "Pharmacy"
+      : user?.role === "ADMIN"
+        ? "Admin"
+        : (user?.role ?? "Admin");
+
   return (
-    <header className="sticky top-0 z-20 flex items-center gap-[24px] px-[24px] py-[16px] bg-white border-b border-[#EFEDED]">
+    <header className="sticky top-0 z-20 flex items-center gap-6 px-6 py-4 bg-white border-b border-[#EFEDED]">
       {/* Hamburger — mobile/tablet only */}
       <button
         onClick={open}
@@ -34,8 +51,8 @@ export default function AdminHeader() {
       </button>
 
       {/* Search Bar */}
-      <div className="hidden sm:flex items-center flex-1 h-[48px] rounded-[24px] bg-[#EFF3FB] pl-[16px] pr-[8px] gap-[10px]">
-        <div className="shrink-0 w-[24px] h-[24px]">
+      <div className="hidden sm:flex items-center flex-1 h-12 rounded-3xl bg-[#EFF3FB] pl-4 pr-2 gap-2.5">
+        <div className="shrink-0 w-6 h-6">
           <HeaderSearchIcon />
         </div>
         <input
@@ -45,7 +62,7 @@ export default function AdminHeader() {
           aria-label="Search"
         />
         <button
-          className="shrink-0 w-[40px] h-[40px] flex items-center justify-center rounded-full hover:bg-[#DFE5F5] transition-colors"
+          className="shrink-0 w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#DFE5F5] transition-colors"
           aria-label="Voice search"
         >
           <HeaderVoiceIcon />
@@ -58,16 +75,16 @@ export default function AdminHeader() {
       {/* Add New Button */}
       <button
         aria-label="Add new"
-        className="flex items-center gap-[8px] px-[16px] py-[12px] rounded-[8px] bg-[#263B81] text-[#EBEDF7] text-[16px] font-semibold leading-[1.2] hover:bg-[#1E2F68] transition-colors whitespace-nowrap shrink-0"
+        className="flex items-center gap-2 px-4 py-3 rounded-lg bg-[#263B81] text-[#EBEDF7] text-base font-semibold leading-[1.2] hover:bg-[#1E2F68] transition-colors whitespace-nowrap shrink-0"
       >
-        <div className="w-[24px] h-[24px] shrink-0">
+        <div className="w-6 h-6 shrink-0">
           <HeaderAddIcon />
         </div>
         <span className="hidden md:inline">Add new</span>
       </button>
 
       {/* Action Icons */}
-      <div className="flex items-center gap-[12px]">
+      <div className="flex items-center gap-3">
         <a
           href="/admin/notifications"
           className="relative w-12 h-12 flex items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-0.75 hover:bg-neutral-light transition-colors"
@@ -80,14 +97,14 @@ export default function AdminHeader() {
         </a>
 
         <button
-          className="w-[48px] h-[48px] flex items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-[3px] hover:bg-neutral-light transition-colors"
+          className="w-12 h-12 flex items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-0.75 hover:bg-neutral-light transition-colors"
           aria-label="Change language"
         >
           <HeaderTranslateIcon />
         </button>
 
         <button
-          className="hidden sm:flex w-[48px] h-[48px] items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-[3px] hover:bg-neutral-light transition-colors"
+          className="hidden sm:flex w-12 h-12 items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-0.75 hover:bg-neutral-light transition-colors"
           aria-label="Messages"
         >
           <HeaderMailIcon />
@@ -98,16 +115,20 @@ export default function AdminHeader() {
       <div className="relative" ref={profileRef}>
         <button
           onClick={() => setProfileOpen((v) => !v)}
-          className="w-[48px] h-[48px] rounded-full overflow-hidden hover:ring-2 hover:ring-primary/20 transition-all shrink-0"
+          className="w-12 h-12 rounded-full overflow-hidden hover:ring-2 hover:ring-primary/20 transition-all shrink-0 bg-primary-light flex items-center justify-center text-primary font-semibold text-t-14"
           aria-label="User profile"
           aria-expanded={profileOpen}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/avatar.png"
-            alt="Admin avatar"
-            className="w-full h-full object-cover rounded-full"
-          />
+          {user?.profileImageUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={user.profileImageUrl}
+              alt={`${displayName} avatar`}
+              className="w-full h-full object-cover rounded-full"
+            />
+          ) : (
+            initials
+          )}
         </button>
 
         {/* Profile Dropdown */}
@@ -124,13 +145,15 @@ export default function AdminHeader() {
               {/* User Info */}
               <div className="flex items-center gap-3 px-4 py-3">
                 <div className="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center text-primary font-semibold text-t-12 shrink-0">
-                  MB
+                  {initials}
                 </div>
                 <div className="min-w-0">
                   <p className="text-t-14 font-semibold text-foreground truncate">
-                    Mohammed Bassam
+                    {displayName}
                   </p>
-                  <p className="text-t-12 text-neutral-dark">Admin</p>
+                  <p className="text-t-12 text-neutral-dark truncate">
+                    {email || roleLabel}
+                  </p>
                 </div>
               </div>
 
@@ -152,7 +175,13 @@ export default function AdminHeader() {
 
               <div className="h-px bg-border mx-3 my-1" />
 
-              <button className="flex items-center gap-3 w-full px-4 py-2.5 text-t-14 text-error hover:bg-error-light transition-colors">
+              <button
+                onClick={async () => {
+                  setProfileOpen(false);
+                  await logout();
+                }}
+                className="flex items-center gap-3 w-full px-4 py-2.5 text-t-14 text-error hover:bg-error-light transition-colors"
+              >
                 <LogOut className="w-5 h-5" />
                 Logout
               </button>

@@ -21,7 +21,6 @@ export default async function MedicineDetailsPage({
   const similarMedicines = medicines
     .filter((m) => m.categoryId === medicine.categoryId && m.id !== medicine.id)
     .slice(0, 4);
-  console.log("Similar Medicines:", similarMedicines);
 
   const infoSections = [
     { title: "Description", content: medicine.longDescription },

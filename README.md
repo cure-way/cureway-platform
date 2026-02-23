@@ -76,7 +76,7 @@ CureWay is a multi-vendor pharmacy delivery web platform that connects patients 
 | Reusable Components | `src/components/{role}/`                       |
 | Shared UI           | `src/components/shared/`                       |
 | Auth Utilities      | `src/lib/auth/`                                |
-| API Client          | `src/lib/apiClient.ts`                         |
+| API Client          | `src/lib/api/http.ts`                          |
 | Custom Hooks        | `src/hooks/`                                   |
 | Services            | `src/services/`                                |
 | TypeScript Types    | `src/types/`                                   |
@@ -87,7 +87,7 @@ CureWay is a multi-vendor pharmacy delivery web platform that connects patients 
 1. Server components call `requirePatient()` or `getSession()` for auth
 2. Server components can directly fetch data or call services
 3. Client components use hooks and receive data via props or context
-4. API calls go through `src/lib/apiClient.ts` (Axios instance)
+4. API calls go through `src/lib/api/http.ts` (Axios instance with auth interceptors)
 
 ---
 
@@ -136,7 +136,8 @@ cure-way/
 │   │   ├── auth/               # Auth utilities
 │   │   │   ├── get-session.ts  # Session retrieval
 │   │   │   └── require-patient.ts  # Auth guard
-│   │   ├── apiClient.ts        # Axios instance
+│   │   ├── api/                # HTTP client + helpers
+│   │   │   └── http.ts         # Axios instance with auth interceptors
 │   │   ├── constants.ts        # App constants
 │   │   ├── roles.ts            # User role definitions
 │   │   ├── routes.ts           # Route constants
@@ -147,7 +148,6 @@ cure-way/
 │   │   └── phone-input.css     # Phone input styles
 │   ├── types/                  # TypeScript type definitions
 │   │   ├── auth.ts             # Auth types + Zod schemas
-│   │   ├── apiError.ts         # API error types
 │   │   └── search.ts           # Search types
 │   └── utils/                  # Utility functions
 ├── tailwind.config.ts          # Tailwind configuration with design tokens
@@ -209,19 +209,18 @@ Root Layout (src/app/layout.tsx)
 
 ### Auth Routes
 
-| Route                                | Access | Description                         |
-| ------------------------------------ | ------ | ----------------------------------- |
-| `/auth`                              | Public | Redirects to `/auth/sign-in`        |
-| `/auth/sign-in`                      | Public | Sign in form (Patient/Pharmacy)     |
-| `/auth/sign-up`                      | Public | Registration form (Patient default) |
-| `/auth/pharmacy/sign-in`             | Public | Pharmacy-specific sign in           |
-| `/auth/pharmacy/sign-up`             | Public | Pharmacy registration (multi-step)  |
-| `/auth/verify-phone`                 | Public | Phone verification                  |
-| `/auth/verify-otp`                   | Public | OTP verification                    |
-| `/auth/forgot-password`              | Public | Password reset request              |
-| `/auth/forgot-password/verify`       | Public | Reset verification                  |
-| `/auth/forgot-password/new-password` | Public | Set new password                    |
-| `/auth/registration-submitted`       | Public | Registration success                |
+| Route                                | Access | Description                                  |
+| ------------------------------------ | ------ | -------------------------------------------- |
+| `/auth`                              | Public | Redirects to `/auth/sign-in`                 |
+| `/auth/sign-in`                      | Public | Unified sign in (role detected from backend) |
+| `/auth/sign-up`                      | Public | Patient registration                         |
+| `/auth/pharmacy/sign-up`             | Public | Pharmacy registration (multi-step)           |
+| `/auth/verify-phone`                 | Public | Phone verification                           |
+| `/auth/verify-otp`                   | Public | OTP verification                             |
+| `/auth/forgot-password`              | Public | Password reset request                       |
+| `/auth/forgot-password/verify`       | Public | Reset verification                           |
+| `/auth/forgot-password/new-password` | Public | Set new password                             |
+| `/auth/registration-submitted`       | Public | Registration success                         |
 
 ### Pharmacy Routes
 
@@ -299,9 +298,16 @@ export default async function HomePage() {
 }
 ```
 
-### Session Storage
+### Auth Implementation
 
-Sessions are stored via cookies (`session-token`). The actual auth provider implementation is a TODO (placeholder for NextAuth, Clerk, Supabase, or custom JWT).
+Authentication uses a custom JWT-based flow:
+
+- **Access token**: Stored in memory (module-scoped variable in `src/lib/api/http.ts`)
+- **Refresh token**: Persisted in `localStorage` (`cureway_rt`)
+- **AuthProvider**: Client-side React Context wrapping the app (`src/features/auth/AuthProvider.tsx`)
+- **Auto-refresh**: Axios interceptor retries 401 responses with a single in-flight token refresh
+- **Login**: `POST /auth/login` returns `{ user, tokens }`, followed by `POST /auth/refresh` to hydrate profile
+- **Role-based redirect**: After login the frontend redirects based on `user.role` (PATIENT → `/`, PHARMACY → `/pharmacy/home`, ADMIN → `/admin/dashboard`)
 
 ---
 
@@ -390,11 +396,10 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 > **Note**: No `.env.example` file exists yet. The following variables are expected based on code analysis:
 
-| Variable              | Required | Description                   | Example                       |
-| --------------------- | -------- | ----------------------------- | ----------------------------- |
-| `NEXT_PUBLIC_API_URL` | Yes      | Backend API base URL          | `https://api.example.com`     |
-| `SESSION_SECRET`      | Yes      | Secret for session encryption | `your-random-secret-key-here` |
-| `NEXT_PUBLIC_APP_URL` | No       | Public app URL                | `https://your-app-domain.com` |
+| Variable                   | Required | Description          | Example                       |
+| -------------------------- | -------- | -------------------- | ----------------------------- |
+| `NEXT_PUBLIC_API_BASE_URL` | Yes      | Backend API base URL | `https://api.example.com`     |
+| `NEXT_PUBLIC_APP_URL`      | No       | Public app URL       | `https://your-app-domain.com` |
 
 Create a `.env.local` file in the root directory:
 

@@ -24,6 +24,8 @@ import {
   PharmacyLicenseForm,
   PharmacyAccountForm,
 } from "@/components/auth/pharmacy";
+import { useAuth, registerPharmacy } from "@/features/auth";
+import { normalizeError } from "@/lib/api";
 
 // Step-specific hero content configuration
 const PHARMACY_SIGNUP_STEP_CONTENT: Record<
@@ -52,7 +54,9 @@ const PHARMACY_SIGNUP_STEP_CONTENT: Record<
 
 export function PharmacySignUpForm() {
   const router = useRouter();
+  const { setSession } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [globalError, setGlobalError] = useState("");
   const [userType, setUserType] = useState<UserType>("pharmacist");
   const [currentStep, setCurrentStep] =
     useState<PharmacySignUpStep>("pharmacy-info");
@@ -61,6 +65,7 @@ export function PharmacySignUpForm() {
   const [pharmacyInfo, setPharmacyInfo] = useState<
     Partial<PharmacyInfoFormData>
   >({});
+  const [pharmacyDialCode, setPharmacyDialCode] = useState("+970");
   const [licenseInfo, setLicenseInfo] = useState<
     Partial<PharmacyLicenseFormData>
   >({});
@@ -81,42 +86,121 @@ export function PharmacySignUpForm() {
 
   const handleGoogleSignUp = () => {
     // TODO: Implement Google OAuth
-    console.log("Google Sign Up for Pharmacy");
   };
 
   // Step handlers
-  const handlePharmacyInfoSubmit = (data: PharmacyInfoFormData) => {
-    console.log("Pharmacy Info:", data);
+  const handlePharmacyInfoSubmit = (
+    data: PharmacyInfoFormData,
+    dialCode?: string,
+  ) => {
     setPharmacyInfo(data);
+    if (dialCode) setPharmacyDialCode(dialCode);
     setCurrentStep("license");
   };
 
   const handleLicenseSubmit = (data: PharmacyLicenseFormData) => {
-    console.log("License Info:", data);
     setLicenseInfo(data);
     setCurrentStep("account");
   };
 
+  // City name → API city ID mapping (from GET /cities)
+  const CITY_ID_MAP: Record<string, number> = {
+    "Al Nusirat": 5,
+    "Deir al-Balah": 1,
+    Gaza: 4,
+    "Khan Yunis": 3,
+    "Khan Younis": 3,
+    Middle: 6,
+  };
+
   const handleAccountSubmit = async (data: unknown) => {
     setIsLoading(true);
+    setGlobalError("");
 
     try {
-      // Combine all form data
-      const fullFormData = {
-        pharmacyInfo,
-        license: licenseInfo,
-        account: data,
+      const accountData = data as {
+        email: string;
+        password: string;
       };
 
-      console.log("Full Pharmacy Sign Up Data:", fullFormData);
+      const cityId = CITY_ID_MAP[pharmacyInfo.pharmacyCity ?? ""] ?? 4; // default Gaza
 
-      // TODO: Implement actual API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Compose full international phone number: dialCode + local digits
+      // Strip spaces and leading "0" (common local entry: 059… → 59…)
+      const localDigits = (pharmacyInfo.pharmacyNumber ?? "")
+        .replace(/\s+/g, "")
+        .replace(/^0+/, "");
+      const fullPhone = `${pharmacyDialCode}${localDigits}`;
+
+      // licenseDocUrl is now entered directly as a URL in the license step
+      const licenseDocUrl = licenseInfo.licenseDocUrl ?? "";
+
+      const res = await registerPharmacy({
+        name: accountData.email.split("@")[0],
+        email: accountData.email,
+        phoneNumber: fullPhone,
+        password: accountData.password,
+        pharmacyName: pharmacyInfo.pharmacyName ?? "",
+        licenseNumber: licenseInfo.licenseNumber ?? "",
+        cityId,
+        address: pharmacyInfo.pharmacyAddress ?? "",
+        licenseDocUrl,
+        lat: 0,
+        lng: 0,
+      });
+
+      // Update auth context
+      setSession(res.user, res.profile);
 
       // On success, redirect to registration submitted page
       router.push("/auth/registration-submitted");
-    } catch (error) {
-      console.error("Registration failed:", error);
+    } catch (err) {
+      const apiErr = normalizeError(err);
+
+      if (apiErr.fieldErrors) {
+        // Map API field names to human-readable labels and navigate to the right step
+        const fieldLabels: Record<string, string> = {
+          phoneNumber: "Phone number",
+          pharmacyName: "Pharmacy name",
+          name: "Name",
+          address: "Address",
+          licenseNumber: "License number",
+          licenseDocUrl: "License document",
+          email: "Email",
+          password: "Password",
+          cityId: "City",
+        };
+
+        // Fields that belong to step 1 (pharmacy-info)
+        const step1Fields = [
+          "phoneNumber",
+          "pharmacyName",
+          "address",
+          "cityId",
+          "name",
+        ];
+        // Fields that belong to step 2 (license)
+        const step2Fields = ["licenseNumber", "licenseDocUrl"];
+
+        const errorFields = Object.keys(apiErr.fieldErrors);
+
+        // Navigate back to the earliest step with an error
+        if (errorFields.some((f) => step1Fields.includes(f))) {
+          setCurrentStep("pharmacy-info");
+        } else if (errorFields.some((f) => step2Fields.includes(f))) {
+          setCurrentStep("license");
+        }
+
+        // Build user-friendly error messages
+        const messages: string[] = [];
+        for (const [field, msgs] of Object.entries(apiErr.fieldErrors)) {
+          const label = fieldLabels[field] ?? field;
+          messages.push(`${label}: ${msgs.join(". ")}`);
+        }
+        setGlobalError(messages.join("\n"));
+      } else {
+        setGlobalError(apiErr.message);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -267,6 +351,11 @@ export function PharmacySignUpForm() {
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3 }}
           >
+            {globalError && (
+              <div className="p-3 mb-4 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-sm text-red-600">{globalError}</p>
+              </div>
+            )}
             {renderStepForm()}
           </motion.div>
 
@@ -279,7 +368,7 @@ export function PharmacySignUpForm() {
           >
             <span className="text-[#797776]">Already have an account? </span>
             <Link
-              href="/auth/pharmacy/sign-in"
+              href="/auth/sign-in"
               className="text-[#334eac] font-medium hover:underline"
             >
               Login Here

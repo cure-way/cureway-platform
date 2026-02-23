@@ -4,10 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { z } from "zod";
+import { isValidPhoneNumber } from "libphonenumber-js";
 import {
   AuthShell,
   AuthHero,
@@ -20,14 +21,31 @@ import {
   TextField,
   PasswordField,
   CheckboxField,
+  PhoneField,
 } from "@/components/ui/fields";
 import { Button } from "@/components/shared";
+import { useAuth } from "@/features/auth";
+import { normalizeError } from "@/lib/api";
+import { registerPatient } from "@/features/auth";
 
 // Simple sign-up schema for the form
 const signUpSchema = z
   .object({
     name: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Invalid email address"),
+    phoneNumber: z
+      .string()
+      .min(1, "Phone number is required")
+      .refine(
+        (v) => {
+          try {
+            return isValidPhoneNumber(v);
+          } catch {
+            return false;
+          }
+        },
+        { message: "Please enter a valid phone number" },
+      ),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
     agreedToPersonalData: z.boolean(),
@@ -45,13 +63,17 @@ type SignUpFormData = z.infer<typeof signUpSchema>;
 
 export default function SignUpPage() {
   const router = useRouter();
+  const { setSession } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [globalError, setGlobalError] = useState("");
   const [userType, setUserType] = useState<UserType>("patient");
+  const [localPhone, setLocalPhone] = useState("");
 
   const {
     register,
     handleSubmit,
+    control,
+    setError,
     formState: { errors },
   } = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
@@ -71,14 +93,44 @@ export default function SignUpPage() {
     setGlobalError("");
 
     try {
-      // TODO: Implement actual registration API
-      console.log("Registration data:", data);
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const res = await registerPatient({
+        name: data.name,
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+        password: data.password,
+      });
+
+      // Update auth context with the new user
+      setSession(res.user, res.profile);
 
       // On success, redirect to verification or dashboard
       router.push("/auth/verify-phone");
-    } catch {
-      setGlobalError("Registration failed. Please try again.");
+    } catch (err) {
+      const apiErr = normalizeError(err);
+
+      // Map API field errors to react-hook-form
+      if (apiErr.fieldErrors) {
+        const formFields: (keyof SignUpFormData)[] = [
+          "name",
+          "email",
+          "phoneNumber",
+          "password",
+        ];
+        let hasFieldError = false;
+        for (const [field, messages] of Object.entries(apiErr.fieldErrors)) {
+          if (formFields.includes(field as keyof SignUpFormData)) {
+            setError(field as keyof SignUpFormData, {
+              message: messages.join(". "),
+            });
+            hasFieldError = true;
+          }
+        }
+        if (!hasFieldError) {
+          setGlobalError(apiErr.message);
+        }
+      } else {
+        setGlobalError(apiErr.message);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -86,7 +138,6 @@ export default function SignUpPage() {
 
   const handleGoogleSignUp = () => {
     // TODO: Implement Google OAuth
-    console.log("Google Sign Up");
   };
 
   return (
@@ -100,7 +151,7 @@ export default function SignUpPage() {
       }
     >
       <div className="flex flex-col items-center justify-center flex-1 gap-8 px-6 py-12">
-        <div className="w-full max-w-[560px]">
+        <div className="w-full max-w-140">
           {/* Logo */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -114,7 +165,7 @@ export default function SignUpPage() {
                 alt="CureWay Logo"
                 width={100}
                 height={100}
-                className="w-[100px] h-[100px] object-contain hover:opacity-80 transition-opacity"
+                className="w-25 h-25 object-contain hover:opacity-80 transition-opacity"
                 priority
               />
             </Link>
@@ -207,6 +258,29 @@ export default function SignUpPage() {
               autoComplete="email"
               error={errors.email?.message}
               {...register("email")}
+            />
+
+            <Controller
+              name="phoneNumber"
+              control={control}
+              render={({ field }) => (
+                <PhoneField
+                  label="Phone Number"
+                  id="phoneNumber"
+                  value={localPhone}
+                  onChange={(val) => setLocalPhone(val)}
+                  onFullValueChange={(v) => {
+                    setLocalPhone(v.number);
+                    // Store the full international number (e.g. +970598895851)
+                    const digits = v.number
+                      .replace(/[\s-]/g, "")
+                      .replace(/^0+/, "");
+                    field.onChange(`${v.dialCode}${digits}`);
+                  }}
+                  placeholder="Enter phone number"
+                  error={errors.phoneNumber?.message}
+                />
+              )}
             />
 
             <PasswordField

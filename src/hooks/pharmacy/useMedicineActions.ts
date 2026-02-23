@@ -37,13 +37,11 @@ export function useMedicineActions() {
     if (!pendingAction) return;
 
     if (pendingAction.type === "delete") {
-      console.log("Deleting:", pendingAction.item.id);
-      // delete logic here
+      // TODO: delete logic here
     }
 
     if (pendingAction.type === "mark_out") {
-      console.log("Marking out:", pendingAction.item.id);
-      // mark out logic here
+      // TODO: mark out logic here
     }
 
     closeAction();

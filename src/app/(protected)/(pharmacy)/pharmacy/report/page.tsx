@@ -1,9 +1,8 @@
 "use client";
 
-import { OrdersStatusDonut } from "@/components/pharmacy/report/OrdersStatusDonut";
+import dynamic from "next/dynamic";
 import StateGrid from "@/components/pharmacy/report/StateGrid";
 import { TopMedicineCard } from "@/components/pharmacy/report/TopMedicineCard";
-import { WeeklyOrdersBar } from "@/components/pharmacy/report/WeeklyOrdersBar";
 import PageHeader from "@/components/pharmacy/shared/PageHeader";
 import { inventoryData, ORDERS } from "@/services/pharmacyData";
 import {
@@ -12,6 +11,32 @@ import {
   getWeeklyOrdersData,
 } from "@/services/pharmacyService";
 import { FiBarChart2 } from "react-icons/fi";
+
+const OrdersStatusDonut = dynamic(
+  () =>
+    import("@/components/pharmacy/report/OrdersStatusDonut").then(
+      (m) => m.OrdersStatusDonut,
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-[200px] animate-pulse rounded-xl bg-gray-100" />
+    ),
+  },
+);
+
+const WeeklyOrdersBar = dynamic(
+  () =>
+    import("@/components/pharmacy/report/WeeklyOrdersBar").then(
+      (m) => m.WeeklyOrdersBar,
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-80 animate-pulse rounded-xl bg-gray-100" />
+    ),
+  },
+);
 
 export default function PharmacyReportPage() {
   const orderStatusData = getOrderStatusData(ORDERS);

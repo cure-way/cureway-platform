@@ -1,7 +1,6 @@
 "use client";
 
 import { forwardRef, type ReactNode, type MouseEventHandler } from "react";
-import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -57,14 +56,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const widthStyles = fullWidth ? "w-full" : "";
 
     return (
-      <motion.button
+      <button
         ref={ref}
-        whileTap={{ scale: disabled || loading ? 1 : 0.98 }}
         className={cn(
           baseStyles,
           variantStyles[variant],
           sizeStyles[size],
           widthStyles,
+          "active:scale-[0.98] transition-transform",
           className,
         )}
         disabled={disabled || loading}
@@ -80,7 +79,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ) : (
           children
         )}
-      </motion.button>
+      </button>
     );
   },
 );

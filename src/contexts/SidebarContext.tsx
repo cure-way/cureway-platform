@@ -6,6 +6,7 @@ import {
   useState,
   useCallback,
   useEffect,
+  useMemo,
   type ReactNode,
 } from "react";
 import { usePathname } from "next/navigation";
@@ -71,17 +72,20 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const contextValue = useMemo<SidebarContextValue>(
+    () => ({
+      isOpen,
+      toggle,
+      open,
+      close,
+      isDesktopCollapsed,
+      toggleDesktopCollapsed,
+    }),
+    [isOpen, toggle, open, close, isDesktopCollapsed, toggleDesktopCollapsed],
+  );
+
   return (
-    <SidebarContext.Provider
-      value={{
-        isOpen,
-        toggle,
-        open,
-        close,
-        isDesktopCollapsed,
-        toggleDesktopCollapsed,
-      }}
-    >
+    <SidebarContext.Provider value={contextValue}>
       {children}
     </SidebarContext.Provider>
   );

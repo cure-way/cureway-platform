@@ -36,13 +36,12 @@ function VerifyOTPForm() {
     setIsLoading(true);
     try {
       // TODO: Implement actual OTP verification API
-      console.log("Verifying OTP:", code);
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // On success, redirect to home or dashboard
       router.push("/");
     } catch (error) {
-      console.error("Verification failed:", error);
+      // TODO: handle error
     } finally {
       setIsLoading(false);
     }
@@ -57,10 +56,8 @@ function VerifyOTPForm() {
 
     try {
       // TODO: Implement resend OTP API
-      console.log("Resending OTP to:", phoneNumber);
       await new Promise((resolve) => setTimeout(resolve, 1000));
     } catch (error) {
-      console.error("Failed to resend:", error);
       setCanResend(true);
     }
   };

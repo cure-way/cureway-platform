@@ -3,7 +3,7 @@
 import { FaChevronRight, FaPhoneAlt, FaSearch } from "react-icons/fa";
 import { FiMapPin } from "react-icons/fi";
 import { HiMenu } from "react-icons/hi";
-import { IoSearchOutline, IoCartOutline, IoCloseCircle } from "react-icons/io5";
+import { IoSearchOutline, IoCloseCircle } from "react-icons/io5";
 import { MdKeyboardVoice } from "react-icons/md";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,6 +13,8 @@ import { useSearchContext } from "@/contexts/SearchContext";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { SearchDropdown } from "@/components/patient/header/search/SearchDropdown";
 import { BRAND_NAME, CONTACT_PHONE } from "@/lib/constants";
+import { UserMenu } from "./UserMenu";
+import { useAuth } from "@/features/auth";
 
 /* ------------------------------------------------------------------
    HomeTopbar
@@ -210,55 +212,9 @@ function HomeActions({
         </div>
       </div>
 
-      {/* Cart + Avatar – desktop */}
-      <div className="hidden md:flex items-center gap-3">
-        {/* Cart */}
-        {isAuthenticated && (
-          <Link
-            href="/cart"
-            className="relative flex items-center justify-center w-10 h-10 bg-primary-light-active rounded-full hover:bg-primary-light transition-colors"
-            aria-label={`Cart${cartCount > 0 ? `, ${cartCount} item${cartCount > 1 ? "s" : ""}` : ""}`}
-          >
-            <IoCartOutline className="w-5 h-5 text-secondary-darker" />
-            {cartCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-secondary-darker text-secondary-light text-t-10 font-medium w-5 h-5 flex items-center justify-center rounded-full">
-                {cartCount > 9 ? "9+" : cartCount}
-              </span>
-            )}
-          </Link>
-        )}
-
-        {/* Avatar / Sign-in */}
-        {isAuthenticated ? (
-          <Link
-            href="/profile"
-            className="w-10 h-10 rounded-full overflow-hidden bg-primary-light flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
-            aria-label="My profile"
-          >
-            <Image
-              src="/logo.png"
-              alt="User avatar"
-              width={40}
-              height={40}
-              className="object-cover rounded-full"
-            />
-          </Link>
-        ) : (
-          <div className="flex items-center gap-2">
-            <Link
-              href="/auth/sign-in"
-              className="px-4 py-2 text-t-14 font-medium text-primary-darker hover:text-primary transition-colors"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/auth/sign-up"
-              className="px-4 py-2 bg-primary text-white text-t-14 font-medium rounded-lg hover:bg-primary-hover transition-colors"
-            >
-              Sign Up
-            </Link>
-          </div>
-        )}
+      {/* Cart + Avatar / Sign-in – desktop (auth-aware via context) */}
+      <div className="hidden md:flex items-center">
+        <UserMenu cartCount={cartCount} />
       </div>
     </div>
   );
@@ -277,11 +233,15 @@ interface HomeMobileMenuProps {
   isAuthenticated: boolean;
 }
 
-export function HomeMobileMenu({
-  isOpen,
-  isAuthenticated,
-}: HomeMobileMenuProps) {
+export function HomeMobileMenu({ isOpen }: HomeMobileMenuProps) {
   const prefersReducedMotion = useReducedMotion();
+  const { isAuthed, user, logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await logout();
+    router.push("/");
+  };
 
   return (
     <AnimatePresence>
@@ -341,8 +301,18 @@ export function HomeMobileMenu({
                 </Link>
               ))}
 
-              {isAuthenticated ? (
+              {isAuthed ? (
                 <>
+                  {user && (
+                    <div className="px-2 py-2 border-t border-gray-200 mt-2">
+                      <p className="text-sm font-semibold text-gray-900 truncate">
+                        {user.name}
+                      </p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {user.email}
+                      </p>
+                    </div>
+                  )}
                   {[
                     { href: "/orders", label: "Orders" },
                     { href: "/prescriptions", label: "Prescriptions" },
@@ -356,6 +326,12 @@ export function HomeMobileMenu({
                       {link.label}
                     </Link>
                   ))}
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-2 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                  >
+                    Sign Out
+                  </button>
                 </>
               ) : (
                 <div className="pt-2 space-y-2 border-t border-gray-200">

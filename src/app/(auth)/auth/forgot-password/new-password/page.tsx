@@ -48,8 +48,6 @@ function NewPasswordForm() {
 
     try {
       // TODO: Implement actual password reset API
-      console.log("Resetting password for:", email, "with code:", code);
-      console.log("New password data:", data);
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       setIsSuccess(true);
@@ -59,7 +57,7 @@ function NewPasswordForm() {
         router.push("/auth/sign-in");
       }, 2000);
     } catch (error) {
-      console.error("Password reset error:", error);
+      // TODO: handle error
     } finally {
       setIsLoading(false);
     }

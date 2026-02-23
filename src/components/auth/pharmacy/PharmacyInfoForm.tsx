@@ -1,6 +1,7 @@
 "use client";
 
 import { useForm, Controller } from "react-hook-form";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { pharmacyInfoSchema, type PharmacyInfoFormData } from "@/types/auth";
@@ -9,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 export interface PharmacyInfoFormProps {
   defaultValues?: Partial<PharmacyInfoFormData>;
-  onSubmit: (data: PharmacyInfoFormData) => void;
+  onSubmit: (data: PharmacyInfoFormData, dialCode?: string) => void;
   isLoading?: boolean;
 }
 
@@ -41,6 +42,7 @@ export function PharmacyInfoForm({
   onSubmit,
   isLoading = false,
 }: PharmacyInfoFormProps) {
+  const [dialCode, setDialCode] = useState("+970");
   const {
     register,
     handleSubmit,
@@ -58,7 +60,10 @@ export function PharmacyInfoForm({
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+    <form
+      onSubmit={handleSubmit((data) => onSubmit(data, dialCode))}
+      className="flex flex-col gap-5"
+    >
       {/* Pharmacy Name */}
       <TextField
         id="pharmacyName"
@@ -79,6 +84,20 @@ export function PharmacyInfoForm({
             id="pharmacyNumber"
             value={field.value}
             onChange={field.onChange}
+            onCountryChange={(code) => {
+              // Look up the dial code for the newly selected country
+              const DIAL_CODES: Record<string, string> = {
+                PS: "+970",
+                IL: "+972",
+                JO: "+962",
+                EG: "+20",
+                SA: "+966",
+                AE: "+971",
+                LB: "+961",
+                SY: "+963",
+              };
+              setDialCode(DIAL_CODES[code] ?? "+970");
+            }}
             disabled={isLoading}
             placeholder="Enter phone number"
             error={errors.pharmacyNumber?.message}

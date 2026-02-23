@@ -6,3 +6,4 @@ export { HomeHeader } from "./HomeHeader";
 export { AnnouncementsBar } from "./AnnouncementsBar";
 export { HomeTopbar, HomeMobileMenu } from "./HomeTopbar";
 export { HomeQuickChips } from "./HomeQuickChips";
+export { UserMenu } from "./UserMenu";

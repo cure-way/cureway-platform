@@ -13,8 +13,6 @@ import {
   AuthHero,
   AuthDivider,
   SocialButton,
-  AuthUserTypeSwitch,
-  type UserType,
 } from "@/components/auth";
 import {
   TextField,
@@ -22,6 +20,8 @@ import {
   CheckboxField,
 } from "@/components/ui/fields";
 import { Button } from "@/components/shared";
+import { useAuth } from "@/features/auth";
+import { normalizeError } from "@/lib/api";
 
 /**
  * Pharmacy Sign In Page
@@ -29,39 +29,59 @@ import { Button } from "@/components/shared";
  */
 export function PharmacySignInForm() {
   const router = useRouter();
+  const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [globalError, setGlobalError] = useState("");
-  const [userType, setUserType] = useState<UserType>("pharmacist");
 
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
   });
 
-  // Handle user type switch
-  const handleUserTypeChange = (type: UserType) => {
-    setUserType(type);
-    if (type === "patient") {
-      router.push("/auth/sign-in");
-    }
-  };
-
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     setGlobalError("");
 
     try {
-      // TODO: Implement actual login API call
-      console.log("Pharmacy Login data:", data);
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      // On success, redirect to pharmacy dashboard
-      router.push("/pharmacy/home");
-    } catch {
-      setGlobalError("Invalid email or password. Please try again.");
+      const res = await login({
+        email: data.email,
+        password: data.password,
+      });
+
+      // Redirect based on user role — use hard navigation for reliability
+      const dest =
+        res.user.role === "PHARMACY"
+          ? "/pharmacy/home"
+          : res.user.role === "ADMIN"
+            ? "/admin/dashboard"
+            : "/";
+
+      router.push(dest);
+    } catch (err) {
+      const apiErr = normalizeError(err);
+
+      // Map API field errors to react-hook-form
+      if (apiErr.fieldErrors) {
+        let hasFieldError = false;
+        for (const [field, messages] of Object.entries(apiErr.fieldErrors)) {
+          if (field === "email" || field === "password") {
+            setError(field as keyof LoginFormData, {
+              message: messages.join(". "),
+            });
+            hasFieldError = true;
+          }
+        }
+        if (!hasFieldError) {
+          setGlobalError(apiErr.message || "Login failed. Please try again.");
+        }
+      } else {
+        setGlobalError(apiErr.message || "Login failed. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -69,7 +89,6 @@ export function PharmacySignInForm() {
 
   const handleGoogleSignIn = () => {
     // TODO: Implement Google OAuth
-    console.log("Google Sign In for Pharmacy");
   };
 
   return (
@@ -83,7 +102,7 @@ export function PharmacySignInForm() {
       }
     >
       <div className="flex flex-col items-center justify-center flex-1 gap-6 px-6 py-12">
-        <div className="w-full max-w-[560px]">
+        <div className="w-full max-w-140">
           {/* Logo */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -97,7 +116,7 @@ export function PharmacySignInForm() {
                 alt="CureWay Logo"
                 width={100}
                 height={100}
-                className="w-[100px] h-[100px] object-contain hover:opacity-80 transition-opacity"
+                className="w-25 h-25 object-contain hover:opacity-80 transition-opacity"
                 priority
               />
             </Link>
@@ -141,19 +160,6 @@ export function PharmacySignInForm() {
             className="mb-6"
           >
             <AuthDivider text="or continue with form" />
-          </motion.div>
-
-          {/* User Type Switch */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="mb-8"
-          >
-            <AuthUserTypeSwitch
-              value={userType}
-              onChange={handleUserTypeChange}
-            />
           </motion.div>
 
           {/* Login Form */}

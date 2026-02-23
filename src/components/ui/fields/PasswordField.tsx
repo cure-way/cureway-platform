@@ -1,7 +1,6 @@
 "use client";
 
 import { InputHTMLAttributes, forwardRef, useState, useId } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -101,21 +100,11 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(
           </button>
         </div>
 
-        <AnimatePresence mode="wait">
-          {error && (
-            <motion.p
-              key="error"
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              id={errorId}
-              className={fieldErrorClasses}
-              role="alert"
-            >
-              {error}
-            </motion.p>
-          )}
-        </AnimatePresence>
+        {error && (
+          <p id={errorId} className={fieldErrorClasses} role="alert">
+            {error}
+          </p>
+        )}
 
         {hint && !error && (
           <p id={hintId} className={fieldHintClasses}>

@@ -23,13 +23,12 @@ export default function VerifyPhonePage() {
     setIsLoading(true);
     try {
       // TODO: Implement send verification code API
-      console.log("Sending code to:", phoneNumber);
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // Navigate to OTP verification page
       router.push("/auth/verify-otp");
     } catch (error) {
-      console.error("Failed to send code:", error);
+      // TODO: handle error
     } finally {
       setIsLoading(false);
     }
