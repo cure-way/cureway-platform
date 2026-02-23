@@ -1,7 +1,6 @@
 "use client";
 
 import { InputHTMLAttributes, forwardRef, useState } from "react";
-import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -91,35 +90,20 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
         </div>
 
         {showStrength && value && !error && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-2 px-1"
-          >
+          <div className="flex items-center gap-2 px-1">
             <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${strength}%` }}
-                transition={{ duration: 0.3 }}
-                className={`h-full ${strengthColor} rounded-full`}
+              <div
+                className={`h-full ${strengthColor} rounded-full transition-all duration-300`}
+                style={{ width: `${strength}%` }}
               />
             </div>
             <span className="text-xs text-gray-600 min-w-16">
               {strengthLabel}
             </span>
-          </motion.div>
+          </div>
         )}
 
-        {error && (
-          <motion.p
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="text-xs text-red-500 px-1"
-          >
-            {error}
-          </motion.p>
-        )}
+        {error && <p className="text-xs text-red-500 px-1">{error}</p>}
         {helperText && !error && (
           <p className="text-xs text-gray-500 px-1">{helperText}</p>
         )}

@@ -6,6 +6,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -95,14 +96,17 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     inputRef.current?.focus();
   }, []);
 
-  const handleSelect = (item: SearchResult) => {
-    setQuery(item.title);
-    addToRecents(item);
-    setOpen(false);
-    setActiveIndex(-1);
-    inputRef.current?.blur();
-    router.push(`/medicines/${item.id}`);
-  };
+  const handleSelect = useCallback(
+    (item: SearchResult) => {
+      setQuery(item.title);
+      addToRecents(item);
+      setOpen(false);
+      setActiveIndex(-1);
+      inputRef.current?.blur();
+      router.push(`/medicines/${item.id}`);
+    },
+    [router],
+  );
 
   /** Centralised keyboard handler for both search inputs */
   const handleInputKeyDown = useCallback(
@@ -121,25 +125,38 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     [open, itemCount],
   );
 
+  const contextValue = useMemo<SearchContextValue>(
+    () => ({
+      query,
+      setQuery: wrappedSetQuery,
+      clearQuery,
+      open,
+      setOpen,
+      appliedFilters,
+      setAppliedFilters,
+      activeIndex,
+      setActiveIndex,
+      itemCount,
+      setItemCount,
+      inputRef,
+      handleSelect,
+      handleInputKeyDown,
+    }),
+    [
+      query,
+      wrappedSetQuery,
+      clearQuery,
+      open,
+      appliedFilters,
+      activeIndex,
+      itemCount,
+      handleSelect,
+      handleInputKeyDown,
+    ],
+  );
+
   return (
-    <SearchContext.Provider
-      value={{
-        query,
-        setQuery: wrappedSetQuery,
-        clearQuery,
-        open,
-        setOpen,
-        appliedFilters,
-        setAppliedFilters,
-        activeIndex,
-        setActiveIndex,
-        itemCount,
-        setItemCount,
-        inputRef,
-        handleSelect,
-        handleInputKeyDown,
-      }}
-    >
+    <SearchContext.Provider value={contextValue}>
       {children}
     </SearchContext.Provider>
   );

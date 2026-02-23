@@ -1,4 +1,4 @@
-import { getRequest, postRequest, patchRequest } from "@/lib/apiClient";
+import { httpGet, httpPost, httpPatch } from "@/lib/api";
 import type {
   Order,
   OrderStatus,
@@ -104,20 +104,16 @@ export const fetchOrders = async (
       limit: limit.toString(),
       ...(status && { status }),
     });
-    const data = await getRequest<OrdersResponse>(`/orders?${params}`);
-    return data;
+    return await httpGet<OrdersResponse>(`/orders?${params}`);
   } catch (error) {
-    console.error("Error fetching orders:", error);
     throw error;
   }
 };
 
 export const fetchOrderById = async (id: string): Promise<Order> => {
   try {
-    const data = await getRequest<Order>(`/orders/${id}`);
-    return data;
+    return await httpGet<Order>(`/orders/${id}`);
   } catch (error) {
-    console.error("Error fetching order:", error);
     throw error;
   }
 };
@@ -127,13 +123,11 @@ export const updateOrderStatus = async (
   status: OrderStatus,
 ): Promise<Order> => {
   try {
-    const data = await patchRequest<Order, { status: OrderStatus }>(
+    return await httpPatch<Order, { status: OrderStatus }>(
       `/orders/${orderId}/status`,
       { status },
     );
-    return data;
   } catch (error) {
-    console.error("Error updating order status:", error);
     throw error;
   }
 };
@@ -150,7 +144,6 @@ export const fetchNotifications = async (): Promise<NotificationsResponse> => {
       unreadCount,
     };
   } catch (error) {
-    console.error("Error fetching notifications:", error);
     throw error;
   }
 };
@@ -164,7 +157,6 @@ export const markNotificationAsRead = async (id: string): Promise<void> => {
       notification.read = true;
     }
   } catch (error) {
-    console.error("Error marking notification as read:", error);
     throw error;
   }
 };
@@ -175,7 +167,6 @@ export const markAllNotificationsAsRead = async (): Promise<void> => {
 
     mockNotifications = mockNotifications.map((n) => ({ ...n, read: true }));
   } catch (error) {
-    console.error("Error marking all notifications as read:", error);
     throw error;
   }
 };
@@ -184,12 +175,8 @@ export const requestPrescription = async (
   data: PrescriptionRequest,
 ): Promise<void> => {
   try {
-    await postRequest<void, PrescriptionRequest>(
-      "/prescriptions/request",
-      data,
-    );
+    await httpPost<void, PrescriptionRequest>("/prescriptions/request", data);
   } catch (error) {
-    console.error("Error requesting prescription:", error);
     throw error;
   }
 };

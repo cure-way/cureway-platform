@@ -36,7 +36,6 @@ function VerifyCodeForm() {
     setIsLoading(true);
     try {
       // TODO: Implement actual OTP verification API
-      console.log("Verifying code:", code);
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // On success, redirect to new password page
@@ -44,7 +43,7 @@ function VerifyCodeForm() {
         `/auth/forgot-password/new-password?email=${encodeURIComponent(email)}&code=${code}`,
       );
     } catch (error) {
-      console.error("Verification failed:", error);
+      // TODO: handle error
     } finally {
       setIsLoading(false);
     }
@@ -59,10 +58,8 @@ function VerifyCodeForm() {
 
     try {
       // TODO: Implement resend code API
-      console.log("Resending code to:", email);
       await new Promise((resolve) => setTimeout(resolve, 1000));
     } catch (error) {
-      console.error("Failed to resend:", error);
       setCanResend(true);
     }
   };

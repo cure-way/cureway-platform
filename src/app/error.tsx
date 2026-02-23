@@ -9,8 +9,7 @@ interface ErrorProps {
 
 export default function Error({ error, reset }: ErrorProps) {
   useEffect(() => {
-    // Log the error to an error reporting service
-    console.error("Application error:", error);
+    // TODO: Log the error to an error reporting service
   }, [error]);
 
   return (

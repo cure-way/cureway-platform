@@ -1,7 +1,6 @@
 "use client";
 
 import { InputHTMLAttributes, forwardRef, useId } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
   fieldErrorClasses,
@@ -74,21 +73,15 @@ export const CheckboxField = forwardRef<HTMLInputElement, CheckboxFieldProps>(
           </span>
         </label>
 
-        <AnimatePresence mode="wait">
-          {error && (
-            <motion.p
-              key="error"
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              id={errorId}
-              className={cn(fieldErrorClasses, "ml-8")}
-              role="alert"
-            >
-              {error}
-            </motion.p>
-          )}
-        </AnimatePresence>
+        {error && (
+          <p
+            id={errorId}
+            className={cn(fieldErrorClasses, "ml-8")}
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
 
         {hint && !error && (
           <p id={hintId} className={cn(fieldHintClasses, "ml-8")}>

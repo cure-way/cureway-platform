@@ -227,8 +227,7 @@ export default function PharmacyProfilePage({
   >("profile");
 
   const handleDeleteAccount = () => {
-    // Handle account deletion logic
-    console.log("Account deleted");
+    // TODO: Handle account deletion logic
     setIsDeleteModalOpen(false);
   };
 

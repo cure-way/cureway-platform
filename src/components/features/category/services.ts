@@ -1,4 +1,4 @@
-import { getRequest } from "@/lib/apiClient";
+import { httpGet } from "@/lib/api";
 
 // ============================================================
 // Types
@@ -49,7 +49,7 @@ export interface Product {
  */
 export async function getFeaturedCategories(): Promise<Category[]> {
   try {
-    return await getRequest<Category[]>("/categories/featured");
+    return await httpGet<Category[]>("/categories/featured");
   } catch {
     if (process.env.NODE_ENV === "development") {
       // Silent in production
@@ -64,7 +64,7 @@ export async function getFeaturedCategories(): Promise<Category[]> {
  */
 export async function getAllCategories(): Promise<Category[]> {
   try {
-    return await getRequest<Category[]>("/categories/all");
+    return await httpGet<Category[]>("/categories/all");
   } catch {
     if (process.env.NODE_ENV === "development") {
       // Silent in production
@@ -82,9 +82,7 @@ export async function getCategoryByName(
   name: string,
 ): Promise<Category | null> {
   try {
-    return await getRequest<Category>(
-      `/categories/${encodeURIComponent(name)}`,
-    );
+    return await httpGet<Category>(`/categories/${encodeURIComponent(name)}`);
   } catch {
     if (process.env.NODE_ENV === "development") {
       // Silent in production
@@ -99,7 +97,7 @@ export async function getCategoryByName(
  */
 export async function getMostSalesProducts(): Promise<SaleProduct[]> {
   try {
-    return await getRequest<SaleProduct[]>("/products/most-sales");
+    return await httpGet<SaleProduct[]>("/products/most-sales");
   } catch {
     if (process.env.NODE_ENV === "development") {
       // Silent in production
@@ -114,7 +112,7 @@ export async function getMostSalesProducts(): Promise<SaleProduct[]> {
  */
 export async function getRecommendedProducts(): Promise<Product[]> {
   try {
-    return await getRequest<Product[]>("/products/recommended");
+    return await httpGet<Product[]>("/products/recommended");
   } catch {
     if (process.env.NODE_ENV === "development") {
       // Silent in production

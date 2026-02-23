@@ -1,7 +1,6 @@
 "use client";
 
 import { ReactNode, forwardRef, useId } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
   fieldWrapperClasses,
@@ -25,8 +24,6 @@ export interface FieldProps {
   children: ReactNode;
   /** Additional wrapper class names */
   className?: string;
-  /** Whether to animate error messages */
-  animateError?: boolean;
 }
 
 /**
@@ -35,16 +32,7 @@ export interface FieldProps {
  */
 export const Field = forwardRef<HTMLDivElement, FieldProps>(
   (
-    {
-      id: providedId,
-      label,
-      required,
-      hint,
-      error,
-      children,
-      className,
-      animateError = true,
-    },
+    { id: providedId, label, required, hint, error, children, className },
     ref,
   ) => {
     const generatedId = useId();
@@ -63,26 +51,11 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
 
         {children}
 
-        <AnimatePresence mode="wait">
-          {error && animateError && (
-            <motion.p
-              key="error"
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              id={errorId}
-              className={fieldErrorClasses}
-              role="alert"
-            >
-              {error}
-            </motion.p>
-          )}
-          {error && !animateError && (
-            <p id={errorId} className={fieldErrorClasses} role="alert">
-              {error}
-            </p>
-          )}
-        </AnimatePresence>
+        {error && (
+          <p id={errorId} className={fieldErrorClasses} role="alert">
+            {error}
+          </p>
+        )}
 
         {hint && !error && (
           <p id={hintId} className={fieldHintClasses}>

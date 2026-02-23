@@ -7,7 +7,7 @@ import {
   pharmacyLicenseSchema,
   type PharmacyLicenseFormData,
 } from "@/types/auth";
-import { TextField, DateField, FileField } from "@/components/ui/fields";
+import { TextField, DateField } from "@/components/ui/fields";
 import { cn } from "@/lib/utils";
 
 export interface PharmacyLicenseFormProps {
@@ -36,7 +36,7 @@ export function PharmacyLicenseForm({
     defaultValues: {
       licenseNumber: "",
       licenseExpiry: "",
-      licenseDocument: "",
+      licenseDocUrl: "",
       ...defaultValues,
     },
   });
@@ -62,14 +62,14 @@ export function PharmacyLicenseForm({
         {...register("licenseExpiry")}
       />
 
-      {/* License Document Upload */}
-      <FileField
-        id="licenseDocument"
-        label="License Document (Optional)"
-        accept=".pdf,.png,.jpg,.jpeg"
-        hint="PDF, PNG, JPG (max. 10MB)"
+      {/* License Document URL */}
+      <TextField
+        id="licenseDocUrl"
+        label="License Document URL (Optional)"
+        placeholder="https://example.com/license.pdf"
         disabled={isLoading}
-        {...register("licenseDocument")}
+        error={errors.licenseDocUrl?.message}
+        {...register("licenseDocUrl")}
       />
 
       {/* Action Buttons */}

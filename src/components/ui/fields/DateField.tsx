@@ -1,7 +1,6 @@
 "use client";
 
 import { InputHTMLAttributes, forwardRef, useId } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -82,21 +81,11 @@ export const DateField = forwardRef<HTMLInputElement, DateFieldProps>(
           <Calendar className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 pointer-events-none" />
         </div>
 
-        <AnimatePresence mode="wait">
-          {error && (
-            <motion.p
-              key="error"
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              id={errorId}
-              className={fieldErrorClasses}
-              role="alert"
-            >
-              {error}
-            </motion.p>
-          )}
-        </AnimatePresence>
+        {error && (
+          <p id={errorId} className={fieldErrorClasses} role="alert">
+            {error}
+          </p>
+        )}
 
         {hint && !error && (
           <p id={hintId} className={fieldHintClasses}>

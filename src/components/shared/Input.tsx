@@ -1,7 +1,6 @@
 "use client";
 
 import { InputHTMLAttributes, forwardRef } from "react";
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -33,14 +32,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           />
         </div>
         {error && (
-          <motion.p
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="text-xs text-red-500 px-1"
-          >
+          <p className="text-xs text-red-500 px-1 animate-in fade-in slide-in-from-top-1">
             {error}
-          </motion.p>
+          </p>
         )}
         {helperText && !error && (
           <p className="text-xs text-gray-500 px-1">{helperText}</p>

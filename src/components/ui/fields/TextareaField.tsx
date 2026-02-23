@@ -1,7 +1,6 @@
 "use client";
 
 import { TextareaHTMLAttributes, forwardRef, useId } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
   fieldWrapperClasses,
@@ -88,21 +87,11 @@ export const TextareaField = forwardRef<
           {...props}
         />
 
-        <AnimatePresence mode="wait">
-          {error && (
-            <motion.p
-              key="error"
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              id={errorId}
-              className={fieldErrorClasses}
-              role="alert"
-            >
-              {error}
-            </motion.p>
-          )}
-        </AnimatePresence>
+        {error && (
+          <p id={errorId} className={fieldErrorClasses} role="alert">
+            {error}
+          </p>
+        )}
 
         {hint && !error && (
           <p id={hintId} className={fieldHintClasses}>
