@@ -2,14 +2,29 @@ import { DAY_ORDER } from "@/utils/pharmacyConstants";
 
 export type InventoryStatus = "in" | "low" | "out";
 
-export type InventoryCategory =
-  | "pain_relief"
-  | "antibiotics"
-  | "vitamins"
-  | "digestive"
-  | "diabetes"
-  | "eye_care"
-  | "cough_cold";
+export type InventoryFilterStatus =
+  | "all"
+  | "IN_STOCK"
+  | "LOW_STOCK"
+  | "OUT_OF_STOCK";
+
+export type StockStatus = "IN_STOCK" | "LOW_STOCK" | "OUT_OF_STOCK";
+
+export interface InventoryListItem {
+  id: number;
+  medicineId: number;
+
+  medicineName: string;
+  categoryName: string;
+  packDisplayName: string;
+  requiresPrescription: boolean;
+
+  stockQuantity: number;
+  minStock: number;
+  sellPrice: number;
+  stockStatus: StockStatus;
+  expiryDate: string;
+}
 
 export interface InventoryItem {
   id: string;
@@ -34,6 +49,22 @@ export interface InventoryItem {
   usageNotes?: string[];
 }
 
+// ---------------------------
+// GET /inventory response
+// ---------------------------
+
+export interface InventoryListResponse {
+  success: boolean;
+  data: InventoryListItem[];
+  meta: {
+    total: number;
+    limit: number;
+    page: number;
+    totalPages: number;
+  };
+}
+
+////////////////////////////////////////////////////////
 export interface Column<T> {
   key: keyof T | "action";
   header: string;
@@ -129,3 +160,8 @@ export interface Pharmacy {
   isOpen: boolean;
   openingHours?: string;
 }
+
+export type StatusConfig = {
+  label: string;
+  className: string;
+};

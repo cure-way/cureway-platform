@@ -6,7 +6,7 @@ import StatusDropdown from "./StatusDropdown";
 import { usePagination } from "@/hooks/usePagination";
 import { Column } from "@/types/pharmacyTypes";
 import { ROWS_PER_PAGE_OPTIONS } from "@/utils/pharmacyConstants";
-export interface DataTableProps<T extends { id: string }> {
+export interface DataTableProps<T extends { id: string | number }> {
   data: T[];
   columns: readonly Column<T>[];
 
@@ -18,7 +18,7 @@ export interface DataTableProps<T extends { id: string }> {
   defaultRowsPerPage?: number;
 }
 
-export default function DataTable<T extends { id: string }>({
+export default function DataTable<T extends { id: string | number }>({
   data,
   columns,
   onRowClick,

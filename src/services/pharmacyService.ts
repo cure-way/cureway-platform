@@ -1,6 +1,7 @@
 import {
   Day,
   InventoryItem,
+  InventoryListItem,
   OrderRow,
   OrdersStatusModel,
   OrderStatusDatum,
@@ -188,9 +189,11 @@ export function getOrdersSummary(orders: OrderRow[]): {
 }
 
 export function getInventoryAlerts(
-  items: InventoryItem[],
+  items: InventoryListItem[],
 ): { title: string; description: string } | null {
-  const outOfStockCount = items.filter((item) => item.stock === 0).length;
+  const outOfStockCount = items.filter(
+    (item) => item.stockQuantity === 0,
+  ).length;
 
   if (outOfStockCount === 0) return null;
 

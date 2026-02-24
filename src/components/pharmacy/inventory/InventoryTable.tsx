@@ -2,24 +2,40 @@
 
 import DataTable from "../shared/DataTable";
 import ActionsDropdown from "../shared/ActionsDropdown";
-import { InventoryItem } from "@/types/pharmacyTypes";
+
 import { INVENTORY_ACTIONS, inventoryColumns } from "@/utils/pharmacyConstants";
 import StatusBadge from "../shared/StatusBadge";
 import ConfirmActionModal from "../shared/ConfirmActionModal";
 import { useMedicineActions } from "@/hooks/pharmacy/useMedicineActions";
+import { InventoryListItem } from "@/types/pharmacyTypes";
+import TableSkeleton from "../shared/TableSkeleton";
+import EmptyState from "../shared/EmptyState";
+import ErrorState from "../shared/ErrorState";
 
-export default function InventoryTable({ data }: { data: InventoryItem[] }) {
+export default function InventoryTable({
+  data,
+  loading,
+  error,
+  onRetry,
+}: {
+  data: InventoryListItem[];
+  loading: boolean;
+  error: string | null;
+  onRetry?: () => void;
+}) {
   const { pendingAction, handleMedicineAction, handleConfirm, closeAction } =
     useMedicineActions();
 
+  if (loading) {
+    return <TableSkeleton columns={inventoryColumns.length} rows={5} />;
+  }
+
+  if (error) {
+    return <ErrorState message={error} onRetry={onRetry} />;
+  }
+
   if (!data.length) {
-    return (
-      <div className="bg-white p-10 border rounded-xl text-center">
-        <p className="text-gray-500 text-sm">
-          No medicines found matching your filters
-        </p>
-      </div>
-    );
+    return <EmptyState message="No medicines found matching your filters." />;
   }
 
   return (
@@ -37,12 +53,20 @@ export default function InventoryTable({ data }: { data: InventoryItem[] }) {
             );
           }
 
-          if (col.key === "status") {
-            return <StatusBadge value={row.status} type="inventory" />;
+          if (col.key === "stockStatus") {
+            return <StatusBadge value={row.stockStatus} type="inventory" />;
           }
-          return String(row[col.key]);
+
+          const value = row[col.key as keyof InventoryListItem];
+
+          if (value === null || value === undefined) {
+            return <span className="text-gray-400">—</span>;
+          }
+
+          return String(value);
         }}
       />
+
       <ConfirmActionModal
         open={!!pendingAction}
         title={

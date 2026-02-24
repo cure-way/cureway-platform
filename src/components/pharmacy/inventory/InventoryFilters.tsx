@@ -5,10 +5,11 @@ import StatusDropdown from "../shared/StatusDropdown";
 import { INVENTORY_STATUSES } from "@/utils/pharmacyConstants";
 import AddMedicineModal from "./medicine/AddMedicineModal";
 import { useState } from "react";
+import { InventoryFilterStatus } from "@/types/pharmacyTypes";
 
 interface InventoryFiltersProps {
-  status: string;
-  onStatusChange: (value: string) => void;
+  status: InventoryFilterStatus;
+  onStatusChange: (value: InventoryFilterStatus) => void;
 
   search: string;
   onSearchChange: (value: string) => void;

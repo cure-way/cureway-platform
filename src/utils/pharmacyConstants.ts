@@ -1,15 +1,20 @@
 import {
   Column,
-  InventoryItem,
+  InventoryFilterStatus,
+  InventoryListItem,
   OrderRow,
   RowAction,
+  StatusConfig,
 } from "@/types/pharmacyTypes";
 
-export const INVENTORY_STATUSES = [
-  { label: "All Status", value: "all" },
-  { label: "In Stock", value: "in" },
-  { label: "Low Stock", value: "low" },
-  { label: "Out Of Stock", value: "out" },
+export const INVENTORY_STATUSES: {
+  label: string;
+  value: InventoryFilterStatus;
+}[] = [
+  { label: "All", value: "all" },
+  { label: "In Stock", value: "IN_STOCK" },
+  { label: "Low Stock", value: "LOW_STOCK" },
+  { label: "Out of Stock", value: "OUT_OF_STOCK" },
 ];
 
 export const ORDER_STATUSES = [
@@ -26,13 +31,13 @@ export const ROWS_PER_PAGE_OPTIONS = [
   { label: "20", value: "20" },
 ];
 
-export const inventoryColumns: Column<InventoryItem>[] = [
+export const inventoryColumns: Column<InventoryListItem>[] = [
   { key: "id", header: "ID" },
   { key: "medicineName", header: "Medicine" },
-  { key: "brand", header: "Brand", hideOnMobile: true },
-  { key: "stock", header: "Stock", hideOnMobile: true },
+  { key: "categoryName", header: "Category", hideOnMobile: true },
+  { key: "stockQuantity", header: "Stock", hideOnMobile: true },
   { key: "expiryDate", header: "Expiration", hideOnMobile: true },
-  { key: "status", header: "Status" },
+  { key: "stockStatus", header: "Status" },
   { key: "action", header: "" },
 ];
 
@@ -60,3 +65,37 @@ export const DAY_ORDER = [
   "Fri",
   "Sat",
 ] as const;
+
+export const ORDER_STATUS_MAP: Record<string, StatusConfig> = {
+  New: {
+    label: "New",
+    className: "bg-blue-100 text-blue-700",
+  },
+  Delivered: {
+    label: "Delivered",
+    className: "bg-green-100 text-green-700",
+  },
+  Pending: {
+    label: "Pending",
+    className: "bg-yellow-100 text-yellow-700",
+  },
+  Cancelled: {
+    label: "Cancelled",
+    className: "bg-red-100 text-red-700",
+  },
+};
+
+export const INVENTORY_STATUS_MAP: Record<string, StatusConfig> = {
+  IN_STOCK: {
+    label: "In Stock",
+    className: "bg-green-100 text-green-700",
+  },
+  LOW_STOCK: {
+    label: "Low Stock",
+    className: "bg-yellow-100 text-yellow-700",
+  },
+  OUT_OF_STOCK: {
+    label: "Out of Stock",
+    className: "bg-red-100 text-red-700",
+  },
+};
