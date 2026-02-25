@@ -13,17 +13,30 @@ import EmptyState from "../shared/EmptyState";
 import ErrorState from "../shared/ErrorState";
 import NullableText from "../shared/NullableText";
 
+type Props = {
+  data: InventoryItem[];
+  loading: boolean;
+  error: string | null;
+  onRetry: () => void;
+
+  total: number;
+  page: number;
+  limit: number;
+  onPageChange: (page: number) => void;
+  onLimitChange: (limit: number) => void;
+};
+
 export default function InventoryTable({
   data,
   loading,
   error,
   onRetry,
-}: {
-  data: InventoryItem[];
-  loading: boolean;
-  error: string | null;
-  onRetry?: () => void;
-}) {
+  total,
+  page,
+  limit,
+  onPageChange,
+  onLimitChange,
+}: Props) {
   const { pendingAction, handleMedicineAction, handleConfirm, closeAction } =
     useMedicineActions();
 
@@ -52,6 +65,11 @@ export default function InventoryTable({
       <DataTable
         data={data}
         columns={inventoryColumns}
+        totalItems={total}
+        currentPage={page}
+        rowsPerPage={limit}
+        onPageChange={onPageChange}
+        onRowsPerPageChange={onLimitChange}
         renderCell={(row, col) => {
           if (col.key === "action") {
             return (

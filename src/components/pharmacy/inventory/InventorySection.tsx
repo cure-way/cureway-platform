@@ -12,11 +12,25 @@ export default function InventorySection() {
   const [status, setStatus] = useState<InventoryFilterStatus>("all");
   const [search, setSearch] = useState("");
 
-  const { data, loading, error, refetch } = useInventory({
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+
+  const { data, total, loading, error, refetch } = useInventory({
     status,
     search,
+    page,
+    limit,
   });
 
+  const handleStatusChange = (value: InventoryFilterStatus) => {
+    setPage(1);
+    setStatus(value);
+  };
+
+  const handleSearchChange = (value: string) => {
+    setPage(1);
+    setSearch(value);
+  };
   const alert = getInventoryAlerts(data);
 
   return (
@@ -26,9 +40,9 @@ export default function InventorySection() {
       )}
       <InventoryFilters
         status={status}
-        onStatusChange={setStatus}
+        onStatusChange={handleStatusChange}
         search={search}
-        onSearchChange={setSearch}
+        onSearchChange={handleSearchChange}
       />
 
       <InventoryTable
@@ -36,6 +50,11 @@ export default function InventorySection() {
         loading={loading}
         error={error}
         onRetry={refetch}
+        total={total}
+        page={page}
+        limit={limit}
+        onPageChange={setPage}
+        onLimitChange={setLimit}
       />
     </>
   );

@@ -13,6 +13,8 @@ export async function fetchInventoryList(params: GetInventoryParams) {
 
   return {
     items: response.data.map(mapInventoryListItem),
-    meta: response.meta,
+    total: response.meta.total,
+    page: response.meta.page,
+    limit: response.meta.limit,
   };
 }

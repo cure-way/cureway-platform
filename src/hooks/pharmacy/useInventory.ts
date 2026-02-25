@@ -5,10 +5,17 @@ import { fetchInventoryList } from "@/services/pharmacy/getInventoryList";
 type UseInventoryParams = {
   status: InventoryFilterStatus;
   search: string;
+  page: number;
+  limit: number;
 };
-
-export function useInventory({ status, search }: UseInventoryParams) {
+export function useInventory({
+  status,
+  search,
+  page,
+  limit,
+}: UseInventoryParams) {
   const [data, setData] = useState<InventoryItem[]>([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -18,19 +25,20 @@ export function useInventory({ status, search }: UseInventoryParams) {
 
     try {
       const res = await fetchInventoryList({
-        page: 1,
-        limit: 10,
+        page,
+        limit,
         q: search || undefined,
         stockStatus: status === "all" ? undefined : status,
       });
 
       setData(res.items);
+      setTotal(res.total);
     } catch (err) {
       setError("Failed to load inventory. Please try again.");
     } finally {
       setLoading(false);
     }
-  }, [search, status]);
+  }, [search, status, page, limit]);
 
   useEffect(() => {
     fetchInventory();
@@ -38,6 +46,7 @@ export function useInventory({ status, search }: UseInventoryParams) {
 
   return {
     data,
+    total,
     loading,
     error,
     refetch: fetchInventory,
