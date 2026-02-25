@@ -1,14 +1,7 @@
 import { DAY_ORDER } from "@/utils/pharmacyConstants";
 
-export type InventoryStatus = "in" | "low" | "out";
-
-export type InventoryFilterStatus =
-  | "all"
-  | "IN_STOCK"
-  | "LOW_STOCK"
-  | "OUT_OF_STOCK";
-
 export type StockStatus = "IN_STOCK" | "LOW_STOCK" | "OUT_OF_STOCK";
+export type InventoryFilterStatus = "all" | StockStatus;
 
 export interface InventoryListItem {
   id: number;
@@ -25,6 +18,42 @@ export interface InventoryListItem {
   stockStatus: StockStatus;
   expiryDate: string;
 }
+export interface InventoryDetailsDTO {
+  id: number;
+  medicineId: number;
+  pharmacyId: number;
+  stockQuantity: number;
+  minStock: number;
+  sellPrice: number;
+  costPrice: number | null;
+  isAvailable: boolean;
+  batchNumber: string;
+  expiryDate: string;
+  shelfLocation: string | null;
+  notes: string[] | null;
+  createdAt: string;
+  updatedAt: string;
+  medicine: {
+    id: number;
+    genericName: string;
+    brandName: string;
+    status: string;
+    isActive: boolean;
+    minPrice: number;
+    maxPrice: number;
+    requiresPrescription: boolean;
+    categoryId: number;
+    manufacturer: string;
+    dosageForm: string;
+    dosageInstructions: string;
+    storageInstructions: string;
+    warnings: string;
+    description: string;
+    packSize: number;
+  };
+}
+///////////////////////////////////////////////////////////////////////
+export type InventoryStatus = "in" | "low" | "out";
 
 export interface InventoryItem {
   id: string;
@@ -50,7 +79,7 @@ export interface InventoryItem {
 }
 
 // ---------------------------
-// GET /inventory response
+// responses
 // ---------------------------
 
 export interface InventoryListResponse {
@@ -62,6 +91,11 @@ export interface InventoryListResponse {
     page: number;
     totalPages: number;
   };
+}
+
+export interface InventoryDetailsResponse {
+  success: boolean;
+  data: InventoryDetailsDTO;
 }
 
 ////////////////////////////////////////////////////////

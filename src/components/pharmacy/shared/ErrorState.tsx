@@ -1,3 +1,5 @@
+import { FiAlertCircle } from "react-icons/fi";
+
 type ErrorStateProps = {
   message?: string;
   onRetry?: () => void;
@@ -8,8 +10,10 @@ export default function ErrorState({
   onRetry,
 }: ErrorStateProps) {
   return (
-    <div className="bg-red-50 p-6 rounded-xl text-center">
-      <p className="mb-3 font-medium text-red-600 text-sm">{message}</p>
+    <div className="flex flex-col items-center text-center">
+      <FiAlertCircle className="mb-3 text-red-600 text-4xl" />
+
+      <p className="mb-4 font-medium text-red-600 text-sm">{message}</p>
 
       {onRetry && (
         <button

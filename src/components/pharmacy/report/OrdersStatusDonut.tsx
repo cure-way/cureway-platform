@@ -2,7 +2,7 @@
 
 import { PieChart, Pie, Tooltip, Cell } from "recharts";
 import { OrderStatusDatum } from "@/types/pharmacyTypes";
-import { buildOrdersStatusModel } from "@/services/pharmacyService";
+import { buildOrdersStatusModel } from "@/services/pharmacy/pharmacyService";
 import { OrdersStatusInfo } from "./OrdersStatusInfo";
 
 export function OrdersStatusDonut({ data }: { data: OrderStatusDatum[] }) {

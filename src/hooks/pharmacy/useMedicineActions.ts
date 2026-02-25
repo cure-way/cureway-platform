@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { InventoryListItem } from "@/types/pharmacyTypes";
+import { InventoryItem } from "@/types/pharmacyTypes";
 
 export type MedicineActionType = "delete" | "mark_out";
 
 export interface PendingMedicineAction {
   type: MedicineActionType;
-  item: InventoryListItem;
+  item: InventoryItem;
 }
 
 export function useMedicineActions() {
@@ -17,7 +17,7 @@ export function useMedicineActions() {
   const [pendingAction, setPendingAction] =
     useState<PendingMedicineAction | null>(null);
 
-  function handleMedicineAction(action: string, item: InventoryListItem) {
+  function handleMedicineAction(action: string, item: InventoryItem) {
     switch (action) {
       case "view":
         router.push(`/pharmacy/inventory/${item.id}`);

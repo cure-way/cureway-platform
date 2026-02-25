@@ -1,7 +1,7 @@
 "use client";
 
 import { ORDERS } from "@/services/pharmacyData";
-import { getOrdersSummary } from "@/services/pharmacyService";
+import { getOrdersSummary } from "@/services/pharmacy/pharmacyService";
 import { FiFileText, FiBox } from "react-icons/fi";
 
 export default function OrdersSummaryCards() {

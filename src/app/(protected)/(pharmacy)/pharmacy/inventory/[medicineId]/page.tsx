@@ -1,35 +1,57 @@
-import { notFound } from "next/navigation";
-import { inventoryData } from "@/services/pharmacyData";
+"use client";
+
+import { useParams } from "next/navigation";
+import { useInventoryDetails } from "@/hooks/pharmacy/useInventoryDetails";
 
 import PharmacyMedicineHeader from "@/components/pharmacy/inventory/medicine/PharmacyMedicineHeader";
 import PharmacyMedicineInfo from "@/components/pharmacy/inventory/medicine/PharmacyMedicineInfo";
 import PharmacyMedicineActions from "@/components/pharmacy/inventory/medicine/PharmacyMedicineActions";
 import PharmacyMedicineUsage from "@/components/pharmacy/inventory/medicine/PharmacyMedicineUsage";
+import PharmacyMedicineDetailsSkeleton from "@/components/pharmacy/inventory/medicine/PharmacyMedicineDetailsSkeleton";
+import ErrorState from "@/components/pharmacy/shared/ErrorState";
+import EmptyState from "@/components/pharmacy/shared/EmptyState";
 
-interface PharmacyMedicineDetailsPageProps {
-  params: Promise<{ medicineId: string }>;
-}
+export default function PharmacyMedicineDetailsPage() {
+  const params = useParams();
+  const id = Number(params.medicineId);
 
-export default async function PharmacyMedicineDetailsPage({
-  params,
-}: PharmacyMedicineDetailsPageProps) {
-  const { medicineId } = await params;
-  const medicine = inventoryData.find((i) => i.id === medicineId);
+  const { data, loading, error, refetch } = useInventoryDetails(
+    isNaN(id) ? null : id,
+  );
 
-  if (!medicine) {
-    notFound();
+  if (loading) {
+    return <PharmacyMedicineDetailsSkeleton />;
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <ErrorState
+          message="Failed to load medicine details."
+          onRetry={refetch}
+        />
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <EmptyState message="Medicine not found." />
+      </div>
+    );
   }
 
   return (
     <div className="space-y-6">
-      <PharmacyMedicineHeader item={medicine} />
+      <PharmacyMedicineHeader item={data} />
 
       <div className="gap-6 grid grid-cols-1 lg:grid-cols-[2fr_1fr]">
-        <PharmacyMedicineInfo item={medicine} />
+        <PharmacyMedicineInfo item={data} />
 
         <div className="space-y-6">
-          <PharmacyMedicineActions item={medicine} />
-          <PharmacyMedicineUsage item={medicine} />
+          <PharmacyMedicineActions item={data} />
+          <PharmacyMedicineUsage item={data} />
         </div>
       </div>
     </div>

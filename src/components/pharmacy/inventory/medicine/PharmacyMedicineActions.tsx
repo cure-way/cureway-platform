@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckCircle } from "lucide-react";
-import { getExpiryInfo } from "@/services/pharmacyService";
+import { getExpiryInfo } from "@/services/pharmacy/pharmacyService";
 import { InventoryItem } from "@/types/pharmacyTypes";
 import ConfirmActionModal from "../../shared/ConfirmActionModal";
 import { useMedicineActions } from "@/hooks/pharmacy/useMedicineActions";

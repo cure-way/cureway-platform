@@ -8,7 +8,7 @@ import { inventoryData, ORDERS } from "@/services/pharmacyData";
 import {
   getMostRequestedCategory,
   getTopSellingMedicines,
-} from "@/services/pharmacyService";
+} from "@/services/pharmacy/pharmacyService";
 
 const topSellingMedicine = getTopSellingMedicines(ORDERS, inventoryData);
 

@@ -1,4 +1,4 @@
-import { getReportStats } from "@/services/pharmacyService";
+import { getReportStats } from "@/services/pharmacy/pharmacyService";
 import { StatCard } from "./StatCard";
 import { ORDERS } from "@/services/pharmacyData";
 

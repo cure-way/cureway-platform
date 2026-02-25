@@ -9,7 +9,7 @@ import {
   getOrderStatusData,
   getTopSellingMedicines,
   getWeeklyOrdersData,
-} from "@/services/pharmacyService";
+} from "@/services/pharmacy/pharmacyService";
 import { FiBarChart2 } from "react-icons/fi";
 
 const OrdersStatusDonut = dynamic(
@@ -20,7 +20,7 @@ const OrdersStatusDonut = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-[200px] animate-pulse rounded-xl bg-gray-100" />
+      <div className="bg-gray-100 rounded-xl h-[200px] animate-pulse" />
     ),
   },
 );
@@ -33,7 +33,7 @@ const WeeklyOrdersBar = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-80 animate-pulse rounded-xl bg-gray-100" />
+      <div className="bg-gray-100 rounded-xl h-80 animate-pulse" />
     ),
   },
 );

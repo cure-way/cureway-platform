@@ -1,7 +1,8 @@
+import { mapInventoryDetailsToItem } from "@/adapters/InventoryMappers";
+import { getInventoryById } from "@/repositories/inventory.repository";
 import {
   Day,
   InventoryItem,
-  InventoryListItem,
   OrderRow,
   OrdersStatusModel,
   OrderStatusDatum,
@@ -189,11 +190,9 @@ export function getOrdersSummary(orders: OrderRow[]): {
 }
 
 export function getInventoryAlerts(
-  items: InventoryListItem[],
+  items: InventoryItem[],
 ): { title: string; description: string } | null {
-  const outOfStockCount = items.filter(
-    (item) => item.stockQuantity === 0,
-  ).length;
+  const outOfStockCount = items.filter((item) => item.stock === 0).length;
 
   if (outOfStockCount === 0) return null;
 
@@ -233,4 +232,14 @@ export function getReportStats(orders: OrderRow[]): {
     totalOrders,
     deliveredCount,
   };
+}
+
+export async function fetchInventoryItem(id: number) {
+  const response = await getInventoryById(id);
+
+  if (!response.success) {
+    throw new Error("Failed to fetch inventory item");
+  }
+
+  return mapInventoryDetailsToItem(response.data);
 }

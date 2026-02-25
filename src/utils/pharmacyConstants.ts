@@ -1,7 +1,7 @@
 import {
   Column,
   InventoryFilterStatus,
-  InventoryListItem,
+  InventoryItem,
   OrderRow,
   RowAction,
   StatusConfig,
@@ -31,13 +31,13 @@ export const ROWS_PER_PAGE_OPTIONS = [
   { label: "20", value: "20" },
 ];
 
-export const inventoryColumns: Column<InventoryListItem>[] = [
+export const inventoryColumns: Column<InventoryItem>[] = [
   { key: "id", header: "ID" },
   { key: "medicineName", header: "Medicine" },
-  { key: "categoryName", header: "Category", hideOnMobile: true },
-  { key: "stockQuantity", header: "Stock", hideOnMobile: true },
+  { key: "brand", header: "Brand", hideOnMobile: true },
+  { key: "stock", header: "Stock", hideOnMobile: true },
   { key: "expiryDate", header: "Expiration", hideOnMobile: true },
-  { key: "stockStatus", header: "Status" },
+  { key: "status", header: "Status" },
   { key: "action", header: "" },
 ];
 
@@ -86,15 +86,15 @@ export const ORDER_STATUS_MAP: Record<string, StatusConfig> = {
 };
 
 export const INVENTORY_STATUS_MAP: Record<string, StatusConfig> = {
-  IN_STOCK: {
+  in: {
     label: "In Stock",
     className: "bg-green-100 text-green-700",
   },
-  LOW_STOCK: {
+  low: {
     label: "Low Stock",
     className: "bg-yellow-100 text-yellow-700",
   },
-  OUT_OF_STOCK: {
+  out: {
     label: "Out of Stock",
     className: "bg-red-100 text-red-700",
   },

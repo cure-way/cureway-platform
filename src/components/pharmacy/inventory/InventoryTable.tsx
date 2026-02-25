@@ -7,10 +7,11 @@ import { INVENTORY_ACTIONS, inventoryColumns } from "@/utils/pharmacyConstants";
 import StatusBadge from "../shared/StatusBadge";
 import ConfirmActionModal from "../shared/ConfirmActionModal";
 import { useMedicineActions } from "@/hooks/pharmacy/useMedicineActions";
-import { InventoryListItem } from "@/types/pharmacyTypes";
+import { InventoryItem } from "@/types/pharmacyTypes";
 import TableSkeleton from "../shared/TableSkeleton";
 import EmptyState from "../shared/EmptyState";
 import ErrorState from "../shared/ErrorState";
+import NullableText from "../shared/NullableText";
 
 export default function InventoryTable({
   data,
@@ -18,7 +19,7 @@ export default function InventoryTable({
   error,
   onRetry,
 }: {
-  data: InventoryListItem[];
+  data: InventoryItem[];
   loading: boolean;
   error: string | null;
   onRetry?: () => void;
@@ -31,11 +32,19 @@ export default function InventoryTable({
   }
 
   if (error) {
-    return <ErrorState message={error} onRetry={onRetry} />;
+    return (
+      <div className="bg-red-50 p-6 rounded-xl">
+        <ErrorState message={error} onRetry={onRetry} />
+      </div>
+    );
   }
 
   if (!data.length) {
-    return <EmptyState message="No medicines found matching your filters." />;
+    return (
+      <div className="bg-gray-50 p-6 rounded-xl">
+        <EmptyState message="No medicines found matching your filters." />
+      </div>
+    );
   }
 
   return (
@@ -53,14 +62,14 @@ export default function InventoryTable({
             );
           }
 
-          if (col.key === "stockStatus") {
-            return <StatusBadge value={row.stockStatus} type="inventory" />;
+          if (col.key === "status") {
+            return <StatusBadge value={row.status} type="inventory" />;
           }
 
-          const value = row[col.key as keyof InventoryListItem];
+          const value = row[col.key as keyof InventoryItem];
 
           if (value === null || value === undefined) {
-            return <span className="text-gray-400">—</span>;
+            return <NullableText value={value} />;
           }
 
           return String(value);

@@ -1,5 +1,8 @@
 import { httpGet } from "@/lib/api";
-import { InventoryListResponse } from "@/types/pharmacyTypes";
+import {
+  InventoryDetailsResponse,
+  InventoryListResponse,
+} from "@/types/pharmacyTypes";
 
 // -----------------------------------------------------------------------------
 // Query Params for GET /inventory
@@ -23,4 +26,10 @@ export async function getInventory(
   return httpGet<InventoryListResponse>("/inventory", {
     params,
   });
+}
+
+export async function getInventoryById(
+  id: number,
+): Promise<InventoryDetailsResponse> {
+  return httpGet<InventoryDetailsResponse>(`/inventory/${id}`);
 }

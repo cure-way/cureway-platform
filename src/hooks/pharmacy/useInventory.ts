@@ -1,9 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
-import { getInventory } from "@/repositories/inventory.repository";
-import {
-  InventoryFilterStatus,
-  InventoryListItem,
-} from "@/types/pharmacyTypes";
+import { InventoryFilterStatus, InventoryItem } from "@/types/pharmacyTypes";
+import { fetchInventoryList } from "@/services/pharmacy/getInventoryList";
 
 type UseInventoryParams = {
   status: InventoryFilterStatus;
@@ -11,7 +8,7 @@ type UseInventoryParams = {
 };
 
 export function useInventory({ status, search }: UseInventoryParams) {
-  const [data, setData] = useState<InventoryListItem[]>([]);
+  const [data, setData] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,14 +17,14 @@ export function useInventory({ status, search }: UseInventoryParams) {
     setError(null);
 
     try {
-      const res = await getInventory({
+      const res = await fetchInventoryList({
         page: 1,
         limit: 10,
         q: search || undefined,
         stockStatus: status === "all" ? undefined : status,
       });
 
-      setData(res.data);
+      setData(res.items);
     } catch (err) {
       setError("Failed to load inventory. Please try again.");
     } finally {
