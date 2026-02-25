@@ -9,6 +9,10 @@ import {
 export function mapInventoryDetailsToItem(
   dto: InventoryDetailsDTO,
 ): InventoryItem {
+  const primaryImage =
+    dto.medicineImages?.slice().sort((a, b) => a.sortOrder - b.sortOrder)[0]
+      ?.imageUrl ?? undefined;
+
   return {
     id: String(dto.id),
 
@@ -34,8 +38,13 @@ export function mapInventoryDetailsToItem(
     purchasePrice: dto.costPrice ?? 0,
     sellingPrice: dto.sellPrice,
 
-    imageUrl: undefined,
-    usageNotes: dto.notes ?? [],
+    imageUrl: primaryImage,
+    usageNotes: [
+      dto.notes,
+      dto.medicine.dosageInstructions,
+      dto.medicine.storageInstructions,
+      dto.medicine.warnings,
+    ].filter((note): note is string => Boolean(note)),
   };
 }
 

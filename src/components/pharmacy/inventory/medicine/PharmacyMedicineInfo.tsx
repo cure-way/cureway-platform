@@ -7,6 +7,7 @@ export default function PharmacyMedicineInfo({
 }: {
   item: InventoryItem;
 }) {
+  console.log("IMAGE URL:", item.imageUrl);
   return (
     <div className="flex flex-col justify-between space-y-6">
       <section className="flex flex-col bg-white p-8 border rounded-xl grow">
@@ -26,7 +27,7 @@ export default function PharmacyMedicineInfo({
           </div>
 
           <Image
-            src={"/placeholder-medicine.png"}
+            src={item.imageUrl ?? "/placeholder-medicine.png"}
             alt={item.medicineName}
             className="self-center order-1 sm:order-2 max-w-75 max-h-40 object-contain"
             width={200}

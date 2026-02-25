@@ -22,7 +22,6 @@ export default function PharmacyMedicineDetailsPage() {
   if (loading) {
     return <PharmacyMedicineDetailsSkeleton />;
   }
-
   if (error) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -50,7 +49,7 @@ export default function PharmacyMedicineDetailsPage() {
         <PharmacyMedicineInfo item={data} />
 
         <div className="space-y-6">
-          <PharmacyMedicineActions item={data} />
+          <PharmacyMedicineActions item={data} refetch={refetch} />
           <PharmacyMedicineUsage item={data} />
         </div>
       </div>

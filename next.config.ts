@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "**.railway.app" },
       { protocol: "https", hostname: "api.cureway.com" },
       { protocol: "https", hostname: "cdn.cureway.com" },
+      { protocol: "https", hostname: "cdn.example.com" },
     ],
   },
 };

@@ -1,5 +1,8 @@
 import { mapInventoryDetailsToItem } from "@/adapters/InventoryMappers";
-import { getInventoryById } from "@/repositories/inventory.repository";
+import {
+  deleteInventoryById,
+  getInventoryById,
+} from "@/repositories/inventory.repository";
 import {
   Day,
   InventoryItem,
@@ -10,6 +13,7 @@ import {
   WeeklyOrdersDatum,
 } from "@/types/pharmacyTypes";
 import { DAY_ORDER } from "@/utils/pharmacyConstants";
+import axios from "axios";
 
 export function getTopSellingMedicines(
   orders: OrderRow[],
@@ -242,4 +246,20 @@ export async function fetchInventoryItem(id: number) {
   }
 
   return mapInventoryDetailsToItem(response.data);
+}
+
+export async function deleteInventory(id: string): Promise<void> {
+  try {
+    await deleteInventoryById(id);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const backendMessage = error.response?.data?.message;
+
+      throw new Error(
+        backendMessage || "Unable to delete inventory item. Please try again.",
+      );
+    }
+
+    throw new Error("Unexpected error occurred while deleting inventory item.");
+  }
 }

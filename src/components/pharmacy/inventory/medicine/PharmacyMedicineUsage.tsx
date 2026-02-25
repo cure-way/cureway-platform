@@ -8,7 +8,6 @@ export default function PharmacyMedicineUsage({
   if (!item.usageNotes || item.usageNotes.length === 0) {
     return null;
   }
-
   return (
     <div className="bg-white p-6 border rounded-xl border-t-3 border-t-(--color-primary)">
       <h3 className="mb-3 font-semibold text-gray-900 text-sm">

@@ -1,4 +1,4 @@
-import { httpGet } from "@/lib/api";
+import { httpDelete, httpGet } from "@/lib/api";
 import {
   InventoryDetailsResponse,
   InventoryListResponse,
@@ -32,4 +32,8 @@ export async function getInventoryById(
   id: number,
 ): Promise<InventoryDetailsResponse> {
   return httpGet<InventoryDetailsResponse>(`/inventory/${id}`);
+}
+
+export async function deleteInventoryById(id: string): Promise<void> {
+  await httpDelete<void>(`/inventory/${id}`);
 }

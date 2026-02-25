@@ -49,7 +49,7 @@ export default function InventorySection() {
         data={data}
         loading={loading}
         error={error}
-        onRetry={refetch}
+        refetch={refetch}
         total={total}
         page={page}
         limit={limit}

@@ -30,7 +30,7 @@ export interface InventoryDetailsDTO {
   batchNumber: string;
   expiryDate: string;
   shelfLocation: string | null;
-  notes: string[] | null;
+  notes: string | null;
   createdAt: string;
   updatedAt: string;
   medicine: {
@@ -51,6 +51,10 @@ export interface InventoryDetailsDTO {
     description: string;
     packSize: number;
   };
+  medicineImages?: {
+    imageUrl: string;
+    sortOrder: number;
+  }[];
 }
 ///////////////////////////////////////////////////////////////////////
 export type InventoryStatus = "in" | "low" | "out";
@@ -79,7 +83,7 @@ export interface InventoryItem {
 }
 
 // ---------------------------
-// responses
+// response
 // ---------------------------
 
 export interface InventoryListResponse {
