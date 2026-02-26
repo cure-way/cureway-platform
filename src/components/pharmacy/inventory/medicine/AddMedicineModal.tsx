@@ -1,9 +1,11 @@
 "use client";
 
-import { MedicineFormPayload } from "@/types/pharmacyTypes";
+import { CreateInventoryInput } from "@/types/pharmacyTypes";
 
 import { X } from "lucide-react";
 import MedicineForm from "./form/MedicineForm";
+import { useCreateInventory } from "@/hooks/pharmacy/useCreateInventory";
+import { toast } from "react-hot-toast";
 
 interface Props {
   open: boolean;
@@ -11,8 +13,19 @@ interface Props {
 }
 
 export default function AddMedicineModal({ open, onClose }: Props) {
-  function handleSave(data: MedicineFormPayload) {
-    onClose();
+  const { execute, isLoading } = useCreateInventory();
+
+  async function handleSave(data: CreateInventoryInput) {
+    try {
+      await execute(data);
+      toast.success("Medicine added successfully");
+      onClose();
+      window.location.reload();
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to create medicine",
+      );
+    }
   }
 
   if (!open) return null;
@@ -34,6 +47,7 @@ export default function AddMedicineModal({ open, onClose }: Props) {
 
           <button
             onClick={onClose}
+            disabled={isLoading}
             className="hover:bg-gray-100 p-2 rounded-lg"
           >
             <X className="w-4 h-4" />
@@ -50,13 +64,15 @@ export default function AddMedicineModal({ open, onClose }: Props) {
           <button
             type="submit"
             form="medicine-form"
-            className="w-full bg-(--color-primary) text-white py-2 rounded-lg text-sm"
+            disabled={isLoading}
+            className="w-full bg-(--color-primary) text-white py-2 rounded-lg text-sm disabled:opacity-50"
           >
-            Save
+            {isLoading ? "Saving..." : "Save"}
           </button>
 
           <button
             onClick={onClose}
+            disabled={isLoading}
             className="py-2 border rounded-lg w-full text-gray-600 text-sm"
           >
             Cancel

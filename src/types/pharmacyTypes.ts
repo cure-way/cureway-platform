@@ -1,5 +1,45 @@
 import { DAY_ORDER } from "@/utils/pharmacyConstants";
 
+// Inventory types
+export type InventoryStatus = "in" | "low" | "out";
+
+export interface InventoryItem {
+  id: string;
+
+  medicineName: string;
+  brand: string;
+  manufacturer: string;
+  category: string;
+
+  stock: number;
+  minStock: number;
+  status: InventoryStatus;
+
+  batchNumber: string;
+  expiryDate: string;
+  prescriptionRequired: boolean;
+
+  purchasePrice: number;
+  sellingPrice: number;
+
+  imageUrl?: string;
+  usageNotes?: string[];
+}
+
+export interface CreateInventoryInput {
+  medicineId: string;
+  stockQuantity: number;
+  sellPrice: number;
+  costPrice?: number;
+  minStock?: number;
+  batchNumber?: string;
+  expiryDate?: string;
+  shelfLocation?: string;
+  notes?: string;
+  image?: File | null;
+}
+
+//////////////////////////////////////////////////////////////////////
 export type StockStatus = "IN_STOCK" | "LOW_STOCK" | "OUT_OF_STOCK";
 export type InventoryFilterStatus = "all" | StockStatus;
 
@@ -56,35 +96,35 @@ export interface InventoryDetailsDTO {
     sortOrder: number;
   }[];
 }
-///////////////////////////////////////////////////////////////////////
-export type InventoryStatus = "in" | "low" | "out";
 
-export interface InventoryItem {
+export interface CreateInventoryResponseDto {
   id: string;
-
-  medicineName: string;
-  brand: string;
-  manufacturer: string;
-  category: string;
-
-  stock: number;
-  minStock: number;
-  status: InventoryStatus;
-
-  batchNumber: string;
-  expiryDate: string;
-  prescriptionRequired: boolean;
-
-  purchasePrice: number;
-  sellingPrice: number;
-
-  imageUrl?: string;
-  usageNotes?: string[];
+  medicineId: string;
+  stockQuantity: number;
+  sellPrice: number;
+  costPrice?: number | null;
+  minStock?: number | null;
+  batchNumber?: string | null;
+  expiryDate?: string | null;
+  shelfLocation?: string | null;
+  notes?: string | null;
+  imageUrl?: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
-// ---------------------------
-// response
-// ---------------------------
+export interface MedicineFormValues {
+  medicineId: string;
+  stockQuantity: number;
+  sellPrice: number;
+  costPrice?: number;
+  minStock?: number;
+  batchNumber?: string;
+  expiryDate?: string;
+  shelfLocation?: string;
+  usageNotes: { value: string }[];
+}
+///////////////////////////////////////////////////////////////////////
 
 export interface InventoryListResponse {
   success: boolean;
@@ -100,6 +140,13 @@ export interface InventoryListResponse {
 export interface InventoryDetailsResponse {
   success: boolean;
   data: InventoryDetailsDTO;
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  message?: string;
+  statusCode?: number;
+  data: T;
 }
 
 ////////////////////////////////////////////////////////
@@ -135,25 +182,6 @@ export interface OrderRow {
   total: number;
   date: string;
   status: "Delivered" | "Pending" | "New" | "Cancelled";
-}
-
-export interface MedicineFormValues {
-  medicineName: string;
-  category: string;
-  stock: number;
-  expiryDate: string;
-  status: InventoryStatus;
-  usageNotes: { value: string }[];
-  imageUrl?: File | null;
-}
-export interface MedicineFormPayload {
-  medicineName: string;
-  category: string;
-  stock: number;
-  expiryDate: string;
-  status: InventoryStatus;
-  usageNotes: string[];
-  imageUrl?: File | null;
 }
 
 export interface OrderStatusDatum {

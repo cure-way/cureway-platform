@@ -1,5 +1,7 @@
-import { httpDelete, httpGet } from "@/lib/api";
+import { httpDelete, httpGet, httpPost } from "@/lib/api";
 import {
+  ApiResponse,
+  CreateInventoryResponseDto,
   InventoryDetailsResponse,
   InventoryListResponse,
 } from "@/types/pharmacyTypes";
@@ -36,4 +38,13 @@ export async function getInventoryById(
 
 export async function deleteInventoryById(id: string): Promise<void> {
   await httpDelete<void>(`/inventory/${id}`);
+}
+
+export async function createInventoryItem(
+  formData: FormData,
+): Promise<ApiResponse<CreateInventoryResponseDto>> {
+  return httpPost<ApiResponse<CreateInventoryResponseDto>, FormData>(
+    "/inventory",
+    formData,
+  );
 }

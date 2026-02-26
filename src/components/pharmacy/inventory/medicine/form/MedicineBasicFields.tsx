@@ -1,12 +1,5 @@
-import StatusDropdown from "@/components/pharmacy/shared/StatusDropdown";
 import { MedicineFormValues } from "@/types/pharmacyTypes";
-import { INVENTORY_STATUSES } from "@/utils/pharmacyConstants";
-import {
-  Control,
-  Controller,
-  FieldErrors,
-  UseFormRegister,
-} from "react-hook-form";
+import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 
 interface MedicineBasicFieldsProps {
   register: UseFormRegister<MedicineFormValues>;
@@ -16,51 +9,37 @@ interface MedicineBasicFieldsProps {
 
 export default function MedicineBasicFields({
   register,
-  control,
   errors,
 }: MedicineBasicFieldsProps) {
   return (
     <>
-      {/* Medicine name */}
+      {/* Medicine ID */}
       <div>
         <label className="block mb-1 font-medium text-gray-700">
-          Medicine Name *
+          Medicine *
         </label>
 
         <input
-          {...register("medicineName", {
-            required: "Medicine name is required",
+          {...register("medicineId", {
+            required: "Medicine is required",
           })}
+          placeholder="Enter medicine ID"
           className="px-3 py-2 border rounded-lg w-full"
         />
 
-        <FieldError message={errors.medicineName?.message} />
+        <FieldError message={errors.medicineId?.message} />
       </div>
 
-      {/* Category */}
+      {/* Stock Quantity */}
       <div>
         <label className="block mb-1 font-medium text-gray-700">
-          Category *
+          Stock Quantity *
         </label>
-
-        <input
-          {...register("category", {
-            required: "Category is required",
-          })}
-          className="px-3 py-2 border rounded-lg w-full"
-        />
-
-        <FieldError message={errors.category?.message} />
-      </div>
-
-      {/* Stock */}
-      <div>
-        <label className="block mb-1 font-medium text-gray-700">Stock *</label>
 
         <input
           type="number"
-          {...register("stock", {
-            required: "Stock is required",
+          {...register("stockQuantity", {
+            required: "Stock quantity is required",
             min: {
               value: 1,
               message: "Stock must be at least 1",
@@ -70,45 +49,102 @@ export default function MedicineBasicFields({
           className="px-3 py-2 border rounded-lg w-full"
         />
 
-        <FieldError message={errors.stock?.message} />
+        <FieldError message={errors.stockQuantity?.message} />
       </div>
 
-      {/* Expiry date */}
+      {/* Selling Price */}
       <div>
         <label className="block mb-1 font-medium text-gray-700">
-          Expiry Date *
+          Selling Price *
         </label>
 
         <input
-          type="date"
-          {...register("expiryDate", {
-            required: "Expiry date is required",
+          type="number"
+          step="0.01"
+          {...register("sellPrice", {
+            required: "Selling price is required",
+            min: {
+              value: 0.01,
+              message: "Selling price must be greater than 0",
+            },
+            valueAsNumber: true,
           })}
           className="px-3 py-2 border rounded-lg w-full"
         />
 
-        <FieldError message={errors.expiryDate?.message} />
+        <FieldError message={errors.sellPrice?.message} />
       </div>
 
-      {/* Status */}
+      {/* Cost Price */}
       <div>
-        <label className="block mb-1 font-medium text-gray-700">Status *</label>
+        <label className="block mb-1 font-medium text-gray-700">
+          Cost Price
+        </label>
 
-        <Controller
-          name="status"
-          control={control}
-          rules={{ required: "Status is required" }}
-          render={({ field }) => (
-            <StatusDropdown
-              options={INVENTORY_STATUSES.slice(1)}
-              value={field.value}
-              onChange={field.onChange}
-              className="justify-between w-full"
-            />
-          )}
+        <input
+          type="number"
+          step="0.01"
+          {...register("costPrice", {
+            valueAsNumber: true,
+          })}
+          className="px-3 py-2 border rounded-lg w-full"
         />
 
-        <FieldError message={errors.status?.message} />
+        <FieldError message={errors.costPrice?.message} />
+      </div>
+
+      {/* Minimum Stock */}
+      <div>
+        <label className="block mb-1 font-medium text-gray-700">
+          Minimum Stock
+        </label>
+
+        <input
+          type="number"
+          {...register("minStock", {
+            valueAsNumber: true,
+          })}
+          className="px-3 py-2 border rounded-lg w-full"
+        />
+
+        <FieldError message={errors.minStock?.message} />
+      </div>
+
+      {/* Batch Number */}
+      <div>
+        <label className="block mb-1 font-medium text-gray-700">
+          Batch Number
+        </label>
+
+        <input
+          {...register("batchNumber")}
+          className="px-3 py-2 border rounded-lg w-full"
+        />
+      </div>
+
+      {/* Expiry Date */}
+      <div>
+        <label className="block mb-1 font-medium text-gray-700">
+          Expiry Date
+        </label>
+
+        <input
+          type="date"
+          {...register("expiryDate")}
+          className="px-3 py-2 border rounded-lg w-full"
+        />
+      </div>
+
+      {/* Shelf Location */}
+      <div>
+        <label className="block mb-1 font-medium text-gray-700">
+          Shelf Location
+        </label>
+
+        <input
+          {...register("shelfLocation")}
+          className="px-3 py-2 border rounded-lg w-full"
+        />
       </div>
     </>
   );

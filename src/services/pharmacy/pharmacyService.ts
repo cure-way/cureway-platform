@@ -1,9 +1,11 @@
 import { mapInventoryDetailsToItem } from "@/adapters/InventoryMappers";
 import {
+  createInventoryItem,
   deleteInventoryById,
   getInventoryById,
 } from "@/repositories/inventory.repository";
 import {
+  CreateInventoryInput,
   Day,
   InventoryItem,
   OrderRow,
@@ -261,5 +263,86 @@ export async function deleteInventory(id: string): Promise<void> {
     }
 
     throw new Error("Unexpected error occurred while deleting inventory item.");
+  }
+}
+
+function buildCreateInventoryFormData(input: CreateInventoryInput): FormData {
+  const formData = new FormData();
+
+  formData.append("medicineId", input.medicineId);
+  formData.append("stockQuantity", input.stockQuantity.toString());
+  formData.append("sellPrice", input.sellPrice.toString());
+
+  if (input.costPrice !== undefined) {
+    formData.append("costPrice", input.costPrice.toString());
+  }
+
+  if (input.minStock !== undefined) {
+    formData.append("minStock", input.minStock.toString());
+  }
+
+  if (input.batchNumber) {
+    formData.append("batchNumber", input.batchNumber);
+  }
+
+  if (input.expiryDate) {
+    formData.append("expiryDate", input.expiryDate);
+  }
+
+  if (input.shelfLocation) {
+    formData.append("shelfLocation", input.shelfLocation);
+  }
+
+  if (input.notes) {
+    formData.append("notes", input.notes);
+  }
+
+  if (input.image) {
+    formData.append("image", input.image);
+  }
+
+  return formData;
+}
+
+export async function createInventory(
+  input: CreateInventoryInput,
+): Promise<InventoryItem> {
+  if (!input.medicineId) {
+    throw new Error("Medicine is required");
+  }
+
+  if (input.stockQuantity < 0) {
+    throw new Error("Stock quantity cannot be negative");
+  }
+
+  if (input.sellPrice <= 0) {
+    throw new Error("Sell price must be greater than zero");
+  }
+
+  try {
+    const formData = buildCreateInventoryFormData(input);
+
+    const response = await createInventoryItem(formData);
+
+    if (!response.success) {
+      throw new Error(response.message || "Failed to create inventory item");
+    }
+
+    return fetchInventoryItem(Number(response.data.id));
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const backendMessage =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Failed to create inventory item";
+
+      throw new Error(
+        Array.isArray(backendMessage)
+          ? backendMessage.join(", ")
+          : backendMessage,
+      );
+    }
+
+    throw error;
   }
 }
