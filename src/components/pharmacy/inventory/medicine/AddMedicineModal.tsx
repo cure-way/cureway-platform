@@ -10,17 +10,18 @@ import { toast } from "react-hot-toast";
 interface Props {
   open: boolean;
   onClose: () => void;
+  refetch: () => void;
 }
 
-export default function AddMedicineModal({ open, onClose }: Props) {
+export default function AddMedicineModal({ open, onClose, refetch }: Props) {
   const { execute, isLoading } = useCreateInventory();
 
   async function handleSave(data: CreateInventoryInput) {
     try {
       await execute(data);
       toast.success("Medicine added successfully");
+      refetch();
       onClose();
-      window.location.reload();
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Failed to create medicine",
@@ -56,7 +57,7 @@ export default function AddMedicineModal({ open, onClose }: Props) {
 
         {/* Form */}
         <div className="flex-1 p-4 overflow-y-auto">
-          <MedicineForm onSubmit={handleSave} />
+          <MedicineForm mode="create" onSubmit={handleSave} />
         </div>
 
         {/* Footer */}

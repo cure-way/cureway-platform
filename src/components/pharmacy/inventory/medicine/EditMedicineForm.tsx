@@ -1,10 +1,9 @@
-import { InventoryItem, MedicineFormPayload } from "@/types/pharmacyTypes";
-
+import { InventoryItem, UpdateInventoryInput } from "@/types/pharmacyTypes";
 import MedicineForm from "./form/MedicineForm";
 
 interface EditMedicineFormProps {
   item: InventoryItem;
-  onSubmit: (data: MedicineFormPayload) => void;
+  onSubmit: (data: UpdateInventoryInput) => void;
 }
 
 export default function EditMedicineForm({
@@ -13,13 +12,15 @@ export default function EditMedicineForm({
 }: EditMedicineFormProps) {
   return (
     <MedicineForm
+      mode="edit"
       defaultValues={{
-        medicineName: item.medicineName,
-        category: item.category,
-        stock: item.stock,
+        stockQuantity: item.stock,
+        sellPrice: item.sellingPrice,
+        costPrice: item.purchasePrice,
+        minStock: item.minStock,
+        batchNumber: item.batchNumber,
         expiryDate: item.expiryDate,
-        status: item.status,
-        usageNotes: item.usageNotes?.map((note) => ({ value: note })) ?? [],
+        notes: item.notes ?? "",
       }}
       onSubmit={onSubmit}
     />

@@ -39,12 +39,13 @@ export function mapInventoryDetailsToItem(
     sellingPrice: dto.sellPrice,
 
     imageUrl: primaryImage,
-    usageNotes: [
-      dto.notes,
-      dto.medicine.dosageInstructions,
-      dto.medicine.storageInstructions,
-      dto.medicine.warnings,
-    ].filter((note): note is string => Boolean(note)),
+    notes: dto.notes ?? undefined,
+
+    medicineInstructions: {
+      dosage: dto.medicine.dosageInstructions ?? undefined,
+      storage: dto.medicine.storageInstructions ?? undefined,
+      warnings: dto.medicine.warnings ?? undefined,
+    },
   };
 }
 

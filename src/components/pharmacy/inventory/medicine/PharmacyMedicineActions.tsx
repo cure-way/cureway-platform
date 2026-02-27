@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 interface PharmacyMedicineActionsProps {
   item: InventoryItem;
-  refetch: () => Promise<void>;
+  refetch?: () => Promise<void>;
 }
 
 export default function PharmacyMedicineActions({
@@ -26,6 +26,7 @@ export default function PharmacyMedicineActions({
     closeAction,
     isProcessing,
   } = useMedicineActions({
+    refetch,
     onDeleteSuccess: () => {
       router.replace("/pharmacy/inventory");
     },

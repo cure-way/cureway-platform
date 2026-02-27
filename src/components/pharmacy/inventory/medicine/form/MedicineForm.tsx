@@ -1,41 +1,41 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import MedicineImageField from "./MedicineImageField";
 import MedicineBasicFields from "./MedicineBasicFields";
-import MedicineUsageNotes from "./MedicineUsageNotes";
-import { CreateInventoryInput } from "@/types/pharmacyTypes";
+import {
+  CreateInventoryInput,
+  MedicineFormValues,
+  UpdateInventoryInput,
+} from "@/types/pharmacyTypes";
+import EditableNotesField from "./EditableNotesField";
 
-export interface MedicineFormValues {
-  medicineId: string;
-  stockQuantity: number;
-  sellPrice: number;
-  costPrice?: number;
-  minStock?: number;
-  batchNumber?: string;
-  expiryDate?: string;
-  shelfLocation?: string;
-  usageNotes: { value: string }[];
-}
-
-interface MedicineFormProps {
-  defaultValues?: Partial<CreateInventoryInput>;
-  onSubmit: (data: CreateInventoryInput) => void;
-}
+type MedicineFormProps =
+  | {
+      mode: "create";
+      defaultValues?: Partial<CreateInventoryInput>;
+      onSubmit: (data: CreateInventoryInput) => void;
+    }
+  | {
+      mode: "edit";
+      defaultValues?: Partial<CreateInventoryInput>;
+      onSubmit: (data: UpdateInventoryInput) => void;
+    };
 
 export default function MedicineForm({
+  mode,
   defaultValues,
   onSubmit,
 }: MedicineFormProps) {
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>(() => {
-    if (typeof defaultValues?.image === "string") {
-      return defaultValues.image;
-    }
-    return "/placeholder-medicine.png";
-  });
+
+  const imagePreview = imageFile
+    ? URL.createObjectURL(imageFile)
+    : typeof defaultValues?.imageUrl === "string"
+      ? defaultValues.imageUrl
+      : "/placeholder-medicine.png";
 
   const { register, handleSubmit, control, formState, reset } =
     useForm<MedicineFormValues>({
@@ -49,15 +49,13 @@ export default function MedicineForm({
         batchNumber: "",
         expiryDate: "",
         shelfLocation: "",
-        usageNotes: [],
+        notes: [],
       },
     });
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "usageNotes",
-  });
-
+  // --------------------------------------------------------
+  // Load default values (Edit Mode)
+  // --------------------------------------------------------
   useEffect(() => {
     if (!defaultValues) return;
 
@@ -70,30 +68,52 @@ export default function MedicineForm({
       batchNumber: defaultValues.batchNumber ?? "",
       expiryDate: defaultValues.expiryDate ?? "",
       shelfLocation: defaultValues.shelfLocation ?? "",
-      usageNotes: defaultValues.notes
-        ? defaultValues.notes.split("\n").map((note) => ({ value: note }))
+      notes: defaultValues.notes
+        ? defaultValues.notes
+            .split(". ")
+            .filter(Boolean)
+            .map((note) => ({ value: note }))
         : [],
     });
   }, [defaultValues, reset]);
 
+  // --------------------------------------------------------
+  // Submit
+  // --------------------------------------------------------
   function onFormSubmit(values: MedicineFormValues) {
-    const payload: CreateInventoryInput = {
-      medicineId: values.medicineId,
-      stockQuantity: values.stockQuantity,
-      sellPrice: values.sellPrice,
-      costPrice: Number.isNaN(values.costPrice) ? undefined : values.costPrice,
-      minStock: Number.isNaN(values.minStock) ? undefined : values.minStock,
-      batchNumber: values.batchNumber || undefined,
-      expiryDate: values.expiryDate || undefined,
-      shelfLocation: values.shelfLocation || undefined,
-      notes: values.usageNotes
-        .map((n) => n.value.trim())
-        .filter(Boolean)
-        .join("\n"),
-      image: imageFile,
-    };
+    const concatenatedNotes = values.notes
+      .map((n) => n.value.trim())
+      .filter(Boolean)
+      .join(". ");
 
-    onSubmit(payload);
+    if (mode === "create") {
+      const payload: CreateInventoryInput = {
+        medicineId: values.medicineId,
+        stockQuantity: values.stockQuantity,
+        sellPrice: values.sellPrice,
+        costPrice: values.costPrice,
+        minStock: values.minStock,
+        batchNumber: values.batchNumber || undefined,
+        expiryDate: values.expiryDate || undefined,
+        shelfLocation: values.shelfLocation || undefined,
+        notes: concatenatedNotes || undefined,
+      };
+
+      onSubmit(payload);
+    } else {
+      const payload: UpdateInventoryInput = {
+        stockQuantity: values.stockQuantity,
+        sellPrice: values.sellPrice,
+        costPrice: values.costPrice,
+        minStock: values.minStock,
+        batchNumber: values.batchNumber || undefined,
+        expiryDate: values.expiryDate || undefined,
+        shelfLocation: values.shelfLocation || undefined,
+        notes: concatenatedNotes || undefined,
+      };
+
+      onSubmit(payload);
+    }
   }
 
   return (
@@ -107,26 +127,20 @@ export default function MedicineForm({
         medicineName={defaultValues?.medicineId ?? "Medicine"}
         onChange={(file) => {
           setImageFile(file);
-          setImagePreview(URL.createObjectURL(file));
         }}
         onRemove={() => {
           setImageFile(null);
-          setImagePreview("/placeholder-medicine.png");
         }}
       />
 
       <MedicineBasicFields
+        mode={mode}
         register={register}
         control={control}
         errors={formState.errors}
       />
 
-      <MedicineUsageNotes
-        fields={fields}
-        register={register}
-        append={() => append({ value: "" })}
-        remove={remove}
-      />
+      <EditableNotesField control={control} register={register} />
 
       <button type="submit" hidden />
     </form>

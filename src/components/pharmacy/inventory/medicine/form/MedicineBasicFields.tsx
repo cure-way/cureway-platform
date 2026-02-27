@@ -2,33 +2,37 @@ import { MedicineFormValues } from "@/types/pharmacyTypes";
 import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 
 interface MedicineBasicFieldsProps {
+  mode: "create" | "edit";
   register: UseFormRegister<MedicineFormValues>;
   control: Control<MedicineFormValues>;
   errors: FieldErrors<MedicineFormValues>;
 }
 
 export default function MedicineBasicFields({
+  mode,
   register,
   errors,
 }: MedicineBasicFieldsProps) {
   return (
     <>
       {/* Medicine ID */}
-      <div>
-        <label className="block mb-1 font-medium text-gray-700">
-          Medicine *
-        </label>
+      {mode === "create" && (
+        <div>
+          <label className="block mb-1 font-medium text-gray-700">
+            Medicine *
+          </label>
 
-        <input
-          {...register("medicineId", {
-            required: "Medicine is required",
-          })}
-          placeholder="Enter medicine ID"
-          className="px-3 py-2 border rounded-lg w-full"
-        />
+          <input
+            {...register("medicineId", {
+              required: "Medicine is required",
+            })}
+            placeholder="Enter medicine ID"
+            className="px-3 py-2 border rounded-lg w-full"
+          />
 
-        <FieldError message={errors.medicineId?.message} />
-      </div>
+          <FieldError message={errors.medicineId?.message} />
+        </div>
+      )}
 
       {/* Stock Quantity */}
       <div>
@@ -85,7 +89,7 @@ export default function MedicineBasicFields({
           type="number"
           step="0.01"
           {...register("costPrice", {
-            valueAsNumber: true,
+            setValueAs: (value) => (value === "" ? undefined : Number(value)),
           })}
           className="px-3 py-2 border rounded-lg w-full"
         />
@@ -102,7 +106,7 @@ export default function MedicineBasicFields({
         <input
           type="number"
           {...register("minStock", {
-            valueAsNumber: true,
+            setValueAs: (value) => (value === "" ? undefined : Number(value)),
           })}
           className="px-3 py-2 border rounded-lg w-full"
         />

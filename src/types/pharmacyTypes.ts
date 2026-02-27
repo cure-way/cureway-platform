@@ -3,6 +3,11 @@ import { DAY_ORDER } from "@/utils/pharmacyConstants";
 // Inventory types
 export type InventoryStatus = "in" | "low" | "out";
 
+export type StatusConfig = {
+  label: string;
+  className: string;
+};
+
 export interface InventoryItem {
   id: string;
 
@@ -23,7 +28,13 @@ export interface InventoryItem {
   sellingPrice: number;
 
   imageUrl?: string;
-  usageNotes?: string[];
+  notes?: string;
+
+  medicineInstructions?: {
+    dosage?: string;
+    storage?: string;
+    warnings?: string;
+  };
 }
 
 export interface CreateInventoryInput {
@@ -36,7 +47,19 @@ export interface CreateInventoryInput {
   expiryDate?: string;
   shelfLocation?: string;
   notes?: string;
-  image?: File | null;
+  imageUrl?: string;
+}
+
+export interface UpdateInventoryInput {
+  stockQuantity?: number;
+  sellPrice?: number;
+  costPrice?: number | null;
+  minStock?: number;
+  batchNumber?: string | null;
+  expiryDate?: string | null;
+  shelfLocation?: string | null;
+  notes?: string | null;
+  imageUrl?: string;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -122,8 +145,9 @@ export interface MedicineFormValues {
   batchNumber?: string;
   expiryDate?: string;
   shelfLocation?: string;
-  usageNotes: { value: string }[];
+  notes: { value: string }[];
 }
+
 ///////////////////////////////////////////////////////////////////////
 
 export interface InventoryListResponse {
@@ -226,8 +250,3 @@ export interface Pharmacy {
   isOpen: boolean;
   openingHours?: string;
 }
-
-export type StatusConfig = {
-  label: string;
-  className: string;
-};

@@ -4,7 +4,7 @@ import { fetchInventoryItem } from "@/services/pharmacy/pharmacyService";
 import { InventoryItem } from "@/types/pharmacyTypes";
 import { useState, useEffect, useCallback } from "react";
 
-export function useInventoryDetails(id: number | null) {
+export function useInventoryDetails(id: string | null) {
   const [data, setData] = useState<InventoryItem | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +18,7 @@ export function useInventoryDetails(id: number | null) {
     try {
       const item = await fetchInventoryItem(id);
       setData(item);
-    } catch {
+    } catch (err) {
       setError("Failed to load medicine details.");
     } finally {
       setLoading(false);
@@ -31,6 +31,7 @@ export function useInventoryDetails(id: number | null) {
 
   return {
     data,
+    setData,
     loading,
     error,
     refetch: fetchDetails,

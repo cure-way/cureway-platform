@@ -13,6 +13,7 @@ interface InventoryFiltersProps {
 
   search: string;
   onSearchChange: (value: string) => void;
+  refetch: () => void;
 }
 
 export default function InventoryFilters({
@@ -20,6 +21,7 @@ export default function InventoryFilters({
   onStatusChange,
   search,
   onSearchChange,
+  refetch,
 }: InventoryFiltersProps) {
   const [openAddModal, setOpenAddModal] = useState(false);
 
@@ -51,7 +53,10 @@ export default function InventoryFilters({
 
       <AddMedicineModal
         open={openAddModal}
-        onClose={() => setOpenAddModal(false)}
+        onClose={() => {
+          setOpenAddModal(false);
+        }}
+        refetch={refetch}
       />
     </div>
   );

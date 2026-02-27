@@ -3,7 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { InventoryItem } from "@/types/pharmacyTypes";
-import { deleteInventory } from "@/services/pharmacy/pharmacyService";
+import {
+  deleteInventory,
+  updateInventoryItemService,
+} from "@/services/pharmacy/pharmacyService";
 import toast from "react-hot-toast";
 
 export type MedicineActionType = "delete" | "mark_out";
@@ -66,7 +69,15 @@ export function useMedicineActions({
       }
 
       if (pendingAction.type === "mark_out") {
-        // TODO: implement mark_out service
+        await updateInventoryItemService(pendingAction.item.id, {
+          stockQuantity: 0,
+        });
+
+        if (refetch) {
+          await refetch();
+        }
+
+        toast.success("Item marked as out of stock.");
       }
 
       closeAction();
@@ -81,7 +92,7 @@ export function useMedicineActions({
   }
 
   function closeAction() {
-    if (isProcessing) return; // prevent closing while processing
+    if (isProcessing) return;
     setPendingAction(null);
     setError(null);
   }

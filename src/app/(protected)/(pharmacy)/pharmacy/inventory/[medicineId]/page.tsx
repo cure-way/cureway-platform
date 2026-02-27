@@ -13,11 +13,9 @@ import EmptyState from "@/components/pharmacy/shared/EmptyState";
 
 export default function PharmacyMedicineDetailsPage() {
   const params = useParams();
-  const id = Number(params.medicineId);
+  const id = params.medicineId as string | null;
 
-  const { data, loading, error, refetch } = useInventoryDetails(
-    isNaN(id) ? null : id,
-  );
+  const { data, loading, error, refetch } = useInventoryDetails(id);
 
   if (loading) {
     return <PharmacyMedicineDetailsSkeleton />;
@@ -43,7 +41,7 @@ export default function PharmacyMedicineDetailsPage() {
 
   return (
     <div className="space-y-6">
-      <PharmacyMedicineHeader item={data} />
+      <PharmacyMedicineHeader item={data} onUpdate={refetch} />
 
       <div className="gap-6 grid grid-cols-1 lg:grid-cols-[2fr_1fr]">
         <PharmacyMedicineInfo item={data} />

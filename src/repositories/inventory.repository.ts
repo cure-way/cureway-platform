@@ -1,9 +1,12 @@
-import { httpDelete, httpGet, httpPost } from "@/lib/api";
+import { httpDelete, httpGet, httpPatch, httpPost } from "@/lib/api";
 import {
   ApiResponse,
+  CreateInventoryInput,
   CreateInventoryResponseDto,
+  InventoryDetailsDTO,
   InventoryDetailsResponse,
   InventoryListResponse,
+  UpdateInventoryInput,
 } from "@/types/pharmacyTypes";
 
 // -----------------------------------------------------------------------------
@@ -31,7 +34,7 @@ export async function getInventory(
 }
 
 export async function getInventoryById(
-  id: number,
+  id: string,
 ): Promise<InventoryDetailsResponse> {
   return httpGet<InventoryDetailsResponse>(`/inventory/${id}`);
 }
@@ -41,10 +44,20 @@ export async function deleteInventoryById(id: string): Promise<void> {
 }
 
 export async function createInventoryItem(
-  formData: FormData,
+  payload: CreateInventoryInput,
 ): Promise<ApiResponse<CreateInventoryResponseDto>> {
-  return httpPost<ApiResponse<CreateInventoryResponseDto>, FormData>(
-    "/inventory",
-    formData,
+  return httpPost<
+    ApiResponse<CreateInventoryResponseDto>,
+    CreateInventoryInput
+  >("/inventory", payload);
+}
+
+export async function updateInventoryItem(
+  id: string,
+  payload: UpdateInventoryInput,
+): Promise<ApiResponse<InventoryDetailsDTO>> {
+  return httpPatch<ApiResponse<InventoryDetailsDTO>, UpdateInventoryInput>(
+    `/inventory/${id}`,
+    payload,
   );
 }

@@ -1,8 +1,10 @@
 import { mapInventoryDetailsToItem } from "@/adapters/InventoryMappers";
+import { normalizeError } from "@/lib/api/errors";
 import {
   createInventoryItem,
   deleteInventoryById,
   getInventoryById,
+  updateInventoryItem,
 } from "@/repositories/inventory.repository";
 import {
   CreateInventoryInput,
@@ -12,6 +14,7 @@ import {
   OrdersStatusModel,
   OrderStatusDatum,
   TopMedicine,
+  UpdateInventoryInput,
   WeeklyOrdersDatum,
 } from "@/types/pharmacyTypes";
 import { DAY_ORDER } from "@/utils/pharmacyConstants";
@@ -240,7 +243,7 @@ export function getReportStats(orders: OrderRow[]): {
   };
 }
 
-export async function fetchInventoryItem(id: number) {
+export async function fetchInventoryItem(id: string) {
   const response = await getInventoryById(id);
 
   if (!response.success) {
@@ -266,44 +269,6 @@ export async function deleteInventory(id: string): Promise<void> {
   }
 }
 
-function buildCreateInventoryFormData(input: CreateInventoryInput): FormData {
-  const formData = new FormData();
-
-  formData.append("medicineId", input.medicineId);
-  formData.append("stockQuantity", input.stockQuantity.toString());
-  formData.append("sellPrice", input.sellPrice.toString());
-
-  if (input.costPrice !== undefined) {
-    formData.append("costPrice", input.costPrice.toString());
-  }
-
-  if (input.minStock !== undefined) {
-    formData.append("minStock", input.minStock.toString());
-  }
-
-  if (input.batchNumber) {
-    formData.append("batchNumber", input.batchNumber);
-  }
-
-  if (input.expiryDate) {
-    formData.append("expiryDate", input.expiryDate);
-  }
-
-  if (input.shelfLocation) {
-    formData.append("shelfLocation", input.shelfLocation);
-  }
-
-  if (input.notes) {
-    formData.append("notes", input.notes);
-  }
-
-  if (input.image) {
-    formData.append("image", input.image);
-  }
-
-  return formData;
-}
-
 export async function createInventory(
   input: CreateInventoryInput,
 ): Promise<InventoryItem> {
@@ -320,15 +285,13 @@ export async function createInventory(
   }
 
   try {
-    const formData = buildCreateInventoryFormData(input);
-
-    const response = await createInventoryItem(formData);
+    const response = await createInventoryItem(input);
 
     if (!response.success) {
       throw new Error(response.message || "Failed to create inventory item");
     }
 
-    return fetchInventoryItem(Number(response.data.id));
+    return fetchInventoryItem(response.data.id);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const backendMessage =
@@ -344,5 +307,46 @@ export async function createInventory(
     }
 
     throw error;
+  }
+}
+
+function removeUndefined<T extends object>(obj: T): Partial<T> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, value]) => value !== undefined),
+  ) as Partial<T>;
+}
+
+export async function updateInventoryItemService(
+  id: string,
+  input: UpdateInventoryInput,
+): Promise<InventoryItem> {
+  if (!id) {
+    throw {
+      status: 0,
+      message: "Inventory ID is required",
+    };
+  }
+
+  if (input.sellPrice !== undefined && input.sellPrice < 0) {
+    throw {
+      status: 0,
+      message: "Sell price cannot be negative",
+    };
+  }
+
+  if (input.stockQuantity !== undefined && input.stockQuantity < 0) {
+    throw {
+      status: 0,
+      message: "Stock quantity cannot be negative",
+    };
+  }
+
+  const cleanedPayload = removeUndefined(input);
+
+  try {
+    const response = await updateInventoryItem(id, cleanedPayload);
+    return mapInventoryDetailsToItem(response.data);
+  } catch (error) {
+    throw normalizeError(error);
   }
 }
