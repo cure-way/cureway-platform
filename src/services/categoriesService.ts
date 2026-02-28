@@ -3,11 +3,11 @@
 /* ---------------------------------- */
 
 import { httpGet } from "@/lib/api";
+import { PaginationMeta } from "@/types";
 import {
   Category,
   CategoryDTO,
   PaginatedCategoriesResponse,
-  PaginationMeta,
 } from "@/types/categories.types";
 import { Medicine } from "@/types/medicine.types";
 import { categoryImages } from "@/utils/constants";

@@ -1,8 +1,9 @@
 import Image from "next/image";
 import SectionTitle from "../shared/SectionTitle";
-import { Medicine } from "@/types/categories.types";
+
 import Link from "next/link";
 import { SectionError } from "../shared/SectionError";
+import { Medicine } from "@/types/medicine.types";
 
 interface Props {
   medicines: Medicine[];
