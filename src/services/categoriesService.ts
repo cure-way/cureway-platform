@@ -6,13 +6,10 @@ import { httpGet } from "@/lib/api";
 import {
   Category,
   CategoryDTO,
-  Medicine,
-  MedicineDTO,
-  MedicineFilters,
   PaginatedCategoriesResponse,
-  PaginatedMedicinesResponse,
   PaginationMeta,
 } from "@/types/categories.types";
+import { Medicine } from "@/types/medicine.types";
 import { categoryImages } from "@/utils/constants";
 
 function mapCategory(dto: CategoryDTO): Category {
@@ -20,33 +17,6 @@ function mapCategory(dto: CategoryDTO): Category {
     id: dto.id,
     name: dto.name,
     description: dto.description ?? null,
-  };
-}
-
-export function mapMedicine(dto: MedicineDTO): Medicine {
-  const firstImage = dto.images?.[0]?.url;
-
-  return {
-    id: dto.id,
-    name: dto.brandName,
-    genericName: dto.genericName,
-
-    dosageForm: dto.dosageForm,
-    packSize: dto.packSize,
-    packUnit: dto.packUnit,
-
-    minPrice: Number(dto.minPrice),
-    maxPrice: Number(dto.maxPrice),
-
-    requiresPrescription: dto.requiresPrescription,
-
-    categoryId: dto.category.id,
-    categoryName: dto.category.name,
-
-    imageUrl:
-      typeof firstImage === "string" && firstImage.trim() !== ""
-        ? firstImage
-        : "/patient/Pain Relief-X.png",
   };
 }
 
@@ -76,27 +46,6 @@ export async function getCategories(
   };
 }
 
-export async function getMedicines(filters: MedicineFilters = {}) {
-  const params = new URLSearchParams();
-
-  if (filters.page) params.append("page", String(filters.page));
-  if (filters.limit) params.append("limit", String(filters.limit));
-  if (filters.q) params.append("q", filters.q);
-  if (filters.categoryId)
-    params.append("categoryId", String(filters.categoryId));
-  if (filters.requiresPrescription !== undefined)
-    params.append("requiresPrescription", String(filters.requiresPrescription));
-  if (filters.onlyAvailable !== undefined)
-    params.append("onlyAvailable", String(filters.onlyAvailable));
-  if (filters.minPrice) params.append("minPrice", String(filters.minPrice));
-  if (filters.maxPrice) params.append("maxPrice", String(filters.maxPrice));
-
-  const response = await httpGet<PaginatedMedicinesResponse>(
-    `/medicines?${params.toString()}`,
-  );
-
-  return response.data.map(mapMedicine);
-}
 ////////////////////////////////////////////////////////////////
 
 export function getFeaturedCategories(

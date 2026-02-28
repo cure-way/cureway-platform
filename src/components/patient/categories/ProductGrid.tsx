@@ -1,4 +1,4 @@
-import { Medicine } from "@/types/categories.types";
+import { Medicine } from "@/types/medicine.types";
 import { Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

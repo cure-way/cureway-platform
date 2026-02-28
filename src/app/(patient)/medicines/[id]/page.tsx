@@ -1,48 +1,56 @@
-import { notFound } from "next/navigation";
-import { medicines } from "@/services/categories.mock";
-import SimilarProductsSection from "@/components/patient/medicine/SimilarProductsSection";
-import NearbyPharmaciesSection from "@/components/patient/medicine/NearbyPharmaciesSection";
+"use client";
+
+import { useParams } from "next/navigation";
+import { useMemo } from "react";
+
 import MedicineOverviewCard from "@/components/patient/medicine/MedicineOverviewCard";
 import MedicineInfoCard from "@/components/patient/medicine/MedicineInfoCard";
+import NearbyPharmaciesSection from "@/components/patient/medicine/NearbyPharmaciesSection";
+import { useMedicineDetails } from "@/hooks/medicine/useMedicineDetails";
+import { usePharmaciesByMedicine } from "@/hooks/medicine/usePharmaciesByMedicine";
+import { useSimilarMedicines } from "@/hooks/medicine/useSimilarMedicines";
+import SimilarProductsSection from "@/components/patient/medicine/SimilarProductsSection";
+import MedicineDetailsSkeleton from "@/components/patient/medicine/MedicineDetailsSkeleton";
 
-export default async function MedicineDetailsPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id: medicineId } = await params;
+export default function MedicineDetailsPage() {
+  const params = useParams();
+  const medicineId = Number(params.id);
 
-  const medicine = medicines.find((m) => m.id === medicineId);
+  const { data: medicine, loading, error } = useMedicineDetails(medicineId);
 
-  if (!medicine) {
-    return notFound();
-  }
+  const { data: pharmacies } = usePharmaciesByMedicine(medicineId);
 
-  const similarMedicines = medicines
-    .filter((m) => m.categoryId === medicine.categoryId && m.id !== medicine.id)
-    .slice(0, 4);
-
-  const infoSections = [
-    { title: "Description", content: medicine.longDescription },
-    { title: "Ingredients", content: medicine.ingredients },
-    { title: "Directions", content: medicine.directions },
-    { title: "Warnings", content: medicine.warnings },
-    { title: "Storage", content: medicine.storage },
-  ].filter((section): section is { title: string; content: string } =>
-    Boolean(section.content),
+  const { data: similarMedicines } = useSimilarMedicines(
+    medicine?.categoryId,
+    medicine?.id,
   );
+
+  const sortedPharmacies = useMemo(() => {
+    if (!pharmacies) return [];
+    return [...pharmacies].sort((a, b) => a.price - b.price);
+  }, [pharmacies]);
+
+  if (loading) return <MedicineDetailsSkeleton />;
+
+  if (!loading && error)
+    return (
+      <div className="py-10 text-red-600 text-center">
+        Failed to load medicine details.
+      </div>
+    );
+
+  if (!medicine) return null;
 
   return (
     <div className="bg-gray-50 pb-12 min-h-screen">
-      <div className="mx-auto px-4 sm:px-6 py-8 max-w-5xl">
+      <div className="space-y-8 mx-auto px-4 sm:px-6 py-8 max-w-5xl">
         <MedicineOverviewCard medicine={medicine} />
 
-        <NearbyPharmaciesSection />
-        <MedicineInfoCard sections={infoSections} />
+        <NearbyPharmaciesSection pharmacies={sortedPharmacies} />
 
-        {similarMedicines.length > 0 && (
-          <SimilarProductsSection medicines={similarMedicines} />
-        )}
+        <MedicineInfoCard medicine={medicine} />
+
+        <SimilarProductsSection medicines={similarMedicines} />
       </div>
     </div>
   );
