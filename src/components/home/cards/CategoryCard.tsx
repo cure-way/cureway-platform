@@ -1,33 +1,33 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { CategoryItem } from "@/lib/mock/home";
+import { Category } from "@/types/categories.types";
 
 interface CategoryCardProps {
-  category: CategoryItem;
+  category: Category;
 }
 
 export function CategoryCard({ category }: CategoryCardProps) {
   return (
     <Link
       href={`/categories/${category.id}`}
-      className="group flex flex-col gap-4 border border-neutral rounded-2xl overflow-hidden hover:border-primary-light-active transition-colors"
+      className="group flex flex-col gap-4 border border-neutral hover:border-primary-light-active rounded-2xl overflow-hidden transition-colors"
     >
       {/* Image area with gradient */}
-      <div className="relative h-36 md:h-[171px] w-full bg-linear-to-b from-[#f7f8ff] to-[#dfe5ff] rounded-2xl flex items-center justify-center p-3">
+      <div className="relative flex justify-center items-center bg-linear-to-b from-[#f7f8ff] to-[#dfe5ff] p-3 rounded-2xl w-full h-36 md:h-42.75">
         <Image
-          src={category.image}
+          src={category.displayImage ?? "/patient/default.png"}
           alt={category.name}
           width={160}
           height={160}
-          className="object-contain h-full w-auto group-hover:scale-105 transition-transform"
+          className="w-auto h-full object-contain group-hover:scale-105 transition-transform"
         />
       </div>
       {/* Text */}
-      <div className="flex flex-col gap-2 items-center text-center px-2 pb-4">
-        <p className="text-t-17 md:text-[20px] font-bold text-primary-hover leading-[1.2]">
+      <div className="flex flex-col items-center gap-2 px-2 pb-4 text-center">
+        <p className="font-bold text-primary-hover text-t-17 md:text-[20px] leading-[1.2]">
           {category.name}
         </p>
-        <p className="text-t-14 md:text-[18px] text-black/60 leading-[1.2]">
+        <p className="text-black/60 text-t-14 md:text-[18px] leading-[1.2]">
           {category.description}
         </p>
       </div>
