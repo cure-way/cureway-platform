@@ -10,6 +10,7 @@ import UploadProgress from "@/components/patient/prescriptions/UploadProgress";
 import UploadError from "@/components/patient/prescriptions/UploadError";
 import UploadUnsupported from "@/components/patient/prescriptions/UploadUnsupported";
 import UploadSuccess from "@/components/patient/prescriptions/UploadSuccess";
+import { fileUploadService, prescriptionApiService } from "@/services/api.service";
 
 type UploadStep =
   | "initial"
@@ -120,24 +121,16 @@ export default function UploadPrescriptionPage() {
   };
 
   // -------------------------------
-  // Upload simulation (replace later with real endpoint + progress event)
+  // Real API upload: POST /file/upload → POST /prescriptions
+  //
+  // Flow:
+  //   1. Upload file binary to POST /file/upload → get public URL
+  //   2. POST /prescriptions with { pharmacyId, fileUrls: [url] }
+  //
+  // pharmacyId comes from URL ?pharmacyId=N set by cart navigation.
+  // If not present, the file is still uploaded but no prescription record
+  // is created — the console will log a warning.
   // -------------------------------
-  const simulateUpload = () => {
-    let progress = 0;
-
-    const interval = setInterval(() => {
-      // smooth-ish increments
-      progress += 6 + Math.random() * 10;
-
-      if (progress >= 100) {
-        clearInterval(interval);
-        dispatch({ type: "SUCCESS" });
-        return;
-      }
-
-      dispatch({ type: "SET_PROGRESS", value: Math.floor(progress) });
-    }, 380);
-  };
 
   const handleFileSelected = async (
     e: React.ChangeEvent<HTMLInputElement>
@@ -145,7 +138,7 @@ export default function UploadPrescriptionPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // allow re-select same file later
+    // Allow re-selecting the same file later
     e.target.value = "";
 
     const validation = await validateFile(file);
@@ -156,7 +149,45 @@ export default function UploadPrescriptionPage() {
     }
 
     dispatch({ type: "START_UPLOAD", file });
-    simulateUpload();
+
+    try {
+      // Step 1: Upload file to cloud storage — POST /file/upload
+      dispatch({ type: "SET_PROGRESS", value: 20 });
+      const fileUrl = await fileUploadService.uploadFile(file, "prescription");
+      dispatch({ type: "SET_PROGRESS", value: 65 });
+
+      // Step 2: Create prescription record — POST /prescriptions
+      const pharmacyIdStr = typeof window !== "undefined"
+        ? new URLSearchParams(window.location.search).get("pharmacyId")
+        : null;
+      const pharmacyId = pharmacyIdStr ? Number(pharmacyIdStr) : null;
+
+      if (!pharmacyId) {
+        // No pharmacyId in URL — file uploaded but prescription record not created.
+        // This happens if the user navigates directly to /prescriptions without
+        // a pharmacyId. Normal cart navigation always passes ?pharmacyId=N.
+        console.warn(
+          "[Prescriptions] No pharmacyId in URL — file uploaded but prescription record not created.",
+          "Navigate here with ?pharmacyId=<id> from the cart.",
+        );
+      } else {
+        await prescriptionApiService.createPrescription({
+          pharmacyId,
+          fileUrls: [fileUrl],
+        });
+      }
+
+      dispatch({ type: "SET_PROGRESS", value: 100 });
+      dispatch({ type: "SUCCESS" });
+    } catch (err) {
+      console.error("[Prescriptions] Upload failed:", err);
+      dispatch({ type: "ERROR" });
+    }
+  };
+
+  // Retry: re-trigger file picker (used by UploadError onRetry)
+  const handleRetry = () => {
+    inputRef.current?.click();
   };
 
   const headerTitle =
@@ -209,7 +240,7 @@ export default function UploadPrescriptionPage() {
           )}
 
           {state.step === "error" && (
-            <UploadError onRetry={() => simulateUpload()} />
+            <UploadError onRetry={handleRetry} />
           )}
 
           {state.step === "unsupported" && (

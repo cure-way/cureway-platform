@@ -25,7 +25,7 @@ export function OrderEmptyState() {
 
         <button
           type="button"
-          onClick={() => router.push("/my-cart")}
+          onClick={() => router.push("/cart")}
           className={[
             "h-12 w-[212px] rounded-xl border border-[#334EAC] bg-white px-[22px] py-[10px]",
             "transition-all duration-300 ease-in-out",

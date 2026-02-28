@@ -1,9 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import type { Order } from "@/types/order";
 import { OrderStatusBadge } from "./OrderStatusBadge";
+import { ViewDetailsDrawer } from "./ViewDetailsDrawer";
+import { TrackOrderModal } from "./TrackOrderModal";
+import { ReorderDialog } from "./ReorderDialog";
+import { useOrderStore } from "@/store/order.store";
+import { toast } from "sonner";
 
 function formatOrderedLine(orderedAtISO: string) {
   const d = new Date(orderedAtISO);
@@ -13,178 +18,150 @@ function formatOrderedLine(orderedAtISO: string) {
   return `Ordered Today · on ${month} ${day}, ${year}`;
 }
 
-function cx(...classes: Array<string | false | undefined | null>) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export function OrderCard({ order }: { order: Order }) {
-  const router = useRouter();
+  const { cancelOrder, cancellingId } = useOrderStore();
 
-  const isActive = order.status === "processing" || order.status === "on_the_way";
+  const [showDetails, setShowDetails] = useState(false);
+  const [showTrack, setShowTrack] = useState(false);
+  const [showReorder, setShowReorder] = useState(false);
+
+  const isActive =
+    order.status === "processing" || order.status === "on_the_way";
   const isDelivered = order.status === "delivered";
   const isCancelled = order.status === "cancelled";
+  const isCancelling = cancellingId === order.id;
 
-  const baseActionBtn =
-    "h-12 w-full rounded-xl border border-[#334EAC] bg-white px-[22px] py-[10px]" +
+  // 🔵 Primary Blue Button
+  const primaryBtn =
+    "h-12 w-full rounded-xl border border-[#334EAC] bg-[#334EAC] px-[22px] py-[10px]" +
     " transition-all duration-300 ease-in-out" +
-    " hover:bg-[#334EAC]/10" +
-    " active:bg-[#334EAC] active:scale-[0.99]" +
+    " hover:bg-[#2C4294]" +
+    " active:scale-[0.99]" +
     " focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#334EAC]/35";
 
-  const baseActionText =
-    "text-xl font-bold leading-[120%] transition-colors duration-300 ease-in-out";
+  // ⚪ White Outline Button
+  const outlineBtn =
+    "h-12 w-full rounded-xl border border-[#334EAC] bg-white px-[22px] py-[10px]" +
+    " transition-all duration-300 ease-in-out" +
+    " hover:bg-[#F5F7FF]" +
+    " active:scale-[0.99]" +
+    " focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#334EAC]/25";
+
+  const handleCancel = async () => {
+    try {
+      await cancelOrder(order.id);
+      toast.success(`Order #${order.id} has been cancelled.`);
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Failed to cancel order."
+      );
+    }
+  };
 
   return (
-    <div className="w-full rounded-2xl border border-black/30 bg-white px-8 py-4 font-[var(--font-montserrat)]">
-      <div className="flex w-full flex-col gap-6 md:flex-row md:gap-20">
-        {/* LEFT */}
-        <div className="flex-1 min-w-0">
-          <div className="flex flex-col gap-5 border-b border-black/20 pb-4">
-            <div className="flex items-center gap-4">
-              <div className="text-2xl font-semibold leading-[120%] text-black/80">
-                Order ID: #{order.id}
-              </div>
-              <OrderStatusBadge status={order.status} />
-            </div>
-
-            <div className="text-base font-medium leading-[120%] text-black/60">
-              {formatOrderedLine(order.orderedAtISO)}
-            </div>
-
-            {/* Pharmacy + Address */}
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <Image
-                  src="/icons/hospital.png"   
-                  alt="pharmacy"
-                  width={20}
-                  height={20}
-                />
-                <span className="text-base font-medium leading-[120%] text-black/80">
-                  {order.pharmacyName}
-                </span>
-              </div>
-
-              <div className="flex items-start gap-2">
-                <Image
-                  src="/icons/location.png"
-                  alt="location"
-                  width={20}
-                  height={20}
-                />
-                <span className="text-sm font-normal leading-[120%] text-black/60">
-                  {order.address}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Footer: items + total */}
-          <div className="flex items-center justify-between pt-4">
-            <div className="text-xl font-semibold leading-[120%] text-black/80">
-              {order.itemsCount} items
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="text-xl font-bold leading-[120%] text-black/60">
-                Total
-              </span>
-              <span className="text-base font-bold leading-[100%] text-black/60">
-                :
-              </span>
-              <span className="text-xl font-bold leading-[120%] text-black/60">
-                {order.total.toFixed(2)}$
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* RIGHT */}
-        <div className="w-full md:w-[212px] md:shrink-0">
-          <div className="flex flex-col gap-4">
-            {/* Buttons */}
-            {isActive && (
-              <>
-                <button
-                  type="button"
-                  onClick={() => router.push("/my-cart")}
-                  className={baseActionBtn}
-                >
-                  <span className={cx(baseActionText, "text-[#334EAC] active:text-white")}>
-                    Track Order
-                  </span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => router.push("/my-cart")}
-                  className={baseActionBtn}
-                >
-                  <span className={cx(baseActionText, "text-[#334EAC] active:text-white")}>
-                    View Details
-                  </span>
-                </button>
-              </>
-            )}
-
-            {isDelivered && (
-              <>
-                <button
-                  type="button"
-                  onClick={() => router.push("/my-cart")}
-                  className={baseActionBtn}
-                >
-                  <span className={cx(baseActionText, "text-[#334EAC] active:text-white")}>
-                    View Details
-                  </span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => router.push("/my-cart")}
-                  className={baseActionBtn}
-                >
-                  <span className={cx(baseActionText, "text-[#334EAC] active:text-white")}>
-                    Reorder
-                  </span>
-                </button>
-              </>
-            )}
-
-            {isCancelled && (
-              <button
-                type="button"
-                onClick={() => router.push("/my-cart")}
-                className={baseActionBtn}
-              >
-                <span className={cx(baseActionText, "text-[#334EAC] active:text-white")}>
-                  View Details
-                </span>
-              </button>
-            )}
-
-              
-              {(order.status === "processing" || order.status === "on_the_way") && (
-                <div className="rounded-xl bg-[#EBF9EE] px-4 py-3">
-                  <div className="flex items-center gap-3">
-                    <Image
-                      src="/icons/clock.png"
-                      alt="clock"
-                      width={20}
-                      height={20}
-                    />
-                    <span className="text-[12px] font-semibold leading-[120%] text-[#1F7735]">
-                      Estimated delivery{" "}
-                      {order.estimatedDelivery ?? "Today, 6:00 PM"}
-                    </span>
-                  </div>
+    <>
+      <div className="w-full rounded-2xl border border-black/30 bg-white px-8 py-4 font-[var(--font-montserrat)]">
+        <div className="flex w-full flex-col gap-6 md:flex-row md:gap-20">
+          {/* LEFT SIDE (unchanged) */}
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-col gap-5 border-b border-black/20 pb-4">
+              <div className="flex items-center gap-4">
+                <div className="text-2xl font-semibold text-black/80">
+                  Order ID: #{order.id}
                 </div>
+                <OrderStatusBadge status={order.status} />
+              </div>
+
+              <div className="text-base font-medium text-black/60">
+                {formatOrderedLine(order.orderedAtISO)}
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <Image src="/icons/hospital.png" alt="pharmacy" width={20} height={20} />
+                  <span className="text-base font-medium text-black/80">
+                    {order.pharmacyName}
+                  </span>
+                </div>
+
+                <div className="flex items-start gap-2">
+                  <Image src="/icons/location.png" alt="location" width={20} height={20} />
+                  <span className="text-sm text-black/60">
+                    {order.address}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-4">
+              <div className="text-xl font-semibold text-black/80">
+                {order.itemsCount} items
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-xl font-bold text-black/60">Total :</span>
+                <span className="text-xl font-bold text-black/60">
+                  {order.total.toFixed(2)}
+                  {order.currency ?? "$"}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT SIDE */}
+          <div className="w-full md:w-[212px] md:shrink-0">
+            <div className="flex flex-col gap-4">
+
+              {isActive && (
+                <>
+                  <button onClick={() => setShowTrack(true)} className={primaryBtn}>
+                    <span className="text-xl font-bold text-white">
+                      Track Order
+                    </span>
+                  </button>
+
+                  <button onClick={() => setShowDetails(true)} className={outlineBtn}>
+                    <span className="text-xl font-bold text-[#334EAC]">
+                      View Details
+                    </span>
+                  </button>
+
+                  <button
+                    onClick={handleCancel}
+                    disabled={isCancelling}
+                    className="h-12 w-full rounded-xl border border-red-400 bg-white px-[22px] py-[10px] transition-all duration-300 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <span className="text-xl font-bold text-red-500">
+                      {isCancelling ? "Cancelling…" : "Cancel Order"}
+                    </span>
+                  </button>
+                </>
               )}
 
+              {(isDelivered || isCancelled) && (
+                <>
+                  <button onClick={() => setShowDetails(true)} className={outlineBtn}>
+                    <span className="text-xl font-bold text-[#334EAC]">
+                      View Details
+                    </span>
+                  </button>
 
+                  <button onClick={() => setShowReorder(true)} className={primaryBtn}>
+                    <span className="text-xl font-bold text-white">
+                      Reorder
+                    </span>
+                  </button>
+                </>
+              )}
+
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {showDetails && <ViewDetailsDrawer order={order} onClose={() => setShowDetails(false)} />}
+      {showTrack && <TrackOrderModal order={order} onClose={() => setShowTrack(false)} />}
+      {showReorder && <ReorderDialog order={order} onClose={() => setShowReorder(false)} />}
+    </>
   );
 }

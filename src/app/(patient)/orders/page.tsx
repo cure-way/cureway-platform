@@ -1,62 +1,85 @@
 "use client";
-
-import { useMemo, useState } from "react";
-import { OrdersHeader } from "@/components/patient/orders/OrdersHeader";
+import { useMemo, useState, useEffect } from "react";
 import { OrdersTabs, type OrdersTabKey } from "@/components/patient/orders/OrdersTabs";
 import { OrdersList } from "@/components/patient/orders/OrdersList";
-import { mockOrders } from "@/services/orders.mock";
+import { useOrderStore } from "@/store/order.store";
 import type { Order } from "@/types/order";
+import ErrorMessage from "@/components/shared/ErrorMessage";
+
 
 function filterByTab(tab: OrdersTabKey, orders: Order[]) {
   if (tab === "all") return orders;
-  if (tab === "active")
-    return orders.filter((o) => o.status === "processing" || o.status === "on_the_way");
-  if (tab === "delivered") return orders.filter((o) => o.status === "delivered");
-  if (tab === "cancelled") return orders.filter((o) => o.status === "cancelled");
+  if (tab === "active") return orders.filter(o => o.status === "processing" || o.status === "on_the_way");
+  if (tab === "delivered") return orders.filter(o => o.status === "delivered");
+  if (tab === "cancelled") return orders.filter(o => o.status === "cancelled");
   return orders;
 }
 
 export default function OrdersPage() {
+  const { orders, loading, error, fetchOrders } = useOrderStore();
   const [activeTab, setActiveTab] = useState<OrdersTabKey>("all");
 
-  const counts = useMemo(() => {
-    const all = mockOrders.length;
-    const active = mockOrders.filter(
-      (o) => o.status === "processing" || o.status === "on_the_way"
-    ).length;
-    const delivered = mockOrders.filter((o) => o.status === "delivered").length;
-    const cancelled = mockOrders.filter((o) => o.status === "cancelled").length;
-    return { all, active, delivered, cancelled };
-  }, []);
+  
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
 
-  const tabs = useMemo(
-    () => [
-      { key: "all" as const, label: "All", count: counts.all },
-      { key: "active" as const, label: "Active", count: counts.active },
-      { key: "delivered" as const, label: "Delivered", count: counts.delivered },
-      { key: "cancelled" as const, label: "Cancelled", count: counts.cancelled },
-    ],
-    [counts]
+  const allOrders = useMemo(
+    () => orders.filter((o): o is Order => Boolean(o?.status)),
+    [orders],
   );
 
-  const filtered = useMemo(() => filterByTab(activeTab, mockOrders), [activeTab]);
+  const counts = useMemo(() => ({
+    all: allOrders.length,
+    active: allOrders.filter(o => o.status === "processing" || o.status === "on_the_way").length,
+    delivered: allOrders.filter(o => o.status === "delivered").length,
+    cancelled: allOrders.filter(o => o.status === "cancelled").length,
+  }), [allOrders]);
+
+  const tabs = [
+    { key: "all" as OrdersTabKey, label: "All", count: counts.all },
+    { key: "active" as OrdersTabKey, label: "Active", count: counts.active },
+    { key: "delivered" as OrdersTabKey, label: "Delivered", count: counts.delivered },
+    { key: "cancelled" as OrdersTabKey, label: "Cancelled", count: counts.cancelled },
+  ];
+
+  const filtered = useMemo(() => filterByTab(activeTab, allOrders), [activeTab, allOrders]);
+
+  if (loading === "loading") return (
+    <div className="flex items-center justify-center p-16 text-t-21 text-primary font-[var(--font-montserrat)]">
+      Loading orders…
+    </div>
+  );
+  if (error) return <ErrorMessage message={error} />;
 
   return (
-    <div className="w-full">
-      <div className="mx-auto w-full max-w-[1400px] px-6 pt-10 pb-6">
-        {/* Header row */}
-        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-          <OrdersHeader title="My Order" subtitle="Track and manage your orders" />
-
-          <div className="w-full md:w-[560px]">
-            <OrdersTabs activeTab={activeTab} tabs={tabs} onChange={setActiveTab} />
+    <div className="min-h-screen bg-background font-[var(--font-montserrat)]">
+      {/* Header */}
+      <div className="bg-background px-4 sm:px-8 lg:px-10 xl:px-20 pt-8 pb-6 border-b border-border">
+        <div className="max-w-[1440px] mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex-shrink-0">
+            <h1 className="text-[clamp(24px,4vw,36px)] font-bold text-primary leading-tight m-0">My Order</h1>
+            <p className="text-t-17 text-muted-foreground mt-1">Track and manage your orders</p>
+          </div>
+          <div className="flex-shrink-0 overflow-x-auto">
+            <div className="bg-card rounded-xl border border-border p-2 flex gap-1 whitespace-nowrap">
+              {tabs.map(t => {
+                const sel = t.key === activeTab;
+                return (
+                  <button key={t.key} onClick={() => setActiveTab(t.key)}
+                    className={`h-12 px-5 rounded-lg border-none text-t-17-semibold cursor-pointer whitespace-nowrap transition-all inline-flex items-center gap-1.5 font-[var(--font-montserrat)] ${sel ? "bg-primary text-card" : "bg-transparent text-primary hover:bg-accent"}`}>
+                    {t.key === "all" && <span className={`w-2 h-2 rounded-full flex-shrink-0 ${sel ? "bg-card" : "bg-primary"}`} />}
+                    {t.label} ({t.count})
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
-
-        {/* List (Scroll) */}
-        <div className="mt-6 max-h-[1166px] overflow-y-auto pb-10">
-          <OrdersList orders={filtered} />
-        </div>
+      </div>
+      {/* List */}
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-10 xl:px-20 py-6">
+        <OrdersList orders={filtered} />
       </div>
     </div>
   );

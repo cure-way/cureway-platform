@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { FadeUp } from "@/components/home/animations";
 
 /**
@@ -8,6 +9,7 @@ import { FadeUp } from "@/components/home/animations";
  * Horizontal CTA card — upload prescription to place order.
  */
 export function HomeUploadPrescription() {
+  const router = useRouter();
   return (
     <FadeUp inView offset={14} duration={0.45}>
       <section className="w-full">
@@ -34,7 +36,7 @@ export function HomeUploadPrescription() {
           </div>
 
           {/* CTA button */}
-          <button className="bg-primary-light text-primary text-t-12 sm:text-t-17 md:text-t-21 lg:text-[24px] font-normal rounded-lg sm:rounded-xl px-3 sm:px-5 lg:px-6 py-2 sm:py-2.5 mr-3 sm:mr-6 md:mr-8 lg:mr-10 shrink-0 hover:bg-primary-light-hover transition-colors whitespace-nowrap">
+          <button onClick={() => router.push("/prescriptions")} className="bg-primary-light text-primary text-t-12 sm:text-t-17 md:text-t-21 lg:text-[24px] font-normal rounded-lg sm:rounded-xl px-3 sm:px-5 lg:px-6 py-2 sm:py-2.5 mr-3 sm:mr-6 md:mr-8 lg:mr-10 shrink-0 hover:bg-primary-light-hover transition-colors whitespace-nowrap">
             Upload Prescription
           </button>
         </div>
