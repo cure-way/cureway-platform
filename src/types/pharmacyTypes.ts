@@ -202,6 +202,11 @@ export interface ActionItem<TActionId extends string> {
   disabled?: boolean;
 }
 
+export interface SearchMedicine {
+  id: number;
+  medicineName: string;
+  categoryName: string;
+}
 ///////////////////////////////////////////////////////////////
 export interface OrderItem {
   inventoryId: string;
@@ -242,10 +247,7 @@ export interface OrdersStatusModel {
   outerData: { name: string; value: number }[];
   innerData: { name: string; value: number }[];
 }
-export interface MatchedOrder {
-  order: OrderRow;
-  matchedItems: InventoryItem[];
-}
+
 export interface Pharmacy {
   id: string;
   name: string;

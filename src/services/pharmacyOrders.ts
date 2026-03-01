@@ -3,6 +3,8 @@ import { getOrders } from "@/repositories/orders.repository";
 import {
   Order,
   OrderFilter,
+  PharmacyOrderDTO,
+  SearchOrder,
   TodayDashboardAnalytics,
 } from "@/types/pharmacyOrders";
 
@@ -99,4 +101,24 @@ export async function getTodayDashboardAnalytics(): Promise<TodayDashboardAnalyt
     deliveredToday: deliveredToday.length,
     topMedicineName,
   };
+}
+
+export async function searchOrders(query: string): Promise<SearchOrder[]> {
+  if (!query.trim()) return [];
+
+  const res = await getOrders({
+    page: 1,
+    limit: 5,
+    q: query,
+  });
+
+  return res.data.map((order: PharmacyOrderDTO) => {
+    const firstItem = order.items[0];
+
+    return {
+      orderId: order.pharmacyOrderId,
+      firstMedicineName: firstItem?.medicineDisplayName ?? "",
+      remainingItemsCount: Math.max(order.items.length - 1, 0),
+    };
+  });
 }

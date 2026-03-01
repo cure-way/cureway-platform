@@ -94,3 +94,9 @@ export interface TodayDashboardAnalytics {
   deliveredToday: number;
   topMedicineName: string | null;
 }
+
+export interface SearchOrder {
+  orderId: number;
+  firstMedicineName: string;
+  remainingItemsCount: number;
+}

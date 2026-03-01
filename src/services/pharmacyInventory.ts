@@ -18,6 +18,7 @@ import {
   OrderRow,
   OrdersStatusModel,
   OrderStatusDatum,
+  SearchMedicine,
   TopMedicine,
   UpdateInventoryInput,
   WeeklyOrdersDatum,
@@ -390,4 +391,22 @@ export async function getCriticalStockItems(): Promise<InventoryItem[]> {
   return res.items
     .filter((item) => item.status === "low" || item.status === "out")
     .slice(0, 2);
+}
+
+export async function searchInventory(
+  query: string,
+): Promise<SearchMedicine[]> {
+  if (!query.trim()) return [];
+
+  const res = await getInventory({
+    page: 1,
+    limit: 5,
+    q: query,
+  });
+
+  return res.data.map((item) => ({
+    id: item.id,
+    medicineName: item.medicineName,
+    categoryName: item.categoryName,
+  }));
 }
