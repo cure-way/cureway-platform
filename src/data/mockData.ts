@@ -69,11 +69,14 @@ export const MOCK_COUPONS: Record<string, Coupon> = {
 };
 
 // ── Cart (Initial Mock Data) ──────────────────────────────────────
+// NOTE: inventoryId must be a real numeric ID from your backend inventory.
+//       pharmacyId ("1", "2") must match real pharmacy IDs in your backend.
+//       Update these values once you have real data from the API.
 export const MOCK_CART: Cart = {
   groups: [
     {
       pharmacy: {
-        id:           "pharmacy-city",
+        id:           "1",
         name:         "City Pharmacy",
         address:      "Omar Mukhtar Street, Al-Rimal Area",
         distance:     "2.55 km",
@@ -83,17 +86,18 @@ export const MOCK_CART: Cart = {
       items: [
         {
           id:                   "item-panadol",
-          medicineId:           "med-1",
+          medicineId:           "1",
+          inventoryId:          1,
           name:                 "Pain Relief- Panadol",
           genericName:          "Paracetamol (Acetaminophen)",
           image:                "/icons/medicine/panadol.png",
           quantity:             1,
           price:                12.00,
           requiresPrescription: true,
-          prescriptionUploaded: true,  // FIX: was false; caused Place Order to be always disabled
+          prescriptionUploaded: true,
           prescriptionInfo:     { dosage: "400 mg", form: "12 tablets" },
           pharmacy: {
-            id:           "pharmacy-city",
+            id:           "1",
             name:         "City Pharmacy",
             address:      "Omar Mukhtar Street, Al-Rimal Area",
             distance:     "2.55 km",
@@ -103,17 +107,18 @@ export const MOCK_CART: Cart = {
         },
         {
           id:                   "item-amox",
-          medicineId:           "med-2",
+          medicineId:           "2",
+          inventoryId:          2,
           name:                 "Amoxicillin 500mg",
           genericName:          "Amoxicillin",
           image:                "/icons/medicine/panadol.png",
           quantity:             2,
           price:                8.50,
           requiresPrescription: true,
-          prescriptionUploaded: true,  // FIX: was false; caused Place Order to be always disabled
+          prescriptionUploaded: true,
           prescriptionInfo:     { dosage: "500 mg", form: "21 capsules" },
           pharmacy: {
-            id:           "pharmacy-city",
+            id:           "1",
             name:         "City Pharmacy",
             address:      "Omar Mukhtar Street, Al-Rimal Area",
             distance:     "2.55 km",
@@ -123,7 +128,8 @@ export const MOCK_CART: Cart = {
         },
         {
           id:                   "item-vitc",
-          medicineId:           "med-3",
+          medicineId:           "3",
+          inventoryId:          3,
           name:                 "Vitamin C 1000mg",
           genericName:          "Ascorbic Acid",
           image:                "/icons/medicine/panadol.png",
@@ -131,7 +137,7 @@ export const MOCK_CART: Cart = {
           price:                6.00,
           requiresPrescription: false,
           pharmacy: {
-            id:           "pharmacy-city",
+            id:           "1",
             name:         "City Pharmacy",
             address:      "Omar Mukhtar Street, Al-Rimal Area",
             distance:     "2.55 km",
@@ -141,7 +147,8 @@ export const MOCK_CART: Cart = {
         },
         {
           id:                   "item-omega",
-          medicineId:           "med-4",
+          medicineId:           "4",
+          inventoryId:          4,
           name:                 "Omega-3 Fish Oil",
           genericName:          "Omega-3 Fatty Acids",
           image:                "/icons/medicine/panadol.png",
@@ -149,7 +156,7 @@ export const MOCK_CART: Cart = {
           price:                15.00,
           requiresPrescription: false,
           pharmacy: {
-            id:           "pharmacy-city",
+            id:           "1",
             name:         "City Pharmacy",
             address:      "Omar Mukhtar Street, Al-Rimal Area",
             distance:     "2.55 km",
@@ -162,7 +169,7 @@ export const MOCK_CART: Cart = {
     },
     {
       pharmacy: {
-        id:           "pharmacy-family",
+        id:           "2",
         name:         "Family Pharmacy",
         address:      "Omar Mukhtar Street, Al-Rimal Area",
         distance:     "3.10 km",
@@ -172,17 +179,18 @@ export const MOCK_CART: Cart = {
       items: [
         {
           id:                   "item-panadol-2",
-          medicineId:           "med-1",
+          medicineId:           "1",
+          inventoryId:          5,
           name:                 "Pain Relief- Panadol",
           genericName:          "Paracetamol (Acetaminophen)",
           image:                "/icons/medicine/panadol.png",
           quantity:             2,
           price:                12.00,
           requiresPrescription: true,
-          prescriptionUploaded: true,  // FIX: was false; caused Place Order to be always disabled
+          prescriptionUploaded: true,
           prescriptionInfo:     { dosage: "400 mg", form: "12 tablets" },
           pharmacy: {
-            id:           "pharmacy-family",
+            id:           "2",
             name:         "Family Pharmacy",
             address:      "Omar Mukhtar Street, Al-Rimal Area",
             distance:     "3.10 km",
@@ -192,17 +200,18 @@ export const MOCK_CART: Cart = {
         },
         {
           id:                   "item-amox-2",
-          medicineId:           "med-2",
+          medicineId:           "2",
+          inventoryId:          6,
           name:                 "Amoxicillin 500mg",
           genericName:          "Amoxicillin",
           image:                "/icons/medicine/panadol.png",
           quantity:             1,
           price:                8.50,
           requiresPrescription: true,
-          prescriptionUploaded: true,  // FIX: was false; caused Place Order to be always disabled
+          prescriptionUploaded: true,
           prescriptionInfo:     { dosage: "500 mg", form: "21 capsules" },
           pharmacy: {
-            id:           "pharmacy-family",
+            id:           "2",
             name:         "Family Pharmacy",
             address:      "Omar Mukhtar Street, Al-Rimal Area",
             distance:     "3.10 km",
@@ -212,7 +221,8 @@ export const MOCK_CART: Cart = {
         },
         {
           id:                   "item-vitc-2",
-          medicineId:           "med-3",
+          medicineId:           "3",
+          inventoryId:          7,
           name:                 "Vitamin C 1000mg",
           genericName:          "Ascorbic Acid",
           image:                "/icons/medicine/panadol.png",
@@ -220,7 +230,7 @@ export const MOCK_CART: Cart = {
           price:                6.00,
           requiresPrescription: false,
           pharmacy: {
-            id:           "pharmacy-family",
+            id:           "2",
             name:         "Family Pharmacy",
             address:      "Omar Mukhtar Street, Al-Rimal Area",
             distance:     "3.10 km",
@@ -230,7 +240,8 @@ export const MOCK_CART: Cart = {
         },
         {
           id:                   "item-omega-2",
-          medicineId:           "med-4",
+          medicineId:           "4",
+          inventoryId:          8,
           name:                 "Omega-3 Fish Oil",
           genericName:          "Omega-3 Fatty Acids",
           image:                "/icons/medicine/panadol.png",
@@ -238,7 +249,7 @@ export const MOCK_CART: Cart = {
           price:                15.00,
           requiresPrescription: false,
           pharmacy: {
-            id:           "pharmacy-family",
+            id:           "2",
             name:         "Family Pharmacy",
             address:      "Omar Mukhtar Street, Al-Rimal Area",
             distance:     "3.10 km",

@@ -58,7 +58,7 @@ export function clearTokens(): void {
 // ---------------------------------------------------------------------------
 
 export const http = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_BASE_URL || "https://gsg-project-group-1-production.up.railway.app",
   headers: { "Content-Type": "application/json" },
   timeout: 10_000,
 });

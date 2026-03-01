@@ -212,11 +212,11 @@ export interface GetMyOrdersParams {
 export const ordersApiService = {
   async createOrder(dto: CreateOrderDto): Promise<CreateOrderResponseDto> {
     try {
-      const response = await http.post<ApiSuccessResponse<CreateOrderResponseDto>>(
+      const response = await http.post<CreateOrderResponseDto>(
         API_ENDPOINTS.ORDERS.CREATE,
         dto,
       );
-      return unwrap(response.data);
+      return response.data;
     } catch (err) {
       throw normalizeError(err);
     }
@@ -238,10 +238,10 @@ export const ordersApiService = {
 
   async getOrderById(id: number): Promise<PatientOrderDetailsResponseDto> {
     try {
-      const response = await http.get<ApiSuccessResponse<PatientOrderDetailsResponseDto>>(
+      const response = await http.get<PatientOrderDetailsResponseDto>(
         API_ENDPOINTS.ORDERS.GET_BY_ID(id),
       );
-      return unwrap(response.data);
+      return response.data;
     } catch (err) {
       throw normalizeError(err);
     }
@@ -249,10 +249,10 @@ export const ordersApiService = {
 
   async cancelOrder(id: number): Promise<PatientCancelOrderResponseDto> {
     try {
-      const response = await http.patch<ApiSuccessResponse<PatientCancelOrderResponseDto>>(
+      const response = await http.patch<PatientCancelOrderResponseDto>(
         API_ENDPOINTS.ORDERS.CANCEL(id),
       );
-      return unwrap(response.data);
+      return response.data;
     } catch (err) {
       throw normalizeError(err);
     }
@@ -299,10 +299,10 @@ export const pharmacyOrdersApiService = {
    */
   async getOrderById(id: number): Promise<PharmacyOrderDetailDto> {
     try {
-      const response = await http.get<ApiSuccessResponse<PharmacyOrderDetailDto>>(
+      const response = await http.get<PharmacyOrderDetailDto>(
         API_ENDPOINTS.PHARMACY_ORDERS.GET_BY_ID(id),
       );
-      return unwrap(response.data);
+      return response.data;
     } catch (err) {
       throw normalizeError(err);
     }
@@ -316,11 +316,11 @@ export const pharmacyOrdersApiService = {
     dto: PharmacyOrderDecisionDto,
   ): Promise<PharmacyOrderDetailDto> {
     try {
-      const response = await http.patch<ApiSuccessResponse<PharmacyOrderDetailDto>>(
+      const response = await http.patch<PharmacyOrderDetailDto>(
         API_ENDPOINTS.PHARMACY_ORDERS.DECISION(id),
         dto,
       );
-      return unwrap(response.data);
+      return response.data;
     } catch (err) {
       throw normalizeError(err);
     }
@@ -335,11 +335,11 @@ export const pharmacyOrdersApiService = {
     dto: PharmacyOrderStatusUpdateDto,
   ): Promise<PharmacyOrderDetailDto> {
     try {
-      const response = await http.patch<ApiSuccessResponse<PharmacyOrderDetailDto>>(
+      const response = await http.patch<PharmacyOrderDetailDto>(
         API_ENDPOINTS.PHARMACY_ORDERS.STATUS(id),
         dto,
       );
-      return unwrap(response.data);
+      return response.data;
     } catch (err) {
       throw normalizeError(err);
     }

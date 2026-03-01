@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { MoreHorizontal } from "lucide-react";
 import type { DeliveryAddress } from "@/types/cart";
 import Image from "next/image";
@@ -66,10 +66,19 @@ export default function DeliveryAddressForm({ selectedAddress, onAddressSelect, 
   const [manual, setManual] = useState<ManualAddress>(EMPTY);
   const [deniedMsg, setDeniedMsg] = useState("");
 
+  // Use a ref to always call the latest onAddressSelect — avoids stale closure
+  const onAddressSelectRef = useRef(onAddressSelect);
+  useEffect(() => { onAddressSelectRef.current = onAddressSelect; }, [onAddressSelect]);
+
   useEffect(() => {
-    if (Object.values(manual).some(v => v.trim() !== ""))
-      onAddressSelect({ street: `${manual.streetNumber} ${manual.line1}`.trim(), city: manual.city, area: manual.line2, notes: manual.postalCode });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (Object.values(manual).some(v => v.trim() !== "")) {
+      const street = `${manual.streetNumber} ${manual.line1}`.trim();
+      const city = manual.city.trim();
+      // Only call if there is meaningful content (not just whitespace)
+      if (street || city) {
+        onAddressSelectRef.current({ street, city, area: manual.line2, notes: manual.postalCode });
+      }
+    }
   }, [manual]);
 
   const handleClickLocation = useCallback(() => {

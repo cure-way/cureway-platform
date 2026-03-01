@@ -32,22 +32,22 @@ export const API_ENDPOINTS = {
     GET_BY_ID: (id: number | string) => `/prescriptions/${id}`,
   },
 
-  // ── Patient Orders — /order ────────────────────────────────────────────────
+  // ── Patient Orders — /orders ───────────────────────────────────────────────
+
   ORDERS: {
-    CREATE: "/orders", 
-    GET_MY: "/orders", 
-    GET_BY_ID: (id: number | string) => `/orders/${id}`, 
-    CANCEL: (id: number | string) => `/orders/${id}/cancel`, 
-    REORDER: (id: string) => `/orders/${id}/reorder`, 
+    CREATE: "/orders",                                          // POST /orders
+    GET_MY: "/orders",                                          // GET /orders
+    GET_BY_ID: (id: number | string) => `/orders/${id}`,        // GET /orders/{id}
+    CANCEL: (id: number | string) => `/orders/${id}/cancel`,    // PATCH /orders/{id}/cancel
   },
 
-  // ── Pharmacy Orders — /pharmacy-orders ────────────────────────────────────
+  // ── Pharmacy Orders — /pharmacy-order ─────────────────────────────────────
   // Used by the pharmacy dashboard to manage incoming orders.
   PHARMACY_ORDERS: {
-    LIST: "/pharmacy-orders",
-    GET_BY_ID: (id: number | string) => `/pharmacy-orders/${id}`,
-    DECISION: (id: number | string) => `/pharmacy-orders/${id}/decision`,
-    STATUS: (id: number | string) => `/pharmacy-orders/${id}/status`,
+    LIST: "/pharmacy-order/my",
+    GET_BY_ID: (id: number | string) => `/pharmacy-order/my/${id}`,
+    DECISION: (id: number | string) => `/pharmacy-order/${id}/decision`,
+    STATUS: (id: number | string) => `/pharmacy-order/${id}/status`,
   },
 
   // ── Patient Addresses — /patient/addresses ─────────────────────────────────
@@ -63,7 +63,7 @@ export const API_ENDPOINTS = {
   // ── Checkout ───────────────────────────────────────────────────────────────
   // NOTE: API spec has no /checkout/validate endpoint; validation is client-side.
   CHECKOUT: {
-    PLACE_ORDER: "/order", // same as ORDERS.CREATE
+    PLACE_ORDER: "/orders", // POST /orders
   },
 
   // ── Delivery (no endpoint in API spec) ────────────────────────────────────

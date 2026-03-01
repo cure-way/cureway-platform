@@ -1,15 +1,18 @@
 // =============================================================================
-// ORDER STORE — Global state for the patient orders list
+// ORDER STORE
 //
-// Real API integration:
-//   fetchOrders()    → GET /order/my  (via ordersService)
-//   cancelOrder()    → PATCH /order/my/{id}/cancel
+// Complete flow:
+//   1. Checkout page: user fills form → clicks Place Order (validates, freezes UI)
+//      → clicks Confirm Order → calls setPendingCheckout({ checkoutData, cart })
+//      → navigates to /Orderconfirmation
 //
-// Mock:
-//   reorder()        → no API endpoint, stays mock in ordersService
+//   2. Confirmation page: user reviews → clicks Save
+//      → calls store.placeOrder()
+//      → placeOrder() calls ordersService.createOrder() → POST /orders (real API)
+//      → on success: order added to list, pendingCheckout cleared
+//      → navigate to /orders
 //
-// Persistence: localStorage warm-start only; fetchOrders() always re-fetches
-// from the API on mount to get the authoritative list.
+//   3. Orders page on mount: calls fetchOrders() → GET /orders (always from server)
 // =============================================================================
 
 import { create } from "zustand";
@@ -17,70 +20,135 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { ordersService } from "@/services/orders.service";
 import { mockOrders } from "@/services/orders.mock";
 import type { Order } from "@/types/order";
+import type { CheckoutData, Cart } from "@/types/cart";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
+export interface PendingCheckout {
+  checkoutData: CheckoutData;
+  cart: Cart;
+}
+
 interface OrderStore {
-  // ── State ──────────────────────────────────────────────────────
   orders: Order[];
   loading: LoadingState;
   error: string | null;
-  /** Track per-order loading state for cancel button */
-  cancellingId: string | null;
 
-  // ── Actions ────────────────────────────────────────────────────
-  /** Load (or reload) all orders — calls GET /order/my */
-  fetchOrders: () => Promise<void>;
-  /** Inject a just-placed order at the top of the list */
-  addOrder: (order: Order) => void;
+  /** Set by Confirm Order button on checkout page; read by confirmation page */
+  pendingCheckout: PendingCheckout | null;
+
+  /** True while POST /orders is in-flight */
+  placing: boolean;
+
+  cancellingId: string | null;
+  fetchingDetailsId: string | null;
+
+  // ── Actions ────────────────────────────────────────────────────────────────
+
+  setPendingCheckout: (data: PendingCheckout) => void;
+
   /**
-   * Cancel an order via PATCH /order/my/{id}/cancel.
-   * Optimistically updates status to "cancelled" then confirms from API.
+   * THE ONLY FUNCTION that calls POST /orders.
+   * Invoked by the confirmation page Save button.
    */
+  placeOrder: () => Promise<Order>;
+
+  addOrder: (order: Order) => void;
+
+  /**
+   * GET /orders — always fetches fresh from the server.
+   * Called on mount of the Orders page.
+   *
+   * IMPORTANT: ordersService.getOrders() returns Order[] directly.
+   * Do NOT do `response.data` — there is no wrapper.
+   */
+  fetchOrders: () => Promise<void>;
+
+  fetchOrderDetails: (orderId: string) => Promise<Order>;
+
   cancelOrder: (orderId: string) => Promise<void>;
-  /** Clear all loaded orders (e.g. on sign-out) */
+
   clearOrders: () => void;
 }
 
 export const useOrderStore = create<OrderStore>()(
   persist(
     (set, get) => ({
-      // ── Initial state ─────────────────────────────────────────
       orders: [],
       loading: "idle" as LoadingState,
       error: null,
+      pendingCheckout: null,
+      placing: false,
       cancellingId: null,
+      fetchingDetailsId: null,
 
+      // ── setPendingCheckout ────────────────────────────────────────────────
+      setPendingCheckout: (data: PendingCheckout) => {
+        set({ pendingCheckout: data });
+      },
+
+      // ── placeOrder ────────────────────────────────────────────────────────
+      placeOrder: async (): Promise<Order> => {
+        const pending = get().pendingCheckout;
+        if (!pending) {
+          throw new Error(
+            "No pending checkout found. Please go back and try again.",
+          );
+        }
+
+        set({ placing: true });
+        try {
+          const order = await ordersService.createOrder(
+            pending.checkoutData,
+            pending.cart,
+          );
+
+          set((state) => ({
+            orders: [order, ...state.orders.filter((o) => o.id !== order.id)],
+            pendingCheckout: null,
+          }));
+
+          return order;
+        } finally {
+          set({ placing: false });
+        }
+      },
+
+      // ── addOrder ──────────────────────────────────────────────────────────
+      addOrder: (order: Order) => {
+        set((state) => ({
+          orders: [order, ...state.orders.filter((o) => o.id !== order.id)],
+        }));
+      },
+
+      // ── fetchOrders ───────────────────────────────────────────────────────
+      // ordersService.getOrders() returns Order[] — NOT { data: Order[] }.
+      // Always fetches fresh from the server on every call.
       fetchOrders: async () => {
         set({ loading: "loading", error: null });
         try {
-          const response = await ordersService.getOrders();
-          const orders = response?.data ?? [];
-
+          const orders = await ordersService.getOrders();
           set({ orders, loading: "success" });
         } catch (err) {
-          // Determine whether this looks like a network / 404 error
-          // caused by a missing API URL in development.
           const message =
             err instanceof Error ? err.message : "Failed to load orders";
+
           const isNetworkError =
             message.includes("404") ||
             message.includes("Network Error") ||
             message.includes("ERR_CONNECTION") ||
             message.includes("ECONNREFUSED") ||
-            message.includes("Request failed with status code 404");
+            message.includes("status code 404");
 
           const isDev = process.env.NODE_ENV !== "production";
           const hasApiUrl = Boolean(process.env.NEXT_PUBLIC_API_BASE_URL);
 
           if (isDev && !hasApiUrl && isNetworkError) {
-            // Fall back to mock orders so UI is usable
             const current = get().orders;
-            if (current.length === 0) {
-              set({ orders: mockOrders, loading: "success" });
-            } else {
-              set({ loading: "success" });
-            }
+            set({
+              orders: current.length === 0 ? mockOrders : current,
+              loading: "success",
+            });
             return;
           }
 
@@ -88,20 +156,31 @@ export const useOrderStore = create<OrderStore>()(
         }
       },
 
-      // ── addOrder ──────────────────────────────────────────────
-      // Injects a freshly-placed order at the front of the list.
-      addOrder: (order: Order) => {
-        set((state) => ({
-          orders: [order, ...state.orders.filter((o) => o.id !== order.id)],
-        }));
+      // ── fetchOrderDetails ─────────────────────────────────────────────────
+      fetchOrderDetails: async (orderId: string): Promise<Order> => {
+        set({ fetchingDetailsId: orderId });
+        try {
+          const detailed = await ordersService.getOrderById(orderId);
+          set((state) => {
+            const exists = state.orders.some((o) => o.id === orderId);
+            return {
+              orders: exists
+                ? state.orders.map((o) => (o.id === orderId ? detailed : o))
+                : [detailed, ...state.orders],
+            };
+          });
+          return detailed;
+        } finally {
+          set({ fetchingDetailsId: null });
+        }
       },
 
-      // ── cancelOrder ───────────────────────────────────────────
-      // REAL API: PATCH /order/my/{id}/cancel
+      // ── cancelOrder ───────────────────────────────────────────────────────
+      // Snapshot taken BEFORE optimistic update so rollback is correct.
       cancelOrder: async (orderId: string) => {
+        const originalOrders = get().orders;
         set({ cancellingId: orderId });
         try {
-          // Optimistic update
           set((state) => ({
             orders: state.orders.map((o) =>
               o.id === orderId ? { ...o, status: "cancelled" as const } : o,
@@ -110,29 +189,36 @@ export const useOrderStore = create<OrderStore>()(
 
           await ordersService.cancelOrder(orderId);
 
-          // Re-fetch to get authoritative state from server
-          const orders = await ordersService.getOrders();
-          set({ orders });
+          const freshOrders = await ordersService.getOrders();
+          set({ orders: freshOrders });
         } catch (err) {
-          // Roll back optimistic update on failure
-          const currentOrders = get().orders;
-          set({ orders: currentOrders });
+          set({ orders: originalOrders });
           throw err;
         } finally {
           set({ cancellingId: null });
         }
       },
 
-      // ── clearOrders ───────────────────────────────────────────
+      // ── clearOrders ───────────────────────────────────────────────────────
       clearOrders: () => {
-        set({ orders: [], loading: "idle", error: null, cancellingId: null });
+        set({
+          orders: [],
+          loading: "idle",
+          error: null,
+          pendingCheckout: null,
+          placing: false,
+          cancellingId: null,
+          fetchingDetailsId: null,
+        });
       },
     }),
     {
       name: "cureway_orders",
       storage: createJSONStorage(() => localStorage),
-      // Only persist orders list — not transient state
-      partialize: (state) => ({ orders: state.orders }),
+      partialize: (state) => ({
+        orders: state.orders,
+        pendingCheckout: state.pendingCheckout,
+      }),
     },
   ),
 );
