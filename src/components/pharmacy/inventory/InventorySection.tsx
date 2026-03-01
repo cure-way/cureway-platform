@@ -6,7 +6,7 @@ import InventoryTable from "./InventoryTable";
 import { InventoryFilterStatus } from "@/types/pharmacyTypes";
 import { useInventory } from "@/hooks/pharmacy/useInventory";
 import AlertBanner from "./AlertBanner";
-import { getInventoryAlerts } from "@/services/pharmacy/pharmacyService";
+import { getInventoryAlerts } from "@/services/pharmacyInventory";
 
 export default function InventorySection() {
   const [status, setStatus] = useState<InventoryFilterStatus>("all");

@@ -9,7 +9,7 @@ import {
   getOrderStatusData,
   getTopSellingMedicines,
   getWeeklyOrdersData,
-} from "@/services/pharmacy/pharmacyService";
+} from "@/services/pharmacyInventory";
 import { FiBarChart2 } from "react-icons/fi";
 
 const OrdersStatusDonut = dynamic(
