@@ -6,7 +6,7 @@ import { InventoryItem } from "@/types/pharmacyTypes";
 import {
   deleteInventory,
   updateInventoryItemService,
-} from "@/services/pharmacy/pharmacyService";
+} from "@/services/pharmacyInventory";
 import toast from "react-hot-toast";
 
 export type MedicineActionType = "delete" | "mark_out";

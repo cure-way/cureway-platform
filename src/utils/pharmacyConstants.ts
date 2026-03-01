@@ -1,8 +1,8 @@
+import { OrderRow } from "@/types/pharmacyOrders";
 import {
   Column,
   InventoryFilterStatus,
   InventoryItem,
-  OrderRow,
   RowAction,
   StatusConfig,
 } from "@/types/pharmacyTypes";
@@ -18,11 +18,10 @@ export const INVENTORY_STATUSES: {
 ];
 
 export const ORDER_STATUSES = [
-  { label: "All", value: "All" },
-  { label: "New", value: "New" },
-  { label: "Pending", value: "Pending" },
-  { label: "Delivered", value: "Delivered" },
-  { label: "Cancelled", value: "Cancelled" },
+  { label: "All", value: "ALL" },
+  { label: "New", value: "NEW" },
+  { label: "Delivered", value: "DELIVERED" },
+  { label: "Past", value: "PAST" },
 ];
 
 export const ROWS_PER_PAGE_OPTIONS = [
@@ -49,10 +48,10 @@ export const INVENTORY_ACTIONS: RowAction[] = [
 
 export const orderColumns: readonly Column<OrderRow>[] = [
   { key: "id", header: "Order ID" },
-  { key: "customer", header: "Customer", hideOnMobile: true },
-  { key: "items", header: "Medicine", hideOnMobile: true },
-  { key: "total", header: "Total" },
-  { key: "date", header: "Date", hideOnMobile: true },
+  { key: "customerName", header: "Customer", hideOnMobile: true },
+  { key: "preview", header: "Medicine", hideOnMobile: true },
+  { key: "totalAmount", header: "Total" },
+  { key: "formattedDate", header: "Date", hideOnMobile: true },
   { key: "status", header: "Status" },
 ];
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { createInventory } from "@/services/pharmacy/pharmacyService";
+import { createInventory } from "@/services/pharmacyInventory";
 import { CreateInventoryInput } from "@/types/pharmacyTypes";
 import { useState } from "react";
 

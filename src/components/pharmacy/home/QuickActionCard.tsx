@@ -4,40 +4,25 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FiAlertCircle } from "react-icons/fi";
 import { FaCapsules } from "react-icons/fa";
-import { inventoryData, ORDERS } from "@/services/pharmacyData";
-import {
-  getMostRequestedCategory,
-  getTopSellingMedicines,
-} from "@/services/pharmacy/pharmacyService";
 
-const topSellingMedicine = getTopSellingMedicines(ORDERS, inventoryData);
+import { useCriticalStock } from "@/hooks/pharmacy/useCriticalStock";
+import ErrorState from "../shared/ErrorState";
+import TodayInsights from "./TodayInsights";
 
-const mostRequestedCategory = getMostRequestedCategory(ORDERS, inventoryData);
-const alertStockItems = inventoryData
-  .filter((item) => item.status === "low" || item.status === "out")
-  .slice(0, 2);
-
-const todaySummaryItems = [
-  {
-    id: "top-medicine",
-    title: "Top Selling Medicine",
-    value: topSellingMedicine[0].medicine ?? "—",
-  },
-  {
-    id: "top-category",
-    title: "Most Requested Category",
-    value: mostRequestedCategory ?? "—",
-  },
-];
-
-export default function QuickActionCard() {
+export default function QuickActionCard({
+  topMedicine,
+}: {
+  topMedicine?: string | null;
+}) {
   const [acceptingOrders, setAcceptingOrders] = useState(true);
   const router = useRouter();
+  const { data, loading, error } = useCriticalStock();
 
   return (
     <div className="bg-white p-4 border rounded-xl">
       <h2 className="mb-4 font-semibold text-gray-900 text-sm">Quick Action</h2>
 
+      {/* Accept / Pause Toggle */}
       <div
         className={`mb-6 rounded-lg p-3 transition ${
           acceptingOrders ? "bg-green-50" : "bg-gray-100"
@@ -50,7 +35,7 @@ export default function QuickActionCard() {
             </p>
             <p className="text-gray-500 text-xs">
               {acceptingOrders
-                ? "Now you can accepting new orders"
+                ? "Now you can accept new orders"
                 : "Orders are currently paused"}
             </p>
           </div>
@@ -70,7 +55,18 @@ export default function QuickActionCard() {
         </div>
       </div>
 
-      {alertStockItems.length > 0 && (
+      {/* Loading */}
+      {loading && <CriticalStockSkeleton />}
+
+      {/* Error */}
+      {!loading && error && (
+        <div className="mb-6">
+          <ErrorState message={error} />
+        </div>
+      )}
+
+      {/* Data */}
+      {!loading && !error && data.length > 0 && (
         <div className="mb-6 p-3 border border-t-4 border-t-yellow-300 rounded-lg">
           <div className="flex items-center gap-2 mb-3 font-medium text-yellow-700 text-sm">
             <FiAlertCircle className="text-base" />
@@ -78,7 +74,7 @@ export default function QuickActionCard() {
           </div>
 
           <div className="space-y-3">
-            {alertStockItems.map((item) => (
+            {data.map((item) => (
               <div
                 key={item.id}
                 onClick={() => router.push(`/pharmacy/inventory/${item.id}`)}
@@ -92,7 +88,7 @@ export default function QuickActionCard() {
                   <p className="font-medium text-gray-900 text-sm">
                     {item.medicineName}
                   </p>
-                  <p className="text-gray-500 text-xs">{item.stock}</p>
+                  <p className="text-gray-500 text-xs">{item.stock} in stock</p>
                 </div>
               </div>
             ))}
@@ -107,29 +103,30 @@ export default function QuickActionCard() {
         </div>
       )}
 
-      <div>
-        <h3 className="mb-3 font-semibold text-gray-900 text-sm">
-          Today Summary
-        </h3>
+      {/* Today Insights always shown */}
+      <TodayInsights topMedicine={topMedicine} />
+    </div>
+  );
+}
 
-        <div className="space-y-3">
-          {todaySummaryItems.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-start gap-2 p-3 border rounded-xl"
-            >
-              <span className="text-green-600">✔</span>
+function CriticalStockSkeleton() {
+  return (
+    <div className="mb-6 p-3 border border-t-4 border-t-yellow-200 rounded-lg animate-pulse">
+      <div className="bg-gray-200 mb-4 rounded w-24 h-4" />
 
-              <div>
-                <p className="mb-1 font-medium text-gray-900 text-sm">
-                  {item.title}
-                </p>
-                <p className="text-gray-500 text-xs">{item.value}</p>
-              </div>
+      <div className="space-y-3">
+        {Array.from({ length: 2 }).map((_, i) => (
+          <div key={i} className="flex items-center gap-3">
+            <div className="bg-gray-200 rounded-lg w-12 h-12" />
+            <div className="flex-1 space-y-2">
+              <div className="bg-gray-200 rounded w-28 h-3" />
+              <div className="bg-gray-200 rounded w-20 h-3" />
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
+
+      <div className="bg-gray-300 mt-4 rounded w-full h-8" />
     </div>
   );
 }

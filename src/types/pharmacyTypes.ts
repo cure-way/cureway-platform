@@ -148,6 +148,13 @@ export interface MedicineFormValues {
   notes: { value: string }[];
 }
 
+export interface GetInventoryParams {
+  page: number;
+  limit: number;
+  q?: string;
+  medicineId?: number;
+  stockStatus?: "IN_STOCK" | "LOW_STOCK" | "OUT_OF_STOCK";
+}
 ///////////////////////////////////////////////////////////////////////
 
 export interface InventoryListResponse {
@@ -194,6 +201,8 @@ export interface ActionItem<TActionId extends string> {
   danger?: boolean;
   disabled?: boolean;
 }
+
+///////////////////////////////////////////////////////////////
 export interface OrderItem {
   inventoryId: string;
   quantity: number;

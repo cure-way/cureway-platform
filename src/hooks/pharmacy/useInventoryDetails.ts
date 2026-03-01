@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchInventoryItem } from "@/services/pharmacy/pharmacyService";
+import { fetchInventoryItem } from "@/services/pharmacyInventory";
 import { InventoryItem } from "@/types/pharmacyTypes";
 import { useState, useEffect, useCallback } from "react";
 

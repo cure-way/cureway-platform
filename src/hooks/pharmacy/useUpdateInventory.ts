@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { UpdateInventoryInput } from "@/types/pharmacyTypes";
 import { ApiErrorShape } from "@/lib/api/errors";
-import { updateInventoryItemService } from "@/services/pharmacy/pharmacyService";
+import { updateInventoryItemService } from "@/services/pharmacyInventory";
 
 export function useUpdateInventory() {
   const [loading, setLoading] = useState(false);

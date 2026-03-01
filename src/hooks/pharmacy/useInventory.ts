@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { InventoryFilterStatus, InventoryItem } from "@/types/pharmacyTypes";
-import { fetchInventoryList } from "@/services/pharmacy/getInventoryList";
+import { fetchInventoryList } from "@/services/pharmacyInventory";
 
 type UseInventoryParams = {
   status: InventoryFilterStatus;

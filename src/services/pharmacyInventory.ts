@@ -1,14 +1,19 @@
-import { mapInventoryDetailsToItem } from "@/adapters/InventoryMappers";
+import {
+  mapInventoryDetailsToItem,
+  mapInventoryListItem,
+} from "@/adapters/InventoryMappers";
 import { normalizeError } from "@/lib/api/errors";
 import {
   createInventoryItem,
   deleteInventoryById,
+  getInventory,
   getInventoryById,
   updateInventoryItem,
 } from "@/repositories/inventory.repository";
 import {
   CreateInventoryInput,
   Day,
+  GetInventoryParams,
   InventoryItem,
   OrderRow,
   OrdersStatusModel,
@@ -242,6 +247,21 @@ export function getReportStats(orders: OrderRow[]): {
     deliveredCount,
   };
 }
+//////////////////////////////////////////////////////////////
+export async function fetchInventoryList(params: GetInventoryParams) {
+  const response = await getInventory(params);
+
+  if (!response.success) {
+    throw new Error("Failed to fetch inventory");
+  }
+
+  return {
+    items: response.data.map(mapInventoryListItem),
+    total: response.meta.total,
+    page: response.meta.page,
+    limit: response.meta.limit,
+  };
+}
 
 export async function fetchInventoryItem(id: string) {
   const response = await getInventoryById(id);
@@ -349,4 +369,25 @@ export async function updateInventoryItemService(
   } catch (error) {
     throw normalizeError(error);
   }
+}
+
+export async function getInventorySnapshot(): Promise<InventoryItem[]> {
+  const res = await fetchInventoryList({
+    page: 1,
+    limit: 3,
+  });
+
+  return res.items;
+}
+
+export async function getCriticalStockItems(): Promise<InventoryItem[]> {
+  const res = await fetchInventoryList({
+    page: 1,
+    limit: 2,
+    stockStatus: "LOW_STOCK",
+  });
+
+  return res.items
+    .filter((item) => item.status === "low" || item.status === "out")
+    .slice(0, 2);
 }
