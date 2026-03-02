@@ -20,7 +20,11 @@ export default function CartItemCard({
   onUploadPrescription,
   highlightPrescription = false,
 }: Props) {
-  const prescriptionInfo = item.prescriptionInfo as any;
+  const prescriptionInfo = item.prescriptionInfo as {
+    genericName?: string;
+    dosage?: string;
+    form?: string;
+  } | undefined;
 
   return (
     <div className="pb-6 border-b border-border mb-6 font-[var(--font-montserrat)]">
@@ -46,7 +50,6 @@ export default function CartItemCard({
               {item.name}
             </p>
 
-    
             {prescriptionInfo?.genericName && (
               <p className="text-t-14 text-muted-foreground mb-2">
                 {prescriptionInfo.genericName}

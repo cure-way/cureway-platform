@@ -15,6 +15,7 @@ import type {
   CheckoutData,
   OrderConfirmation,
   DeliveryAddress,
+  CartItem, 
 } from "@/types/cart";
 import type { CreateOrderDto, PatientAddressResponse } from "@/types/api.types";
 
@@ -54,14 +55,11 @@ export const cartService = {
     return cloneCart(_cart);
   },
 
-  async addItem(
-    pharmacyId: string,
-    medicineId: string,
-    quantity: number,
-  ): Promise<Cart> {
-    await delay();
-    return cloneCart(_cart);
-  },
+
+ async addItem(): Promise<Cart> { // حذفنا الـ parameters لأنها mock
+  await delay();
+  return cloneCart(_cart);
+},
 
   async updateQuantity(itemId: string, quantity: number): Promise<Cart> {
     await delay(200);
@@ -99,7 +97,7 @@ export const cartService = {
 
   async saveForLater(itemId: string): Promise<Cart> {
     await delay();
-    let saved = null as any;
+    let saved: CartItem | null = null;
     _cart.groups = _cart.groups.map((g) => {
       const item = g.items.find((i) => i.id === itemId);
       if (item) saved = { ...item };
@@ -140,7 +138,6 @@ export const cartService = {
     const coupon = MOCK_COUPONS[upperCode];
 
     if (!coupon) throw new Error("Invalid or expired coupon code");
-
 
     const minOrderValue = coupon.minOrderValue ?? 0;
     const discountValue = coupon.discountValue ?? 0;
@@ -199,18 +196,17 @@ export const checkoutService = {
         ...MOCK_ORDER_CONFIRMATION,
         orderId:     `ORD-${Date.now()}`,
         orderNumber: `#${Math.floor(Math.random() * 900_000 + 100_000)}`,
-        subtotal:    data.total - data.deliveryFee + data.discount,
+        subtotal:     data.total - data.deliveryFee + data.discount,
         deliveryFee: data.deliveryFee,
-        discount:    data.discount,
-        total:       data.total,
-        placedAt:    new Date(),
-        status:      "pending",
+        discount:     data.discount,
+        total:        data.total,
+        placedAt:     new Date(),
+        status:       "pending",
       };
       cartService.clearMockCart();
       return confirmation;
     }
 
-    // REAL API Payload construction
     const dto: CreateOrderDto = {
       deliveryAddressId: addressId,
       notes: data.orderNotes || undefined,
@@ -228,7 +224,7 @@ export const checkoutService = {
     const response = await ordersApiService.createOrder(dto);
 
     return {
-      orderId:     String(response.id),
+      orderId:      String(response.id),
       orderNumber: `#${response.id}`,
       groups: response.pharmacies.map((p) => ({
         pharmacy: {
@@ -239,10 +235,10 @@ export const checkoutService = {
         items: p.items.map((i) => ({
           id:                   String(i.inventoryId),
           name:                 i.medicineName,
-          unitPrice:            i.unitPrice,
-          quantity:             i.quantity,
+          unitPrice:             i.unitPrice,
+          quantity:              i.quantity,
           requiresPrescription: false,
-          inStock:              true,
+          inStock:               true,
         })),
         subtotal: p.subtotal,
       })),

@@ -126,7 +126,6 @@ export default function DeliveryAddressForm({ selectedAddress, onAddressSelect, 
           <div className="flex flex-col gap-2">
             {savedAddresses.map((addr) => {
               const isSelected = selectedAddress?.apiId != null && selectedAddress.apiId === addr.apiId;
-              const label = [addr.label, addr.street, addr.city].filter(Boolean).join(" — ");
               return (
                 <button
                   key={addr.id ?? addr.apiId}

@@ -1,6 +1,5 @@
 "use client";
 
-
 interface Props {
   subtotal: number;
   totalItems: number;
@@ -35,8 +34,10 @@ export default function OrderSummary({
         </div>
       </div>
 
+    
+         
       <p className="text-t-12 text-muted-foreground mb-6">
-        · This price isn't final. Shipping and VAT will be added in the next step.
+        · {"This price isn't final. Shipping and VAT will be added in the next step."}
       </p>
 
       <button

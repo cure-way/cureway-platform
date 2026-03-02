@@ -1,12 +1,12 @@
-// ===================================================================
-// CART HOOKS — Custom hooks for the Cart & Checkout system
-// ===================================================================
+"use client";
 
 import {
   useEffect,
   useCallback,
   useRef,
   useState,
+  useMemo,
+  useSyncExternalStore,
   type RefObject,
 } from "react";
 import { useCartStore } from "@/store/cart.store";
@@ -17,20 +17,18 @@ import type { Coordinates } from "@/types/cart";
 // useCartSync
 // ─────────────────────────────────────────────────────────────────
 export function useCartSync(isAuthenticated: boolean): void {
-
-  const { lastSyncTime, cart, fetchCart } = useCartStore();
+  const { cart, fetchCart } = useCartStore();
 
   useEffect(() => {
     if (!isAuthenticated || !cart) return;
 
-
     const interval = setInterval(() => {
-       // fetchCart();
+        // fetchCart(); 
     }, CART_SYNC_INTERVAL);
 
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "cureway_cart" && e.newValue) {
-       
+        // Logic sync if needed
       }
     };
     window.addEventListener("storage", handleStorageChange);
@@ -39,7 +37,7 @@ export function useCartSync(isAuthenticated: boolean): void {
       clearInterval(interval);
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, [isAuthenticated, cart, lastSyncTime, fetchCart]);
+  }, [isAuthenticated, cart, fetchCart]);
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -51,7 +49,7 @@ export function useGeolocation() {
   const [error, setError] = useState<string | null>(null);
 
   const getCurrentLocation = useCallback(() => {
-    if (!navigator.geolocation) {
+    if (typeof window === "undefined" || !navigator.geolocation) {
       setError("Geolocation is not supported by your browser");
       return;
     }
@@ -83,70 +81,66 @@ export function useGeolocation() {
 }
 
 // ─────────────────────────────────────────────────────────────────
-// useDebounce
-// ─────────────────────────────────────────────────────────────────
-export function useDebounce<T>(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value);
-  useEffect(() => {
-    const handler = setTimeout(() => setDebouncedValue(value), delay);
-    return () => clearTimeout(handler);
-  }, [value, delay]);
-  return debouncedValue;
-}
-
-// ─────────────────────────────────────────────────────────────────
 // usePrevious
 // ─────────────────────────────────────────────────────────────────
 export function usePrevious<T>(value: T): T | undefined {
-  
-  const ref = useRef<T | undefined>(undefined);
-  useEffect(() => { ref.current = value; }, [value]);
-  return ref.current;
-}
+  const [current, setCurrent] = useState<T>(value);
+  const [previous, setPrevious] = useState<T | undefined>(undefined);
 
-// ─────────────────────────────────────────────────────────────────
-// useInterval
-// ─────────────────────────────────────────────────────────────────
-export function useInterval(callback: () => void, delay: number | null): void {
-  const savedCallback = useRef(callback);
-  useEffect(() => { savedCallback.current = callback; }, [callback]);
-  useEffect(() => {
-    if (delay === null) return;
-    const id = setInterval(() => savedCallback.current(), delay);
-    return () => clearInterval(id);
-  }, [delay]);
+  if (value !== current) {
+    setPrevious(current);
+    setCurrent(value);
+  }
+
+  return previous;
 }
 
 // ─────────────────────────────────────────────────────────────────
 // useMediaQuery
 // ─────────────────────────────────────────────────────────────────
 export function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false);
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    setMatches(media.matches);
-    const listener = () => setMatches(media.matches);
-    media.addEventListener("change", listener);
-    return () => media.removeEventListener("change", listener);
-  }, [query]);
-  return matches;
+  const subscribe = useCallback(
+    (callback: () => void) => {
+      const matchMedia = window.matchMedia(query);
+      matchMedia.addEventListener("change", callback);
+      return () => matchMedia.removeEventListener("change", callback);
+    },
+    [query]
+  );
+
+  const getSnapshot = useCallback(() => window.matchMedia(query).matches, [query]);
+  const getServerSnapshot = () => false;
+
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
 // ─────────────────────────────────────────────────────────────────
-// useWindowSize
+// useWindowSize 
 // ─────────────────────────────────────────────────────────────────
 export function useWindowSize() {
-  const [size, setSize] = useState({
-    width:  typeof window !== "undefined" ? window.innerWidth  : 0,
-    height: typeof window !== "undefined" ? window.innerHeight : 0,
-  });
-  useEffect(() => {
-    const handleResize = () =>
-      setSize({ width: window.innerWidth, height: window.innerHeight });
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+  const subscribe = useCallback((callback: () => void) => {
+    window.addEventListener("resize", callback);
+    return () => window.removeEventListener("resize", callback);
   }, []);
-  return size;
+
+  const getSnapshot = () => JSON.stringify({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  const getServerSnapshot = () => JSON.stringify({ width: 0, height: 0 });
+
+  const sizeString = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  
+  return useMemo(() => JSON.parse(sizeString), [sizeString]);
+}
+
+export function useWindowWidth() {
+    const subscribe = useCallback((callback: () => void) => {
+      window.addEventListener("resize", callback);
+      return () => window.removeEventListener("resize", callback);
+    }, []);
+    return useSyncExternalStore(subscribe, () => window.innerWidth, () => 0);
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -166,17 +160,18 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
   const setValue = useCallback(
     (value: T | ((val: T) => T)) => {
       try {
-        const valueToStore =
-          value instanceof Function ? value(storedValue) : value;
-        setStoredValue(valueToStore);
-        if (typeof window !== "undefined") {
-          window.localStorage.setItem(key, JSON.stringify(valueToStore));
-        }
+        setStoredValue((prevValue) => {
+          const valueToStore = value instanceof Function ? value(prevValue) : value;
+          if (typeof window !== "undefined") {
+            window.localStorage.setItem(key, JSON.stringify(valueToStore));
+          }
+          return valueToStore;
+        });
       } catch (err) {
-        console.error("useLocalStorage setValue error:", err);
+        console.error("useLocalStorage error:", err);
       }
     },
-    [key, storedValue],
+    [key]
   );
 
   return [storedValue, setValue] as const;
@@ -188,7 +183,6 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 export function useClickOutside<T extends HTMLElement = HTMLElement>(
   callback: () => void,
 ): RefObject<T | null> {
-  
   const ref = useRef<T>(null);
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -199,42 +193,37 @@ export function useClickOutside<T extends HTMLElement = HTMLElement>(
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, [callback]);
-
-  
-  return ref as unknown as RefObject<T | null>;
-}
-
-// ─────────────────────────────────────────────────────────────────
-// useEscapeKey
-// ─────────────────────────────────────────────────────────────────
-export function useEscapeKey(callback: () => void): void {
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") callback();
-    };
-    document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
-  }, [callback]);
+  return ref;
 }
 
 // ─────────────────────────────────────────────────────────────────
 // useIntersectionObserver
 // ─────────────────────────────────────────────────────────────────
 export function useIntersectionObserver(
-  ref: RefObject<Element | null>, 
+  ref: RefObject<Element | null>,
   options: IntersectionObserverInit = {},
 ): boolean {
   const [isIntersecting, setIsIntersecting] = useState(false);
+
+  
+  const memoOptions = useMemo(() => ({
+    root: options.root,
+    rootMargin: options.rootMargin,
+    threshold: options.threshold
+  }), [options.root, options.rootMargin, options.threshold]);
+
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsIntersecting(entry.isIntersecting),
-      options,
-    );
+    
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsIntersecting(entry.isIntersecting);
+    }, memoOptions);
+
     observer.observe(element);
     return () => observer.disconnect();
-  }, [ref, options]);
+  }, [ref, memoOptions]);
+
   return isIntersecting;
 }
 
@@ -242,47 +231,39 @@ export function useIntersectionObserver(
 // useFormValidation
 // ─────────────────────────────────────────────────────────────────
 export function useFormValidation<T extends Record<string, unknown>>(
-  initialValues: T,
-  validate: (values: T) => Partial<Record<keyof T, string>>,
-) {
-  const [values, setValues] = useState<T>(initialValues);
-  const [errors, setErrors] = useState<Partial<Record<keyof T, string>>>({});
-  const [touched, setTouched] = useState<Partial<Record<keyof T, boolean>>>({});
-
-  const handleChange = useCallback((name: keyof T, value: unknown) => {
-    setValues((prev) => ({ ...prev, [name]: value }));
-  }, []);
-
-  const handleBlur = useCallback((name: keyof T) => {
-    setTouched((prev) => ({ ...prev, [name]: true }));
-  }, []);
-
-  const handleSubmit = useCallback(
-    (onSubmit: (values: T) => void) =>
-      (e: React.FormEvent) => {
-        e.preventDefault();
-        const validationErrors = validate(values);
-        setErrors(validationErrors);
-        if (Object.keys(validationErrors).length === 0) {
-          onSubmit(values);
-        }
-      },
-    [values, validate],
-  );
-
-  const resetForm = useCallback(() => {
-    setValues(initialValues);
-    setErrors({});
-    setTouched({});
-  }, [initialValues]);
-
-  return {
-    values,
-    errors,
-    touched,
-    handleChange,
-    handleBlur,
-    handleSubmit,
-    resetForm,
-  };
-}
+    initialValues: T,
+    validate: (values: T) => Partial<Record<keyof T, string>>,
+  ) {
+    const [values, setValues] = useState<T>(initialValues);
+    const [errors, setErrors] = useState<Partial<Record<keyof T, string>>>({});
+    const [touched, setTouched] = useState<Partial<Record<keyof T, boolean>>>({});
+  
+    const handleChange = useCallback((name: keyof T, value: unknown) => {
+      setValues((prev) => ({ ...prev, [name]: value }));
+    }, []);
+  
+    const handleBlur = useCallback((name: keyof T) => {
+      setTouched((prev) => ({ ...prev, [name]: true }));
+    }, []);
+  
+    const handleSubmit = useCallback(
+      (onSubmit: (values: T) => void) =>
+        (e: React.FormEvent) => {
+          e.preventDefault();
+          const validationErrors = validate(values);
+          setErrors(validationErrors);
+          if (Object.keys(validationErrors).length === 0) {
+            onSubmit(values);
+          }
+        },
+      [values, validate],
+    );
+  
+    const resetForm = useCallback(() => {
+      setValues(initialValues);
+      setErrors({});
+      setTouched({});
+    }, [initialValues]);
+  
+    return { values, errors, touched, handleChange, handleBlur, handleSubmit, resetForm };
+  }

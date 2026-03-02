@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/cart.store";
 import { useOrderStore } from "@/store/order.store";
@@ -19,7 +19,6 @@ import { toast } from "sonner";
 export default function CheckoutPage() {
   const router = useRouter();
   
-  // الآن applyCoupon و removeCoupon موجودين بفضل تحديث الـ Store
   const { cart, applyCoupon, removeCoupon, getCartSubtotal, getCartItemCount } = useCartStore();
   const { setPendingCheckout } = useOrderStore();
 
@@ -44,20 +43,21 @@ export default function CheckoutPage() {
     .flatMap((g) => g.items)
     .some((i) => i.requiresPrescription && !i.prescriptionUploaded);
 
-  // ── Recalculate totals ─────────────────────────────────────────────────────
-  useEffect(() => {
-    const subtotal = getCartSubtotal();
-    const deliveryFee = checkoutData.deliveryOption?.price ?? 0;
-    setCheckoutData((p) => ({
-      ...p,
-      deliveryFee,
-      total: calculateCartTotal(subtotal, deliveryFee, p.discount),
-    }));
-  }, [checkoutData.deliveryOption?.id, checkoutData.discount, getCartSubtotal]);
+
+
+  const subtotal = getCartSubtotal();
+  const deliveryFee = checkoutData.deliveryOption?.price ?? 0;
+  
+
+  const total = useMemo(() => {
+    return calculateCartTotal(subtotal, deliveryFee, checkoutData.discount);
+  }, [subtotal, deliveryFee, checkoutData.discount]);
 
   // ── Redirect when cart becomes empty ───────────────────────────────────────
   useEffect(() => {
-    if (cart !== null && cart.groups.length === 0) router.push(ROUTES.CART);
+    if (cart !== null && cart.groups.length === 0) {
+      router.push(ROUTES.CART);
+    }
   }, [cart, router]);
 
   // ── Coupon Handlers ────────────────────────────────────────────────────────
@@ -108,15 +108,21 @@ export default function CheckoutPage() {
 
   const handleConfirmOrder = useCallback(() => {
     if (!uiFrozen || !cart) return;
-    setPendingCheckout({ checkoutData, cart });
+
+    setPendingCheckout({ 
+        checkoutData: { ...checkoutData, deliveryFee, total }, 
+        cart 
+    });
     router.push(ROUTES.ORDER_CONFIRMATION);
-  }, [uiFrozen, cart, checkoutData, setPendingCheckout, router]);
+  }, [uiFrozen, cart, checkoutData, deliveryFee, total, setPendingCheckout, router]);
 
   if (!cart) return <div className="min-h-screen flex items-center justify-center"><LoadingSpinner size="lg" /></div>;
 
-  const subtotal = getCartSubtotal();
   const totalItems = getCartItemCount();
-  const isFormComplete = Boolean(checkoutData.deliveryAddress) && Boolean(checkoutData.deliveryOption) && Boolean(checkoutData.paymentMethod) && prescriptionReviewed;
+  const isFormComplete = Boolean(checkoutData.deliveryAddress) && 
+                         Boolean(checkoutData.deliveryOption) && 
+                         Boolean(checkoutData.paymentMethod) && 
+                         prescriptionReviewed;
 
   return (
     <div className="min-h-screen bg-neutral-light font-[var(--font-montserrat)]">
@@ -144,7 +150,6 @@ export default function CheckoutPage() {
             />
             <div className="h-px bg-border" />
 
-            {/* تم حل خطأ الـ icon هنا عبر الـ Type Casting الصحيح لمصفوفة الـ PAYMENT_MEHODS */}
             <PaymentMethods 
               methods={PAYMENT_METHODS as unknown as PaymentMethod[]} 
               selected={checkoutData.paymentMethod} 
@@ -179,9 +184,9 @@ export default function CheckoutPage() {
             <CheckoutSidebar
               cartGroups={cart.groups}
               subtotal={subtotal}
-              deliveryFee={checkoutData.deliveryFee}
+              deliveryFee={deliveryFee}
               discount={checkoutData.discount}
-              total={checkoutData.total}
+              total={total}
               totalItems={totalItems}
               onApplyCoupon={handleApplyCoupon}
               onRemoveCoupon={handleRemoveCoupon}

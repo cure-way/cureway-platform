@@ -5,7 +5,6 @@ import { Check } from "lucide-react";
 
 // ===================================================================
 // ORDER SUCCESS — Animated checkmark for the confirmation page
-// (Lightweight version that renders inline, no required props)
 // ===================================================================
 
 export function OrderSuccess() {
@@ -35,7 +34,8 @@ export function OrderSuccess() {
           Order Placed Successfully!
         </h2>
         <p className="text-t-17 text-muted-foreground">
-          Thank you for your order. We'll notify you when it's on the way.
+          Thank you for your order. We&apos;ll notify you when it&apos;s on the
+          way.
         </p>
       </motion.div>
     </div>

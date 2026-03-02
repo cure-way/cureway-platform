@@ -1,13 +1,15 @@
-//===================================================================//
-// ORDER PHARMACY GROUP COMPONENT (for Order Confirmation)
-// ===================================================================
-
-
-import {  MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import Image from "next/image";
 import { formatCurrency } from "@/utils/cart.utils";
 
 
+interface OrderItem {
+  id: string;
+  name: string;
+  image: string;
+  quantity?: number;
+  price?: number;
+}
 
 interface OrderPharmacyGroupProps {
   group: {
@@ -16,7 +18,7 @@ interface OrderPharmacyGroupProps {
       name: string;
       address: string;
     };
-    items: any[];
+    items: OrderItem[]; 
     subtotal: number;
   };
 }

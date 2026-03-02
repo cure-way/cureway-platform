@@ -6,7 +6,7 @@ import { STORAGE_KEYS, CART_LIMITS } from "@/constants/cart.constants";
 import { toast } from "sonner";
 
 // ===================================================================
-// CART STORE — Client-Side Only (No Mock Services)
+// CART STORE — Client-Side Only
 // ===================================================================
 
 const EMPTY_CART: Cart = {
@@ -31,7 +31,7 @@ interface CartStore {
   removePharmacyGroup: (pharmacyId: string) => void;
   clearCart: () => void;
   
-  // ── Coupons (Added to fix Checkout page errors) ──────────────
+  // ── Coupons ──────────────────────────────────────────────────
   applyCoupon: (code: string) => void;
   removeCoupon: () => void;
 
@@ -51,10 +51,14 @@ interface CartStore {
 // ─────────────────────────────────────────────────────────────────
 function recomputeTotals(cart: Cart): void {
   cart.groups.forEach((g) => {
-    // إصلاح خطأ unitPrice: تم استخدام price فقط لأنه المتوفر في النوع
+
     g.subtotal = g.items.reduce((s, i) => s + (i.price || 0) * i.quantity, 0);
   });
+  
+
   cart.groups = cart.groups.filter((g) => g.items.length > 0);
+  
+
   cart.totalItems = cart.groups.reduce(
     (s, g) => s + g.items.reduce((ss, i) => ss + i.quantity, 0),
     0,
@@ -83,6 +87,8 @@ export const useCartStore = create<CartStore>()(
       // ── addItem ────────────────────────────────────────────────
       addItem: (pharmacy, item) => {
         const invId = Number(item.inventoryId);
+        
+
         if (!invId || invId < 10) {
           toast.error("Cannot add mock items. Please use the real store.");
           return;
@@ -92,16 +98,20 @@ export const useCartStore = create<CartStore>()(
           let group = state.cart.groups.find((g) => g.pharmacy.id === pharmacy.id);
           
           if (!group) {
+          
             group = {
-            
-              pharmacy: { ...pharmacy, isAvailable: true } as any,
+              pharmacy: { 
+                id: pharmacy.id, 
+                name: pharmacy.name, 
+                address: pharmacy.address,
+                isAvailable: true // خاصية مطلوبة في النوع
+              },
               items: [],
               subtotal: 0,
             };
             state.cart.groups.push(group);
           }
           
-    
           if (group) {
             const existing = group.items.find((i) => i.id === item.id);
             if (existing) {
@@ -163,9 +173,9 @@ export const useCartStore = create<CartStore>()(
         toast.success("Cart cleared");
       },
 
-      // Placeholder functions to satisfy TypeScript
-      applyCoupon: (code) => { console.log("Coupon applied:", code); },
-      removeCoupon: () => { console.log("Coupon removed"); },
+      // Placeholder functions
+      applyCoupon: (code) => { console.log("Coupon application logic:", code); },
+      removeCoupon: () => { console.log("Coupon removal logic"); },
 
       markPrescriptionUploaded: (itemId) => {
         set((state) => {

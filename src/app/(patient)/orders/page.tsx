@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useState, useEffect } from "react";
-import { OrdersTabs, type OrdersTabKey } from "@/components/patient/orders/OrdersTabs";
+import { type OrdersTabKey } from "@/components/patient/orders/OrdersTabs";
 import { OrdersList } from "@/components/patient/orders/OrdersList";
 import { useOrderStore } from "@/store/order.store";
 import type { Order } from "@/types/order";
