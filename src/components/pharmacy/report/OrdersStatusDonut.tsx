@@ -1,13 +1,18 @@
 "use client";
 
 import { PieChart, Pie, Tooltip, Cell } from "recharts";
-import { OrderStatusDatum } from "@/types/pharmacyTypes";
-import { buildOrdersStatusModel } from "@/services/pharmacyInventory";
-import { OrdersStatusInfo } from "./OrdersStatusInfo";
 
-export function OrdersStatusDonut({ data }: { data: OrderStatusDatum[] }) {
+import { OrdersStatusInfo } from "./OrdersStatusInfo";
+import { OrderStatusDonutDatum } from "@/types/pharmacyOrders";
+import { buildOrdersStatusModel } from "@/services/pharmacyOrders";
+
+export function OrdersStatusDonut({
+  data,
+}: {
+  data: OrderStatusDonutDatum[] | null;
+}) {
   const { completedPercent, pendingPercent, outerData, innerData } =
-    buildOrdersStatusModel(data);
+    buildOrdersStatusModel(data ?? []);
 
   return (
     <div className="flex flex-col items-center">

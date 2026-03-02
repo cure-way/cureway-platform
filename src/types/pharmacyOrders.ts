@@ -100,3 +100,34 @@ export interface SearchOrder {
   firstMedicineName: string;
   remainingItemsCount: number;
 }
+
+export interface WeeklyStats {
+  totalOrders: number;
+  deliveredCount: number;
+  completionRate: number;
+  pendingRate: number;
+}
+
+export interface OrderStatusDonutDatum {
+  name: "Delivered" | "Pending";
+  value: number;
+}
+
+export interface OrdersStatusModel {
+  completedPercent: number;
+  pendingPercent: number;
+  outerData: { name: string; value: number }[];
+  innerData: { name: string; value: number }[];
+}
+
+export interface WeeklyOrdersDatum {
+  label: string;
+  orders: number;
+}
+
+export interface TopMedicine {
+  medicineId: number;
+  medicineName: string;
+  soldUnits: number;
+  orderCount: number;
+}

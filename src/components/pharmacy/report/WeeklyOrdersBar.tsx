@@ -1,6 +1,6 @@
 "use client";
 
-import { WeeklyOrdersDatum } from "@/types/pharmacyTypes";
+import { WeeklyOrdersDatum } from "@/types/pharmacyOrders";
 import {
   BarChart,
   Bar,
@@ -10,8 +10,12 @@ import {
   CartesianGrid,
 } from "recharts";
 
-export function WeeklyOrdersBar({ data }: { data: WeeklyOrdersDatum[] }) {
-  const totalOrdersThisWeek = data.reduce((sum, d) => sum + d.orders, 0);
+export function WeeklyOrdersBar({
+  data,
+}: {
+  data: WeeklyOrdersDatum[] | null;
+}) {
+  const totalOrdersThisWeek = data?.reduce((sum, d) => sum + d.orders, 0);
 
   return (
     <div className="h-80">
@@ -20,7 +24,7 @@ export function WeeklyOrdersBar({ data }: { data: WeeklyOrdersDatum[] }) {
       </h2>
 
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data}>
+        <BarChart data={data ?? []}>
           <CartesianGrid
             strokeDasharray="3 3"
             vertical={false}

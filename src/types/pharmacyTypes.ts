@@ -1,5 +1,3 @@
-import { DAY_ORDER } from "@/utils/pharmacyConstants";
-
 // Inventory types
 export type InventoryStatus = "in" | "low" | "out";
 
@@ -206,46 +204,6 @@ export interface SearchMedicine {
   id: number;
   medicineName: string;
   categoryName: string;
-}
-///////////////////////////////////////////////////////////////
-export interface OrderItem {
-  inventoryId: string;
-  quantity: number;
-  unitPrice: number;
-}
-export interface OrderRow {
-  id: string;
-  customer: string;
-  items: OrderItem[];
-  total: number;
-  date: string;
-  status: "Delivered" | "Pending" | "New" | "Cancelled";
-}
-
-export interface OrderStatusDatum {
-  name: "Delivered" | "Pending";
-  value: number;
-}
-
-export interface WeeklyOrdersDatum {
-  day: "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun";
-  orders: number;
-}
-
-export type Day = (typeof DAY_ORDER)[number];
-
-export interface TopMedicine {
-  id: string;
-  medicine: string;
-  sold: number;
-  orders: number;
-}
-
-export interface OrdersStatusModel {
-  completedPercent: number;
-  pendingPercent: number;
-  outerData: { name: string; value: number }[];
-  innerData: { name: string; value: number }[];
 }
 
 export interface Pharmacy {
