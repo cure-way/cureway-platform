@@ -13,22 +13,48 @@ export default function CartPage() {
   const { cart, fetchCart, loading } = useCartStore();
   const [view, setView] = useState<CartView>("detailed");
 
-  useEffect(() => { if (!cart) fetchCart(); /* eslint-disable-next-line */ }, []);
+
   useEffect(() => {
-    if (!cart) return;
+    fetchCart();
+  }, [fetchCart]);
+
+ 
+  useEffect(() => {
+    
+    if (!cart || cart.groups.length === 0) {
+      setView("detailed");
+      return;
+    }
+
+ 
     const pending = getPendingPrescriptionItems(cart.groups.flatMap(g => g.items));
-    setView(pending.length === 0 ? "summary" : "detailed");
+
+
+    const isReadyForSummary = cart.totalItems > 0 && pending.length === 0;
+    
+    setView(isReadyForSummary ? "summary" : "detailed");
   }, [cart]);
 
-  if (loading === "loading" && !cart)
-    return <div className="min-h-screen flex items-center justify-center"><LoadingSpinner size="lg" text="Loading your cart…" /></div>;
+  if (loading === "loading" && (!cart || cart.groups.length === 0)) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="lg" text="Loading your cart…" />
+      </div>
+    );
+  }
 
-  const totalItems = cart?.groups.reduce((s, g) => s + g.items.reduce((ss, i) => ss + i.quantity, 0), 0) ?? 0;
+  const totalItems = cart?.totalItems ?? 0;
 
   return (
     <div className="min-h-screen bg-background">
       <CartHeader totalItems={totalItems} />
-      <main>{view === "detailed" ? <CartPageDetailed /> : <CartPageSummary />}</main>
+      <main>
+        {view === "detailed" ? (
+          <CartPageDetailed />
+        ) : (
+          <CartPageSummary />
+        )}
+      </main>
     </div>
   );
 }

@@ -3,9 +3,12 @@ import type { Order } from "@/types/order";
 export const mockOrders: Order[] = [
   {
     id: "1245",
+    pharmacyId: "1",
     pharmacyName: "City Pharmacy",
     address: "Omar Mukhtar Street, Al-Rimal Area",
     itemsCount: 3,
+    deliveryFee: 5.0,
+    discount: 0,
     total: 36.0,
     orderedAtISO: "2025-12-27T10:30:00.000Z",
     estimatedDelivery: "Today, 6:00 PM",
@@ -13,21 +16,26 @@ export const mockOrders: Order[] = [
   },
   {
     id: "3321",
+    pharmacyId: "1",
     pharmacyName: "City Pharmacy",
     address: "Omar Mukhtar Street, Al-Rimal Area",
     itemsCount: 1,
+    deliveryFee: 2.0,
+    discount: 0,
     total: 12.5,
     orderedAtISO: "2025-12-20T14:20:00.000Z",
     status: "processing",
   },
   {
     id: "7788",
+    pharmacyId: "1",
     pharmacyName: "City Pharmacy",
     address: "Omar Mukhtar Street, Al-Rimal Area",
     itemsCount: 2,
+    deliveryFee: 5.0,
+    discount: 0,
     total: 22.0,
     orderedAtISO: "2025-12-10T09:00:00.000Z",
     status: "delivered",
   },
-  
 ];

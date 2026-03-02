@@ -6,14 +6,7 @@ import { useOrderStore } from "@/store/order.store";
 import type { Order } from "@/types/order";
 import ErrorMessage from "@/components/shared/ErrorMessage";
 
-// =============================================================================
-// Orders Page
-//
-// Always fetches fresh data from GET /orders on mount so a newly placed
-// order appears immediately after redirect from the confirmation page.
-// The store's persisted list is shown instantly (zero flash) while the
-// API call is in flight, then replaced with the server response.
-// =============================================================================
+
 
 function filterByTab(tab: OrdersTabKey, orders: Order[]) {
   if (tab === "all")       return orders;

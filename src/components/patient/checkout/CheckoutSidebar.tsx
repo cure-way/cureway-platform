@@ -5,16 +5,6 @@ import { ChevronUp, ChevronDown } from "lucide-react";
 import { CouponInput } from "./CouponInput";
 import type { CartGroup } from "@/types/cart";
 
-// =============================================================================
-// CheckoutSidebar
-//
-// Shows cart groups, coupon input, price breakdown, and the Confirm Order
-// button at the bottom.
-//
-// confirmEnabled is false until the user clicks "Place Order" in the left panel
-// (which validates the form and freezes the UI). Once enabled, clicking
-// "Confirm Order" navigates to the confirmation page.
-// =============================================================================
 
 interface Props {
   cartGroups: CartGroup[];
@@ -29,9 +19,11 @@ interface Props {
   discountPercent?: number;
   prescriptionReviewed?: boolean;
   /** Navigates to /Orderconfirmation — only active after Place Order clicked */
-  onConfirm?: () => void;
+  onConfirm?: () => void | Promise<void>;
   /** Enabled when the form has been validated (Place Order clicked) */
   confirmEnabled?: boolean;
+  /** True while the address is being created + order is being prepared */
+  confirming?: boolean;
 }
 
 export const CheckoutSidebar = memo(function CheckoutSidebar({
@@ -48,6 +40,7 @@ export const CheckoutSidebar = memo(function CheckoutSidebar({
   prescriptionReviewed,
   onConfirm,
   confirmEnabled,
+  confirming = false,
 }: Props) {
   const [discountsOpen, setDiscountsOpen] = useState(true);
   const hasPrescription = cartGroups.some((g) =>
@@ -206,15 +199,22 @@ export const CheckoutSidebar = memo(function CheckoutSidebar({
 
       {/* ── Confirm Order button ── */}
       <button
-        onClick={confirmEnabled ? onConfirm : undefined}
-        disabled={!confirmEnabled}
-        className={`w-full h-14 rounded-xl border-none text-t-17-semibold text-card transition-all ${
-          confirmEnabled
+        onClick={confirmEnabled && !confirming ? onConfirm : undefined}
+        disabled={!confirmEnabled || confirming}
+        className={`w-full h-14 rounded-xl border-none text-t-17-semibold text-card transition-all flex items-center justify-center gap-2 ${
+          confirmEnabled && !confirming
             ? "bg-primary cursor-pointer hover:bg-primary-hover shadow-sm"
             : "bg-border text-neutral cursor-default opacity-60"
         }`}
       >
-        Confirm Order
+        {confirming ? (
+          <>
+            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            Saving address…
+          </>
+        ) : (
+          "Confirm Order"
+        )}
       </button>
 
       {!confirmEnabled && (

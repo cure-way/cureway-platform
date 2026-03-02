@@ -15,28 +15,22 @@ import type { Coordinates } from "@/types/cart";
 
 // ─────────────────────────────────────────────────────────────────
 // useCartSync
-// Periodically syncs the cart with the server while the user is
-// authenticated. Pass isAuthenticated from your auth hook/context.
 // ─────────────────────────────────────────────────────────────────
 export function useCartSync(isAuthenticated: boolean): void {
-  const { syncCart, lastSyncTime, setLastSyncTime, cart } = useCartStore();
+
+  const { lastSyncTime, cart, fetchCart } = useCartStore();
 
   useEffect(() => {
-    // No sync needed when not authenticated or cart is empty
     if (!isAuthenticated || !cart) return;
 
-    const now = Date.now();
-    if (!lastSyncTime || now - lastSyncTime > CART_SYNC_INTERVAL) {
-      syncCart();
-    }
 
     const interval = setInterval(() => {
-      syncCart();
+       // fetchCart();
     }, CART_SYNC_INTERVAL);
 
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "cureway_cart" && e.newValue) {
-        setLastSyncTime(Date.now());
+       
       }
     };
     window.addEventListener("storage", handleStorageChange);
@@ -45,7 +39,7 @@ export function useCartSync(isAuthenticated: boolean): void {
       clearInterval(interval);
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, [isAuthenticated, cart, syncCart, lastSyncTime, setLastSyncTime]);
+  }, [isAuthenticated, cart, lastSyncTime, fetchCart]);
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -104,7 +98,8 @@ export function useDebounce<T>(value: T, delay: number): T {
 // usePrevious
 // ─────────────────────────────────────────────────────────────────
 export function usePrevious<T>(value: T): T | undefined {
-  const ref = useRef<T>(undefined);
+  
+  const ref = useRef<T | undefined>(undefined);
   useEffect(() => { ref.current = value; }, [value]);
   return ref.current;
 }
@@ -192,7 +187,8 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 // ─────────────────────────────────────────────────────────────────
 export function useClickOutside<T extends HTMLElement = HTMLElement>(
   callback: () => void,
-): RefObject<T> {
+): RefObject<T | null> {
+  
   const ref = useRef<T>(null);
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -203,7 +199,9 @@ export function useClickOutside<T extends HTMLElement = HTMLElement>(
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, [callback]);
-  return ref;
+
+  
+  return ref as unknown as RefObject<T | null>;
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -223,7 +221,7 @@ export function useEscapeKey(callback: () => void): void {
 // useIntersectionObserver
 // ─────────────────────────────────────────────────────────────────
 export function useIntersectionObserver(
-  ref: RefObject<Element>,
+  ref: RefObject<Element | null>, 
   options: IntersectionObserverInit = {},
 ): boolean {
   const [isIntersecting, setIsIntersecting] = useState(false);

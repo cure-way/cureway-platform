@@ -5,29 +5,22 @@ import { useRouter } from "next/navigation";
 import { Suspense } from "react";
 import Image from "next/image";
 import { useOrderStore } from "@/store/order.store";
+import { useCartStore } from "@/store/cart.store";
 import { ROUTES } from "@/constants/cart.constants";
 import { toast } from "sonner";
 
-// =============================================================================
-// Order Confirmation Page
-//
-// Shows a summary of the pending order (read from order store pendingCheckout).
-// Single action: "Save" button.
-//
-// On Save:
-//   1. Calls store.placeOrder()
-//   2. placeOrder() calls ordersService.createOrder(checkoutData, cart)
-//   3. createOrder() sends POST /orders to the API
-//   4. On success → navigate to /orders (which refetches from server)
-//   5. On error   → toast + stay on page so user can retry
-// =============================================================================
+
+
+const MOCK_CART_ERROR = "Please clear your cart and add items from the real store";
 
 function OrderConfirmationContent() {
-  const router = useRouter();
+  const router  = useRouter();
   const { pendingCheckout, placeOrder, placing } = useOrderStore();
-  const [submitted, setSubmitted] = useState(false);
+  const { clearCart } = useCartStore();
+  const [submitted,  setSubmitted]  = useState(false);
+  const [cartError,  setCartError]  = useState(false);   // true = show clear-cart banner
+  const [clearing,   setClearing]   = useState(false);
 
-  // If user navigated here directly without going through checkout
   if (!pendingCheckout) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-neutral-light">
@@ -51,9 +44,6 @@ function OrderConfirmationContent() {
     0,
   );
 
-  const total = checkoutData.total;
-
-  // Build address string from what the user entered in the form
   const addressText = [
     checkoutData.deliveryAddress?.street,
     checkoutData.deliveryAddress?.area,
@@ -62,29 +52,51 @@ function OrderConfirmationContent() {
     .filter(Boolean)
     .join(", ");
 
-  // ── Save = POST /orders ────────────────────────────────────────────────────
+  // ── Place Order ───────────────────────────────────────────────────────────
+  // Pipeline lives entirely in ordersService.createOrder():
+  //   1. Auth  2. Mock-data guard  3. POST /addresses  4. POST /order
   const handleSave = async () => {
-    if (submitted) return;
+    if (submitted || placing) return;
+    setCartError(false);
+
     try {
-      await placeOrder(); // → POST /orders (see order.store.ts + orders.service.ts)
+      await placeOrder();
       setSubmitted(true);
       toast.success("Order placed successfully!");
-      // Navigate to orders page — fetchOrders() runs on mount there
       router.push(ROUTES.ORDERS);
     } catch (err) {
-      const msg =
-        err instanceof Error && err.message
-          ? err.message
-          : "Failed to place order. Please try again.";
-      console.error("[Orderconfirmation] placeOrder failed:", msg, err);
-      toast.error(msg);
-      // Stay on page so user can retry
+      const msg = err instanceof Error ? err.message : "Failed to place order. Please try again.";
+      console.error("[Orderconfirmation] placeOrder failed:", err);
+
+      if (msg === MOCK_CART_ERROR) {
+        // Show the inline banner with a "Clear Cart" action button
+        setCartError(true);
+      } else {
+        toast.error(msg);
+      }
     }
   };
 
+  // ── Clear stale mock cart then send user back to shop ─────────────────────
+  const handleClearCart = async () => {
+    if (clearing) return;
+    setClearing(true);
+    try {
+      await clearCart();
+      toast.success("Cart cleared! Please add items from the store.");
+      router.push(ROUTES.MEDICINES);
+    } catch {
+      toast.error("Could not clear cart. Please try again.");
+    } finally {
+      setClearing(false);
+    }
+  };
+
+  const isWorking = placing || submitted;
+
   return (
     <div className="min-h-screen bg-neutral-light font-[var(--font-montserrat)]">
-      {/* Page header */}
+      {/* Header */}
       <div className="w-full bg-accent px-4 sm:px-8 lg:px-10 xl:px-20 pt-4 pb-8">
         <div className="max-w-[1392px] mx-auto">
           <h1 className="text-t-30-bold text-primary m-0">Order Confirmation</h1>
@@ -95,7 +107,7 @@ function OrderConfirmationContent() {
       <div className="max-w-[600px] mx-auto mt-8 px-4 pb-12">
         <div className="bg-card rounded-3xl border border-border shadow-card overflow-hidden">
 
-          {/* ── Green checkmark ── */}
+          {/* Checkmark */}
           <div className="flex items-center px-8 pt-8 pb-2">
             <div className="flex-1 h-px bg-border" />
             <div className="mx-4 w-16 h-16 rounded-full bg-success flex items-center justify-center shadow-md flex-shrink-0">
@@ -107,30 +119,70 @@ function OrderConfirmationContent() {
             <div className="flex-1 h-px bg-border" />
           </div>
 
-          {/* ── Title ── */}
+          {/* Title */}
           <div className="text-center px-8 pb-6">
             <h2 className="text-t-25-bold text-primary m-0 mb-1">Order Confirmation</h2>
             <p className="text-t-17 text-muted-foreground m-0">
-              Your order has been placed successfully
+              Review your order before confirming
             </p>
           </div>
 
-          {/* ── Pharmacy groups ── */}
+          {/* ── Stale-cart error banner ── */}
+          {cartError && (
+            <div className="mx-6 mb-4 rounded-xl border border-destructive/40 bg-destructive/5 px-5 py-4">
+              <p className="text-t-14-semibold text-destructive m-0 mb-3">
+                ⚠️ Your cart contains old test data that the server does not
+                recognise. Please clear your cart and re-add items from the
+                official store.
+              </p>
+              <button
+                onClick={handleClearCart}
+                disabled={clearing}
+                className="h-10 px-5 rounded-lg bg-destructive text-white text-t-14-semibold
+                           border-none cursor-pointer hover:opacity-90 transition-opacity
+                           flex items-center gap-2 disabled:opacity-60 disabled:cursor-default"
+              >
+                {clearing ? (
+                  <>
+                    <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Clearing…
+                  </>
+                ) : (
+                  "Clear Cart & Go to Store"
+                )}
+              </button>
+            </div>
+          )}
+
+          {/* Address row */}
+          {addressText && (
+            <div className="mx-6 mb-3 bg-accent rounded-xl px-4 py-3 flex items-start gap-2">
+              <svg className="mt-0.5 flex-shrink-0" width="14" height="14" viewBox="0 0 24 24"
+                   fill="none" stroke="hsl(var(--primary))" strokeWidth="2.5"
+                   strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                <circle cx="12" cy="9" r="2.5"/>
+              </svg>
+              <span className="text-t-14 text-foreground">{addressText}</span>
+            </div>
+          )}
+
+          {/* Pharmacy groups */}
           <div className="px-6 flex flex-col gap-3 mb-3">
             {cart.groups.map((group, gi) => {
               const images = group.items
                 .map((i) => i.image)
                 .filter((src): src is string => Boolean(src));
               const shownImages = images.slice(0, 3);
-              const totalQty = group.items.reduce((s, i) => s + i.quantity, 0);
-              const extraQty = totalQty - shownImages.length;
+              const totalQty   = group.items.reduce((s, i) => s + i.quantity, 0);
+              const extraQty   = totalQty - shownImages.length;
 
               return (
                 <div
                   key={gi}
                   className="flex items-center gap-4 bg-neutral-light rounded-2xl border border-border p-4"
                 >
-                  {/* Medicine image strip */}
+                  {/* Image strip */}
                   <div className="relative flex-shrink-0 w-[100px] h-[72px] bg-accent rounded-xl flex items-center justify-center overflow-hidden">
                     {shownImages.length > 0 ? (
                       <div className="flex items-center gap-1 px-2">
@@ -170,26 +222,26 @@ function OrderConfirmationContent() {
             })}
           </div>
 
-          {/* ── Total row ── */}
+          {/* Total */}
           <div className="mx-6 mb-6 bg-neutral-light rounded-xl border border-border px-5 py-4 flex items-center justify-between">
             <span className="text-t-17-semibold text-foreground">
               Total{" "}
-              <span className="font-normal text-muted-foreground">
-                ({totalItems} items)
-              </span>
+              <span className="font-normal text-muted-foreground">({totalItems} items)</span>
             </span>
-            <span className="text-t-25-bold text-primary">{total.toFixed(2)}$</span>
+            <span className="text-t-25-bold text-primary">
+              {checkoutData.total.toFixed(2)}$
+            </span>
           </div>
 
-          {/* ── Save button — fires POST /orders ── */}
+          {/* Confirm & Place Order button */}
           <div className="px-6 pb-8">
             <button
               onClick={handleSave}
-              disabled={placing || submitted}
+              disabled={isWorking || cartError}
               className={`w-full h-[56px] rounded-xl text-white text-t-17-semibold border-none
                          flex items-center justify-center gap-2 transition-colors ${
-                           placing || submitted
-                             ? "bg-secondary cursor-default"
+                           isWorking || cartError
+                             ? "bg-secondary cursor-default opacity-60"
                              : "bg-primary cursor-pointer hover:bg-primary-hover"
                          }`}
             >
@@ -199,7 +251,7 @@ function OrderConfirmationContent() {
                   Placing Order…
                 </>
               ) : (
-                "Save"
+                "Confirm & Place Order"
               )}
             </button>
           </div>

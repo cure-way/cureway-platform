@@ -1,23 +1,28 @@
 // =============================================================================
 // ORDERS SERVICE
 //
-// All order API calls in one place. Adapts raw API types → UI types.
+// Real API endpoints:
+//   POST /order                  → createOrder()
+//   GET  /order/my               → getOrders()
+//   GET  /order/my/{id}          → getOrderById()
+//   PATCH /order/my/{id}/cancel  → cancelOrder()
 //
-// Endpoints:
-//   POST /orders              → createOrder()
-//   GET  /orders              → getOrders()
-//   GET  /orders/{id}         → getOrderById()
-//   PATCH /orders/{id}/cancel → cancelOrder()
+// createOrder() owns the COMPLETE pre-order pipeline so nothing outside
+// this file needs to know about addresses or city IDs:
 //
-// ADDRESS NOTE:
-//   The API requires deliveryAddressId (a saved address foreign key).
-//   Since saved addresses are not used in this flow, the user-entered address
-//   text is appended to the order notes so the pharmacy sees the full address.
-//   deliveryAddressId defaults to 1 as a placeholder — replace with the real
-//   default address ID from your backend if needed.
+//   1. Auth check
+//   2. Mock-data guard      – pharmacyId < 10 or inventoryId < 10 → throw
+//   3. POST /patient/addresses  – build a real deliveryAddressId from the
+//                                  address text the user typed in the form
+//   4. POST /order              – clean Swagger-compliant payload
 // =============================================================================
 
-import { ordersApiService, mapApiOrderStatus } from "@/services/api.service";
+import {
+  ordersApiService,
+  patientAddressService,
+  mapApiOrderStatus,
+} from "@/services/api.service";
+import { http, getAccessToken } from "@/lib/api/http";
 import type { Order, OrderItem, OrderPharmacyGroup } from "@/types/order";
 import type { CheckoutData, Cart } from "@/types/cart";
 import type {
@@ -28,17 +33,57 @@ import type {
 } from "@/types/api.types";
 
 // =============================================================================
-// Private adapters
+// Internal helpers
+// =============================================================================
+
+interface CityDto { id: number; name: string; }
+
+/**
+ * GET /cities → return the cityId that best matches cityName.
+ * Falls back to cities[0] for single-city deployments (e.g. Gaza-only).
+ * Throws only when the endpoint returns an empty list.
+ */
+async function resolveCityId(cityName: string): Promise<number> {
+  const res = await http.get<
+    CityDto[] | { data?: CityDto[]; items?: CityDto[] }
+  >("/cities");
+
+  let cities: CityDto[];
+  if (Array.isArray(res.data)) {
+    cities = res.data;
+  } else {
+    cities =
+      (res.data as { data?: CityDto[] }).data ??
+      (res.data as { items?: CityDto[] }).items ??
+      [];
+  }
+
+  if (cities.length === 0) {
+    throw new Error(
+      "City list is empty — cannot create a delivery address. Please contact support.",
+    );
+  }
+
+  const q = cityName.trim().toLowerCase();
+  const match = q
+    ? cities.find((c) => c.name.toLowerCase().includes(q))
+    : undefined;
+
+  return (match ?? cities[0]).id;
+}
+
+// =============================================================================
+// Private response adapters
 // =============================================================================
 
 function adaptItem(item: CreatePharmacyOrderItemResponseDto): OrderItem {
   return {
-    id: String(item.inventoryId),
-    name: item.medicineName,
+    id:          String(item.inventoryId),
+    name:        item.medicineName,
     genericName: undefined,
-    image: undefined,
-    quantity: item.quantity,
-    unitPrice: item.unitPrice,
+    image:       undefined,
+    quantity:    item.quantity,
+    unitPrice:   item.unitPrice,
   };
 }
 
@@ -60,19 +105,19 @@ function adaptListItem(dto: PatientOrderListItemDto): Order {
   const addressText = dto.deliveryAddress?.addressText ?? "";
 
   return {
-    id: String(dto.id),
-    pharmacyName: pharmacyNames,
-    pharmacyId: String(dto.pharmacyOrders?.[0]?.pharmacyId ?? ""),
-    address: addressText,
+    id:              String(dto.id),
+    pharmacyName:    pharmacyNames,
+    pharmacyId:      String(dto.pharmacyOrders?.[0]?.pharmacyId ?? ""),
+    address:         addressText,
     deliveryAddress: addressText || undefined,
-    itemsCount: totalItems,
-    total: dto.totalAmount ?? 0,
-    deliveryFee: dto.deliveryFee ?? 0,
+    itemsCount:      totalItems,
+    total:           dto.totalAmount ?? 0,
+    deliveryFee:     dto.deliveryFee ?? 0,
     discount,
-    currency: dto.currency ?? "ILS",
-    orderedAtISO: dto.createdAt,
-    status: mapApiOrderStatus(dto.status),
-    items: [],
+    currency:        dto.currency ?? "ILS",
+    orderedAtISO:    dto.createdAt,
+    status:          mapApiOrderStatus(dto.status),
+    items:           [],
   };
 }
 
@@ -86,13 +131,15 @@ function adaptDetailItem(dto: PatientOrderDetailsResponseDto): Order {
     po.items.map(adaptItem),
   );
 
-  const pharmacyGroups: OrderPharmacyGroup[] = dto.pharmacyOrders.map((po) => ({
-    pharmacyId: String(po.pharmacyId),
-    pharmacyName: po.pharmacyName,
-    pharmacyAddress: po.pharmacyLocation?.address ?? "",
-    subtotal: po.subtotal,
-    items: po.items.map(adaptItem),
-  }));
+  const pharmacyGroups: OrderPharmacyGroup[] = dto.pharmacyOrders.map(
+    (po) => ({
+      pharmacyId:      String(po.pharmacyId),
+      pharmacyName:    po.pharmacyName,
+      pharmacyAddress: po.pharmacyLocation?.address ?? "",
+      subtotal:        po.subtotal,
+      items:           po.items.map(adaptItem),
+    }),
+  );
 
   const addressText = dto.deliveryAddress?.addressText ?? "";
   const discount = Math.max(
@@ -101,20 +148,20 @@ function adaptDetailItem(dto: PatientOrderDetailsResponseDto): Order {
   );
 
   return {
-    id: String(dto.id),
-    pharmacyName: pharmacyNames,
-    pharmacyId: String(dto.pharmacyOrders[0]?.pharmacyId ?? ""),
-    address: addressText,
+    id:              String(dto.id),
+    pharmacyName:    pharmacyNames,
+    pharmacyId:      String(dto.pharmacyOrders[0]?.pharmacyId ?? ""),
+    address:         addressText,
     deliveryAddress: addressText || undefined,
-    itemsCount: allItems.length,
-    items: allItems,
+    itemsCount:      allItems.length,
+    items:           allItems,
     pharmacyGroups,
-    total: dto.totalAmount ?? 0,
-    deliveryFee: dto.deliveryFee ?? 0,
+    total:           dto.totalAmount ?? 0,
+    deliveryFee:     dto.deliveryFee ?? 0,
     discount,
-    currency: dto.currency ?? "ILS",
-    orderedAtISO: dto.createdAt,
-    status: mapApiOrderStatus(dto.status),
+    currency:        dto.currency ?? "ILS",
+    orderedAtISO:    dto.createdAt,
+    status:          mapApiOrderStatus(dto.status),
   };
 }
 
@@ -123,143 +170,163 @@ function adaptDetailItem(dto: PatientOrderDetailsResponseDto): Order {
 // =============================================================================
 
 export const ordersService = {
-  // ──────────────────────────────────────────────────────────────────────────
-  // POST /orders
-  //
-  // Called ONLY from order.store.ts → placeOrder()
-  // which is triggered by the confirmation page's "Save" button.
-  //
-  // Address handling:
-  //   The API requires deliveryAddressId (numeric FK to a saved address).
-  //   Since we're not using the saved-address API, we fall back to
-  //   deliveryAddressId: 1 and append the user-entered address text to notes.
-  //   Update the fallback ID to match a real address in your backend if needed.
+
   // ──────────────────────────────────────────────────────────────────────────
   async createOrder(checkoutData: CheckoutData, cart: Cart): Promise<Order> {
-    // Build address text from whatever the user typed/selected
-    const enteredAddress = [
-      checkoutData.deliveryAddress?.street,
-      checkoutData.deliveryAddress?.area,
-      checkoutData.deliveryAddress?.city,
-    ]
-      .filter(Boolean)
-      .join(", ");
 
-    // Combine user notes with the address text so the backend sees the full address
-    const combinedNotes = [
-      enteredAddress ? `Delivery address: ${enteredAddress}` : "",
+    // ── Step 1: Auth ───────────────────────────────────────────────────────
+    if (!getAccessToken()) {
+      throw new Error("You are not signed in. Please sign in and try again.");
+    }
+
+    // ── Step 2: Mock-data guard ────────────────────────────────────────────
+    // Real IDs from this backend are ≥ 10. IDs 1–9 are stale mock values
+    // stuck in localStorage. We reject them with a clear, actionable message.
+    const MOCK_ID_THRESHOLD = 10;
+
+    for (const group of cart.groups) {
+      const pharmacyId = Number(group.pharmacy.id);
+
+      if (!pharmacyId || isNaN(pharmacyId) || pharmacyId < MOCK_ID_THRESHOLD) {
+        throw new Error(
+          "Please clear your cart and add items from the real store",
+        );
+      }
+
+      for (const item of group.items) {
+        const inventoryId = item.inventoryId;
+
+        if (
+          inventoryId === null ||
+          inventoryId === undefined ||
+          isNaN(Number(inventoryId)) ||
+          Number(inventoryId) < MOCK_ID_THRESHOLD
+        ) {
+          throw new Error(
+            "Please clear your cart and add items from the real store",
+          );
+        }
+      }
+    }
+
+    // ── Step 3: Create delivery address ───────────────────────────────────
+    const addr        = checkoutData.deliveryAddress;
+    const addressLine1 = addr?.street?.trim() || addr?.city?.trim() || "Delivery Address";
+    const cityName     = addr?.city?.trim() ?? "";
+
+    let deliveryAddressId: number;
+    try {
+      const cityId  = await resolveCityId(cityName);
+      const created = await patientAddressService.createAddress({
+        cityId,
+        addressLine1,
+        addressLine2: addr?.area?.trim()            || null,
+        label:        "Order Address",
+        isDefault:    false,
+        latitude:     addr?.coordinates?.lat        ?? null,
+        longitude:    addr?.coordinates?.lng        ?? null,
+      });
+      deliveryAddressId = created.id;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      throw new Error(`Could not save delivery address: ${msg}`);
+    }
+
+    // ── Step 4: Build and POST the order ──────────────────────────────────
+    const notes = [
+      addr
+        ? [addr.street, addr.area, addr.city].filter(Boolean).join(", ")
+        : "",
       checkoutData.orderNotes?.trim() ?? "",
     ]
       .filter(Boolean)
       .join(" | ");
 
-    // Use the saved address API ID if available (from a previously selected
-    // saved address), otherwise fall back to 1.
-    // TODO: replace 1 with the real default address ID for your backend.
-    const deliveryAddressId = checkoutData.deliveryAddress?.apiId ?? 1;
+    // Exact Swagger shape:
+    // pharmacies: Array<{ pharmacyId: number, items: Array<{ inventoryId: number, quantity: number }> }>
+    const pharmacies: CreateOrderDto["pharmacies"] = cart.groups.map(
+      (group) => ({
+        pharmacyId: Number(group.pharmacy.id),
+        items: group.items.map((item) => ({
+          inventoryId: item.inventoryId as number,
+          quantity:    item.quantity,
+          ...(item.prescriptionId
+            ? { prescriptionId: item.prescriptionId }
+            : {}),
+        })),
+      }),
+    );
 
     const dto: CreateOrderDto = {
       deliveryAddressId,
-      notes: combinedNotes || undefined,
-      currency: "ILS",
-      pharmacies: cart.groups.map((group) => ({
-        pharmacyId: Number(group.pharmacy.id),
-        items: group.items
-          .filter((item) => {
-            const invId = item.inventoryId ?? Number(item.medicineId);
-            if (!invId || isNaN(invId)) {
-              console.warn("[orders] Skipping item with invalid inventoryId:", item.name, item);
-            }
-            return invId && !isNaN(invId);
-          })
-          .map((item) => ({
-            inventoryId: item.inventoryId ?? Number(item.medicineId),
-            quantity: item.quantity,
-            prescriptionId: item.prescriptionId ?? undefined,
-          })),
-      })).filter((group) => {
-        const pid = group.pharmacyId;
-        if (!pid || isNaN(pid)) {
-          console.warn("[orders] Skipping pharmacy group with invalid pharmacyId");
-        }
-        return pid && !isNaN(pid) && group.items.length > 0;
-      }),
+      currency:   "ILS",
+      notes:      notes || undefined,
+      pharmacies,
     };
 
-    console.info("[orders] POST /orders payload:", JSON.stringify(dto, null, 2));
+    console.info("[orders] POST /order payload:", JSON.stringify(dto, null, 2));
 
     const response = await ordersApiService.createOrder(dto);
-    console.info("[orders] POST /orders raw response:", response);
+    console.info("[orders] POST /order response:", response);
 
-    if (!response || response.id == null) {
-      console.error("[orders] Unexpected POST /orders response shape:", response);
+    if (!response?.id) {
       throw new Error(
-        "Order was not created — unexpected response from server. Please try again.",
+        "Order was not created — unexpected server response. Please try again.",
       );
     }
 
-    console.info("[orders] POST /orders response id:", response.id);
-
-    const pharmacyGroups: OrderPharmacyGroup[] = response.pharmacies.map((p) => ({
-      pharmacyId: String(p.pharmacyId),
-      pharmacyName: p.pharmacyName,
-      pharmacyAddress: p.pharmacyLocation?.address ?? "",
-      subtotal: p.subtotal,
-      items: p.items.map(adaptItem),
-    }));
-
-    const allItems: OrderItem[] = response.pharmacies.flatMap((p) =>
-      p.items.map(adaptItem),
+    // ── Adapt response → UI Order ─────────────────────────────────────────
+    const pharmacyGroups: OrderPharmacyGroup[] = response.pharmacies.map(
+      (p) => ({
+        pharmacyId:      String(p.pharmacyId),
+        pharmacyName:    p.pharmacyName,
+        pharmacyAddress: p.pharmacyLocation?.address ?? "",
+        subtotal:        p.subtotal,
+        items:           p.items.map(adaptItem),
+      }),
     );
 
-    const responseAddress = response.deliveryAddress?.addressText ?? enteredAddress;
+    const responseAddress =
+      response.deliveryAddress?.addressText ??
+      [addr?.street, addr?.area, addr?.city].filter(Boolean).join(", ");
 
     return {
-      id: String(response.id),
-      pharmacyName: response.pharmacies.map((p) => p.pharmacyName).join(" + "),
-      pharmacyId: String(response.pharmacies[0]?.pharmacyId ?? ""),
-      address: responseAddress,
+      id:              String(response.id),
+      pharmacyName:    response.pharmacies.map((p) => p.pharmacyName).join(" + "),
+      pharmacyId:      String(response.pharmacies[0]?.pharmacyId ?? ""),
+      address:         responseAddress,
       deliveryAddress: responseAddress || undefined,
-      itemsCount: response.itemsCount,
-      items: allItems,
+      itemsCount:      response.itemsCount,
+      items:           response.pharmacies.flatMap((p) => p.items.map(adaptItem)),
       pharmacyGroups,
-      total: response.total,
-      deliveryFee: response.deliveryFee,
-      discount: response.discount ?? 0,
-      currency: response.currency ?? "ILS",
-      orderedAtISO: response.createdAt,
-      status: "processing",
-      paymentMethod: checkoutData.paymentMethod?.name ?? "",
+      total:           response.total,
+      deliveryFee:     response.deliveryFee,
+      discount:        response.discount ?? 0,
+      currency:        response.currency ?? "ILS",
+      orderedAtISO:    response.createdAt,
+      status:          "processing",
+      paymentMethod:   checkoutData.paymentMethod?.name ?? "",
     };
   },
 
   // ──────────────────────────────────────────────────────────────────────────
-  // GET /orders — returns Order[] directly (not wrapped in { data: ... })
-  // ──────────────────────────────────────────────────────────────────────────
   async getOrders(): Promise<Order[]> {
     const result = await ordersApiService.getMyOrders({
-      limit: 100,
+      limit:     100,
       sortOrder: "desc",
     });
     return (result.data ?? []).map(adaptListItem);
   },
 
-  // ──────────────────────────────────────────────────────────────────────────
-  // GET /orders/{id} — full detail with items + pharmacyGroups
-  // ──────────────────────────────────────────────────────────────────────────
   async getOrderById(orderId: string): Promise<Order> {
     const dto = await ordersApiService.getOrderById(Number(orderId));
     return adaptDetailItem(dto);
   },
 
-  // ──────────────────────────────────────────────────────────────────────────
-  // PATCH /orders/{id}/cancel
-  // ──────────────────────────────────────────────────────────────────────────
   async cancelOrder(orderId: string): Promise<void> {
     await ordersApiService.cancelOrder(Number(orderId));
   },
 
-  // Reorder — no API endpoint in spec, stays mock
   async reorder(orderId: string): Promise<void> {
     await new Promise<void>((r) => setTimeout(r, 900));
     void orderId;

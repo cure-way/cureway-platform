@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import type { CartItem } from "@/types/cart";
 import QuantityControl from "./QuantityControl";
@@ -21,6 +20,8 @@ export default function CartItemCard({
   onUploadPrescription,
   highlightPrescription = false,
 }: Props) {
+  const prescriptionInfo = item.prescriptionInfo as any;
+
   return (
     <div className="pb-6 border-b border-border mb-6 font-[var(--font-montserrat)]">
       <div className="flex items-center gap-2 sm:gap-4 pb-4 flex-wrap sm:flex-nowrap">
@@ -33,6 +34,7 @@ export default function CartItemCard({
                 width={72}
                 height={72}
                 className="object-contain"
+                unoptimized 
               />
             ) : (
               <span className="text-3xl">💊</span>
@@ -44,9 +46,10 @@ export default function CartItemCard({
               {item.name}
             </p>
 
-            {item.prescriptionInfo?.genericName && (
+    
+            {prescriptionInfo?.genericName && (
               <p className="text-t-14 text-muted-foreground mb-2">
-                {item.prescriptionInfo.genericName}
+                {prescriptionInfo.genericName}
               </p>
             )}
 
@@ -57,15 +60,15 @@ export default function CartItemCard({
                 </span>
               )}
 
-              {item.prescriptionInfo?.dosage && (
+              {prescriptionInfo?.dosage && (
                 <span className="text-t-12 border border-border rounded-lg px-2.5 py-1.5">
-                  {item.prescriptionInfo.dosage}
+                  {prescriptionInfo.dosage}
                 </span>
               )}
 
-              {item.prescriptionInfo?.form && (
+              {prescriptionInfo?.form && (
                 <span className="text-t-12 border border-border rounded-lg px-2.5 py-1.5">
-                  {item.prescriptionInfo.form}
+                  {prescriptionInfo.form}
                 </span>
               )}
             </div>

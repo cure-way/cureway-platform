@@ -32,13 +32,13 @@ export const API_ENDPOINTS = {
     GET_BY_ID: (id: number | string) => `/prescriptions/${id}`,
   },
 
-  // ── Patient Orders — /orders ───────────────────────────────────────────────
+  // ── Patient Orders — /order (singular — matches Swagger spec) ───────────────
 
   ORDERS: {
-    CREATE: "/orders",                                          // POST /orders
-    GET_MY: "/orders",                                          // GET /orders
-    GET_BY_ID: (id: number | string) => `/orders/${id}`,        // GET /orders/{id}
-    CANCEL: (id: number | string) => `/orders/${id}/cancel`,    // PATCH /orders/{id}/cancel
+    CREATE: "/orders",                                              // POST /order
+    GET_MY: "/orders",                                          // GET  /order/my
+    GET_BY_ID: (id: number | string) => `/orders/${id}`,        // GET  /order/my/{id}
+    CANCEL: (id: number | string) => `/orders/${id}/cancel`,    // PATCH /order/my/{id}/cancel
   },
 
   // ── Pharmacy Orders — /pharmacy-order ─────────────────────────────────────
@@ -52,18 +52,18 @@ export const API_ENDPOINTS = {
 
   // ── Patient Addresses — /patient/addresses ─────────────────────────────────
   ADDRESSES: {
-    LIST: "/patient/addresses",
-    CREATE: "/patient/addresses",
-    GET_BY_ID: (id: number | string) => `/patient/addresses/${id}`,
-    UPDATE: (id: number | string) => `/patient/addresses/${id}`,
-    DELETE: (id: number | string) => `/patient/addresses/${id}`,
-    SET_DEFAULT: (id: number | string) => `/patient/addresses/${id}/default`,
+    LIST: "/addresses",
+    CREATE: "/addresses",
+    GET_BY_ID: (id: number | string) => `/addresses/${id}`,
+    UPDATE: (id: number | string) => `/addresses/${id}`,
+    DELETE: (id: number | string) => `/addresses/${id}`,
+    SET_DEFAULT: (id: number | string) => `/addresses/${id}/default`,
   },
 
   // ── Checkout ───────────────────────────────────────────────────────────────
   // NOTE: API spec has no /checkout/validate endpoint; validation is client-side.
   CHECKOUT: {
-    PLACE_ORDER: "/orders", // POST /orders
+    PLACE_ORDER: "/order", // POST /order
   },
 
   // ── Delivery (no endpoint in API spec) ────────────────────────────────────

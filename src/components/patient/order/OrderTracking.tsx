@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { Check, Package, Truck,  } from "lucide-react";
 
 
-import {  formatDate } from "../../utils/cart.utils";
+import {  formatDate } from "@/utils/cart.utils";
 
 
 interface OrderTrackingProps {

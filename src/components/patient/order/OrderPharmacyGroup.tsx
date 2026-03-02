@@ -5,7 +5,7 @@
 
 import {  MapPin } from "lucide-react";
 import Image from "next/image";
-import { formatCurrency } from "../../utils/cart.utils";
+import { formatCurrency } from "@/utils/cart.utils";
 
 
 
