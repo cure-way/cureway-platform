@@ -10,6 +10,7 @@ import {
   FiBarChart2,
   FiUser,
 } from "react-icons/fi";
+import { useAuth } from "@/features/auth";
 
 interface SidebarProps {
   open: boolean;
@@ -26,6 +27,8 @@ const NAV_ITEMS = [
 
 export default function Sidebar({ open, onClose }: SidebarProps) {
   const pathname = usePathname();
+  const { user, profile } = useAuth();
+  const displayName = profile?.pharmacyName ?? user?.name ?? "Pharmacy";
 
   return (
     <>
@@ -56,7 +59,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
             <h1 className="font-semibold text-(--color-primary) text-2xl">
               CureWay
             </h1>
-            <p className="text-(--color-primary) text-sm">Pharmacy Name</p>
+            <p className="text-(--color-primary) text-sm">{displayName}</p>
           </div>
         </div>
 

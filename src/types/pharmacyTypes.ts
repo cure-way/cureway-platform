@@ -1,15 +1,10 @@
-import { DAY_ORDER } from "@/utils/pharmacyConstants";
-
+// Inventory types
 export type InventoryStatus = "in" | "low" | "out";
 
-export type InventoryCategory =
-  | "pain_relief"
-  | "antibiotics"
-  | "vitamins"
-  | "digestive"
-  | "diabetes"
-  | "eye_care"
-  | "cough_cold";
+export type StatusConfig = {
+  label: string;
+  className: string;
+};
 
 export interface InventoryItem {
   id: string;
@@ -31,9 +26,159 @@ export interface InventoryItem {
   sellingPrice: number;
 
   imageUrl?: string;
-  usageNotes?: string[];
+  notes?: string;
+
+  medicineInstructions?: {
+    dosage?: string;
+    storage?: string;
+    warnings?: string;
+  };
 }
 
+export interface CreateInventoryInput {
+  medicineId: string;
+  stockQuantity: number;
+  sellPrice: number;
+  costPrice?: number;
+  minStock?: number;
+  batchNumber?: string;
+  expiryDate?: string;
+  shelfLocation?: string;
+  notes?: string;
+  imageUrl?: string;
+}
+
+export interface UpdateInventoryInput {
+  stockQuantity?: number;
+  sellPrice?: number;
+  costPrice?: number | null;
+  minStock?: number;
+  batchNumber?: string | null;
+  expiryDate?: string | null;
+  shelfLocation?: string | null;
+  notes?: string | null;
+  imageUrl?: string;
+}
+
+//////////////////////////////////////////////////////////////////////
+export type StockStatus = "IN_STOCK" | "LOW_STOCK" | "OUT_OF_STOCK";
+export type InventoryFilterStatus = "all" | StockStatus;
+
+export interface InventoryListItem {
+  id: number;
+  medicineId: number;
+
+  medicineName: string;
+  categoryName: string;
+  packDisplayName: string;
+  requiresPrescription: boolean;
+
+  stockQuantity: number;
+  minStock: number;
+  sellPrice: number;
+  stockStatus: StockStatus;
+  expiryDate: string;
+}
+export interface InventoryDetailsDTO {
+  id: number;
+  medicineId: number;
+  pharmacyId: number;
+  stockQuantity: number;
+  minStock: number;
+  sellPrice: number;
+  costPrice: number | null;
+  isAvailable: boolean;
+  batchNumber: string;
+  expiryDate: string;
+  shelfLocation: string | null;
+  notes: string | null;
+  createdAt: string;
+  updatedAt: string;
+  medicine: {
+    id: number;
+    genericName: string;
+    brandName: string;
+    status: string;
+    isActive: boolean;
+    minPrice: number;
+    maxPrice: number;
+    requiresPrescription: boolean;
+    categoryId: number;
+    manufacturer: string;
+    dosageForm: string;
+    dosageInstructions: string;
+    storageInstructions: string;
+    warnings: string;
+    description: string;
+    packSize: number;
+  };
+  medicineImages?: {
+    imageUrl: string;
+    sortOrder: number;
+  }[];
+}
+
+export interface CreateInventoryResponseDto {
+  id: string;
+  medicineId: string;
+  stockQuantity: number;
+  sellPrice: number;
+  costPrice?: number | null;
+  minStock?: number | null;
+  batchNumber?: string | null;
+  expiryDate?: string | null;
+  shelfLocation?: string | null;
+  notes?: string | null;
+  imageUrl?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MedicineFormValues {
+  medicineId: string;
+  stockQuantity: number;
+  sellPrice: number;
+  costPrice?: number;
+  minStock?: number;
+  batchNumber?: string;
+  expiryDate?: string;
+  shelfLocation?: string;
+  notes: { value: string }[];
+}
+
+export interface GetInventoryParams {
+  page: number;
+  limit: number;
+  q?: string;
+  medicineId?: number;
+  stockStatus?: "IN_STOCK" | "LOW_STOCK" | "OUT_OF_STOCK";
+}
+///////////////////////////////////////////////////////////////////////
+
+export interface InventoryListResponse {
+  success: boolean;
+  data: InventoryListItem[];
+  meta: {
+    total: number;
+    limit: number;
+    page: number;
+    totalPages: number;
+  };
+}
+
+export interface InventoryDetailsResponse {
+  success: boolean;
+  data: InventoryDetailsDTO;
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  message?: string;
+  statusCode?: number;
+  data: T;
+}
+
+////////////////////////////////////////////////////////
 export interface Column<T> {
   key: keyof T | "action";
   header: string;
@@ -54,68 +199,13 @@ export interface ActionItem<TActionId extends string> {
   danger?: boolean;
   disabled?: boolean;
 }
-export interface OrderItem {
-  inventoryId: string;
-  quantity: number;
-  unitPrice: number;
-}
-export interface OrderRow {
-  id: string;
-  customer: string;
-  items: OrderItem[];
-  total: number;
-  date: string;
-  status: "Delivered" | "Pending" | "New" | "Cancelled";
-}
 
-export interface MedicineFormValues {
+export interface SearchMedicine {
+  id: number;
   medicineName: string;
-  category: string;
-  stock: number;
-  expiryDate: string;
-  status: InventoryStatus;
-  usageNotes: { value: string }[];
-  imageUrl?: File | null;
-}
-export interface MedicineFormPayload {
-  medicineName: string;
-  category: string;
-  stock: number;
-  expiryDate: string;
-  status: InventoryStatus;
-  usageNotes: string[];
-  imageUrl?: File | null;
+  categoryName: string;
 }
 
-export interface OrderStatusDatum {
-  name: "Delivered" | "Pending";
-  value: number;
-}
-
-export interface WeeklyOrdersDatum {
-  day: "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun";
-  orders: number;
-}
-
-export type Day = (typeof DAY_ORDER)[number];
-
-export interface TopMedicine {
-  id: string;
-  medicine: string;
-  sold: number;
-  orders: number;
-}
-
-export interface OrdersStatusModel {
-  completedPercent: number;
-  pendingPercent: number;
-  outerData: { name: string; value: number }[];
-  innerData: { name: string; value: number }[];
-}
-export interface MatchedOrder {
-  order: OrderRow;
-  matchedItems: InventoryItem[];
-}
 export interface Pharmacy {
   id: string;
   name: string;

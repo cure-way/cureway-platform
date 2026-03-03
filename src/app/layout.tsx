@@ -3,6 +3,7 @@ import "../styles/global.css";
 import { Montserrat, Inter } from "next/font/google";
 import { ScrollToTop } from "@/components/shared/ScrollToTop";
 import { AuthProvider } from "@/features/auth";
+import ToastProvider from "@/components/shared/ToastProvider";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -43,6 +44,7 @@ export default function RootLayout({
         <AuthProvider>
           <ScrollToTop />
           <div id="dropdown-portal" />
+          <ToastProvider />
           {children}
         </AuthProvider>
       </body>

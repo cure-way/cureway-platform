@@ -1,22 +1,36 @@
 "use client";
 
 import { CheckCircle } from "lucide-react";
-import { getExpiryInfo } from "@/services/pharmacyService";
+import { getExpiryInfo } from "@/services/pharmacyInventory";
 import { InventoryItem } from "@/types/pharmacyTypes";
-import ConfirmActionModal from "../../shared/ConfirmActionModal";
 import { useMedicineActions } from "@/hooks/pharmacy/useMedicineActions";
+import InventoryActionModal from "../InventoryActionModal";
+import { useRouter } from "next/navigation";
 
 interface PharmacyMedicineActionsProps {
   item: InventoryItem;
+  refetch?: () => Promise<void>;
 }
 
 export default function PharmacyMedicineActions({
   item,
+  refetch,
 }: PharmacyMedicineActionsProps) {
+  const router = useRouter();
   const expiry = getExpiryInfo(item.expiryDate);
 
-  const { pendingAction, handleMedicineAction, handleConfirm, closeAction } =
-    useMedicineActions();
+  const {
+    pendingAction,
+    handleMedicineAction,
+    handleConfirm,
+    closeAction,
+    isProcessing,
+  } = useMedicineActions({
+    refetch,
+    onDeleteSuccess: () => {
+      router.replace("/pharmacy/inventory");
+    },
+  });
 
   return (
     <>
@@ -56,22 +70,9 @@ export default function PharmacyMedicineActions({
         </button>
       </div>
 
-      <ConfirmActionModal
-        open={!!pendingAction}
-        title={
-          pendingAction?.type === "delete"
-            ? "Delete Medicine"
-            : "Mark as Out of Stock"
-        }
-        description={
-          pendingAction?.type === "delete"
-            ? `Are you sure you want to delete ${item.medicineName}? This action cannot be undone.`
-            : `This medicine will be marked as unavailable for orders.`
-        }
-        confirmLabel={
-          pendingAction?.type === "delete" ? "Delete Medicine" : "Confirm"
-        }
-        confirmVariant={pendingAction?.type === "delete" ? "danger" : "primary"}
+      <InventoryActionModal
+        pendingAction={pendingAction}
+        loading={isProcessing}
         onConfirm={handleConfirm}
         onCancel={closeAction}
       />

@@ -5,13 +5,15 @@ import StatusDropdown from "../shared/StatusDropdown";
 import { INVENTORY_STATUSES } from "@/utils/pharmacyConstants";
 import AddMedicineModal from "./medicine/AddMedicineModal";
 import { useState } from "react";
+import { InventoryFilterStatus } from "@/types/pharmacyTypes";
 
 interface InventoryFiltersProps {
-  status: string;
-  onStatusChange: (value: string) => void;
+  status: InventoryFilterStatus;
+  onStatusChange: (value: InventoryFilterStatus) => void;
 
   search: string;
   onSearchChange: (value: string) => void;
+  refetch: () => void;
 }
 
 export default function InventoryFilters({
@@ -19,6 +21,7 @@ export default function InventoryFilters({
   onStatusChange,
   search,
   onSearchChange,
+  refetch,
 }: InventoryFiltersProps) {
   const [openAddModal, setOpenAddModal] = useState(false);
 
@@ -50,7 +53,10 @@ export default function InventoryFilters({
 
       <AddMedicineModal
         open={openAddModal}
-        onClose={() => setOpenAddModal(false)}
+        onClose={() => {
+          setOpenAddModal(false);
+        }}
+        refetch={refetch}
       />
     </div>
   );

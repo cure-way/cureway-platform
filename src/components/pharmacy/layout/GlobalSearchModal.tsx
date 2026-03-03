@@ -2,23 +2,35 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { InventoryItem, MatchedOrder } from "@/types/pharmacyTypes";
+import { useInventorySearch } from "@/hooks/pharmacy/useInventorySearch";
+import { useOrdersSearch } from "@/hooks/pharmacy/useOrdersSearch";
+import { SearchMedicine } from "@/types/pharmacyTypes";
+import { SearchOrder } from "@/types/pharmacyOrders";
 
 interface GlobalSearchPanelProps {
-  medicines: InventoryItem[];
-  orders: MatchedOrder[];
+  search: string;
   onItemClick?: () => void;
 }
 
 export default function GlobalSearchPanel({
-  medicines,
-  orders,
+  search,
   onItemClick,
 }: GlobalSearchPanelProps) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"medicines" | "orders">(
     "medicines",
   );
+
+  const { data: medicines, loading: medicinesLoading } = useInventorySearch(
+    activeTab === "medicines" ? search : "",
+  );
+
+  const { data: orders, loading: ordersLoading } = useOrdersSearch(
+    activeTab === "orders" ? search : "",
+  );
+
+  const isLoading =
+    activeTab === "medicines" ? medicinesLoading : ordersLoading;
 
   return (
     <div className="bg-white shadow-lg border border-gray-200 rounded-2xl ring-1 ring-black/5 overflow-hidden">
@@ -48,9 +60,14 @@ export default function GlobalSearchPanel({
       </div>
 
       <div className="p-3 max-h-72 overflow-y-auto">
-        {activeTab === "medicines" &&
+        {isLoading && (
+          <p className="py-4 text-gray-500 text-sm text-center">Searching...</p>
+        )}
+
+        {!isLoading &&
+          activeTab === "medicines" &&
           (medicines.length ? (
-            medicines.map((m) => (
+            medicines.map((m: SearchMedicine) => (
               <div
                 key={m.id}
                 onClick={() => {
@@ -60,9 +77,7 @@ export default function GlobalSearchPanel({
                 className="hover:bg-gray-100 p-2 rounded-lg text-sm cursor-pointer"
               >
                 <p className="font-medium">{m.medicineName}</p>
-                <p className="text-gray-500 text-xs">
-                  {m.brand} • {m.manufacturer}
-                </p>
+                <p className="text-gray-500 text-xs">{m.categoryName}</p>
               </div>
             ))
           ) : (
@@ -71,28 +86,27 @@ export default function GlobalSearchPanel({
             </p>
           ))}
 
-        {activeTab === "orders" &&
+        {!isLoading &&
+          activeTab === "orders" &&
           (orders.length ? (
-            orders.map(({ order, matchedItems }) => {
-              return (
-                <div
-                  key={order.id}
-                  onClick={() => {
-                    router.push(`/pharmacy/orders/${order.id}`);
-                    onItemClick?.();
-                  }}
-                  className="hover:bg-gray-100 p-2 rounded-lg text-sm cursor-pointer"
-                >
-                  <p className="font-medium">Order #{order.id}</p>
+            orders.map((order: SearchOrder) => (
+              <div
+                key={order.orderId}
+                onClick={() => {
+                  router.push(`/pharmacy/orders/${order.orderId}`);
+                  onItemClick?.();
+                }}
+                className="hover:bg-gray-100 p-2 rounded-lg text-sm cursor-pointer"
+              >
+                <p className="font-medium">Order #{order.orderId}</p>
 
-                  <p className="text-gray-500 text-xs">
-                    {matchedItems[0].medicineName}
-                    {matchedItems.length > 1 &&
-                      ` +${matchedItems.length - 1} more`}
-                  </p>
-                </div>
-              );
-            })
+                <p className="text-gray-500 text-xs">
+                  {order.firstMedicineName}
+                  {order.remainingItemsCount > 0 &&
+                    ` +${order.remainingItemsCount} more`}
+                </p>
+              </div>
+            ))
           ) : (
             <p className="py-4 text-gray-500 text-sm text-center">
               No orders found

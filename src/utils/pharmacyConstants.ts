@@ -1,23 +1,27 @@
+import { OrderRow } from "@/types/pharmacyOrders";
 import {
   Column,
+  InventoryFilterStatus,
   InventoryItem,
-  OrderRow,
   RowAction,
+  StatusConfig,
 } from "@/types/pharmacyTypes";
 
-export const INVENTORY_STATUSES = [
-  { label: "All Status", value: "all" },
-  { label: "In Stock", value: "in" },
-  { label: "Low Stock", value: "low" },
-  { label: "Out Of Stock", value: "out" },
+export const INVENTORY_STATUSES: {
+  label: string;
+  value: InventoryFilterStatus;
+}[] = [
+  { label: "All", value: "all" },
+  { label: "In Stock", value: "IN_STOCK" },
+  { label: "Low Stock", value: "LOW_STOCK" },
+  { label: "Out of Stock", value: "OUT_OF_STOCK" },
 ];
 
 export const ORDER_STATUSES = [
-  { label: "All", value: "All" },
-  { label: "New", value: "New" },
-  { label: "Pending", value: "Pending" },
-  { label: "Delivered", value: "Delivered" },
-  { label: "Cancelled", value: "Cancelled" },
+  { label: "All", value: "ALL" },
+  { label: "New", value: "NEW" },
+  { label: "Delivered", value: "DELIVERED" },
+  { label: "Past", value: "PAST" },
 ];
 
 export const ROWS_PER_PAGE_OPTIONS = [
@@ -44,10 +48,10 @@ export const INVENTORY_ACTIONS: RowAction[] = [
 
 export const orderColumns: readonly Column<OrderRow>[] = [
   { key: "id", header: "Order ID" },
-  { key: "customer", header: "Customer", hideOnMobile: true },
-  { key: "items", header: "Medicine", hideOnMobile: true },
-  { key: "total", header: "Total" },
-  { key: "date", header: "Date", hideOnMobile: true },
+  { key: "customerName", header: "Customer", hideOnMobile: true },
+  { key: "preview", header: "Medicine", hideOnMobile: true },
+  { key: "totalAmount", header: "Total" },
+  { key: "formattedDate", header: "Date", hideOnMobile: true },
   { key: "status", header: "Status" },
 ];
 
@@ -60,3 +64,37 @@ export const DAY_ORDER = [
   "Fri",
   "Sat",
 ] as const;
+
+export const ORDER_STATUS_MAP: Record<string, StatusConfig> = {
+  New: {
+    label: "New",
+    className: "bg-blue-100 text-blue-700",
+  },
+  Delivered: {
+    label: "Delivered",
+    className: "bg-green-100 text-green-700",
+  },
+  Pending: {
+    label: "Pending",
+    className: "bg-yellow-100 text-yellow-700",
+  },
+  Cancelled: {
+    label: "Cancelled",
+    className: "bg-red-100 text-red-700",
+  },
+};
+
+export const INVENTORY_STATUS_MAP: Record<string, StatusConfig> = {
+  in: {
+    label: "In Stock",
+    className: "bg-green-100 text-green-700",
+  },
+  low: {
+    label: "Low Stock",
+    className: "bg-yellow-100 text-yellow-700",
+  },
+  out: {
+    label: "Out of Stock",
+    className: "bg-red-100 text-red-700",
+  },
+};

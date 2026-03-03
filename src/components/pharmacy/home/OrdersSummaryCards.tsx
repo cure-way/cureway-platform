@@ -1,22 +1,32 @@
-"use client";
+import { TodayDashboardAnalytics } from "@/types/pharmacyOrders";
+import { FiBox, FiFileText } from "react-icons/fi";
+import { OrdersSummarySkeleton } from "./OrdersSummarySkeleton";
+import { NoOrdersState } from "./NoOrdersState";
 
-import { ORDERS } from "@/services/pharmacyData";
-import { getOrdersSummary } from "@/services/pharmacyService";
-import { FiFileText, FiBox } from "react-icons/fi";
+interface Props {
+  summary: TodayDashboardAnalytics | null;
+  summaryLoading: boolean;
+}
 
-export default function OrdersSummaryCards() {
-  const { totalToday, delivered } = getOrdersSummary(ORDERS);
+export default function OrdersSummaryCards({ summary, summaryLoading }: Props) {
+  if (summaryLoading) {
+    return <OrdersSummarySkeleton />;
+  }
+
+  if (!summary || summary.totalToday === 0) {
+    return <NoOrdersState />;
+  }
 
   const cards = [
     {
       label: "All Orders",
-      value: totalToday,
+      value: summary.totalToday,
       unit: "orders",
       icon: FiFileText,
     },
     {
       label: "Orders Delivered",
-      value: delivered,
+      value: summary.deliveredToday,
       unit: "orders",
       icon: FiBox,
     },

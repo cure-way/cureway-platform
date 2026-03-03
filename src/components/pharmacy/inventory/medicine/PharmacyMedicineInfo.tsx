@@ -1,5 +1,6 @@
 import { InventoryItem } from "@/types/pharmacyTypes";
 import Image from "next/image";
+import NullableText from "../../shared/NullableText";
 
 export default function PharmacyMedicineInfo({
   item,
@@ -25,7 +26,7 @@ export default function PharmacyMedicineInfo({
           </div>
 
           <Image
-            src={"/placeholder-medicine.png"}
+            src={item.imageUrl || "/placeholder-medicine.png"}
             alt={item.medicineName}
             className="self-center order-1 sm:order-2 max-w-75 max-h-40 object-contain"
             width={200}
@@ -56,7 +57,11 @@ function Info({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex gap-2">
       <span className="text-gray-500">{label}:</span>
-      <span className="font-medium text-gray-900">{value}</span>
+      {value === null || value === undefined ? (
+        <NullableText value={value} />
+      ) : (
+        <span className="font-medium text-gray-900">{value}</span>
+      )}
     </div>
   );
 }

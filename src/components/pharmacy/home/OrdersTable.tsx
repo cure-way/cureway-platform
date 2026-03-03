@@ -1,19 +1,34 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { OrderRow } from "@/types/pharmacyTypes";
 import { orderColumns } from "@/utils/pharmacyConstants";
-import DataTable from "../shared/DataTable";
+import SimpleTable from "../shared/SimpleTable";
 import StatusBadge from "../shared/StatusBadge";
-import { inventoryData } from "@/services/pharmacyData";
+import type { Order, OrderRow } from "@/types/pharmacyOrders";
 
-export default function OrdersTable({ data }: { data: OrderRow[] }) {
+export default function OrdersTable({ data }: { data: Order[] }) {
   const router = useRouter();
+
+  const rows: OrderRow[] = data.map((order) => {
+    const firstItem = order.items[0];
+
+    return {
+      id: order.id,
+      customerName: order.patient.name,
+      preview: {
+        firstItemName: firstItem?.medicineName ?? "—",
+        remainingCount: order.items.length > 1 ? order.items.length - 1 : 0,
+      },
+      totalAmount: order.totalAmount,
+      formattedDate: order.createdAt.toLocaleDateString(),
+      status: order.status,
+    };
+  });
 
   return (
     <div>
-      <DataTable<OrderRow>
-        data={data}
+      <SimpleTable<OrderRow>
+        data={rows}
         columns={orderColumns}
         onRowClick={(row) => router.push(`/pharmacy/orders/${row.id}`)}
         renderCell={(row, col) => {
@@ -21,38 +36,27 @@ export default function OrdersTable({ data }: { data: OrderRow[] }) {
             return <StatusBadge value={row.status} type="order" />;
           }
 
-          if (col.key === "items") {
-            if (!row.items.length) return "-";
-
-            const firstItem = row.items[0];
-
-            const medicine = inventoryData.find(
-              (inv) => inv.id === firstItem.inventoryId,
-            );
-
-            const remainingCount = row.items.length - 1;
-
+          if (col.key === "preview") {
             return (
               <span>
-                {medicine?.medicineName ?? "Unknown"}
-                {remainingCount > 0 && (
+                {row.preview.firstItemName}
+                {row.preview.remainingCount > 0 && (
                   <span className="ml-1 text-gray-500 text-xs">
-                    +{remainingCount}
+                    +{row.preview.remainingCount}
                   </span>
                 )}
               </span>
             );
           }
 
-          if (col.key === "total") {
-            return `${row.total.toFixed(2)}$`;
+          if (col.key === "totalAmount") {
+            return `${row.totalAmount.toFixed(2)} ILS`;
           }
 
           return String(row[col.key as keyof OrderRow]);
         }}
       />
 
-      {/* Footer */}
       <div className="mt-3 text-right">
         <button
           onClick={() => router.push("/pharmacy/orders")}
