@@ -1,33 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UpdateInventoryInput } from "@/types/pharmacyTypes";
 import { ApiErrorShape } from "@/lib/api/errors";
 import { updateInventoryItemService } from "@/services/pharmacyInventory";
 
 export function useUpdateInventory() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<ApiErrorShape | null>(null);
+  const queryClient = useQueryClient();
 
-  async function update(id: string, input: UpdateInventoryInput) {
-    try {
-      setLoading(true);
-      setError(null);
+  const mutation = useMutation({
+    mutationFn: ({ id, input }: { id: string; input: UpdateInventoryInput }) =>
+      updateInventoryItemService(id, input),
 
-      const updated = await updateInventoryItemService(id, input);
-
-      return updated;
-    } catch (err) {
-      setError(err as ApiErrorShape);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["pharmacy", "inventory"],
+      });
+    },
+  });
 
   return {
-    update,
-    loading,
-    error,
+    update: async (id: string, input: UpdateInventoryInput) => {
+      return mutation.mutateAsync({ id, input });
+    },
+
+    loading: mutation.isPending,
+    error: mutation.error as ApiErrorShape | null,
   };
 }

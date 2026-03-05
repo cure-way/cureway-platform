@@ -43,7 +43,7 @@ export default function InventoryTable({
     handleConfirm,
     closeAction,
     isProcessing,
-  } = useMedicineActions({ refetch });
+  } = useMedicineActions();
 
   if (loading) {
     return <TableSkeleton columns={inventoryColumns.length} rows={5} />;

@@ -43,7 +43,6 @@ export default function InventorySection() {
         onStatusChange={handleStatusChange}
         search={search}
         onSearchChange={handleSearchChange}
-        refetch={refetch}
       />
 
       <InventoryTable

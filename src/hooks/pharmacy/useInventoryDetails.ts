@@ -1,39 +1,39 @@
 "use client";
 
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchInventoryItem } from "@/services/pharmacyInventory";
 import { InventoryItem } from "@/types/pharmacyTypes";
-import { useState, useEffect, useCallback } from "react";
+import { queryKeys } from "@/lib/queryKeys";
 
 export function useInventoryDetails(id: string | null) {
-  const [data, setData] = useState<InventoryItem | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
-  const fetchDetails = useCallback(async () => {
-    if (!id) return;
+  const query = useQuery<InventoryItem>({
+    queryKey: id
+      ? queryKeys.pharmacy.inventoryDetail(Number(id))
+      : ["pharmacy", "inventory", "detail", "null"],
 
-    setLoading(true);
-    setError(null);
+    queryFn: () => fetchInventoryItem(id as string),
 
-    try {
-      const item = await fetchInventoryItem(id);
-      setData(item);
-    } catch (err) {
-      setError("Failed to load medicine details.");
-    } finally {
-      setLoading(false);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    fetchDetails();
-  }, [fetchDetails]);
+    enabled: !!id,
+  });
 
   return {
-    data,
-    setData,
-    loading,
-    error,
-    refetch: fetchDetails,
+    data: query.data ?? null,
+    loading: query.isLoading,
+    error: query.isError ? "Failed to load medicine details." : null,
+
+    refetch: async () => {
+      await query.refetch();
+    },
+
+    setData: (item: InventoryItem) => {
+      if (!id) return;
+
+      queryClient.setQueryData(
+        queryKeys.pharmacy.inventoryDetail(Number(id)),
+        item,
+      );
+    },
   };
 }

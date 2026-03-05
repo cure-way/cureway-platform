@@ -7,10 +7,8 @@ import { useState } from "react";
 
 export default function PharmacyMedicineHeader({
   item,
-  onUpdate,
 }: {
   item: InventoryItem;
-  onUpdate: () => void;
 }) {
   const [open, setOpen] = useState(false);
   return (
@@ -55,7 +53,6 @@ export default function PharmacyMedicineHeader({
         open={open}
         onClose={() => setOpen(false)}
         item={item}
-        onUpdate={onUpdate}
       />
     </>
   );

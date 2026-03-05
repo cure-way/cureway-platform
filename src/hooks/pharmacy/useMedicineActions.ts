@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InventoryItem } from "@/types/pharmacyTypes";
 import {
   deleteInventory,
@@ -17,21 +18,46 @@ export interface PendingMedicineAction {
 }
 
 interface UseMedicineActionsOptions {
-  refetch?: () => Promise<void>;
   onDeleteSuccess?: () => void;
 }
 
 export function useMedicineActions({
-  refetch,
   onDeleteSuccess,
-}: UseMedicineActionsOptions) {
+}: UseMedicineActionsOptions = {}) {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const [pendingAction, setPendingAction] =
     useState<PendingMedicineAction | null>(null);
 
-  const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => deleteInventory(id),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["pharmacy", "inventory"],
+      });
+
+      toast.success("Inventory item deleted successfully.");
+    },
+  });
+
+  const markOutMutation = useMutation({
+    mutationFn: (id: string) =>
+      updateInventoryItemService(id, { stockQuantity: 0 }),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["pharmacy", "inventory"],
+      });
+
+      toast.success("Item marked as out of stock.");
+    },
+  });
+
+  const isProcessing = deleteMutation.isPending || markOutMutation.isPending;
 
   function handleMedicineAction(action: string, item: InventoryItem) {
     switch (action) {
@@ -52,42 +78,24 @@ export function useMedicineActions({
   async function handleConfirm() {
     if (!pendingAction) return;
 
-    setIsProcessing(true);
-    setError(null);
-
     try {
       if (pendingAction.type === "delete") {
-        await deleteInventory(pendingAction.item.id);
+        await deleteMutation.mutateAsync(pendingAction.item.id);
 
-        if (onDeleteSuccess) {
-          onDeleteSuccess();
-        } else if (refetch) {
-          await refetch();
-        }
-
-        toast.success("Inventory item deleted successfully.");
+        onDeleteSuccess?.();
       }
 
       if (pendingAction.type === "mark_out") {
-        await updateInventoryItemService(pendingAction.item.id, {
-          stockQuantity: 0,
-        });
-
-        if (refetch) {
-          await refetch();
-        }
-
-        toast.success("Item marked as out of stock.");
+        await markOutMutation.mutateAsync(pendingAction.item.id);
       }
 
       closeAction();
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Failed to process action.";
+
       setError(message);
       toast.error(message);
-    } finally {
-      setIsProcessing(false);
     }
   }
 

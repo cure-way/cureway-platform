@@ -14,7 +14,6 @@ interface PharmacyMedicineActionsProps {
 
 export default function PharmacyMedicineActions({
   item,
-  refetch,
 }: PharmacyMedicineActionsProps) {
   const router = useRouter();
   const expiry = getExpiryInfo(item.expiryDate);
@@ -26,7 +25,6 @@ export default function PharmacyMedicineActions({
     closeAction,
     isProcessing,
   } = useMedicineActions({
-    refetch,
     onDeleteSuccess: () => {
       router.replace("/pharmacy/inventory");
     },

@@ -1,41 +1,26 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { SearchMedicine } from "@/types/pharmacyTypes";
 import { searchInventory } from "@/services/pharmacyInventory";
+import { queryKeys } from "@/lib/queryKeys";
 
 export function useInventorySearch(search: string) {
-  const [data, setData] = useState<SearchMedicine[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const query = useQuery<SearchMedicine[]>({
+    queryKey: queryKeys.pharmacy.inventorySearch(search),
 
-  const fetchInventory = useCallback(async () => {
-    if (!search.trim()) {
-      setData([]);
-      return;
-    }
+    queryFn: () => searchInventory(search),
 
-    setLoading(true);
-    setError(null);
-
-    try {
-      const result = await searchInventory(search);
-      setData(result);
-    } catch {
-      setError("Failed to search medicines.");
-    } finally {
-      setLoading(false);
-    }
-  }, [search]);
-
-  useEffect(() => {
-    fetchInventory();
-  }, [fetchInventory]);
+    enabled: !!search.trim(),
+  });
 
   return {
-    data,
-    loading,
-    error,
-    refetch: fetchInventory,
+    data: query.data ?? [],
+    loading: query.isLoading,
+    error: query.isError ? "Failed to search medicines." : null,
+
+    refetch: async () => {
+      await query.refetch();
+    },
   };
 }
