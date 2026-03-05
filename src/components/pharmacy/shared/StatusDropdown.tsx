@@ -4,30 +4,30 @@ import { useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { useClickOutside } from "@/hooks/useClickOutside";
 
-interface DropdownOption {
+interface DropdownOption<T extends string> {
   label: string;
-  value: string;
+  value: T;
 }
 
-interface StatusDropdownProps {
-  options: DropdownOption[];
-  value?: string;
-  defaultValue?: string;
-  onChange?: (value: string) => void;
+interface StatusDropdownProps<T extends string> {
+  options: DropdownOption<T>[];
+  value?: T;
+  defaultValue?: T;
+  onChange?: (value: T) => void;
   className?: string;
   direction?: "up" | "down";
 }
 
-export default function StatusDropdown({
+export default function StatusDropdown<T extends string>({
   options,
   value,
   defaultValue,
   onChange,
   className = "",
   direction = "down",
-}: StatusDropdownProps) {
+}: StatusDropdownProps<T>) {
   const [open, setOpen] = useState(false);
-  const [internalValue, setInternalValue] = useState(
+  const [internalValue, setInternalValue] = useState<T>(
     defaultValue ?? options[0]?.value,
   );
 
@@ -37,7 +37,7 @@ export default function StatusDropdown({
     setOpen(false);
   });
 
-  function handleSelect(optionValue: string) {
+  function handleSelect(optionValue: T) {
     if (value === undefined) {
       setInternalValue(optionValue);
     }

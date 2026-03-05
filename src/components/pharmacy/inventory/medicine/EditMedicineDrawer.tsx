@@ -2,18 +2,38 @@
 
 import clsx from "clsx";
 import { X } from "lucide-react";
-import { MedicineFormPayload, InventoryItem } from "@/types/pharmacyTypes";
+import { UpdateInventoryInput, InventoryItem } from "@/types/pharmacyTypes";
 import EditMedicineForm from "./EditMedicineForm";
+import { useUpdateInventory } from "@/hooks/pharmacy/useUpdateInventory";
+import toast from "react-hot-toast";
 
 interface Props {
   open: boolean;
   onClose: () => void;
   item: InventoryItem;
+  onUpdate: () => void;
 }
 
-export default function EditMedicineDrawer({ open, onClose, item }: Props) {
-  function handleSave(data: MedicineFormPayload) {
-    onClose();
+export default function EditMedicineDrawer({
+  open,
+  onClose,
+  item,
+  onUpdate,
+}: Props) {
+  const { update, loading } = useUpdateInventory();
+  async function handleSave(data: UpdateInventoryInput) {
+    try {
+      await update(item.id, data);
+
+      onUpdate();
+      onClose();
+
+      toast.success("Medicine updated successfully");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update medicine",
+      );
+    }
   }
 
   return (
@@ -27,7 +47,6 @@ export default function EditMedicineDrawer({ open, onClose, item }: Props) {
         )}
       />
 
-      {/* Drawer */}
       <aside
         className={clsx(
           "top-0 right-0 z-999 fixed bg-white shadow-xl w-full sm:max-w-sm h-full",
@@ -36,7 +55,6 @@ export default function EditMedicineDrawer({ open, onClose, item }: Props) {
           open ? "translate-x-0" : "translate-x-full",
         )}
       >
-        {/* Header */}
         <div className="flex justify-between items-center p-4 border-b">
           <h2 className="font-semibold text-gray-900 text-sm">
             Edit medicine details
@@ -50,20 +68,19 @@ export default function EditMedicineDrawer({ open, onClose, item }: Props) {
           </button>
         </div>
 
-        {/* Form */}
         <div className="flex-1 p-4 overflow-y-auto">
           <EditMedicineForm item={item} onSubmit={handleSave} />
         </div>
 
-        {/* Footer */}
         <div className="space-y-2 p-4 border-t">
           <button
+            disabled={loading}
             onClick={() => {
               document.querySelector("form")?.requestSubmit();
             }}
-            className="w-full bg-(--color-primary) text-white py-2 rounded-lg text-sm"
+            className="w-full bg-(--color-primary) text-white py-2 rounded-lg text-sm disabled:opacity-50"
           >
-            Save changes
+            {loading ? "Saving..." : "Save changes"}
           </button>
 
           <button

@@ -1,44 +1,62 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import InventoryFilters from "./InventoryFilters";
 import InventoryTable from "./InventoryTable";
-import { InventoryItem } from "@/types/pharmacyTypes";
+import { InventoryFilterStatus } from "@/types/pharmacyTypes";
+import { useInventory } from "@/hooks/pharmacy/useInventory";
+import AlertBanner from "./AlertBanner";
+import { getInventoryAlerts } from "@/services/pharmacyInventory";
 
-interface InventorySectionProps {
-  data: InventoryItem[];
-}
-
-export default function InventorySection({ data }: InventorySectionProps) {
-  const [status, setStatus] = useState("all");
+export default function InventorySection() {
+  const [status, setStatus] = useState<InventoryFilterStatus>("all");
   const [search, setSearch] = useState("");
 
-  const filteredInventory = useMemo(() => {
-    const searchFiltered = data.filter((item) => {
-      const query = search.toLowerCase();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
 
-      return (
-        item.medicineName.toLowerCase().includes(query) ||
-        item.brand.toLowerCase().includes(query) ||
-        item.manufacturer.toLowerCase().includes(query)
-      );
-    });
+  const { data, total, loading, error, refetch } = useInventory({
+    status,
+    search,
+    page,
+    limit,
+  });
 
-    if (status === "all") return searchFiltered;
+  const handleStatusChange = (value: InventoryFilterStatus) => {
+    setPage(1);
+    setStatus(value);
+  };
 
-    return searchFiltered.filter((item) => item.status === status);
-  }, [data, search, status]);
+  const handleSearchChange = (value: string) => {
+    setPage(1);
+    setSearch(value);
+  };
+  const alert = getInventoryAlerts(data);
 
   return (
     <>
+      {alert && (
+        <AlertBanner title={alert.title} description={alert.description} />
+      )}
       <InventoryFilters
         status={status}
-        onStatusChange={setStatus}
+        onStatusChange={handleStatusChange}
         search={search}
-        onSearchChange={setSearch}
+        onSearchChange={handleSearchChange}
+        refetch={refetch}
       />
 
-      <InventoryTable data={filteredInventory} />
+      <InventoryTable
+        data={data}
+        loading={loading}
+        error={error}
+        refetch={refetch}
+        total={total}
+        page={page}
+        limit={limit}
+        onPageChange={setPage}
+        onLimitChange={setLimit}
+      />
     </>
   );
 }

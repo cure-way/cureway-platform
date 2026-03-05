@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import { inventoryData } from "@/services/pharmacyData";
 import { NEARBY_PHARMACIES } from "@/services/nearbypharmacies.data";
 import { InventoryItem, Pharmacy } from "@/types/pharmacyTypes";
 
@@ -15,20 +14,20 @@ export default function PharmacyDetailsPage() {
   const pharmacyId = params?.id as string;
 
   const [activeTab, setActiveTab] = useState<TabType>("All");
-  const [medicines] = useState<InventoryItem[]>(inventoryData);
+  const [medicines] = useState<InventoryItem[]>([]);
 
   const pharmacy = NEARBY_PHARMACIES.find((p) => p.id === pharmacyId);
 
   if (!pharmacy) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="flex justify-center items-center bg-gray-50 min-h-screen">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <h2 className="mb-2 font-bold text-gray-900 text-2xl">
             Pharmacy not found
           </h2>
           <button
             onClick={() => router.back()}
-            className="text-blue-600 hover:text-blue-700 font-medium"
+            className="font-medium text-blue-600 hover:text-blue-700"
           >
             Go back
           </button>
@@ -39,19 +38,18 @@ export default function PharmacyDetailsPage() {
 
   const filteredMedicines = medicines.filter((medicine) => {
     if (activeTab === "All") return true;
-    if (activeTab === "Most sells") return medicine.stock < 15; 
-    if (activeTab === "Offers") return medicine.stock > 20; 
-    if (activeTab === "Rare") return medicine.prescriptionRequired; 
+    if (activeTab === "Most sells") return medicine.stock < 15;
+    if (activeTab === "Offers") return medicine.stock > 20;
+    if (activeTab === "Rare") return medicine.prescriptionRequired;
     return true;
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
-
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
+    <div className="bg-gray-50 min-h-screen">
+      <div className="top-0 z-10 sticky bg-white border-gray-200 border-b">
+        <div className="flex justify-between items-center mx-auto px-6 py-6 max-w-6xl">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className="font-bold text-gray-900 text-2xl">
               {pharmacy.name}
             </h1>
           </div>
@@ -77,18 +75,18 @@ export default function PharmacyDetailsPage() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-8">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-8">
+      <div className="mx-auto px-6 py-8 max-w-6xl">
+        <div className="bg-white shadow-sm mb-8 p-8 border border-gray-200 rounded-2xl">
           <div className="flex items-start gap-2 mb-6">
-            <div className="w-2 h-2 rounded-full bg-blue-600 mt-2"></div>
-            <h2 className="text-xl font-semibold text-blue-600">
+            <div className="bg-blue-600 mt-2 rounded-full w-2 h-2"></div>
+            <h2 className="font-semibold text-blue-600 text-xl">
               Pharmacy Information
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="gap-8 grid grid-cols-1 lg:grid-cols-2">
             <div className="space-y-4">
-              <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
+              <div className="relative bg-gray-100 rounded-xl w-full aspect-[4/3] overflow-hidden">
                 {pharmacy.imageUrl ? (
                   <Image
                     src={pharmacy.imageUrl}
@@ -97,7 +95,7 @@ export default function PharmacyDetailsPage() {
                     className="object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center">
+                  <div className="flex justify-center items-center w-full h-full">
                     <svg
                       className="w-24 h-24 text-gray-300"
                       fill="none"
@@ -139,7 +137,7 @@ export default function PharmacyDetailsPage() {
 
             <div className="space-y-6">
               <div>
-                <h3 className="text-sm font-semibold text-blue-600 mb-2">
+                <h3 className="mb-2 font-semibold text-blue-600 text-sm">
                   Address
                 </h3>
                 <p className="text-gray-700 text-sm leading-relaxed">
@@ -148,7 +146,7 @@ export default function PharmacyDetailsPage() {
               </div>
 
               <div>
-                <h3 className="text-sm font-semibold text-blue-600 mb-2">
+                <h3 className="mb-2 font-semibold text-blue-600 text-sm">
                   Nearest landmark
                 </h3>
                 <p className="text-gray-700 text-sm">
@@ -157,7 +155,7 @@ export default function PharmacyDetailsPage() {
               </div>
 
               <div>
-                <h3 className="text-sm font-semibold text-blue-600 mb-2">
+                <h3 className="mb-2 font-semibold text-blue-600 text-sm">
                   Working hours
                 </h3>
                 <p className="text-gray-700 text-sm">
@@ -167,7 +165,7 @@ export default function PharmacyDetailsPage() {
               </div>
 
               <div>
-                <h3 className="text-sm font-semibold text-blue-600 mb-2">
+                <h3 className="mb-2 font-semibold text-blue-600 text-sm">
                   Phone number
                 </h3>
                 <p className="text-gray-700 text-sm">99922991</p>
@@ -176,13 +174,13 @@ export default function PharmacyDetailsPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+        <div className="bg-white shadow-sm p-8 border border-gray-200 rounded-2xl">
           <div className="flex items-start gap-2 mb-6">
-            <div className="w-2 h-2 rounded-full bg-blue-600 mt-2"></div>
-            <h2 className="text-xl font-semibold text-gray-900">Available</h2>
+            <div className="bg-blue-600 mt-2 rounded-full w-2 h-2"></div>
+            <h2 className="font-semibold text-gray-900 text-xl">Available</h2>
           </div>
 
-          <div className="flex items-center gap-3 mb-8 overflow-x-auto pb-2">
+          <div className="flex items-center gap-3 mb-8 pb-2 overflow-x-auto">
             {(["All", "Most sells", "Offers", "Rare"] as TabType[]).map(
               (tab) => (
                 <button
@@ -200,7 +198,7 @@ export default function PharmacyDetailsPage() {
             )}
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="gap-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
             {filteredMedicines.map((medicine) => (
               <MedicineCard key={medicine.id} medicine={medicine} />
             ))}
@@ -216,17 +214,17 @@ interface MedicineCardProps {
 }
 
 function MedicineCard({ medicine }: MedicineCardProps) {
-  const hasDiscount = medicine.stock > 20; 
+  const hasDiscount = medicine.stock > 20;
 
   return (
-    <div className="bg-gray-50 rounded-xl p-4 hover:shadow-md transition-shadow duration-200 cursor-pointer group relative">
+    <div className="group relative bg-gray-50 hover:shadow-md p-4 rounded-xl transition-shadow duration-200 cursor-pointer">
       {hasDiscount && (
-        <div className="absolute top-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md z-10">
+        <div className="top-2 left-2 z-10 absolute bg-green-500 px-2 py-1 rounded-md font-bold text-white text-xs">
           -25%
         </div>
       )}
 
-      <button className="absolute top-2 right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-blue-50 transition-colors z-10">
+      <button className="top-2 right-2 z-10 absolute flex justify-center items-center bg-white hover:bg-blue-50 shadow-sm rounded-full w-6 h-6 transition-colors">
         <svg
           className="w-4 h-4 text-blue-600"
           fill="none"
@@ -242,16 +240,16 @@ function MedicineCard({ medicine }: MedicineCardProps) {
         </svg>
       </button>
 
-      <div className="relative w-full aspect-square mb-3 bg-white rounded-lg flex items-center justify-center">
+      <div className="relative flex justify-center items-center bg-white mb-3 rounded-lg w-full aspect-square">
         {medicine.imageUrl ? (
           <Image
             src={medicine.imageUrl}
             alt={medicine.medicineName}
             fill
-            className="object-contain p-2"
+            className="p-2 object-contain"
           />
         ) : (
-          <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+          <div className="flex justify-center items-center bg-gray-200 rounded-lg w-16 h-16">
             <svg
               className="w-8 h-8 text-gray-400"
               fill="none"
@@ -269,7 +267,7 @@ function MedicineCard({ medicine }: MedicineCardProps) {
         )}
       </div>
 
-      <h3 className="text-sm font-medium text-gray-900 mb-1 line-clamp-2 min-h-[2.5rem]">
+      <h3 className="mb-1 min-h-[2.5rem] font-medium text-gray-900 text-sm line-clamp-2">
         {medicine.medicineName}
       </h3>
     </div>

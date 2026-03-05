@@ -1,45 +1,81 @@
-import { Category, Medicine } from "@/types/categories.types";
+/* ---------------------------------- */
+/* Mapper */
+/* ---------------------------------- */
+
+import { httpGet } from "@/lib/api";
+import { PaginationMeta } from "@/types";
+import {
+  Category,
+  CategoryDTO,
+  PaginatedCategoriesResponse,
+} from "@/types/categories.types";
+import { Medicine } from "@/types/medicine.types";
 import { categoryImages } from "@/utils/constants";
 
-export function getCategoryImage(categoryId: number | string) {
-  return categoryImages[Number(categoryId)] ?? "/patient/default.png";
+function mapCategory(dto: CategoryDTO): Category {
+  return {
+    id: dto.id,
+    name: dto.name,
+    description: dto.description ?? null,
+  };
 }
 
-export function getTopSellingCategories(
-  categories: Category[],
-  medicines: Medicine[],
-  limit = 5,
-) {
-  const salesMap: Record<string, number> = {};
+///////////////////////////////////////////////////////////////
 
-  medicines.forEach((medicine) => {
-    if (!medicine.salesCount) return;
+export async function getCategories(
+  page = 1,
+  limit = 10,
+): Promise<{ categories: Category[]; meta: PaginationMeta }> {
+  const response = await httpGet<PaginatedCategoriesResponse>(
+    `/categories?page=${page}&limit=${limit}`,
+  );
 
-    salesMap[medicine.categoryId] =
-      (salesMap[medicine.categoryId] || 0) + medicine.salesCount;
+  const categories = response.data.map((dto, index) => {
+    const base = mapCategory(dto);
+
+    return {
+      ...base,
+      displayImage:
+        categoryImages[index] ?? "/patient/Discount on First Aid.png",
+    };
   });
 
-  return categories
-    .map((category) => ({
-      ...category,
-      totalSales: salesMap[category.id] || 0,
-    }))
-    .sort((a, b) => b.totalSales - a.totalSales)
-    .slice(0, limit);
+  return {
+    categories,
+    meta: response.meta,
+  };
 }
+
+////////////////////////////////////////////////////////////////
+
 export function getFeaturedCategories(
   categories: Category[],
   limit = 4,
 ): Category[] {
   return categories.slice(0, limit);
 }
+
+export function getTopSellingCategories(
+  categories: Category[],
+  medicines: Medicine[],
+  limit = 5,
+): Category[] {
+  const countMap: Record<number, number> = {};
+
+  medicines.forEach((medicine) => {
+    countMap[medicine.categoryId] = (countMap[medicine.categoryId] || 0) + 1;
+  });
+
+  return [...categories]
+    .sort((a, b) => (countMap[b.id] || 0) - (countMap[a.id] || 0))
+    .slice(0, limit);
+}
+
 export function getRecommendedMedicines(
   medicines: Medicine[],
   limit = 6,
 ): Medicine[] {
-  return [...medicines]
-    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
-    .slice(0, limit);
+  return medicines.slice(0, limit);
 }
 
 export function applyCategoryFilters(
@@ -47,16 +83,11 @@ export function applyCategoryFilters(
   sort?: string,
 ): Medicine[] {
   switch (sort) {
-    case "top":
-      return [...medicines].sort(
-        (a, b) => (b.salesCount ?? 0) - (a.salesCount ?? 0),
-      );
+    case "price-asc":
+      return [...medicines].sort((a, b) => a.minPrice - b.minPrice);
 
-    case "offers":
-      return medicines.filter((m) => m.discount && m.discount > 0);
-
-    case "rate":
-      return [...medicines].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+    case "price-desc":
+      return [...medicines].sort((a, b) => b.maxPrice - a.maxPrice);
 
     default:
       return medicines;

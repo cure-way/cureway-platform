@@ -2,22 +2,65 @@
 
 import DataTable from "../shared/DataTable";
 import ActionsDropdown from "../shared/ActionsDropdown";
-import { InventoryItem } from "@/types/pharmacyTypes";
+
 import { INVENTORY_ACTIONS, inventoryColumns } from "@/utils/pharmacyConstants";
 import StatusBadge from "../shared/StatusBadge";
-import ConfirmActionModal from "../shared/ConfirmActionModal";
 import { useMedicineActions } from "@/hooks/pharmacy/useMedicineActions";
+import { InventoryItem } from "@/types/pharmacyTypes";
+import TableSkeleton from "../shared/TableSkeleton";
+import EmptyState from "../shared/EmptyState";
+import ErrorState from "../shared/ErrorState";
+import NullableText from "../shared/NullableText";
+import InventoryActionModal from "./InventoryActionModal";
 
-export default function InventoryTable({ data }: { data: InventoryItem[] }) {
-  const { pendingAction, handleMedicineAction, handleConfirm, closeAction } =
-    useMedicineActions();
+type Props = {
+  data: InventoryItem[];
+  loading: boolean;
+  error: string | null;
+  refetch: () => Promise<void>;
+
+  total: number;
+  page: number;
+  limit: number;
+  onPageChange: (page: number) => void;
+  onLimitChange: (limit: number) => void;
+};
+
+export default function InventoryTable({
+  data,
+  loading,
+  error,
+  refetch,
+  total,
+  page,
+  limit,
+  onPageChange,
+  onLimitChange,
+}: Props) {
+  const {
+    pendingAction,
+    handleMedicineAction,
+    handleConfirm,
+    closeAction,
+    isProcessing,
+  } = useMedicineActions({ refetch });
+
+  if (loading) {
+    return <TableSkeleton columns={inventoryColumns.length} rows={5} />;
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 p-6 rounded-xl">
+        <ErrorState message={error} onRetry={refetch} />
+      </div>
+    );
+  }
 
   if (!data.length) {
     return (
-      <div className="bg-white p-10 border rounded-xl text-center">
-        <p className="text-gray-500 text-sm">
-          No medicines found matching your filters
-        </p>
+      <div className="bg-gray-50 p-6 rounded-xl">
+        <EmptyState message="No medicines found matching your filters." />
       </div>
     );
   }
@@ -27,6 +70,11 @@ export default function InventoryTable({ data }: { data: InventoryItem[] }) {
       <DataTable
         data={data}
         columns={inventoryColumns}
+        totalItems={total}
+        currentPage={page}
+        rowsPerPage={limit}
+        onPageChange={onPageChange}
+        onRowsPerPageChange={onLimitChange}
         renderCell={(row, col) => {
           if (col.key === "action") {
             return (
@@ -40,25 +88,20 @@ export default function InventoryTable({ data }: { data: InventoryItem[] }) {
           if (col.key === "status") {
             return <StatusBadge value={row.status} type="inventory" />;
           }
-          return String(row[col.key]);
+
+          const value = row[col.key as keyof InventoryItem];
+
+          if (value === null || value === undefined) {
+            return <NullableText value={value} />;
+          }
+
+          return String(value);
         }}
       />
-      <ConfirmActionModal
-        open={!!pendingAction}
-        title={
-          pendingAction?.type === "delete"
-            ? "Delete Medicine"
-            : "Mark as Out of Stock"
-        }
-        description={
-          pendingAction?.type === "delete"
-            ? `Are you sure you want to delete ${pendingAction.item.medicineName}?`
-            : `Mark ${pendingAction?.item.medicineName} as out of stock?`
-        }
-        confirmLabel={
-          pendingAction?.type === "delete" ? "Delete Medicine" : "Confirm"
-        }
-        confirmVariant={pendingAction?.type === "delete" ? "danger" : "primary"}
+
+      <InventoryActionModal
+        pendingAction={pendingAction}
+        loading={isProcessing}
         onConfirm={handleConfirm}
         onCancel={closeAction}
       />

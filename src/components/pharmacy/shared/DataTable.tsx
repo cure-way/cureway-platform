@@ -1,12 +1,11 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { ReactNode, useMemo } from "react";
+import { ReactNode } from "react";
 import StatusDropdown from "./StatusDropdown";
-import { usePagination } from "@/hooks/usePagination";
 import { Column } from "@/types/pharmacyTypes";
 import { ROWS_PER_PAGE_OPTIONS } from "@/utils/pharmacyConstants";
-export interface DataTableProps<T extends { id: string }> {
+export interface DataTableProps<T extends { id: string | number }> {
   data: T[];
   columns: readonly Column<T>[];
 
@@ -16,25 +15,26 @@ export interface DataTableProps<T extends { id: string }> {
   /** Pagination */
   rowsPerPageOptions?: number[];
   defaultRowsPerPage?: number;
+
+  totalItems: number;
+  currentPage: number;
+  rowsPerPage: number;
+  onPageChange: (page: number) => void;
+  onRowsPerPageChange: (rows: number) => void;
 }
 
-export default function DataTable<T extends { id: string }>({
+export default function DataTable<T extends { id: string | number }>({
   data,
   columns,
   onRowClick,
   renderCell,
-  defaultRowsPerPage = 5,
+  totalItems,
+  currentPage,
+  rowsPerPage,
+  onPageChange,
+  onRowsPerPageChange,
 }: DataTableProps<T>) {
-  const { page, rowsPerPage, totalPages, offset, setPage, setRowsPerPage } =
-    usePagination({
-      totalItems: data.length,
-      defaultRowsPerPage,
-    });
-
-  const paginatedData = useMemo(() => {
-    return data.slice(offset, offset + rowsPerPage);
-  }, [data, offset, rowsPerPage]);
-
+  const totalPages = Math.ceil(totalItems / rowsPerPage);
   return (
     <div className="shadow-sm border border-gray-300 rounded-2xl overflow-hidden">
       {/* TABLE */}
@@ -56,7 +56,7 @@ export default function DataTable<T extends { id: string }>({
           </thead>
 
           <tbody>
-            {paginatedData.map((row, index) => (
+            {data.map((row, index) => (
               <tr
                 key={row.id}
                 onClick={() => onRowClick?.(row)}
@@ -92,16 +92,16 @@ export default function DataTable<T extends { id: string }>({
 
           <StatusDropdown
             options={ROWS_PER_PAGE_OPTIONS}
-            value={String(rowsPerPage)}
             direction="up"
-            onChange={(value) => setRowsPerPage(Number(value))}
+            value={String(rowsPerPage)}
+            onChange={(value) => onRowsPerPageChange(Number(value))}
           />
         </div>
 
         <div className="flex gap-2">
           <button
-            disabled={page === 1}
-            onClick={() => setPage(page - 1)}
+            disabled={currentPage === 1}
+            onClick={() => onPageChange(currentPage - 1)}
             className="disabled:opacity-50 p-2 border border-gray-300 rounded-lg"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -112,9 +112,9 @@ export default function DataTable<T extends { id: string }>({
             return (
               <button
                 key={p}
-                onClick={() => setPage(p)}
+                onClick={() => onPageChange(p)}
                 className={`h-9 w-9 rounded-lg text-sm font-medium ${
-                  p === page
+                  p === currentPage
                     ? "bg-(--color-primary) text-white"
                     : "border border-gray-300 text-(--color-primary) hover:bg-gray-100"
                 }`}
@@ -125,8 +125,8 @@ export default function DataTable<T extends { id: string }>({
           })}
 
           <button
-            disabled={page === totalPages}
-            onClick={() => setPage(page + 1)}
+            disabled={currentPage === totalPages}
+            onClick={() => onPageChange(currentPage + 1)}
             className="disabled:opacity-50 p-2 border border-gray-300 rounded-lg"
           >
             <ChevronRight className="w-4 h-4" />

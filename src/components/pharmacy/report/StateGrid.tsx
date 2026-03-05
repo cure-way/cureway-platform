@@ -1,31 +1,33 @@
-import { getReportStats } from "@/services/pharmacyService";
+import { WeeklyStats } from "@/types/pharmacyOrders";
 import { StatCard } from "./StatCard";
-import { ORDERS } from "@/services/pharmacyData";
 
-export default function StateGrid() {
-  const { completionRate, pendingRate, totalOrders, deliveredCount } =
-    getReportStats(ORDERS);
+interface StateGridProps {
+  stats: WeeklyStats | null;
+}
+
+export default function StateGrid({ stats }: StateGridProps) {
+  if (!stats) return null;
 
   const cards = [
     {
       title: "Order Completion Rate",
-      value: `${completionRate}%`,
-      subtitle: `${deliveredCount} of ${totalOrders} orders delivered`,
+      value: `${stats.completionRate}%`,
+      subtitle: `${stats.deliveredCount} of ${stats.totalOrders} orders delivered`,
     },
     {
       title: "Pending Orders Rate",
-      value: `${pendingRate}%`,
+      value: `${stats.pendingRate}%`,
       subtitle: "Orders awaiting processing",
     },
     {
       title: "Total Orders",
-      value: totalOrders.toString(),
-      subtitle: "All recorded orders",
+      value: stats.totalOrders.toString(),
+      subtitle: "Last 7 days",
     },
     {
       title: "Delivered Orders",
-      value: deliveredCount.toString(),
-      subtitle: "Successfully completed",
+      value: stats.deliveredCount.toString(),
+      subtitle: "Last 7 days",
     },
   ];
 

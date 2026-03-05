@@ -31,10 +31,10 @@ export interface PaginatedResponse<T> {
 /**
  * API response wrapper
  */
-export interface ApiResponse<T = unknown> {
+export interface ApiResponse<T> {
   success: boolean;
   message: string;
-  data?: T;
+  data: T;
   error?: {
     code: string;
     details?: Record<string, string[]>;
@@ -57,7 +57,15 @@ export interface SortParams {
 /**
  * Filter operator
  */
-export type FilterOperator = "eq" | "ne" | "gt" | "gte" | "lt" | "lte" | "contains" | "in";
+export type FilterOperator =
+  | "eq"
+  | "ne"
+  | "gt"
+  | "gte"
+  | "lt"
+  | "lte"
+  | "contains"
+  | "in";
 
 /**
  * Filter item
@@ -92,7 +100,12 @@ export interface Address {
 /**
  * Status badge variant
  */
-export type StatusVariant = "success" | "warning" | "error" | "info" | "default";
+export type StatusVariant =
+  | "success"
+  | "warning"
+  | "error"
+  | "info"
+  | "default";
 
 /**
  * Common status type
@@ -155,4 +168,16 @@ export interface TabItem {
   icon?: ReactNode;
   badge?: number | string;
   disabled?: boolean;
+}
+
+export interface PaginationMeta {
+  total: number;
+  limit: number;
+  page: number;
+  totalPages: number;
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  data: T;
 }
