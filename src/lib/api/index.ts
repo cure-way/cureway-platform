@@ -7,4 +7,4 @@ export {
   httpDelete,
 } from "./http";
 export { getRefreshToken, setTokens, clearTokens } from "./http";
-export { normalizeError, type ApiErrorShape } from "./errors";
+export { normalizeError, ApiError, type ApiErrorShape } from "./errors";

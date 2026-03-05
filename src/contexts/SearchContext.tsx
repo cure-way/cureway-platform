@@ -24,16 +24,16 @@ interface SearchContextValue {
   setAppliedFilters: React.Dispatch<React.SetStateAction<SearchFilter[]>>;
   activeIndex: number;
   setActiveIndex: (v: number) => void;
-  /** Total number of focusable items in the current dropdown list */
   itemCount: number;
   setItemCount: (v: number) => void;
   inputRef: RefObject<HTMLInputElement | null>;
   handleSelect: (item: SearchResult) => void;
-  /** Keyboard handler to attach to search inputs */
   handleInputKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const SearchContext = createContext<SearchContextValue | null>(null);
+
+const STORAGE_KEY = "searchRecents";
 
 export function SearchProvider({ children }: { children: React.ReactNode }) {
   const [query, setQuery] = useState("");
@@ -46,14 +46,14 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { setRecents } = useSearchRecents();
 
-  // Wrap setQuery to also reset activeIndex (avoids a separate effect)
+  // 1. Wrap setQuery to reset activeIndex
   const wrappedSetQuery: React.Dispatch<React.SetStateAction<string>> =
     useCallback((action) => {
       setQuery(action);
       setActiveIndex(-1);
     }, []);
 
-  // Close dropdown on route change (deferred to avoid sync setState in effect)
+  // 2. Close dropdown on route change
   useEffect(() => {
     queueMicrotask(() => {
       setOpen(false);
@@ -61,7 +61,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     });
   }, [pathname]);
 
-  // Global Escape key handler
+  // 3. Global Escape key handler
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && open) {
@@ -74,27 +74,23 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [open]);
 
-  const STORAGE_KEY = "searchRecents";
-
-  const addToRecents = (item: SearchResult) => {
+ 
+  const addToRecents = useCallback((item: SearchResult) => {
     if (typeof window === "undefined") return;
 
     setRecents((prev) => {
-      const updated = [item, ...prev.filter((r) => r.id !== item.id)].slice(
-        0,
-        10,
-      );
-
+      const updated = [item, ...prev.filter((r) => r.id !== item.id)].slice(0, 10);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
       return updated;
     });
-  };
+  }, [setRecents]); // Dependency added
 
   const clearQuery = useCallback(() => {
     setQuery("");
     setActiveIndex(-1);
     inputRef.current?.focus();
   }, []);
+
 
   const handleSelect = useCallback(
     (item: SearchResult) => {
@@ -105,10 +101,10 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
       inputRef.current?.blur();
       router.push(`/medicines/${item.id}`);
     },
-    [router],
+    [router, addToRecents], // addToRecents is now stable
   );
 
-  /** Centralised keyboard handler for both search inputs */
+  /** Centralised keyboard handler */
   const handleInputKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (!open) return;
@@ -120,7 +116,6 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
         e.preventDefault();
         setActiveIndex((prev) => (prev > 0 ? prev - 1 : itemCount - 1));
       }
-      // Enter on a highlighted item is handled inside each list via data-active click
     },
     [open, itemCount],
   );

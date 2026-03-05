@@ -8,9 +8,28 @@
 import { AxiosError } from "axios";
 
 // ---------------------------------------------------------------------------
-// Types
+// ApiError class — extends Error so instanceof checks work everywhere
 // ---------------------------------------------------------------------------
 
+export class ApiError extends Error {
+  readonly status: number;
+  readonly fieldErrors?: Record<string, string[]>;
+
+  constructor(
+    message: string,
+    status: number,
+    fieldErrors?: Record<string, string[]>,
+  ) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+    this.fieldErrors = fieldErrors;
+    // Restore prototype chain (needed when targeting ES5)
+    Object.setPrototypeOf(this, ApiError.prototype);
+  }
+}
+
+// Keep the plain shape type for backwards compat with any code that reads it
 export interface ApiErrorShape {
   /** HTTP status code (0 for network errors) */
   status: number;
@@ -21,19 +40,23 @@ export interface ApiErrorShape {
 }
 
 // ---------------------------------------------------------------------------
-// Normalizer
+// Normalizer — always returns an ApiError (which IS an Error)
 // ---------------------------------------------------------------------------
 
 /**
- * Convert any thrown value into a consistent `ApiErrorShape`.
+ * Convert any thrown value into an `ApiError` instance.
+ * Because ApiError extends Error, `err instanceof Error` is always true.
  *
  * Usage:
  * ```ts
  * try { await api.post(...) }
- * catch (err) { const e = normalizeError(err); }
+ * catch (err) { throw normalizeError(err); }
  * ```
  */
-export function normalizeError(error: unknown): ApiErrorShape {
+export function normalizeError(error: unknown): ApiError {
+  // Already an ApiError — pass through unchanged
+  if (error instanceof ApiError) return error;
+
   // Axios error with a response from the server
   if (isAxiosError(error) && error.response) {
     const { status, data } = error.response;
@@ -42,28 +65,28 @@ export function normalizeError(error: unknown): ApiErrorShape {
       (data as Record<string, unknown>)?.error ??
       httpStatusMessage(status);
 
-    return {
+    return new ApiError(
+      String(message),
       status,
-      message: String(message),
-      fieldErrors: extractFieldErrors(data),
-    };
+      extractFieldErrors(data),
+    );
   }
 
   // Axios error without a response (network / timeout)
   if (isAxiosError(error)) {
-    return {
-      status: 0,
-      message: error.message || "Network error — please check your connection.",
-    };
+    return new ApiError(
+      error.message || "Network error — please check your connection.",
+      0,
+    );
   }
 
   // Standard JS Error
   if (error instanceof Error) {
-    return { status: 0, message: error.message };
+    return new ApiError(error.message, 0);
   }
 
   // Unknown
-  return { status: 0, message: "An unexpected error occurred." };
+  return new ApiError("An unexpected error occurred.", 0);
 }
 
 // ---------------------------------------------------------------------------
