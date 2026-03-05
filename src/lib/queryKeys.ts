@@ -1,3 +1,5 @@
+import { OrderFilter } from "@/types/pharmacyOrders";
+
 export const queryKeys = {
   pharmacy: {
     inventory: (
@@ -15,7 +17,15 @@ export const queryKeys = {
       search,
     ],
     inventoryDetail: (id: number) => ["pharmacy", "inventory", "detail", id],
-    orders: (page?: number) => ["pharmacy", "orders", page],
-    reports: () => ["pharmacy", "reports"],
+    ordersSnapshot: (filter?: OrderFilter) => [
+      "pharmacy",
+      "orders",
+      "snapshot",
+      filter ?? "all",
+    ],
+    ordersSearch: (search: string) => ["pharmacy", "orders", "search", search],
+
+    todayAnalytics: () => ["pharmacy", "orders", "today-analytics"],
+    report: () => ["pharmacy", "orders", "report"],
   },
 };

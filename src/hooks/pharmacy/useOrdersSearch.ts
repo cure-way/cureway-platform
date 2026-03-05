@@ -1,41 +1,28 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { searchOrders } from "@/services/pharmacyOrders";
 import { SearchOrder } from "@/types/pharmacyOrders";
-import { useEffect, useState, useCallback } from "react";
+import { queryKeys } from "@/lib/queryKeys";
 
 export function useOrdersSearch(search: string) {
-  const [data, setData] = useState<SearchOrder[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const query = useQuery<SearchOrder[]>({
+    queryKey: queryKeys.pharmacy.ordersSearch(search),
 
-  const fetchOrders = useCallback(async () => {
-    if (!search.trim()) {
-      setData([]);
-      return;
-    }
+    queryFn: () => searchOrders(search),
 
-    setLoading(true);
-    setError(null);
+    enabled: Boolean(search.trim()),
 
-    try {
-      const result = await searchOrders(search);
-      setData(result);
-    } catch {
-      setError("Failed to search orders.");
-    } finally {
-      setLoading(false);
-    }
-  }, [search]);
-
-  useEffect(() => {
-    fetchOrders();
-  }, [fetchOrders]);
+    placeholderData: (previous) => previous,
+  });
 
   return {
-    data,
-    loading,
-    error,
-    refetch: fetchOrders,
+    data: search.trim() ? (query.data ?? []) : [],
+    loading: query.isLoading,
+    error: query.isError ? "Failed to search orders." : null,
+
+    refetch: async () => {
+      await query.refetch();
+    },
   };
 }
