@@ -39,7 +39,7 @@ export function AuthGuard({ children, allowedRoles }: Props) {
       profile?.verificationStatus === "VERIFIED" &&
       !pathname.startsWith("/pharmacy")
     ) {
-      router.replace("/pharmacy/dashboard");
+      router.replace("/pharmacy/home");
     }
   }, [
     isAuthed,

@@ -27,5 +27,6 @@ export const queryKeys = {
 
     todayAnalytics: () => ["pharmacy", "orders", "today-analytics"],
     report: () => ["pharmacy", "orders", "report"],
+    profile: () => ["pharmacy", "profile"],
   },
 };
