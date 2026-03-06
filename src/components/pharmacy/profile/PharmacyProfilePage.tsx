@@ -12,6 +12,8 @@ import { usePharmacyProfile } from "@/hooks/pharmacy/usePharmacyProfile";
 import DeleteAccountModal from "./DeleteProfile";
 import EditProfileModal from "./EditProfile";
 import { PharmacyProfile } from "@/types/PharmacyProfile";
+import ErrorState from "../shared/ErrorState";
+import ProfilePageSkeleton from "./ProfilePageSkeleton";
 
 export default function PharmacyProfilePage() {
   const { profile, loading, error } = usePharmacyProfile();
@@ -41,8 +43,13 @@ export default function PharmacyProfilePage() {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (!profile || error) return <div>Error loading profile</div>;
+  if (loading) return <ProfilePageSkeleton />;
+  if (!profile || error)
+    return (
+      <div className="flex justify-center items-center">
+        <ErrorState />
+      </div>
+    );
 
   return (
     <div className="flex min-h-screen">
