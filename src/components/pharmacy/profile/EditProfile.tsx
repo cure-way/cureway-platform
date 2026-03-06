@@ -144,7 +144,7 @@ export default function EditProfileModal({
 
             <button
               type="submit"
-              className="bg-[#3B82F6] hover:bg-[#2563EB] px-6 py-2.5 rounded-lg text-white"
+              className="bg-(--color-primary) hover:bg-(--color-primary-dark) px-6 py-2.5 rounded-lg text-white"
             >
               Save Changes
             </button>
