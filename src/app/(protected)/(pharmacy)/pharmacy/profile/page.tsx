@@ -1,4 +1,4 @@
-import PharmacyProfilePage from "@/components/pharmacy/home/PharmacyProfilePage";
+import PharmacyProfilePage from "@/components/pharmacy/profile/PharmacyProfilePage";
 
 export const metadata = {
   title: "Profile | Cure-Way Pharmacy",
