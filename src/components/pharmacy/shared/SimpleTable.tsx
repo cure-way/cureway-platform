@@ -15,7 +15,7 @@ export default function SimpleTable<T extends { id: string | number }>({
   renderCell,
 }: SimpleTableProps<T>) {
   return (
-    <div className="overflow-x-auto">
+    <div>
       <table className="w-full text-sm">
         <thead>
           <tr className="text-gray-500 text-xs uppercase tracking-wide">

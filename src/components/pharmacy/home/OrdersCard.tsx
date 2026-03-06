@@ -4,6 +4,8 @@ import { ORDER_STATUSES } from "@/utils/pharmacyConstants";
 import { Order, OrderFilter } from "@/types/pharmacyOrders";
 import ErrorState from "../shared/ErrorState";
 import EmptyState from "../shared/EmptyState";
+import { mapOrderToRow } from "@/adapters/pharmacyOrders";
+import Link from "next/link";
 
 export default function OrdersCard({
   data,
@@ -18,9 +20,11 @@ export default function OrdersCard({
   status: string | undefined;
   setStatus: (status: OrderFilter) => void;
 }) {
+  const rows = data.map(mapOrderToRow);
+
   return (
-    <div className="bg-white mb-6 p-4 border rounded-xl h-70">
-      <div className="flex justify-between items-center">
+    <div className="flex flex-col bg-white mb-4 p-4 border rounded-xl h-74">
+      <div className="flex justify-between items-center mb-2">
         <h2 className="font-semibold text-gray-900 text-sm">Orders</h2>
         <StatusDropdown
           options={ORDER_STATUSES}
@@ -29,7 +33,7 @@ export default function OrdersCard({
         />
       </div>
 
-      <div className="flex justify-center items-center h-full">
+      <div className="flex justify-center items-center">
         {loading && <OrdersTableSkeleton />}
 
         {!loading && error && <ErrorState message={error} />}
@@ -37,9 +41,19 @@ export default function OrdersCard({
         {!loading && !error && data.length === 0 && (
           <EmptyState message="No orders found." />
         )}
-
-        {!loading && !error && data.length > 0 && <OrdersTable data={data} />}
       </div>
+      {!loading && !error && data.length > 0 && <OrdersTable data={rows} />}
+
+      {!loading && !error && data.length > 0 && (
+        <div className="flex justify-end mt-3">
+          <Link
+            href="/pharmacy/orders"
+            className="font-medium text-(--color-primary) text-xs"
+          >
+            View All Orders →
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

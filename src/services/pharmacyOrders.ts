@@ -84,7 +84,8 @@ export async function getTodayDashboardAnalytics(): Promise<TodayDashboardAnalyt
   }
 
   const deliveredToday = todayOrders.filter(
-    (order) => order.status === "DELIVERED",
+    (order) =>
+      order.status === "READY_FOR_PICKUP" || order.status === "PREPARING",
   );
 
   const medicineFrequency = new Map<
@@ -156,7 +157,8 @@ function calculateWeeklyStats(orders: Order[]): WeeklyStats {
   const totalOrders = orders.length;
 
   const deliveredCount = orders.filter(
-    (order) => order.status === "DELIVERED",
+    (order) =>
+      order.status === "READY_FOR_PICKUP" || order.status === "PREPARING",
   ).length;
 
   const pendingCount = orders.filter(
@@ -183,7 +185,8 @@ function calculateWeeklyStats(orders: Order[]): WeeklyStats {
 
 function calculateOrderStatusDonut(orders: Order[]): OrderStatusDonutDatum[] {
   const deliveredCount = orders.filter(
-    (order) => order.status === "DELIVERED" || order.status === "PAST",
+    (order) =>
+      order.status === "READY_FOR_PICKUP" || order.status === "PREPARING",
   ).length;
 
   const pendingCount = orders.filter(

@@ -10,6 +10,7 @@ import EmptyState from "../shared/EmptyState";
 import ErrorState from "../shared/ErrorState";
 import NullableText from "../shared/NullableText";
 import { OrderRow } from "@/types/pharmacyOrders";
+import { useRouter } from "next/navigation";
 
 type Props = {
   data: OrderRow[];
@@ -35,6 +36,8 @@ export default function OrdersFullTable({
   onPageChange,
   onLimitChange,
 }: Props) {
+  const router = useRouter();
+
   if (loading) {
     return <TableSkeleton columns={orderColumns.length} rows={5} />;
   }
@@ -70,10 +73,22 @@ export default function OrdersFullTable({
             return (
               <ActionsDropdown
                 actions={ORDERS_ACTIONS}
-                onAction={(actionId) =>
-                  console.log("Perform action", actionId, "on item", row.id)
-                }
+                onAction={() => router.push(`/pharmacy/orders/${data[0].id}`)}
               />
+            );
+          }
+
+          if (col.key === "preview") {
+            return (
+              <>
+                {row.preview.firstItemName}
+                {row.preview.remainingCount > 0 && (
+                  <span className="text-gray-500 text-xs">
+                    {" +"}
+                    {row.preview.remainingCount}
+                  </span>
+                )}
+              </>
             );
           }
 

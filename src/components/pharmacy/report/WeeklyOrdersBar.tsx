@@ -30,9 +30,8 @@ export function WeeklyOrdersBar({
             vertical={false}
             stroke="#e5e7eb"
           />
-
           <XAxis
-            dataKey="day"
+            dataKey="label"
             axisLine={false}
             tickLine={false}
             tick={{ fontSize: 12, fill: "#6b7280" }}

@@ -1,4 +1,4 @@
-export type OrderStatus = "PENDING" | "DELIVERED" | "PAST";
+export type OrderStatus = "PENDING" | "PREPARING" | "READY_FOR_PICKUP";
 
 export interface PharmacyOrderItemDTO {
   pharmacyOrderItemId: number;
