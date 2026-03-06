@@ -13,30 +13,73 @@ import {
 import {
   PageShell,
   PageHeader,
-  HeaderPrimaryButton,
   HeaderIconButton,
   StatsBar,
   KpiPill,
   DataTable,
   StatusBadge,
-  AlertBanner,
   MotionStagger,
   MotionStaggerItem,
 } from "@/components/admin/shared";
-import type { ColumnDef } from "@/components/admin/shared";
+import type { ColumnDef, BadgeVariant } from "@/components/admin/shared";
 import { OrdersPageIcon } from "@/components/admin/shared/icons";
-import { orders, type MockOrder } from "@/lib/mock/admin";
+import { useAdminOrders } from "@/hooks/admin.hooks";
+import type { AdminOrder } from "@/services/admin.service";
+
+/* ------------------------------------------------------------------
+   HELPERS
+   ------------------------------------------------------------------ */
+function orderStatusToBadge(status: string): BadgeVariant {
+  switch (status) {
+    case "DELIVERED": return "delivered";
+    case "PENDING": return "pending";
+    case "PROCESSING": return "processing";
+    case "OUT_FOR_DELIVERY": return "en-route";
+    case "ACCEPTED":
+    case "PARTIALLY_ACCEPTED": return "accepted";
+    case "REJECTED": return "rejected";
+    case "CANCELLED": return "cancelled";
+    default: return "pending";
+  }
+}
+
+function paymentStatusToBadge(status: string): BadgeVariant {
+  switch (status) {
+    case "PAID": case "paid": return "paid";
+    case "PENDING": case "pending": return "pending";
+    default: return "pending";
+  }
+}
+
+function deliveryStatusToBadge(status: string): BadgeVariant {
+  switch (status) {
+    case "DELIVERED": return "delivered";
+    case "PENDING": return "pending";
+    case "EN_ROUTE": return "en-route";
+    case "ASSIGNED": return "assigned";
+    case "PICKUP_IN_PROGRESS": return "pickup-in-progress";
+    default: return "pending";
+  }
+}
+
+function formatDate(iso: string) {
+  const d = new Date(iso);
+  return {
+    date: d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+    time: d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
+  };
+}
 
 /* ------------------------------------------------------------------
    COLUMNS
    ------------------------------------------------------------------ */
-const columns: ColumnDef<MockOrder>[] = [
+const columns: ColumnDef<AdminOrder>[] = [
   {
     id: "id",
     header: "Order ID",
     cell: (o) => (
       <span className="text-[12px] leading-[1.2] font-semibold text-primary-darker">
-        {o.id}
+        #{o.id}
       </span>
     ),
   },
@@ -48,15 +91,12 @@ const columns: ColumnDef<MockOrder>[] = [
       <div className="flex items-center gap-2">
         <div className="w-10 h-10 rounded-full bg-warning-light flex items-center justify-center shrink-0">
           <span className="text-[14px] leading-[1.2] font-bold text-warning-dark">
-            {o.customerName.charAt(0)}
+            {o.patient.name.charAt(0)}
           </span>
         </div>
         <div className="min-w-0">
           <p className="text-[14px] leading-[1.2] font-semibold text-neutral-darker truncate">
-            {o.customerName}
-          </p>
-          <p className="text-[12px] leading-[1.2] font-medium text-neutral truncate">
-            {o.customerLocation}, {o.customerPhone}
+            {o.patient.name}
           </p>
         </div>
       </div>
@@ -73,10 +113,7 @@ const columns: ColumnDef<MockOrder>[] = [
         </div>
         <div className="min-w-0">
           <p className="text-[14px] leading-[1.2] font-semibold text-primary-dark truncate">
-            {o.pharmacyName}
-          </p>
-          <p className="text-[12px] leading-[1.2] font-medium text-neutral truncate">
-            {o.pharmacyBranch}
+            {o.pharmacyLabel}
           </p>
         </div>
       </div>
@@ -85,35 +122,38 @@ const columns: ColumnDef<MockOrder>[] = [
   {
     id: "date",
     header: "Date",
-    cell: (o) => (
-      <div className="flex flex-col gap-1">
-        <p className="text-[14px] leading-[1.2] font-semibold text-primary-dark">
-          {o.date}
-        </p>
-        <p className="text-[12px] leading-[1.2] text-neutral-darker">
-          {o.time}
-        </p>
-      </div>
-    ),
+    cell: (o) => {
+      const { date, time } = formatDate(o.createdAt);
+      return (
+        <div className="flex flex-col gap-1">
+          <p className="text-[14px] leading-[1.2] font-semibold text-primary-dark">
+            {date}
+          </p>
+          <p className="text-[12px] leading-[1.2] text-neutral-darker">
+            {time}
+          </p>
+        </div>
+      );
+    },
   },
   {
     id: "amount",
     header: "Amount",
     cell: (o) => (
       <span className="text-[14px] leading-[1.2] font-semibold text-primary-dark">
-        {o.amount}
+        {o.currency} {(o.totalAmount ?? 0).toFixed(2)}
       </span>
     ),
   },
   {
     id: "payment",
     header: "Payment",
-    cell: (o) => <StatusBadge variant={o.payment} />,
+    cell: (o) => <StatusBadge variant={paymentStatusToBadge(o.payment?.status ?? "")} />,
   },
   {
     id: "delivery",
     header: "Delivery",
-    cell: (o) => <StatusBadge variant={o.delivery} />,
+    cell: (o) => <StatusBadge variant={deliveryStatusToBadge(o.delivery?.status ?? "")} />,
   },
 ];
 
@@ -121,6 +161,15 @@ const columns: ColumnDef<MockOrder>[] = [
    PAGE
    ------------------------------------------------------------------ */
 export default function AdminOrdersPage() {
+  const { data, meta, loading, page, limit, search, setPage, setLimit, setSearch, refetch } =
+    useAdminOrders();
+
+  const deliveredCount = data.filter((o) => o.status === "DELIVERED").length;
+  const pendingCount = data.filter((o) => o.status === "PENDING").length;
+  const processingCount = data.filter((o) => o.status === "PROCESSING").length;
+  const enRouteCount = data.filter((o) => o.status === "OUT_FOR_DELIVERY").length;
+  const cancelledCount = data.filter((o) => o.status === "CANCELLED" || o.status === "REJECTED").length;
+
   return (
     <PageShell>
       <MotionStagger className="space-y-3">
@@ -131,10 +180,10 @@ export default function AdminOrdersPage() {
             subtitle="Manage your orders"
             actions={
               <>
-                <HeaderPrimaryButton>Add new order</HeaderPrimaryButton>
                 <HeaderIconButton
                   icon={<RefreshCw className="w-6 h-6 text-neutral-dark" />}
                   label="Refresh"
+                  onClick={refetch}
                 />
                 <HeaderIconButton
                   icon={<MoreVertical className="w-6 h-6 text-neutral-dark" />}
@@ -146,43 +195,35 @@ export default function AdminOrdersPage() {
         </MotionStaggerItem>
 
         <MotionStaggerItem>
-          <AlertBanner
-            variant="dashboard"
-            title="Order Needs Review"
-            actionLabel="Review Details"
-          />
-        </MotionStaggerItem>
-
-        <MotionStaggerItem>
-          <StatsBar count="135 Orders">
+          <StatsBar count={`${meta.total} Order${meta.total !== 1 ? "s" : ""}`}>
             <KpiPill
               icon={<PackageCheck className="w-6 h-6 text-success-dark" />}
-              value={128}
+              value={deliveredCount}
               label="Delivered"
               variant="success"
             />
             <KpiPill
               icon={<Truck className="w-6 h-6 text-secondary-dark" />}
-              value={1}
+              value={enRouteCount}
               label="On way"
               variant="info"
             />
             <KpiPill
               icon={<Clock className="w-6 h-6 text-warning-dark" />}
-              value={3}
+              value={processingCount}
               label="Processing"
               variant="warning"
             />
             <KpiPill
               icon={<Timer className="w-6 h-6 text-warning-dark" />}
-              value={2}
+              value={pendingCount}
               label="Pending"
               variant="warning"
             />
             <KpiPill
               icon={<PackageX className="w-6 h-6 text-error-dark" />}
-              value={1}
-              label="Failed"
+              value={cancelledCount}
+              label="Cancelled"
               variant="error"
             />
           </StatsBar>
@@ -190,13 +231,21 @@ export default function AdminOrdersPage() {
 
         <MotionStaggerItem>
           <DataTable
-            data={orders}
+            data={data}
             columns={columns}
-            getRowId={(o) => o.id}
-            getRowLabel={(o) => `order ${o.id}`}
+            getRowId={(o) => String(o.id)}
+            getRowLabel={(o) => `order #${o.id}`}
             searchPlaceholder="Search order ID, customer name, pharmacy..."
             selectAllLabel="Select all orders"
             minWidthClass="min-w-275"
+            loading={loading}
+            searchValue={search}
+            onSearch={setSearch}
+            currentPage={page}
+            totalPages={meta.totalPages}
+            rowsPerPage={limit}
+            onPageChange={setPage}
+            onRowsPerPageChange={setLimit}
           />
         </MotionStaggerItem>
       </MotionStagger>

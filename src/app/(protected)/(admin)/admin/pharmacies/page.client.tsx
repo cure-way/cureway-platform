@@ -3,17 +3,13 @@
 import {
   RefreshCw,
   MoreVertical,
-  UserCheck,
-  UserPlus,
-  Star,
-  TrendingUp,
-  TrendingDown,
   Pill,
+  ShieldCheck,
+  ShieldAlert,
 } from "lucide-react";
 import {
   PageShell,
   PageHeader,
-  HeaderPrimaryButton,
   HeaderIconButton,
   StatsBar,
   KpiPill,
@@ -22,20 +18,33 @@ import {
   MotionStagger,
   MotionStaggerItem,
 } from "@/components/admin/shared";
-import type { ColumnDef } from "@/components/admin/shared";
+import type { ColumnDef, BadgeVariant } from "@/components/admin/shared";
 import { PharmacyPageIcon } from "@/components/admin/shared/icons";
-import { pharmacies, type MockPharmacy } from "@/lib/mock/admin";
+import { useAdminPharmacies } from "@/hooks/admin.hooks";
+import type { AdminPharmacy } from "@/services/admin.service";
+
+/* ------------------------------------------------------------------
+   HELPERS
+   ------------------------------------------------------------------ */
+function verificationToBadge(status: string): BadgeVariant {
+  switch (status) {
+    case "VERIFIED": return "verified";
+    case "REJECTED": return "rejected";
+    case "UNDER_REVIEW": return "under-review";
+    default: return "pending";
+  }
+}
 
 /* ------------------------------------------------------------------
    COLUMNS
    ------------------------------------------------------------------ */
-const columns: ColumnDef<MockPharmacy>[] = [
+const columns: ColumnDef<AdminPharmacy>[] = [
   {
     id: "id",
     header: "Pha. ID",
     cell: (p) => (
       <span className="text-[12px] leading-[1.2] font-semibold text-primary-darker">
-        {p.id}
+        #{p.id}
       </span>
     ),
   },
@@ -50,10 +59,10 @@ const columns: ColumnDef<MockPharmacy>[] = [
         </div>
         <div className="min-w-0">
           <p className="text-[14px] leading-[1.2] font-semibold text-primary-dark truncate">
-            {p.name}
+            {p.pharmacyName}
           </p>
           <p className="text-[12px] leading-[1.2] font-medium text-neutral truncate">
-            {p.branch}
+            {p.phoneNumber}
           </p>
         </div>
       </div>
@@ -65,86 +74,30 @@ const columns: ColumnDef<MockPharmacy>[] = [
     className: "flex-1 min-w-50",
     cell: (p) => (
       <div>
-        <p className="text-[14px] leading-[1.2] font-semibold text-primary-dark">
-          {p.address}
+        <p className="text-[14px] leading-[1.2] font-semibold text-primary-dark truncate">
+          {p.cityName}
         </p>
-        <p className="text-[12px] leading-[1.2] font-medium text-neutral">
-          {p.area}
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: "earning",
-    header: "Earning",
-    cell: (p) => (
-      <div>
-        <p className="text-[14px] leading-[1.2] font-semibold text-primary-dark">
-          {p.earning}
-        </p>
-        {p.earningPct && (
-          <div className="flex items-center gap-0.5">
-            <span
-              className={`text-[12px] leading-[1.2] ${
-                p.earningUp ? "text-success-dark" : "text-error-dark"
-              }`}
-            >
-              {p.earningPct}
-            </span>
-            <span className="text-[12px] leading-[1.2] text-neutral-darker">
-              {p.earningDelta}
-            </span>
-            {p.earningUp ? (
-              <TrendingUp className="w-3 h-3 text-success-dark" />
-            ) : (
-              <TrendingDown className="w-3 h-3 text-error-dark" />
-            )}
-          </div>
+        {p.addressLine && (
+          <p className="text-[12px] leading-[1.2] font-medium text-neutral truncate">
+            {p.addressLine}
+          </p>
         )}
       </div>
     ),
   },
   {
-    id: "orders",
-    header: "Order",
+    id: "phone",
+    header: "Phone",
     cell: (p) => (
       <span className="text-[14px] leading-[1.2] font-semibold text-primary-dark">
-        {p.orders}
+        {p.phoneNumber}
       </span>
     ),
   },
   {
-    id: "rating",
-    header: "Rating",
-    cell: (p) =>
-      p.rating > 0 ? (
-        <div>
-          <div className="flex items-center gap-1">
-            <Star className="w-4 h-4 text-warning-dark fill-warning-dark" />
-            <span className="text-[14px] leading-[1.2] font-semibold text-primary-darker">
-              {p.rating}
-            </span>
-            <span className="text-[10px] leading-[1.2] text-neutral">
-              ({p.ratingCount})
-            </span>
-          </div>
-          <p className="text-[10px] leading-[1.2] text-neutral">
-            Customer rate
-          </p>
-        </div>
-      ) : (
-        <div className="flex items-center gap-1">
-          <Star className="w-4 h-4 text-neutral" />
-          <span className="text-[14px] leading-[1.2] font-semibold text-primary-darker">
-            -
-          </span>
-        </div>
-      ),
-  },
-  {
     id: "verification",
     header: "Verification",
-    cell: (p) => <StatusBadge variant={p.verification} />,
+    cell: (p) => <StatusBadge variant={verificationToBadge(p.verificationStatus)} />,
   },
 ];
 
@@ -152,6 +105,12 @@ const columns: ColumnDef<MockPharmacy>[] = [
    PAGE
    ------------------------------------------------------------------ */
 export default function AdminPharmaciesPage() {
+  const { data, meta, loading, page, limit, search, setPage, setLimit, setSearch, refetch } =
+    useAdminPharmacies();
+
+  const verifiedCount = data.filter((p) => p.verificationStatus === "VERIFIED").length;
+  const underReviewCount = data.filter((p) => p.verificationStatus === "UNDER_REVIEW").length;
+
   return (
     <PageShell>
       <MotionStagger className="space-y-3">
@@ -162,10 +121,10 @@ export default function AdminPharmaciesPage() {
             subtitle="Manage your pharmacies"
             actions={
               <>
-                <HeaderPrimaryButton>Add new Pharmacy</HeaderPrimaryButton>
                 <HeaderIconButton
                   icon={<RefreshCw className="w-6 h-6 text-neutral-dark" />}
                   label="Refresh"
+                  onClick={refetch}
                 />
                 <HeaderIconButton
                   icon={<MoreVertical className="w-6 h-6 text-neutral-dark" />}
@@ -178,33 +137,41 @@ export default function AdminPharmaciesPage() {
 
         <MotionStaggerItem>
           <StatsBar
-            count="100 Pharmacy"
+            count={`${meta.total} Pharmac${meta.total !== 1 ? "ies" : "y"}`}
             description="100% of your Pharmacies base"
           >
             <KpiPill
-              icon={<UserCheck className="w-6 h-6 text-success-dark" />}
-              value={80}
-              label="Active Pharmacy"
+              icon={<ShieldCheck className="w-6 h-6 text-success-dark" />}
+              value={verifiedCount}
+              label="Verified"
               variant="success"
             />
             <KpiPill
-              icon={<UserPlus className="w-6 h-6 text-primary-dark" />}
-              value={8}
-              label="New this week"
-              variant="secondary"
+              icon={<ShieldAlert className="w-6 h-6 text-warning-dark" />}
+              value={underReviewCount}
+              label="Under Review"
+              variant="warning"
             />
           </StatsBar>
         </MotionStaggerItem>
 
         <MotionStaggerItem>
           <DataTable
-            data={pharmacies}
+            data={data}
             columns={columns}
-            getRowId={(p, i) => p.id + i}
-            getRowLabel={(p) => p.name}
-            searchPlaceholder="Search Pharmacies, ID number, location,..."
+            getRowId={(p) => String(p.id)}
+            getRowLabel={(p) => p.pharmacyName}
+            searchPlaceholder="Search Pharmacies, ID number, location..."
             selectAllLabel="Select all pharmacies"
             minWidthClass="min-w-275"
+            loading={loading}
+            searchValue={search}
+            onSearch={setSearch}
+            currentPage={page}
+            totalPages={meta.totalPages}
+            rowsPerPage={limit}
+            onPageChange={setPage}
+            onRowsPerPageChange={setLimit}
           />
         </MotionStaggerItem>
       </MotionStagger>

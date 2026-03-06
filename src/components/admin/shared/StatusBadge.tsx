@@ -15,7 +15,17 @@ export type BadgeVariant =
   | "verified"
   | "in-stock"
   | "out-of-stock"
-  | "low-stock";
+  | "low-stock"
+  | "under-review"
+  | "rejected"
+  | "online"
+  | "offline"
+  | "assigned"
+  | "pickup-in-progress"
+  | "en-route"
+  | "cancelled"
+  | "accepted"
+  | "approved";
 
 interface StatusBadgeProps {
   variant: BadgeVariant;
@@ -36,6 +46,16 @@ const variantStyles: Record<BadgeVariant, string> = {
   "in-stock": "bg-success-light text-success-darker",
   "out-of-stock": "bg-error-light text-error-darker",
   "low-stock": "bg-warning-light-active text-warning-darker",
+  "under-review": "bg-warning-light text-warning-dark",
+  rejected: "bg-error-light text-error-darker",
+  online: "bg-success-light text-success-darker",
+  offline: "bg-neutral-light-active text-neutral",
+  assigned: "bg-secondary-light text-secondary-dark",
+  "pickup-in-progress": "bg-warning-light text-warning-dark",
+  "en-route": "bg-secondary-light text-secondary-dark",
+  cancelled: "bg-error-light text-error-darker",
+  accepted: "bg-success-light text-success-darker",
+  approved: "bg-success-light text-success-darker",
 };
 
 const labelMap: Record<BadgeVariant, string> = {
@@ -51,6 +71,16 @@ const labelMap: Record<BadgeVariant, string> = {
   "in-stock": "In stock",
   "out-of-stock": "Out of stock",
   "low-stock": "In stock",
+  "under-review": "Under Review",
+  rejected: "Rejected",
+  online: "Online",
+  offline: "Offline",
+  assigned: "Assigned",
+  "pickup-in-progress": "Pickup",
+  "en-route": "En Route",
+  cancelled: "Cancelled",
+  accepted: "Accepted",
+  approved: "Approved",
 };
 
 /** Variants that show the verified checkmark icon */

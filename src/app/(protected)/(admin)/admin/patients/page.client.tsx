@@ -1,12 +1,9 @@
 "use client";
 
-import { RefreshCw, MoreVertical, UserCheck, UserPlus } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import { RefreshCw, MoreVertical, UserCheck } from "lucide-react";
 import {
   PageShell,
   PageHeader,
-  HeaderPrimaryButton,
   HeaderIconButton,
   StatsBar,
   KpiPill,
@@ -16,23 +13,37 @@ import {
   MotionStaggerItem,
 } from "@/components/admin/shared";
 import type { ColumnDef } from "@/components/admin/shared";
-import { patients, type MockPatient } from "@/lib/mock/patients";
+import type { BadgeVariant } from "@/components/admin/shared";
 import { PatientsPageIcon } from "@/components/admin/shared/icons";
+import { useAdminPatients } from "@/hooks/admin.hooks";
+import type { AdminPatient } from "@/services/admin.service";
+
+/* ------------------------------------------------------------------
+   HELPERS
+   ------------------------------------------------------------------ */
+function statusToBadge(s: string): BadgeVariant {
+  return s === "ACTIVE" ? "active" : "unactive";
+}
+
+function formatDate(iso: string) {
+  const d = new Date(iso);
+  return {
+    date: d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+    time: d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
+  };
+}
 
 /* ------------------------------------------------------------------
    COLUMNS
    ------------------------------------------------------------------ */
-const columns: ColumnDef<MockPatient>[] = [
+const columns: ColumnDef<AdminPatient>[] = [
   {
     id: "id",
     header: "Patient ID",
     cell: (p) => (
-      <Link
-        href={`/admin/patients/${p.id}`}
-        className="text-[12px] leading-[1.2] font-semibold text-primary-darker hover:underline focus:underline focus:outline-none"
-      >
+      <span className="text-[12px] leading-[1.2] font-semibold text-primary-darker">
         #{p.id}
-      </Link>
+      </span>
     ),
   },
   {
@@ -41,24 +52,17 @@ const columns: ColumnDef<MockPatient>[] = [
     className: "flex-1 min-w-65",
     cell: (p) => (
       <div className="flex items-center gap-2 h-full">
-        <div className="w-10 h-10 rounded-full bg-[#FFFDC3] shrink-0 overflow-hidden">
-          <Image
-            src={p.avatar}
-            alt=""
-            width={40}
-            height={40}
-            className="w-full h-full object-cover"
-          />
+        <div className="w-10 h-10 rounded-full bg-warning-light flex items-center justify-center shrink-0">
+          <span className="text-[14px] leading-[1.2] font-bold text-warning-dark">
+            {p.name.charAt(0)}
+          </span>
         </div>
         <div className="flex-1 flex flex-col gap-2 justify-center min-w-0">
-          <Link
-            href={`/admin/patients/${p.id}`}
-            className="text-[14px] leading-[1.2] font-semibold text-[#393737] truncate hover:underline focus:underline focus:outline-none"
-          >
+          <p className="text-[14px] leading-[1.2] font-semibold text-[#393737] truncate">
             {p.name}
-          </Link>
+          </p>
           <p className="text-[12px] leading-[1.2] font-medium text-neutral truncate">
-            {p.location}, {p.phone}
+            {p.phoneNumber}
           </p>
         </div>
       </div>
@@ -75,32 +79,26 @@ const columns: ColumnDef<MockPatient>[] = [
     ),
   },
   {
-    id: "lastVisit",
-    header: "Last visit",
-    cell: (p) => (
-      <div className="flex flex-col gap-1">
-        <p className="text-[14px] leading-[1.2] font-semibold text-primary-dark">
-          {p.lastVisit}
-        </p>
-        <p className="text-[12px] leading-[1.2] font-normal text-[#393737]">
-          {p.lastVisitTime}
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: "totalSpent",
-    header: "Total spent",
-    cell: (p) => (
-      <span className="text-[14px] leading-[1.2] font-semibold text-primary-dark">
-        {p.totalSpent}
-      </span>
-    ),
+    id: "createdAt",
+    header: "Joined",
+    cell: (p) => {
+      const { date, time } = formatDate(p.createdAt);
+      return (
+        <div className="flex flex-col gap-1">
+          <p className="text-[14px] leading-[1.2] font-semibold text-primary-dark">
+            {date}
+          </p>
+          <p className="text-[12px] leading-[1.2] font-normal text-[#393737]">
+            {time}
+          </p>
+        </div>
+      );
+    },
   },
   {
     id: "status",
     header: "Status",
-    cell: (p) => <StatusBadge variant={p.status} />,
+    cell: (p) => <StatusBadge variant={statusToBadge(p.status)} />,
   },
 ];
 
@@ -108,6 +106,11 @@ const columns: ColumnDef<MockPatient>[] = [
    PAGE
    ------------------------------------------------------------------ */
 export default function AdminPatientsPage() {
+  const { data, meta, loading, page, limit, search, setPage, setLimit, setSearch, refetch } =
+    useAdminPatients();
+
+  const activeCount = data.filter((p) => p.status === "ACTIVE").length;
+
   return (
     <PageShell>
       <MotionStagger className="space-y-3">
@@ -118,10 +121,10 @@ export default function AdminPatientsPage() {
             subtitle="Manage your patients"
             actions={
               <>
-                <HeaderPrimaryButton>Add new user</HeaderPrimaryButton>
                 <HeaderIconButton
                   icon={<RefreshCw className="w-6 h-6 text-neutral-dark" />}
                   label="Refresh"
+                  onClick={refetch}
                 />
                 <HeaderIconButton
                   icon={<MoreVertical className="w-6 h-6 text-neutral-dark" />}
@@ -134,32 +137,34 @@ export default function AdminPatientsPage() {
 
         <MotionStaggerItem>
           <StatsBar
-            count="120 Patient"
+            count={`${meta.total} Patient${meta.total !== 1 ? "s" : ""}`}
             description="100% of your customer base"
           >
             <KpiPill
               icon={<UserCheck className="w-6 h-6 text-success-dark" />}
-              value={80}
+              value={activeCount}
               label="Active Patients"
               variant="success"
-            />
-            <KpiPill
-              icon={<UserPlus className="w-6 h-6 text-primary-dark" />}
-              value={8}
-              label="New this week"
-              variant="secondary"
             />
           </StatsBar>
         </MotionStaggerItem>
 
         <MotionStaggerItem>
           <DataTable
-            data={patients}
+            data={data}
             columns={columns}
-            getRowId={(p) => p.id}
+            getRowId={(p) => String(p.id)}
             getRowLabel={(p) => p.name}
-            searchPlaceholder="Search medicine, pharmacy.."
+            searchPlaceholder="Search patient name, email, phone..."
             selectAllLabel="Select all patients"
+            loading={loading}
+            searchValue={search}
+            onSearch={setSearch}
+            currentPage={page}
+            totalPages={meta.totalPages}
+            rowsPerPage={limit}
+            onPageChange={setPage}
+            onRowsPerPageChange={setLimit}
           />
         </MotionStaggerItem>
       </MotionStagger>

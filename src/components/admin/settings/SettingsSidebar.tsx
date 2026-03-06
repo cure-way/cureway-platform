@@ -15,6 +15,7 @@ import {
   Circle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/features/auth";
 
 /* ------------------------------------------------------------------
    TYPES
@@ -74,6 +75,7 @@ const navItems: SettingsNavItem[] = [
    ------------------------------------------------------------------ */
 export default function SettingsSidebar() {
   const pathname = usePathname();
+  const { logout } = useAuth();
   const [expandedSections, setExpandedSections] = useState<string[]>([
     "General Settings",
   ]);
@@ -188,6 +190,9 @@ export default function SettingsSidebar() {
       {/* Logout */}
       <button
         type="button"
+        onClick={async () => {
+          await logout();
+        }}
         className={cn(
           "items-center gap-2 px-3 py-2 rounded-xl bg-neutral-light border border-border text-t-12 font-medium text-neutral hover:bg-neutral-light-active transition-colors",
           mobileOpen ? "flex" : "hidden lg:flex",

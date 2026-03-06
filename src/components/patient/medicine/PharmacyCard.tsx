@@ -12,7 +12,7 @@ export function PharmacyCard({ pharmacy }: PharmacyCardProps) {
     router.push(`/pharmacies/${pharmacy.pharmacyId}`);
   };
 
-  const formatDistance = (distance: number) => `${distance.toFixed(1)} km`;
+  const formatDistance = (distance: number) => `${(distance ?? 0).toFixed(1)} km`;
 
   const availabilityColor =
     pharmacy.availability === "in_stock"
@@ -43,7 +43,7 @@ export function PharmacyCard({ pharmacy }: PharmacyCardProps) {
       </div>
 
       <div className="mb-3 font-semibold text-gray-900 text-sm">
-        ${pharmacy.price.toFixed(2)}
+        ${(pharmacy.price ?? 0).toFixed(2)}
       </div>
 
       <div className="flex justify-between items-center text-xs">

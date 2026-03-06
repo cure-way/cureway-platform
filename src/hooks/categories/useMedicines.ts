@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getMedicines } from "@/services/medicineService";
+import { useAuth } from "@/features/auth";
 import type { Medicine } from "@/types/medicine.types";
 
 export function useMedicines(
@@ -9,12 +10,16 @@ export function useMedicines(
   limit?: number,
   categoryId?: number,
 ) {
+  const { isLoading: authLoading } = useAuth();
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
+    // Wait for auth hydration to finish so the access token is available
+    if (authLoading) return;
+
     let mounted = true;
 
     async function fetchData() {
@@ -48,7 +53,7 @@ export function useMedicines(
     return () => {
       mounted = false;
     };
-  }, [page, limit, categoryId]);
+  }, [authLoading, page, limit, categoryId]);
 
   return { medicines, loading, error, totalPages };
 }

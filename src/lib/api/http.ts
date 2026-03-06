@@ -27,6 +27,9 @@ let refreshToken: string | null = null;
 const isClient = typeof window !== "undefined";
 
 export function getAccessToken(): string | null {
+  if (!accessToken && isClient) {
+    accessToken = localStorage.getItem("cureway_at");
+  }
   return accessToken;
 }
 
@@ -41,6 +44,7 @@ export function setTokens(access: string, refresh: string): void {
   accessToken = access;
   refreshToken = refresh;
   if (isClient) {
+    localStorage.setItem("cureway_at", access);
     localStorage.setItem("cureway_rt", refresh);
   }
 }
@@ -49,6 +53,7 @@ export function clearTokens(): void {
   accessToken = null;
   refreshToken = null;
   if (isClient) {
+    localStorage.removeItem("cureway_at");
     localStorage.removeItem("cureway_rt");
   }
 }
