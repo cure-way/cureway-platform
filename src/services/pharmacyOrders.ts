@@ -1,6 +1,7 @@
-import { mapOrderDTO } from "@/adapters/pharmacyOrders";
+import { mapOrderDTO, mapOrderToRow } from "@/adapters/pharmacyOrders";
 import { getOrders } from "@/repositories/pharmacyOrders.repository";
 import {
+  GetOrdersParams,
   Order,
   OrderFilter,
   OrdersStatusModel,
@@ -15,6 +16,21 @@ import {
 
 const SNAPSHOT_LIMIT = 3;
 const ANALYTICS_LIMIT = 100;
+
+export async function fetchOrdersList(params: GetOrdersParams) {
+  const response = await getOrders(params);
+
+  if (!response.success) {
+    throw new Error("Failed to fetch orders");
+  }
+
+  return {
+    rows: response.data.map((dto) => mapOrderToRow(mapOrderDTO(dto))),
+    total: response.meta.total,
+    page: response.meta.page,
+    limit: response.meta.limit,
+  };
+}
 
 export async function getOrdersSnapshot(
   filter?: OrderFilter,

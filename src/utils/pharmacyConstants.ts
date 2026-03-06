@@ -1,4 +1,4 @@
-import { OrderRow } from "@/types/pharmacyOrders";
+import { OrderFilter, OrderRow } from "@/types/pharmacyOrders";
 import {
   Column,
   InventoryFilterStatus,
@@ -17,7 +17,10 @@ export const INVENTORY_STATUSES: {
   { label: "Out of Stock", value: "OUT_OF_STOCK" },
 ];
 
-export const ORDER_STATUSES = [
+export const ORDER_STATUSES: {
+  label: string;
+  value: OrderFilter;
+}[] = [
   { label: "All", value: "ALL" },
   { label: "New", value: "NEW" },
   { label: "Delivered", value: "DELIVERED" },
@@ -44,6 +47,9 @@ export const INVENTORY_ACTIONS: RowAction[] = [
   { id: "view", label: "View details" },
   { id: "mark_out", label: "Mark as out of stock" },
   { id: "delete", label: "Delete medicine", danger: true },
+];
+export const ORDERS_ACTIONS: RowAction[] = [
+  { id: "view", label: "View details" },
 ];
 
 export const orderColumns: readonly Column<OrderRow>[] = [
