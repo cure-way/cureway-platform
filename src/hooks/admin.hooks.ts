@@ -37,12 +37,19 @@ interface UseAdminListReturn<T> {
 }
 
 function useAdminList<T>(
-  fetcher: (params: Record<string, unknown>) => Promise<{ data: T[]; meta: PaginationMeta }>,
+  fetcher: (
+    params: Record<string, unknown>,
+  ) => Promise<{ data: T[]; meta: PaginationMeta }>,
   extraParams: Record<string, unknown> = {},
 ): UseAdminListReturn<T> {
   const { isLoading: authLoading } = useAuth();
   const [data, setData] = useState<T[]>([]);
-  const [meta, setMeta] = useState<PaginationMeta>({ total: 0, limit: 10, page: 1, totalPages: 1 });
+  const [meta, setMeta] = useState<PaginationMeta>({
+    total: 0,
+    limit: 10,
+    page: 1,
+    totalPages: 1,
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
@@ -107,7 +114,9 @@ export function useAdminPatients(params: { status?: string } = {}) {
   );
 }
 
-export function useAdminPharmacies(params: { verificationStatus?: string; userStatus?: string } = {}) {
+export function useAdminPharmacies(
+  params: { verificationStatus?: string; userStatus?: string } = {},
+) {
   return useAdminList<AdminPharmacy>(
     (p) => getAdminPharmacies(p as Parameters<typeof getAdminPharmacies>[0]),
     params,
@@ -121,28 +130,44 @@ export function useAdminOrders(params: { status?: string } = {}) {
   );
 }
 
-export function useAdminMedicines(params: { categoryId?: number; status?: string; isActive?: boolean } = {}) {
+export function useAdminMedicines(
+  params: { categoryId?: number; status?: string; isActive?: boolean } = {},
+) {
   return useAdminList<AdminMedicine>(
     (p) => getAdminMedicines(p as Parameters<typeof getAdminMedicines>[0]),
     params,
   );
 }
 
-export function useAdminDrivers(params: { verificationStatus?: string; userStatus?: string; availabilityStatus?: string } = {}) {
+export function useAdminDrivers(
+  params: {
+    verificationStatus?: string;
+    userStatus?: string;
+    availabilityStatus?: string;
+  } = {},
+) {
   return useAdminList<AdminDriver>(
     (p) => getAdminDrivers(p as Parameters<typeof getAdminDrivers>[0]),
     params,
   );
 }
 
-export function useAdminDeliveries(params: { status?: string; driverId?: number } = {}) {
+export function useAdminDeliveries(
+  params: { status?: string; driverId?: number } = {},
+) {
   return useAdminList<AdminDelivery>(
     (p) => getAdminDeliveries(p as Parameters<typeof getAdminDeliveries>[0]),
     params,
   );
 }
 
-export function useAdminInventory(params: { pharmacyId?: number; medicineId?: number; isAvailable?: boolean } = {}) {
+export function useAdminInventory(
+  params: {
+    pharmacyId?: number;
+    medicineId?: number;
+    isAvailable?: boolean;
+  } = {},
+) {
   return useAdminList<AdminInventoryItem>(
     (p) => getAdminInventory(p as Parameters<typeof getAdminInventory>[0]),
     params,

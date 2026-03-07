@@ -86,7 +86,11 @@ export default function DataTable<TData>({
 
   return (
     <div className="bg-white border border-border rounded-[20px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] pb-4 px-4">
-      <TableSearch placeholder={searchPlaceholder} value={searchValue} onSearch={onSearch} />
+      <TableSearch
+        placeholder={searchPlaceholder}
+        value={searchValue}
+        onSearch={onSearch}
+      />
 
       <div className="overflow-x-auto">
         <div

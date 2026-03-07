@@ -28,7 +28,11 @@ function statusToBadge(s: string): BadgeVariant {
 function formatDate(iso: string) {
   const d = new Date(iso);
   return {
-    date: d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+    date: d.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }),
     time: d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
   };
 }
@@ -106,8 +110,18 @@ const columns: ColumnDef<AdminPatient>[] = [
    PAGE
    ------------------------------------------------------------------ */
 export default function AdminPatientsPage() {
-  const { data, meta, loading, page, limit, search, setPage, setLimit, setSearch, refetch } =
-    useAdminPatients();
+  const {
+    data,
+    meta,
+    loading,
+    page,
+    limit,
+    search,
+    setPage,
+    setLimit,
+    setSearch,
+    refetch,
+  } = useAdminPatients();
 
   const activeCount = data.filter((p) => p.status === "ACTIVE").length;
 

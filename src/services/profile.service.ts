@@ -54,9 +54,9 @@ export async function getMyProfile(): Promise<PatientProfile> {
 export async function updateMyProfile(
   payload: UpdateProfilePayload,
 ): Promise<PatientProfile> {
-  const res = await httpPatch<ApiResponse<PatientProfile>, UpdateProfilePayload>(
-    "/user/me",
-    payload,
-  );
+  const res = await httpPatch<
+    ApiResponse<PatientProfile>,
+    UpdateProfilePayload
+  >("/user/me", payload);
   return res.data;
 }

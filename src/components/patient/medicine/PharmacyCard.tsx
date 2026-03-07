@@ -12,7 +12,8 @@ export function PharmacyCard({ pharmacy }: PharmacyCardProps) {
     router.push(`/pharmacies/${pharmacy.pharmacyId}`);
   };
 
-  const formatDistance = (distance: number) => `${(distance ?? 0).toFixed(1)} km`;
+  const formatDistance = (distance: number) =>
+    `${(distance ?? 0).toFixed(1)} km`;
 
   const availabilityColor =
     pharmacy.availability === "in_stock"

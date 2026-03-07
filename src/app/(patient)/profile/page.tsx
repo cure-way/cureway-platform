@@ -56,7 +56,9 @@ export default function SettingsPage() {
               <div className="flex flex-col items-center gap-4 pb-4">
                 <div className="h-[120px] w-[120px] overflow-hidden rounded-full bg-[#EBEDF7]">
                   <Image
-                    src={profile?.profileImageUrl || "/patient/profile/Avatar.png"}
+                    src={
+                      profile?.profileImageUrl || "/patient/profile/Avatar.png"
+                    }
                     alt="avatar"
                     width={120}
                     height={120}
@@ -107,9 +109,7 @@ export default function SettingsPage() {
                 className="inline-flex items-center gap-2"
               >
                 <IconBack />
-                <span className="text-[20px] font-bold text-black">
-                  Back
-                </span>
+                <span className="text-[20px] font-bold text-black">Back</span>
               </MotionTap>
             </div>
 
@@ -216,9 +216,7 @@ export default function SettingsPage() {
                     onClick={handleLogout}
                     className="mx-auto flex h-[56px] w-full max-w-[406px] items-center justify-center rounded-[24px] border border-[#263B81] bg-white"
                   >
-                    <span className="text-[24px] text-[#334EAC]">
-                      Logout
-                    </span>
+                    <span className="text-[24px] text-[#334EAC]">Logout</span>
                   </MotionTap>
                 </div>
               </div>

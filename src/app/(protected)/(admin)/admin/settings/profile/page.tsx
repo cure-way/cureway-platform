@@ -85,7 +85,9 @@ function ProfileForm({
       <MotionStaggerItem>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-1.5">
-            <label className="text-t-14 font-medium text-neutral-darker">Full Name</label>
+            <label className="text-t-14 font-medium text-neutral-darker">
+              Full Name
+            </label>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -95,7 +97,9 @@ function ProfileForm({
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-t-14 font-medium text-neutral-darker">Email</label>
+            <label className="text-t-14 font-medium text-neutral-darker">
+              Email
+            </label>
             <input
               value={user.email}
               readOnly
@@ -104,7 +108,9 @@ function ProfileForm({
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-t-14 font-medium text-neutral-darker">Phone Number</label>
+            <label className="text-t-14 font-medium text-neutral-darker">
+              Phone Number
+            </label>
             <input
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -114,7 +120,9 @@ function ProfileForm({
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-t-14 font-medium text-neutral-darker">Date of Birth</label>
+            <label className="text-t-14 font-medium text-neutral-darker">
+              Date of Birth
+            </label>
             <input
               type="date"
               value={dob}
@@ -197,11 +205,5 @@ export default function AdminSettingsProfilePage() {
     );
   }
 
-  return (
-    <ProfileForm
-      key={user.id}
-      user={user}
-      onLogout={handleLogout}
-    />
-  );
+  return <ProfileForm key={user.id} user={user} onLogout={handleLogout} />;
 }

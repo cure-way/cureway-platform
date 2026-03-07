@@ -12,26 +12,38 @@ import { useAdminOrders } from "@/hooks/admin.hooks";
 function formatDate(iso: string) {
   const d = new Date(iso);
   return {
-    date: d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+    date: d.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }),
     time: d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
   };
 }
 
 function statusBg(status: string) {
   switch (status) {
-    case "PAID": return "bg-[#EBF9EE]";
-    case "DELIVERED": return "bg-[#EBF9EE]";
-    case "PENDING": return "bg-[#FFFAEF]";
-    default: return "bg-[#FAF9F9]";
+    case "PAID":
+      return "bg-[#EBF9EE]";
+    case "DELIVERED":
+      return "bg-[#EBF9EE]";
+    case "PENDING":
+      return "bg-[#FFFAEF]";
+    default:
+      return "bg-[#FAF9F9]";
   }
 }
 
 function statusText(status: string) {
   switch (status) {
-    case "PAID": return "text-[#12461F]";
-    case "DELIVERED": return "text-[#12461F]";
-    case "PENDING": return "text-[#594920]";
-    default: return "text-[#393737]";
+    case "PAID":
+      return "text-[#12461F]";
+    case "DELIVERED":
+      return "text-[#12461F]";
+    case "PENDING":
+      return "text-[#594920]";
+    default:
+      return "text-[#393737]";
   }
 }
 
@@ -156,9 +168,13 @@ export default function RecentOrders() {
 
                 {/* Payment */}
                 <div className="flex-1">
-                  <div className={`inline-flex items-center gap-1 px-3 py-2 h-10 rounded-lg ${statusBg(order.payment?.status ?? "")}`}>
+                  <div
+                    className={`inline-flex items-center gap-1 px-3 py-2 h-10 rounded-lg ${statusBg(order.payment?.status ?? "")}`}
+                  >
                     <OrderStatusDot />
-                    <span className={`text-[12px] leading-normal font-semibold text-center ${statusText(order.payment?.status ?? "")}`}>
+                    <span
+                      className={`text-[12px] leading-normal font-semibold text-center ${statusText(order.payment?.status ?? "")}`}
+                    >
                       {order.payment?.status ?? "—"}
                     </span>
                   </div>
@@ -166,9 +182,13 @@ export default function RecentOrders() {
 
                 {/* Delivery */}
                 <div className="flex-1">
-                  <div className={`inline-flex items-center gap-1 px-3 py-2 h-10 rounded-lg ${statusBg(order.delivery?.status ?? "")}`}>
+                  <div
+                    className={`inline-flex items-center gap-1 px-3 py-2 h-10 rounded-lg ${statusBg(order.delivery?.status ?? "")}`}
+                  >
                     <OrderStatusDot />
-                    <span className={`text-[12px] leading-normal font-semibold text-center ${statusText(order.delivery?.status ?? "")}`}>
+                    <span
+                      className={`text-[12px] leading-normal font-semibold text-center ${statusText(order.delivery?.status ?? "")}`}
+                    >
                       {order.delivery?.status ?? "—"}
                     </span>
                   </div>

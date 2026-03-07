@@ -31,41 +31,64 @@ import type { AdminOrder } from "@/services/admin.service";
    ------------------------------------------------------------------ */
 function orderStatusToBadge(status: string): BadgeVariant {
   switch (status) {
-    case "DELIVERED": return "delivered";
-    case "PENDING": return "pending";
-    case "PROCESSING": return "processing";
-    case "OUT_FOR_DELIVERY": return "en-route";
+    case "DELIVERED":
+      return "delivered";
+    case "PENDING":
+      return "pending";
+    case "PROCESSING":
+      return "processing";
+    case "OUT_FOR_DELIVERY":
+      return "en-route";
     case "ACCEPTED":
-    case "PARTIALLY_ACCEPTED": return "accepted";
-    case "REJECTED": return "rejected";
-    case "CANCELLED": return "cancelled";
-    default: return "pending";
+    case "PARTIALLY_ACCEPTED":
+      return "accepted";
+    case "REJECTED":
+      return "rejected";
+    case "CANCELLED":
+      return "cancelled";
+    default:
+      return "pending";
   }
 }
 
 function paymentStatusToBadge(status: string): BadgeVariant {
   switch (status) {
-    case "PAID": case "paid": return "paid";
-    case "PENDING": case "pending": return "pending";
-    default: return "pending";
+    case "PAID":
+    case "paid":
+      return "paid";
+    case "PENDING":
+    case "pending":
+      return "pending";
+    default:
+      return "pending";
   }
 }
 
 function deliveryStatusToBadge(status: string): BadgeVariant {
   switch (status) {
-    case "DELIVERED": return "delivered";
-    case "PENDING": return "pending";
-    case "EN_ROUTE": return "en-route";
-    case "ASSIGNED": return "assigned";
-    case "PICKUP_IN_PROGRESS": return "pickup-in-progress";
-    default: return "pending";
+    case "DELIVERED":
+      return "delivered";
+    case "PENDING":
+      return "pending";
+    case "EN_ROUTE":
+      return "en-route";
+    case "ASSIGNED":
+      return "assigned";
+    case "PICKUP_IN_PROGRESS":
+      return "pickup-in-progress";
+    default:
+      return "pending";
   }
 }
 
 function formatDate(iso: string) {
   const d = new Date(iso);
   return {
-    date: d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+    date: d.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }),
     time: d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
   };
 }
@@ -148,12 +171,16 @@ const columns: ColumnDef<AdminOrder>[] = [
   {
     id: "payment",
     header: "Payment",
-    cell: (o) => <StatusBadge variant={paymentStatusToBadge(o.payment?.status ?? "")} />,
+    cell: (o) => (
+      <StatusBadge variant={paymentStatusToBadge(o.payment?.status ?? "")} />
+    ),
   },
   {
     id: "delivery",
     header: "Delivery",
-    cell: (o) => <StatusBadge variant={deliveryStatusToBadge(o.delivery?.status ?? "")} />,
+    cell: (o) => (
+      <StatusBadge variant={deliveryStatusToBadge(o.delivery?.status ?? "")} />
+    ),
   },
 ];
 
@@ -161,14 +188,28 @@ const columns: ColumnDef<AdminOrder>[] = [
    PAGE
    ------------------------------------------------------------------ */
 export default function AdminOrdersPage() {
-  const { data, meta, loading, page, limit, search, setPage, setLimit, setSearch, refetch } =
-    useAdminOrders();
+  const {
+    data,
+    meta,
+    loading,
+    page,
+    limit,
+    search,
+    setPage,
+    setLimit,
+    setSearch,
+    refetch,
+  } = useAdminOrders();
 
   const deliveredCount = data.filter((o) => o.status === "DELIVERED").length;
   const pendingCount = data.filter((o) => o.status === "PENDING").length;
   const processingCount = data.filter((o) => o.status === "PROCESSING").length;
-  const enRouteCount = data.filter((o) => o.status === "OUT_FOR_DELIVERY").length;
-  const cancelledCount = data.filter((o) => o.status === "CANCELLED" || o.status === "REJECTED").length;
+  const enRouteCount = data.filter(
+    (o) => o.status === "OUT_FOR_DELIVERY",
+  ).length;
+  const cancelledCount = data.filter(
+    (o) => o.status === "CANCELLED" || o.status === "REJECTED",
+  ).length;
 
   return (
     <PageShell>

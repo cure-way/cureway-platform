@@ -78,9 +78,7 @@ export default function AdminSettingsSecurityPage() {
             </div>
             <div className="px-4 py-3 bg-neutral-light rounded-xl">
               <p className="text-t-12 text-neutral">Last Updated</p>
-              <p className="text-t-14 font-medium text-foreground">
-                {"—"}
-              </p>
+              <p className="text-t-14 font-medium text-foreground">{"—"}</p>
             </div>
           </div>
         </div>

@@ -20,7 +20,12 @@ interface UseProfileReturn {
 }
 
 export function useProfile(): UseProfileReturn {
-  const { isLoading: authLoading, user, profile: authProfile, setSession } = useAuth();
+  const {
+    isLoading: authLoading,
+    user,
+    profile: authProfile,
+    setSession,
+  } = useAuth();
   const [profile, setProfile] = useState<PatientProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +38,8 @@ export function useProfile(): UseProfileReturn {
       const res = await getMyProfile();
       // The service returns PatientProfile directly, but guard against
       // API envelope shapes where data is nested
-      const data = (res as { data?: PatientProfile } & PatientProfile).data ?? res;
+      const data =
+        (res as { data?: PatientProfile } & PatientProfile).data ?? res;
       setProfile(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load profile");

@@ -25,10 +25,14 @@ import type { AdminInventoryItem } from "@/services/admin.service";
    ------------------------------------------------------------------ */
 function stockStatusToBadge(status: string): BadgeVariant {
   switch (status) {
-    case "IN_STOCK": return "in-stock";
-    case "OUT_OF_STOCK": return "out-of-stock";
-    case "LOW_STOCK": return "low-stock";
-    default: return "pending";
+    case "IN_STOCK":
+      return "in-stock";
+    case "OUT_OF_STOCK":
+      return "out-of-stock";
+    case "LOW_STOCK":
+      return "low-stock";
+    default:
+      return "pending";
   }
 }
 
@@ -141,12 +145,26 @@ const columns: ColumnDef<AdminInventoryItem>[] = [
    PAGE
    ------------------------------------------------------------------ */
 export default function AdminProductsPage() {
-  const { data, meta, loading, page, limit, search, setPage, setLimit, setSearch, refetch } =
-    useAdminInventory();
+  const {
+    data,
+    meta,
+    loading,
+    page,
+    limit,
+    search,
+    setPage,
+    setLimit,
+    setSearch,
+    refetch,
+  } = useAdminInventory();
 
   const inStockCount = data.filter((p) => p.stockStatus === "IN_STOCK").length;
-  const outOfStockCount = data.filter((p) => p.stockStatus === "OUT_OF_STOCK").length;
-  const lowStockCount = data.filter((p) => p.stockStatus === "LOW_STOCK").length;
+  const outOfStockCount = data.filter(
+    (p) => p.stockStatus === "OUT_OF_STOCK",
+  ).length;
+  const lowStockCount = data.filter(
+    (p) => p.stockStatus === "LOW_STOCK",
+  ).length;
 
   return (
     <PageShell>

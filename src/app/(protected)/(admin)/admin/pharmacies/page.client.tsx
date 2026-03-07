@@ -28,10 +28,14 @@ import type { AdminPharmacy } from "@/services/admin.service";
    ------------------------------------------------------------------ */
 function verificationToBadge(status: string): BadgeVariant {
   switch (status) {
-    case "VERIFIED": return "verified";
-    case "REJECTED": return "rejected";
-    case "UNDER_REVIEW": return "under-review";
-    default: return "pending";
+    case "VERIFIED":
+      return "verified";
+    case "REJECTED":
+      return "rejected";
+    case "UNDER_REVIEW":
+      return "under-review";
+    default:
+      return "pending";
   }
 }
 
@@ -97,7 +101,9 @@ const columns: ColumnDef<AdminPharmacy>[] = [
   {
     id: "verification",
     header: "Verification",
-    cell: (p) => <StatusBadge variant={verificationToBadge(p.verificationStatus)} />,
+    cell: (p) => (
+      <StatusBadge variant={verificationToBadge(p.verificationStatus)} />
+    ),
   },
 ];
 
@@ -105,11 +111,25 @@ const columns: ColumnDef<AdminPharmacy>[] = [
    PAGE
    ------------------------------------------------------------------ */
 export default function AdminPharmaciesPage() {
-  const { data, meta, loading, page, limit, search, setPage, setLimit, setSearch, refetch } =
-    useAdminPharmacies();
+  const {
+    data,
+    meta,
+    loading,
+    page,
+    limit,
+    search,
+    setPage,
+    setLimit,
+    setSearch,
+    refetch,
+  } = useAdminPharmacies();
 
-  const verifiedCount = data.filter((p) => p.verificationStatus === "VERIFIED").length;
-  const underReviewCount = data.filter((p) => p.verificationStatus === "UNDER_REVIEW").length;
+  const verifiedCount = data.filter(
+    (p) => p.verificationStatus === "VERIFIED",
+  ).length;
+  const underReviewCount = data.filter(
+    (p) => p.verificationStatus === "UNDER_REVIEW",
+  ).length;
 
   return (
     <PageShell>

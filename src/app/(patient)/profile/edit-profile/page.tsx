@@ -19,7 +19,9 @@ const COUNTRIES = [
 ];
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
-  return <div className="text-[16px] font-semibold text-[#17234D]">{children}</div>;
+  return (
+    <div className="text-[16px] font-semibold text-[#17234D]">{children}</div>
+  );
 }
 
 function TextInput({
@@ -65,7 +67,15 @@ function EyeIcon() {
 function CalendarIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-      <rect x="4" y="6" width="16" height="14" rx="3" stroke="#9CA3AF" strokeWidth="2" />
+      <rect
+        x="4"
+        y="6"
+        width="16"
+        height="14"
+        rx="3"
+        stroke="#9CA3AF"
+        strokeWidth="2"
+      />
       <path d="M8 3v3M16 3v3M4 9h16" stroke="#9CA3AF" strokeWidth="2" />
     </svg>
   );
@@ -101,7 +111,9 @@ export default function EditProfilePage() {
     }
 
     if (profile.phoneNumber) {
-      const matched = COUNTRIES.find((c) => profile.phoneNumber.startsWith(c.dial));
+      const matched = COUNTRIES.find((c) =>
+        profile.phoneNumber.startsWith(c.dial),
+      );
       if (matched) {
         setCountry(matched);
         setPhone(profile.phoneNumber.slice(matched.dial.length));
@@ -121,7 +133,9 @@ export default function EditProfilePage() {
       toast.success("Profile updated");
       router.push("/profile");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to update profile");
+      toast.error(
+        err instanceof Error ? err.message : "Failed to update profile",
+      );
     }
   };
 
@@ -155,7 +169,9 @@ export default function EditProfilePage() {
               <div className="flex flex-col items-center gap-4">
                 <div className="h-[140px] w-[140px] overflow-hidden rounded-full bg-[#EBEDF7]">
                   <Image
-                    src={profile?.profileImageUrl || "/patient/profile/Avatar.png"}
+                    src={
+                      profile?.profileImageUrl || "/patient/profile/Avatar.png"
+                    }
                     alt="avatar"
                     width={140}
                     height={140}
@@ -173,8 +189,6 @@ export default function EditProfilePage() {
                     Change photo
                   </span>
                 </MotionTap>
-
-
               </div>
             </div>
           </div>
@@ -210,7 +224,11 @@ export default function EditProfilePage() {
 
                 <div>
                   <FieldLabel>Date Of Birth</FieldLabel>
-                  <TextInput value={dob} onChange={setDob} rightIcon={<CalendarIcon />} />
+                  <TextInput
+                    value={dob}
+                    onChange={setDob}
+                    rightIcon={<CalendarIcon />}
+                  />
                 </div>
 
                 <div>
@@ -219,7 +237,9 @@ export default function EditProfilePage() {
                     <select
                       value={country.code}
                       onChange={(e) => {
-                        const selected = COUNTRIES.find((c) => c.code === e.target.value);
+                        const selected = COUNTRIES.find(
+                          (c) => c.code === e.target.value,
+                        );
                         if (selected) setCountry(selected);
                       }}
                       className="bg-transparent text-[16px] font-medium outline-none"
@@ -259,7 +279,9 @@ export default function EditProfilePage() {
                     onClick={handleLogout}
                     className="flex h-[50px] w-full max-w-[360px] items-center justify-center rounded-[24px] border border-[#263B81]"
                   >
-                    <span className="text-[20px] font-semibold text-[#334EAC]">Logout</span>
+                    <span className="text-[20px] font-semibold text-[#334EAC]">
+                      Logout
+                    </span>
                   </MotionTap>
                 </div>
               </div>

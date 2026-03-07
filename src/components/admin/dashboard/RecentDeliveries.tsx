@@ -50,8 +50,14 @@ export default function RecentDeliveries() {
         ) : (
           deliveries.map((delivery) => {
             const d = new Date(delivery.createdAt);
-            const dateStr = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-            const timeStr = d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+            const dateStr = d.toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+            });
+            const timeStr = d.toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
             return (
               <div
                 key={delivery.id}

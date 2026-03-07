@@ -36,19 +36,29 @@ import type { AdminDelivery } from "@/services/admin.service";
    ------------------------------------------------------------------ */
 function deliveryStatusToBadge(status: string): BadgeVariant {
   switch (status) {
-    case "DELIVERED": return "delivered";
-    case "PENDING": return "pending";
-    case "ASSIGNED": return "assigned";
-    case "PICKUP_IN_PROGRESS": return "pickup-in-progress";
-    case "EN_ROUTE": return "en-route";
-    default: return "pending";
+    case "DELIVERED":
+      return "delivered";
+    case "PENDING":
+      return "pending";
+    case "ASSIGNED":
+      return "assigned";
+    case "PICKUP_IN_PROGRESS":
+      return "pickup-in-progress";
+    case "EN_ROUTE":
+      return "en-route";
+    default:
+      return "pending";
   }
 }
 
 function formatDate(iso: string) {
   const d = new Date(iso);
   return {
-    date: d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+    date: d.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }),
     time: d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
   };
 }
@@ -104,8 +114,9 @@ const columns: ColumnDef<AdminDelivery>[] = [
       if (!d.driver) {
         return <span className="text-[12px] text-neutral">—</span>;
       }
-      const isBike = d.driver.vehicleName?.toLowerCase().includes("bike") ||
-                     d.driver.vehicleName?.toLowerCase().includes("motorcycle");
+      const isBike =
+        d.driver.vehicleName?.toLowerCase().includes("bike") ||
+        d.driver.vehicleName?.toLowerCase().includes("motorcycle");
       return (
         <div className="min-w-0">
           <div className="flex items-center gap-1.5">
@@ -179,14 +190,26 @@ const columns: ColumnDef<AdminDelivery>[] = [
    PAGE
    ------------------------------------------------------------------ */
 export default function AdminDeliveriesPage() {
-  const { data, meta, loading, page, limit, search, setPage, setLimit, setSearch, refetch } =
-    useAdminDeliveries();
+  const {
+    data,
+    meta,
+    loading,
+    page,
+    limit,
+    search,
+    setPage,
+    setLimit,
+    setSearch,
+    refetch,
+  } = useAdminDeliveries();
 
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [trackCode, setTrackCode] = useState("");
 
   const deliveredCount = data.filter((d) => d.status === "DELIVERED").length;
-  const enRouteCount = data.filter((d) => d.status === "EN_ROUTE" || d.status === "PICKUP_IN_PROGRESS").length;
+  const enRouteCount = data.filter(
+    (d) => d.status === "EN_ROUTE" || d.status === "PICKUP_IN_PROGRESS",
+  ).length;
 
   function handleRemoveRecent(idx: number) {
     setRecentSearches((prev) => prev.filter((_, i) => i !== idx));

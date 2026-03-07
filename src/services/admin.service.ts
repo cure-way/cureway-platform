@@ -1,4 +1,10 @@
-import { httpGet, httpPatch, httpPost, httpDelete, httpPut } from "@/lib/api/http";
+import {
+  httpGet,
+  httpPatch,
+  httpPost,
+  httpDelete,
+  httpPut,
+} from "@/lib/api/http";
 
 /* ===================================================================
    SHARED
@@ -88,15 +94,25 @@ interface PharmacyParams extends PaginationParams {
 }
 
 export function getAdminPharmacies(params: PharmacyParams = {}) {
-  return httpGet<PaginatedResponse<AdminPharmacy>>("/pharmacies/admin", { params });
+  return httpGet<PaginatedResponse<AdminPharmacy>>("/pharmacies/admin", {
+    params,
+  });
 }
 
 export function getAdminPharmacyById(id: number) {
-  return httpGet<SingleResponse<AdminPharmacyDetail>>(`/pharmacies/admin/${id}`);
+  return httpGet<SingleResponse<AdminPharmacyDetail>>(
+    `/pharmacies/admin/${id}`,
+  );
 }
 
-export function updatePharmacyVerification(id: number, verificationStatus: "VERIFIED" | "REJECTED") {
-  return httpPatch<SingleResponse<AdminPharmacy>>(`/pharmacies/admin/${id}/verification`, { verificationStatus });
+export function updatePharmacyVerification(
+  id: number,
+  verificationStatus: "VERIFIED" | "REJECTED",
+) {
+  return httpPatch<SingleResponse<AdminPharmacy>>(
+    `/pharmacies/admin/${id}/verification`,
+    { verificationStatus },
+  );
 }
 
 /* ===================================================================
@@ -133,8 +149,14 @@ export function getAdminDriverById(id: number) {
   return httpGet<SingleResponse<AdminDriverDetail>>(`/drivers/admin/${id}`);
 }
 
-export function updateDriverVerification(id: number, verificationStatus: "VERIFIED" | "REJECTED") {
-  return httpPatch<SingleResponse<AdminDriver>>(`/drivers/admin/${id}/verification`, { verificationStatus });
+export function updateDriverVerification(
+  id: number,
+  verificationStatus: "VERIFIED" | "REJECTED",
+) {
+  return httpPatch<SingleResponse<AdminDriver>>(
+    `/drivers/admin/${id}/verification`,
+    { verificationStatus },
+  );
 }
 
 /* ===================================================================
@@ -165,7 +187,13 @@ export interface AdminOrderDetail {
   deliveryType: string;
   notes: string;
   patient: { id: number; name: string; phoneNumber: string; email: string };
-  payment: { id: number; status: string; method: string; amount: number; currency: string };
+  payment: {
+    id: number;
+    status: string;
+    method: string;
+    amount: number;
+    currency: string;
+  };
   delivery: {
     id: number;
     status: string;
@@ -232,7 +260,9 @@ interface InventoryParams extends PaginationParams {
 }
 
 export function getAdminInventory(params: InventoryParams = {}) {
-  return httpGet<PaginatedResponse<AdminInventoryItem>>("/inventory/admin", { params });
+  return httpGet<PaginatedResponse<AdminInventoryItem>>("/inventory/admin", {
+    params,
+  });
 }
 
 export function getAdminInventoryById(id: number) {
@@ -271,7 +301,9 @@ interface MedicineParams extends PaginationParams {
 }
 
 export function getAdminMedicines(params: MedicineParams = {}) {
-  return httpGet<PaginatedResponse<AdminMedicine>>("/medicines/admin", { params });
+  return httpGet<PaginatedResponse<AdminMedicine>>("/medicines/admin", {
+    params,
+  });
 }
 
 export function getAdminMedicineById(id: number) {
@@ -283,15 +315,32 @@ export function createAdminMedicine(body: Record<string, unknown>) {
 }
 
 export function updateAdminMedicine(id: number, body: Record<string, unknown>) {
-  return httpPatch<SingleResponse<AdminMedicine>>(`/medicines/admin/${id}`, body);
+  return httpPatch<SingleResponse<AdminMedicine>>(
+    `/medicines/admin/${id}`,
+    body,
+  );
 }
 
 export function toggleMedicineActivation(id: number, isActive: boolean) {
-  return httpPatch<SingleResponse<unknown>>(`/medicines/admin/${id}/activation`, { isActive });
+  return httpPatch<SingleResponse<unknown>>(
+    `/medicines/admin/${id}/activation`,
+    { isActive },
+  );
 }
 
-export function reviewMedicine(id: number, body: { status: "APPROVED" | "REJECTED"; rejectionReason?: string; minPrice?: number; maxPrice?: number }) {
-  return httpPatch<SingleResponse<unknown>>(`/medicines/admin/${id}/review`, body);
+export function reviewMedicine(
+  id: number,
+  body: {
+    status: "APPROVED" | "REJECTED";
+    rejectionReason?: string;
+    minPrice?: number;
+    maxPrice?: number;
+  },
+) {
+  return httpPatch<SingleResponse<unknown>>(
+    `/medicines/admin/${id}/review`,
+    body,
+  );
 }
 
 /* ===================================================================
@@ -307,12 +356,22 @@ export interface AdminCategory {
   updatedAt: string;
 }
 
-export function createCategory(body: { name: string; description?: string; categoryImageUrl?: string }) {
+export function createCategory(body: {
+  name: string;
+  description?: string;
+  categoryImageUrl?: string;
+}) {
   return httpPost<SingleResponse<AdminCategory>>("/categories/admin", body);
 }
 
-export function updateCategory(id: number, body: { name?: string; description?: string; categoryImageUrl?: string }) {
-  return httpPatch<SingleResponse<AdminCategory>>(`/categories/admin/${id}`, body);
+export function updateCategory(
+  id: number,
+  body: { name?: string; description?: string; categoryImageUrl?: string },
+) {
+  return httpPatch<SingleResponse<AdminCategory>>(
+    `/categories/admin/${id}`,
+    body,
+  );
 }
 
 /* ===================================================================
@@ -341,8 +400,18 @@ export function deleteCity(id: number) {
   return httpDelete<SingleResponse<AdminCity>>(`/cities/admin/${id}`);
 }
 
-export function setCityDeliveryFee(id: number, body: { standardFeeAmount: string | number; expressFeeAmount: string | number; currency: string }) {
-  return httpPut<SingleResponse<AdminCity>>(`/cities/admin/${id}/delivery-fee`, body);
+export function setCityDeliveryFee(
+  id: number,
+  body: {
+    standardFeeAmount: string | number;
+    expressFeeAmount: string | number;
+    currency: string;
+  },
+) {
+  return httpPut<SingleResponse<AdminCity>>(
+    `/cities/admin/${id}/delivery-fee`,
+    body,
+  );
 }
 
 /* ===================================================================
@@ -352,7 +421,12 @@ export function setCityDeliveryFee(id: number, body: { standardFeeAmount: string
 export interface AdminDelivery {
   id: number;
   orderId: number;
-  status: "PENDING" | "ASSIGNED" | "PICKUP_IN_PROGRESS" | "EN_ROUTE" | "DELIVERED";
+  status:
+    | "PENDING"
+    | "ASSIGNED"
+    | "PICKUP_IN_PROGRESS"
+    | "EN_ROUTE"
+    | "DELIVERED";
   createdAt: string;
   acceptedAt: string | null;
   deliveredAt: string | null;
@@ -375,5 +449,7 @@ interface DeliveryParams extends PaginationParams {
 }
 
 export function getAdminDeliveries(params: DeliveryParams = {}) {
-  return httpGet<PaginatedResponse<AdminDelivery>>("/deliveries/admin", { params });
+  return httpGet<PaginatedResponse<AdminDelivery>>("/deliveries/admin", {
+    params,
+  });
 }
