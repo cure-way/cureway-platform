@@ -15,9 +15,13 @@ import {
   IconTime,
 } from "@/components/patient/settings/Icons";
 import { MotionTap } from "@/components/shared/MotionTap";
+import { useProfile } from "@/hooks/useProfile";
+import { useAuth } from "@/features/auth";
 
 export default function SettingsPage() {
   const router = useRouter();
+  const { profile, loading } = useProfile();
+  const { logout } = useAuth();
 
   const [medicineReminders, setMedicineReminders] = React.useState(true);
   const [notificationAccess, setNotificationAccess] = React.useState(true);
@@ -25,6 +29,18 @@ export default function SettingsPage() {
   const [offers, setOffers] = React.useState(true);
   const [orderTracking, setOrderTracking] = React.useState(true);
   const [ratingRequests, setRatingRequests] = React.useState(true);
+
+  const displayName = profile?.name ?? "—";
+  const displayEmail = profile?.email ?? "";
+  const displayPhone = profile?.phoneNumber ?? "";
+  const displayLocation = profile?.defaultAddress
+    ? `${profile.defaultAddress.cityName}, ${displayPhone}`
+    : displayPhone;
+
+  const handleLogout = async () => {
+    await logout();
+    router.replace("/auth/sign-in");
+  };
 
   return (
     <div className="w-full px-4 py-6">
@@ -40,7 +56,9 @@ export default function SettingsPage() {
               <div className="flex flex-col items-center gap-4 pb-4">
                 <div className="h-[120px] w-[120px] overflow-hidden rounded-full bg-[#EBEDF7]">
                   <Image
-                    src="/patient/profile/Avatar.png"
+                    src={
+                      profile?.profileImageUrl || "/patient/profile/Avatar.png"
+                    }
                     alt="avatar"
                     width={120}
                     height={120}
@@ -49,17 +67,25 @@ export default function SettingsPage() {
                   />
                 </div>
 
-                <div className="text-center">
-                  <div className="text-[24px] font-bold text-[#17234D]">
-                    Mohammed Bassam
+                {loading ? (
+                  <div className="text-center animate-pulse space-y-2">
+                    <div className="h-7 w-40 rounded bg-gray-200" />
+                    <div className="h-5 w-48 rounded bg-gray-200" />
+                    <div className="h-4 w-44 rounded bg-gray-200" />
                   </div>
-                  <div className="mt-1 text-[16px] text-[rgba(0,0,0,0.8)]">
-                    mhmd26@email.com
+                ) : (
+                  <div className="text-center">
+                    <div className="text-[24px] font-bold text-[#17234D]">
+                      {displayName}
+                    </div>
+                    <div className="mt-1 text-[16px] text-[rgba(0,0,0,0.8)]">
+                      {displayEmail}
+                    </div>
+                    <div className="mt-1 text-[14px] text-[#989593]">
+                      {displayLocation}
+                    </div>
                   </div>
-                  <div className="mt-1 text-[14px] text-[#989593]">
-                    Gaza, (+970) 59-244-9634
-                  </div>
-                </div>
+                )}
 
                 <MotionTap
                   as="a"
@@ -83,9 +109,7 @@ export default function SettingsPage() {
                 className="inline-flex items-center gap-2"
               >
                 <IconBack />
-                <span className="text-[20px] font-bold text-black">
-                  Back
-                </span>
+                <span className="text-[20px] font-bold text-black">Back</span>
               </MotionTap>
             </div>
 
@@ -189,11 +213,10 @@ export default function SettingsPage() {
                 <div className="pt-2">
                   <MotionTap
                     as="button"
+                    onClick={handleLogout}
                     className="mx-auto flex h-[56px] w-full max-w-[406px] items-center justify-center rounded-[24px] border border-[#263B81] bg-white"
                   >
-                    <span className="text-[24px] text-[#334EAC]">
-                      Logout
-                    </span>
+                    <span className="text-[24px] text-[#334EAC]">Logout</span>
                   </MotionTap>
                 </div>
               </div>

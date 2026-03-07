@@ -9,6 +9,7 @@ type MotionTapProps = React.PropsWithChildren<{
   onClick?: () => void;
   href?: string;
   type?: "button" | "submit";
+  disabled?: boolean;
 }>;
 
 export function MotionTap({
@@ -18,6 +19,7 @@ export function MotionTap({
   onClick,
   href,
   type = "button",
+  disabled,
 }: MotionTapProps) {
   const Comp =
     as === "button" ? motion.button : as === "a" ? motion.a : motion.div;
@@ -28,6 +30,7 @@ export function MotionTap({
       onClick={onClick}
       href={href}
       type={as === "button" ? type : undefined}
+      disabled={as === "button" ? disabled : undefined}
       whileHover={{ scale: 1.01 }}
       whileTap={{ scale: 0.98 }}
       transition={{ type: "spring", stiffness: 500, damping: 30 }}

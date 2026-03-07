@@ -8,12 +8,11 @@ import {
   Star,
   Bike,
   Car,
-  TrendingUp,
-  TrendingDown,
   Clock,
   X,
   ArrowUpRight,
 } from "lucide-react";
+import { useState } from "react";
 import {
   PageShell,
   PageHeader,
@@ -27,24 +26,53 @@ import {
   MotionStagger,
   MotionStaggerItem,
 } from "@/components/admin/shared";
-import type { ColumnDef } from "@/components/admin/shared";
+import type { ColumnDef, BadgeVariant } from "@/components/admin/shared";
 import { DeliveriesPageIcon } from "@/components/admin/shared/icons";
-import {
-  deliveries,
-  recentSearches,
-  type MockDelivery,
-} from "@/lib/mock/admin";
+import { useAdminDeliveries } from "@/hooks/admin.hooks";
+import type { AdminDelivery } from "@/services/admin.service";
+
+/* ------------------------------------------------------------------
+   HELPERS
+   ------------------------------------------------------------------ */
+function deliveryStatusToBadge(status: string): BadgeVariant {
+  switch (status) {
+    case "DELIVERED":
+      return "delivered";
+    case "PENDING":
+      return "pending";
+    case "ASSIGNED":
+      return "assigned";
+    case "PICKUP_IN_PROGRESS":
+      return "pickup-in-progress";
+    case "EN_ROUTE":
+      return "en-route";
+    default:
+      return "pending";
+  }
+}
+
+function formatDate(iso: string) {
+  const d = new Date(iso);
+  return {
+    date: d.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }),
+    time: d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
+  };
+}
 
 /* ------------------------------------------------------------------
    COLUMNS
    ------------------------------------------------------------------ */
-const columns: ColumnDef<MockDelivery>[] = [
+const columns: ColumnDef<AdminDelivery>[] = [
   {
     id: "id",
     header: "ID",
     cell: (d) => (
       <span className="text-[12px] leading-[1.2] font-semibold text-primary-darker">
-        {d.id}
+        #{d.orderId}
       </span>
     ),
   },
@@ -52,111 +80,109 @@ const columns: ColumnDef<MockDelivery>[] = [
     id: "deliverer",
     header: "Deliverer Info",
     className: "flex-1 min-w-55",
-    cell: (d) => (
-      <div className="flex items-center gap-2">
-        <div className="w-10 h-10 rounded-full bg-warning-light flex items-center justify-center shrink-0">
-          <span className="text-[14px] leading-[1.2] font-bold text-warning-dark">
-            {d.delivererName.charAt(0)}
+    cell: (d) => {
+      if (!d.driver) {
+        return (
+          <span className="text-[14px] leading-[1.2] font-medium text-neutral">
+            Unassigned
           </span>
+        );
+      }
+      return (
+        <div className="flex items-center gap-2">
+          <div className="w-10 h-10 rounded-full bg-warning-light flex items-center justify-center shrink-0">
+            <span className="text-[14px] leading-[1.2] font-bold text-warning-dark">
+              {d.driver.name.charAt(0)}
+            </span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-[14px] leading-[1.2] font-semibold text-neutral-darker truncate">
+              {d.driver.name}
+            </p>
+            <p className="text-[12px] leading-[1.2] font-medium text-neutral truncate">
+              {d.driver.phoneNumber}
+            </p>
+          </div>
         </div>
-        <div className="min-w-0">
-          <p className="text-[14px] leading-[1.2] font-semibold text-neutral-darker truncate">
-            {d.delivererName}
-          </p>
-          <p className="text-[12px] leading-[1.2] font-medium text-neutral truncate">
-            {d.delivererLocation}, {d.delivererPhone}
-          </p>
-        </div>
-      </div>
-    ),
+      );
+    },
   },
   {
     id: "vehicle",
     header: "Vehicle",
-    cell: (d) => (
-      <div className="min-w-0">
-        <div className="flex items-center gap-1.5">
-          {d.vehicleType === "Bike" ? (
-            <Bike className="w-5 h-4 text-primary-dark shrink-0" />
-          ) : (
-            <Car className="w-5 h-5 text-primary-dark shrink-0" />
-          )}
-          <span className="text-[14px] leading-[1.2] font-semibold text-neutral-darker">
-            {d.vehicleType}
-          </span>
+    cell: (d) => {
+      if (!d.driver) {
+        return <span className="text-[12px] text-neutral">—</span>;
+      }
+      const isBike =
+        d.driver.vehicleName?.toLowerCase().includes("bike") ||
+        d.driver.vehicleName?.toLowerCase().includes("motorcycle");
+      return (
+        <div className="min-w-0">
+          <div className="flex items-center gap-1.5">
+            {isBike ? (
+              <Bike className="w-5 h-4 text-primary-dark shrink-0" />
+            ) : (
+              <Car className="w-5 h-5 text-primary-dark shrink-0" />
+            )}
+            <span className="text-[14px] leading-[1.2] font-semibold text-neutral-darker">
+              {d.driver.vehicleName}
+            </span>
+          </div>
+          <p className="text-[12px] leading-[1.2] font-medium text-neutral">
+            {d.driver.vehiclePlate}
+          </p>
         </div>
-        <p className="text-[12px] leading-[1.2] font-medium text-neutral">
-          {d.vehicleNumber}
-        </p>
-      </div>
-    ),
+      );
+    },
   },
   {
     id: "earning",
     header: "Earning",
     cell: (d) => (
-      <div className="min-w-0">
-        <p className="text-[14px] leading-[1.2] font-semibold text-primary-dark">
-          {d.earning}
-        </p>
-        <div className="flex items-center gap-1">
-          <span
-            className={`text-[12px] leading-[1.2] font-medium ${
-              d.earningUp ? "text-success-dark" : "text-error-dark"
-            }`}
-          >
-            {d.earningPct} ({d.earningUp ? "" : "-"}
-            {d.earningDelta})
-          </span>
-          {d.earningUp ? (
-            <TrendingUp className="w-3 h-3 text-success-dark" />
-          ) : (
-            <TrendingDown className="w-3 h-3 text-error-dark" />
-          )}
-        </div>
-      </div>
+      <span className="text-[14px] leading-[1.2] font-semibold text-primary-dark">
+        {d.earning != null ? `$${d.earning.toFixed(2)}` : "—"}
+      </span>
     ),
   },
   {
     id: "date",
     header: "Date",
-    cell: (d) => (
-      <div className="flex flex-col gap-1">
-        <p className="text-[14px] leading-[1.2] font-semibold text-primary-dark">
-          {d.date}
-        </p>
-        <p className="text-[12px] leading-[1.2] text-neutral-darker">
-          {d.time}
-        </p>
-      </div>
-    ),
+    cell: (d) => {
+      const { date, time } = formatDate(d.createdAt);
+      return (
+        <div className="flex flex-col gap-1">
+          <p className="text-[14px] leading-[1.2] font-semibold text-primary-dark">
+            {date}
+          </p>
+          <p className="text-[12px] leading-[1.2] text-neutral-darker">
+            {time}
+          </p>
+        </div>
+      );
+    },
   },
   {
     id: "rating",
     header: "Rating",
-    cell: (d) => (
-      <div className="min-w-0">
+    cell: (d) => {
+      if (d.rating == null) {
+        return <span className="text-[12px] text-neutral">—</span>;
+      }
+      return (
         <div className="flex items-center gap-1">
           <Star className="w-4 h-4 text-warning fill-warning" />
           <span className="text-[12px] leading-[1.2] font-semibold text-neutral-darker">
-            {d.rating}({d.ratingCount})
+            {d.rating}
           </span>
         </div>
-        <p className="text-[12px] leading-[1.2] font-medium text-neutral">
-          Pharmacy rate
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: "availability",
-    header: "Availability",
-    cell: (d) => <StatusBadge variant={d.availability} />,
+      );
+    },
   },
   {
     id: "status",
     header: "Status",
-    cell: (d) => <StatusBadge variant={d.status} />,
+    cell: (d) => <StatusBadge variant={deliveryStatusToBadge(d.status)} />,
   },
 ];
 
@@ -164,6 +190,40 @@ const columns: ColumnDef<MockDelivery>[] = [
    PAGE
    ------------------------------------------------------------------ */
 export default function AdminDeliveriesPage() {
+  const {
+    data,
+    meta,
+    loading,
+    page,
+    limit,
+    search,
+    setPage,
+    setLimit,
+    setSearch,
+    refetch,
+  } = useAdminDeliveries();
+
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [trackCode, setTrackCode] = useState("");
+
+  const deliveredCount = data.filter((d) => d.status === "DELIVERED").length;
+  const enRouteCount = data.filter(
+    (d) => d.status === "EN_ROUTE" || d.status === "PICKUP_IN_PROGRESS",
+  ).length;
+
+  function handleRemoveRecent(idx: number) {
+    setRecentSearches((prev) => prev.filter((_, i) => i !== idx));
+  }
+
+  function handleTrack() {
+    const code = trackCode.trim();
+    if (!code) return;
+    setRecentSearches((prev) =>
+      [code, ...prev.filter((s) => s !== code)].slice(0, 5),
+    );
+    setTrackCode("");
+  }
+
   return (
     <PageShell>
       <MotionStagger className="space-y-3">
@@ -178,6 +238,7 @@ export default function AdminDeliveriesPage() {
                 <HeaderIconButton
                   icon={<RefreshCw className="w-6 h-6 text-neutral-dark" />}
                   label="Refresh"
+                  onClick={refetch}
                 />
                 <HeaderIconButton
                   icon={<MoreVertical className="w-6 h-6 text-neutral-dark" />}
@@ -199,50 +260,53 @@ export default function AdminDeliveriesPage() {
 
         <MotionStaggerItem>
           <StatsBar
-            count="135 Deliveries"
-            description="100% of your deliveries"
+            count={`${meta.total} Deliver${meta.total !== 1 ? "ies" : "y"}`}
+            description="All deliveries"
           >
             <KpiPill
               icon={<UserCheck className="w-6 h-6 text-success-dark" />}
-              value={80}
-              label="Active deliverer"
+              value={deliveredCount}
+              label="Delivered"
               variant="success"
             />
             <KpiPill
               icon={<UserPlus className="w-6 h-6 text-primary-dark" />}
-              value={8}
-              label="New this week"
+              value={enRouteCount}
+              label="In progress"
               variant="secondary"
             />
           </StatsBar>
         </MotionStaggerItem>
 
-        {/* ── Tracking Card (page-specific) ── */}
+        {/* ── Tracking Card ── */}
         <MotionStaggerItem>
           <div className="bg-white border border-border rounded-xl p-3 sm:p-4 space-y-3 sm:space-y-4">
             {/* Recent Tags */}
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="flex items-center gap-1 text-neutral">
-                <Clock className="w-5 h-5" />
-                <span className="text-[14px] leading-[1.2] font-medium">
-                  Recent:
-                </span>
-              </div>
-              {recentSearches.map((tag, idx) => (
-                <span
-                  key={idx}
-                  className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1 sm:py-1.5 bg-neutral-light rounded-lg text-[12px] sm:text-[14px] leading-[1.2] font-medium text-neutral-darker"
-                >
-                  {tag}
-                  <button
-                    className="hover:text-error-dark transition-colors"
-                    aria-label={`Remove ${tag}`}
+            {recentSearches.length > 0 && (
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="flex items-center gap-1 text-neutral">
+                  <Clock className="w-5 h-5" />
+                  <span className="text-[14px] leading-[1.2] font-medium">
+                    Recent:
+                  </span>
+                </div>
+                {recentSearches.map((tag, idx) => (
+                  <span
+                    key={idx}
+                    className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1 sm:py-1.5 bg-neutral-light rounded-lg text-[12px] sm:text-[14px] leading-[1.2] font-medium text-neutral-darker"
                   >
-                    <X className="w-4 h-4" />
-                  </button>
-                </span>
-              ))}
-            </div>
+                    {tag}
+                    <button
+                      className="hover:text-error-dark transition-colors"
+                      aria-label={`Remove ${tag}`}
+                      onClick={() => handleRemoveRecent(idx)}
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
 
             {/* Order Code Tracker */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
@@ -253,9 +317,15 @@ export default function AdminDeliveriesPage() {
                 <input
                   type="text"
                   placeholder="#"
+                  value={trackCode}
+                  onChange={(e) => setTrackCode(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleTrack()}
                   className="flex-1 min-w-0 h-10 sm:h-12 px-3 sm:px-4 border border-border rounded-xl text-[14px] sm:text-[16px] leading-[1.2] font-semibold text-primary-darker placeholder:text-neutral focus:outline-none focus:ring-2 focus:ring-primary-dark/20 transition-shadow"
                 />
-                <button className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 h-10 sm:h-12 bg-primary-dark text-white rounded-xl text-[12px] sm:text-[14px] leading-[1.2] font-semibold hover:bg-primary-dark-hover transition-colors shrink-0">
+                <button
+                  onClick={handleTrack}
+                  className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 h-10 sm:h-12 bg-primary-dark text-white rounded-xl text-[12px] sm:text-[14px] leading-[1.2] font-semibold hover:bg-primary-dark-hover transition-colors shrink-0"
+                >
                   Track Order
                   <ArrowUpRight className="w-4 h-4" />
                 </button>
@@ -266,13 +336,21 @@ export default function AdminDeliveriesPage() {
 
         <MotionStaggerItem>
           <DataTable
-            data={deliveries}
+            data={data}
             columns={columns}
-            getRowId={(d, i) => d.id + i}
-            getRowLabel={(d) => `delivery ${d.id}`}
-            searchPlaceholder="Search deliverer name, deliverer ID..."
+            getRowId={(d) => String(d.id)}
+            getRowLabel={(d) => `delivery #${d.orderId}`}
+            searchPlaceholder="Search deliverer name, order ID..."
             selectAllLabel="Select all deliveries"
             minWidthClass="min-w-300"
+            loading={loading}
+            searchValue={search}
+            onSearch={setSearch}
+            currentPage={page}
+            totalPages={meta.totalPages}
+            rowsPerPage={limit}
+            onPageChange={setPage}
+            onRowsPerPageChange={setLimit}
           />
         </MotionStaggerItem>
       </MotionStagger>

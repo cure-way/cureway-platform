@@ -31,7 +31,7 @@ export default function SimilarProductsSection({ medicines }: Props) {
               <p className="text-gray-600 text-xs">{medicine.dosageForm}</p>
 
               <div className="mt-2 font-semibold text-gray-900 text-sm">
-                ${medicine.minPrice.toFixed(2)}
+                ${(medicine.minPrice ?? 0).toFixed(2)}
               </div>
             </div>
           ))}

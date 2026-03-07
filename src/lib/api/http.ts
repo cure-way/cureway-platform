@@ -27,6 +27,9 @@ let refreshToken: string | null = null;
 const isClient = typeof window !== "undefined";
 
 export function getAccessToken(): string | null {
+  if (!accessToken && isClient) {
+    accessToken = localStorage.getItem("cureway_at");
+  }
   return accessToken;
 }
 
@@ -41,6 +44,7 @@ export function setTokens(access: string, refresh: string): void {
   accessToken = access;
   refreshToken = refresh;
   if (isClient) {
+    localStorage.setItem("cureway_at", access);
     localStorage.setItem("cureway_rt", refresh);
   }
 }
@@ -49,6 +53,7 @@ export function clearTokens(): void {
   accessToken = null;
   refreshToken = null;
   if (isClient) {
+    localStorage.removeItem("cureway_at");
     localStorage.removeItem("cureway_rt");
   }
 }
@@ -58,7 +63,10 @@ export function clearTokens(): void {
 // ---------------------------------------------------------------------------
 
 export const http = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_BASE_URL || "https://gsg-project-group-1-production.up.railway.app",
+  baseURL:
+    process.env.NEXT_PUBLIC_API_URL ||
+    process.env.NEXT_PUBLIC_API_BASE_URL ||
+    "https://gsg-project-group-1-production.up.railway.app",
   headers: { "Content-Type": "application/json" },
   timeout: 10_000,
 });

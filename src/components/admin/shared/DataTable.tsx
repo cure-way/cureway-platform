@@ -4,7 +4,7 @@ import { MoreHorizontal } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import TableSearch from "./TableSearch";
 import TablePagination from "./TablePagination";
-import { staggerContainer, tableRowVariants } from "./motion";
+import { tableRowVariants } from "./motion";
 
 /* ── Column definition ── */
 
@@ -47,6 +47,12 @@ export interface DataTableProps<TData> {
   rowsPerPage?: number;
   onPageChange?: (page: number) => void;
   onRowsPerPageChange?: (rows: number) => void;
+  /** Controlled search value */
+  searchValue?: string;
+  /** Search callback */
+  onSearch?: (value: string) => void;
+  /** Loading state */
+  loading?: boolean;
 }
 
 /**
@@ -70,6 +76,9 @@ export default function DataTable<TData>({
   rowsPerPage = 10,
   onPageChange,
   onRowsPerPageChange,
+  searchValue,
+  onSearch,
+  loading = false,
 }: DataTableProps<TData>) {
   // First column = ID column (rendered with checkbox)
   const [idCol, ...contentCols] = columns;
@@ -77,7 +86,11 @@ export default function DataTable<TData>({
 
   return (
     <div className="bg-white border border-border rounded-[20px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] pb-4 px-4">
-      <TableSearch placeholder={searchPlaceholder} />
+      <TableSearch
+        placeholder={searchPlaceholder}
+        value={searchValue}
+        onSearch={onSearch}
+      />
 
       <div className="overflow-x-auto">
         <div
@@ -116,12 +129,12 @@ export default function DataTable<TData>({
           </div>
 
           {/* ── Body Rows ── */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={shouldReduce ? undefined : staggerContainer(0.04)}
-          >
-            {data.length === 0 ? (
+          <div>
+            {loading ? (
+              <div className="flex items-center justify-center h-40 text-[14px] leading-[1.2] font-medium text-neutral">
+                <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full" />
+              </div>
+            ) : data.length === 0 ? (
               <div className="flex items-center justify-center h-40 text-[14px] leading-[1.2] font-medium text-neutral">
                 No results found
               </div>
@@ -129,6 +142,8 @@ export default function DataTable<TData>({
               data.map((row, idx) => (
                 <motion.div
                   key={getRowId(row, idx)}
+                  initial={shouldReduce ? false : "hidden"}
+                  animate={shouldReduce ? undefined : "visible"}
                   variants={shouldReduce ? undefined : tableRowVariants}
                   className={`flex items-center h-16 px-4 py-3 border-t border-border transition-colors hover:bg-secondary-light/30 ${
                     idx % 2 === 1 ? "bg-neutral-light" : ""
@@ -165,7 +180,7 @@ export default function DataTable<TData>({
                 </motion.div>
               ))
             )}
-          </motion.div>
+          </div>
         </div>
       </div>
 

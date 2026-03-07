@@ -11,10 +11,13 @@ interface Props {
 export default function MedicineOverviewCard({ medicine }: Props) {
   const [quantity, setQuantity] = useState(1);
 
+  const minPrice = medicine.minPrice ?? 0;
+  const maxPrice = medicine.maxPrice ?? 0;
+
   const displayPrice =
-    medicine.minPrice === medicine.maxPrice
-      ? `$${medicine.minPrice.toFixed(2)}`
-      : `$${medicine.minPrice.toFixed(2)} – $${medicine.maxPrice.toFixed(2)}`;
+    minPrice === maxPrice
+      ? `$${minPrice.toFixed(2)}`
+      : `$${minPrice.toFixed(2)} – $${maxPrice.toFixed(2)}`;
 
   return (
     <div className="bg-white shadow-sm p-6 sm:p-8 border border-gray-200 rounded-2xl">

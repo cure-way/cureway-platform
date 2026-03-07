@@ -3,8 +3,11 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import { MotionTap } from "@/components/shared/MotionTap";
 import { IconBack } from "@/components/patient/settings/Icons";
+import { useProfile } from "@/hooks/useProfile";
+import { useAuth } from "@/features/auth";
 
 const COUNTRIES = [
   { code: "PS", name: "Palestine", dial: "+970", flag: "🇵🇸" },
@@ -16,7 +19,9 @@ const COUNTRIES = [
 ];
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
-  return <div className="text-[16px] font-semibold text-[#17234D]">{children}</div>;
+  return (
+    <div className="text-[16px] font-semibold text-[#17234D]">{children}</div>
+  );
 }
 
 function TextInput({
@@ -62,7 +67,15 @@ function EyeIcon() {
 function CalendarIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-      <rect x="4" y="6" width="16" height="14" rx="3" stroke="#9CA3AF" strokeWidth="2" />
+      <rect
+        x="4"
+        y="6"
+        width="16"
+        height="14"
+        rx="3"
+        stroke="#9CA3AF"
+        strokeWidth="2"
+      />
       <path d="M8 3v3M16 3v3M4 9h16" stroke="#9CA3AF" strokeWidth="2" />
     </svg>
   );
@@ -70,15 +83,66 @@ function CalendarIcon() {
 
 export default function EditProfilePage() {
   const router = useRouter();
+  const { profile, loading, updating, update } = useProfile();
+  const { logout } = useAuth();
 
-  const [name, setName] = React.useState("Mohammed Bassam");
-  const [email, setEmail] = React.useState("mhmd26@email.com");
-  const [location, setLocation] = React.useState("Al-Rimal area, Gaza Strip");
-  const [dob, setDob] = React.useState("2002-04-26");
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [location, setLocation] = React.useState("");
+  const [dob, setDob] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   const [country, setCountry] = React.useState(COUNTRIES[0]);
-  const [phone, setPhone] = React.useState("592449634");
+  const [phone, setPhone] = React.useState("");
+
+  // Hydrate form fields when profile data arrives
+  const hydrated = React.useRef(false);
+  React.useEffect(() => {
+    if (!profile || hydrated.current) return;
+    hydrated.current = true;
+
+    setName(profile.name ?? "");
+    setEmail(profile.email ?? "");
+    setDob(profile.dateOfBirth ?? "");
+
+    if (profile.defaultAddress) {
+      const addr = profile.defaultAddress;
+      setLocation([addr.area, addr.region].filter(Boolean).join(", "));
+    }
+
+    if (profile.phoneNumber) {
+      const matched = COUNTRIES.find((c) =>
+        profile.phoneNumber.startsWith(c.dial),
+      );
+      if (matched) {
+        setCountry(matched);
+        setPhone(profile.phoneNumber.slice(matched.dial.length));
+      } else {
+        setPhone(profile.phoneNumber);
+      }
+    }
+  }, [profile]);
+
+  const handleSave = async () => {
+    try {
+      await update({
+        name: name.trim() || undefined,
+        phoneNumber: `${country.dial}${phone}`.trim() || undefined,
+        dateOfBirth: dob || undefined,
+      });
+      toast.success("Profile updated");
+      router.push("/profile");
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Failed to update profile",
+      );
+    }
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    router.replace("/auth/sign-in");
+  };
 
   return (
     <div className="w-full px-4 py-6">
@@ -105,7 +169,9 @@ export default function EditProfilePage() {
               <div className="flex flex-col items-center gap-4">
                 <div className="h-[140px] w-[140px] overflow-hidden rounded-full bg-[#EBEDF7]">
                   <Image
-                    src="/patient/profile/Avatar.png"
+                    src={
+                      profile?.profileImageUrl || "/patient/profile/Avatar.png"
+                    }
                     alt="avatar"
                     width={140}
                     height={140}
@@ -123,8 +189,6 @@ export default function EditProfilePage() {
                     Change photo
                   </span>
                 </MotionTap>
-
-
               </div>
             </div>
           </div>
@@ -160,7 +224,11 @@ export default function EditProfilePage() {
 
                 <div>
                   <FieldLabel>Date Of Birth</FieldLabel>
-                  <TextInput value={dob} onChange={setDob} rightIcon={<CalendarIcon />} />
+                  <TextInput
+                    value={dob}
+                    onChange={setDob}
+                    rightIcon={<CalendarIcon />}
+                  />
                 </div>
 
                 <div>
@@ -169,7 +237,9 @@ export default function EditProfilePage() {
                     <select
                       value={country.code}
                       onChange={(e) => {
-                        const selected = COUNTRIES.find((c) => c.code === e.target.value);
+                        const selected = COUNTRIES.find(
+                          (c) => c.code === e.target.value,
+                        );
                         if (selected) setCountry(selected);
                       }}
                       className="bg-transparent text-[16px] font-medium outline-none"
@@ -195,16 +265,23 @@ export default function EditProfilePage() {
                 <div className="pt-2 flex flex-col items-center gap-4">
                   <MotionTap
                     as="button"
-                    className="flex h-[50px] w-full max-w-[360px] items-center justify-center rounded-[24px] bg-[#334EAC]"
+                    onClick={handleSave}
+                    disabled={updating || loading}
+                    className="flex h-[50px] w-full max-w-[360px] items-center justify-center rounded-[24px] bg-[#334EAC] disabled:opacity-50"
                   >
-                    <span className="text-[20px] font-semibold text-white">Save changes</span>
+                    <span className="text-[20px] font-semibold text-white">
+                      {updating ? "Saving..." : "Save changes"}
+                    </span>
                   </MotionTap>
 
                   <MotionTap
                     as="button"
+                    onClick={handleLogout}
                     className="flex h-[50px] w-full max-w-[360px] items-center justify-center rounded-[24px] border border-[#263B81]"
                   >
-                    <span className="text-[20px] font-semibold text-[#334EAC]">Logout</span>
+                    <span className="text-[20px] font-semibold text-[#334EAC]">
+                      Logout
+                    </span>
                   </MotionTap>
                 </div>
               </div>

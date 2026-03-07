@@ -25,8 +25,8 @@ export function mapMedicine(dto: MedicineDTO): Medicine {
     packSize: dto.packSize,
     packUnit: dto.packUnit,
 
-    minPrice: Number(dto.minPrice),
-    maxPrice: Number(dto.maxPrice),
+    minPrice: Number(dto.minPrice) || 0,
+    maxPrice: Number(dto.maxPrice) || 0,
 
     requiresPrescription: dto.requiresPrescription,
 

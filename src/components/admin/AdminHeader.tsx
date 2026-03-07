@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Menu, User, FileText, Settings, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSidebar } from "@/contexts/SidebarContext";
@@ -19,6 +20,7 @@ import {
 export default function AdminHeader() {
   const { open } = useSidebar();
   const { user, logout } = useAuth();
+  const router = useRouter();
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useClickOutside<HTMLDivElement>(() =>
     setProfileOpen(false),
@@ -160,7 +162,13 @@ export default function AdminHeader() {
               <div className="h-px bg-border mx-3 my-1" />
 
               {/* Menu Items */}
-              <button className="flex items-center gap-3 w-full px-4 py-2.5 text-t-14 text-neutral-darker hover:bg-neutral-light transition-colors">
+              <button
+                onClick={() => {
+                  setProfileOpen(false);
+                  router.push("/admin/settings/profile");
+                }}
+                className="flex items-center gap-3 w-full px-4 py-2.5 text-t-14 text-neutral-darker hover:bg-neutral-light transition-colors"
+              >
                 <User className="w-5 h-5 text-neutral-dark" />
                 My profile
               </button>
@@ -168,7 +176,13 @@ export default function AdminHeader() {
                 <FileText className="w-5 h-5 text-neutral-dark" />
                 Reports
               </button>
-              <button className="flex items-center gap-3 w-full px-4 py-2.5 text-t-14 text-neutral-darker hover:bg-neutral-light transition-colors">
+              <button
+                onClick={() => {
+                  setProfileOpen(false);
+                  router.push("/admin/settings/profile");
+                }}
+                className="flex items-center gap-3 w-full px-4 py-2.5 text-t-14 text-neutral-darker hover:bg-neutral-light transition-colors"
+              >
                 <Settings className="w-5 h-5 text-neutral-dark" />
                 Settings
               </button>

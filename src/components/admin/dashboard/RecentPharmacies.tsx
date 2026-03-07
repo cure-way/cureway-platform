@@ -1,11 +1,16 @@
+"use client";
+
 import Link from "next/link";
 import {
   DashPharmacyOutlineIcon,
   DashPharmacyFilledIcon,
 } from "@/components/admin/shared/icons";
-import { dashboardPharmacies } from "@/lib/mock/admin";
+import { useAdminPharmacies } from "@/hooks/admin.hooks";
 
 export default function RecentPharmacies() {
+  const { data, loading } = useAdminPharmacies();
+  const pharmacies = data.slice(0, 4);
+
   return (
     <div className="bg-white rounded-2xl border border-[#EFEDED] flex flex-col p-4 gap-4">
       {/* Header */}
@@ -32,37 +37,44 @@ export default function RecentPharmacies() {
             Pharmacy
           </span>
           <span className="flex-1 max-w-[62px] text-[14px] leading-[1.2] font-semibold text-[#393737]">
-            Date
+            City
           </span>
         </div>
 
         {/* Rows */}
-        {dashboardPharmacies.map((pharmacy) => (
-          <div
-            key={pharmacy.name}
-            className="flex items-center h-16 px-4 py-3 gap-2 border-t border-[#FAF9F9] border-l border-r"
-          >
-            <div className="w-8 h-8 rounded-2xl bg-[#CDD9F4] flex items-center justify-center shrink-0">
-              <DashPharmacyFilledIcon />
-            </div>
-            <div className="flex-1 flex flex-col gap-1 justify-center min-w-0">
-              <p className="text-[14px] leading-[1.2] font-semibold text-[#263B81] truncate">
-                {pharmacy.name}
-              </p>
-              <p className="text-[12px] leading-[1.2] font-medium text-[#989593] truncate">
-                {pharmacy.branch}
-              </p>
-            </div>
-            <div className="border border-[#EFEDED] rounded-lg px-2 py-3 shrink-0">
-              <p className="text-[12px] leading-[1.2] font-normal text-[#989593] text-right w-[46px]">
-                Today
-              </p>
-              <p className="text-[12px] leading-[1.2] font-normal text-[#5B5958] text-right w-[46px]">
-                4:13 pm
-              </p>
-            </div>
+        {loading ? (
+          <div className="flex items-center justify-center h-16 text-[14px] text-[#989593]">
+            Loading…
           </div>
-        ))}
+        ) : pharmacies.length === 0 ? (
+          <div className="flex items-center justify-center h-16 text-[14px] text-[#989593]">
+            No pharmacies found
+          </div>
+        ) : (
+          pharmacies.map((pharmacy) => (
+            <div
+              key={pharmacy.id}
+              className="flex items-center h-16 px-4 py-3 gap-2 border-t border-[#FAF9F9] border-l border-r"
+            >
+              <div className="w-8 h-8 rounded-2xl bg-[#CDD9F4] flex items-center justify-center shrink-0">
+                <DashPharmacyFilledIcon />
+              </div>
+              <div className="flex-1 flex flex-col gap-1 justify-center min-w-0">
+                <p className="text-[14px] leading-[1.2] font-semibold text-[#263B81] truncate">
+                  {pharmacy.pharmacyName}
+                </p>
+                <p className="text-[12px] leading-[1.2] font-medium text-[#989593] truncate">
+                  {pharmacy.addressLine ?? "—"}
+                </p>
+              </div>
+              <div className="border border-[#EFEDED] rounded-lg px-2 py-3 shrink-0">
+                <p className="text-[12px] leading-[1.2] font-normal text-[#5B5958] text-right w-[46px] truncate">
+                  {pharmacy.cityName}
+                </p>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

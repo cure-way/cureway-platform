@@ -4,6 +4,7 @@ import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { SidebarProvider } from "@/contexts/SidebarContext";
 import { PageTransition } from "@/components/admin/shared";
+import { AuthGuard } from "@/features/auth/AuthGuard";
 
 function AdminLayoutInner({ children }: { children: React.ReactNode }) {
   return (
@@ -29,8 +30,10 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider>
-      <AdminLayoutInner>{children}</AdminLayoutInner>
-    </SidebarProvider>
+    <AuthGuard allowedRoles={["ADMIN"]}>
+      <SidebarProvider>
+        <AdminLayoutInner>{children}</AdminLayoutInner>
+      </SidebarProvider>
+    </AuthGuard>
   );
 }

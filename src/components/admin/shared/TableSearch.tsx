@@ -6,11 +6,15 @@ import { cn } from "@/lib/utils";
 interface TableSearchProps {
   placeholder?: string;
   className?: string;
+  value?: string;
+  onSearch?: (value: string) => void;
 }
 
 export default function TableSearch({
   placeholder = "Search medicine, pharmacy..",
   className,
+  value,
+  onSearch,
 }: TableSearchProps) {
   return (
     <div
@@ -25,6 +29,8 @@ export default function TableSearch({
         <input
           type="text"
           placeholder={placeholder}
+          value={value ?? ""}
+          onChange={(e) => onSearch?.(e.target.value)}
           className="flex-1 bg-transparent text-[16px] font-medium text-foreground placeholder:text-neutral outline-none min-w-0"
           aria-label="Search table"
         />
