@@ -10,17 +10,15 @@ import { toast } from "react-hot-toast";
 interface Props {
   open: boolean;
   onClose: () => void;
-  refetch: () => void;
 }
 
-export default function AddMedicineModal({ open, onClose, refetch }: Props) {
+export default function AddMedicineModal({ open, onClose }: Props) {
   const { execute, isLoading } = useCreateInventory();
 
   async function handleSave(data: CreateInventoryInput) {
     try {
       await execute(data);
       toast.success("Medicine added successfully");
-      refetch();
       onClose();
     } catch (error) {
       toast.error(

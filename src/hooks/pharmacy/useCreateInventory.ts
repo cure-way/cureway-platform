@@ -1,24 +1,24 @@
 "use client";
 
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createInventory } from "@/services/pharmacyInventory";
 import { CreateInventoryInput } from "@/types/pharmacyTypes";
-import { useState } from "react";
 
 export function useCreateInventory() {
-  const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
 
-  async function execute(input: CreateInventoryInput) {
-    try {
-      setIsLoading(true);
-      const item = await createInventory(input);
-      return item;
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  const mutation = useMutation({
+    mutationFn: (input: CreateInventoryInput) => createInventory(input),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["pharmacy", "inventory"],
+      });
+    },
+  });
 
   return {
-    execute,
-    isLoading,
+    execute: mutation.mutateAsync,
+    isLoading: mutation.isPending,
   };
 }

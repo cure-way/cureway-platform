@@ -1,36 +1,23 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
 import type { InventoryItem } from "@/types/pharmacyTypes";
 import { getInventorySnapshot } from "@/services/pharmacyInventory";
+import { queryKeys } from "@/lib/queryKeys";
 
 export function useInventorySnapshot() {
-  const [data, setData] = useState<InventoryItem[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchSnapshot = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const items = await getInventorySnapshot();
-      setData(items);
-    } catch (err) {
-      setError("Failed to load inventory snapshot.");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchSnapshot();
-  }, [fetchSnapshot]);
+  const query = useQuery<InventoryItem[]>({
+    queryKey: queryKeys.pharmacy.inventorySnapshot(),
+    queryFn: getInventorySnapshot,
+  });
 
   return {
-    data,
-    loading,
-    error,
-    refetch: fetchSnapshot,
+    data: query.data ?? [],
+    loading: query.isLoading,
+    error: query.isError ? "Failed to load inventory snapshot." : null,
+
+    refetch: async () => {
+      await query.refetch();
+    },
   };
 }

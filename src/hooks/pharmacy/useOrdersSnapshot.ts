@@ -1,36 +1,26 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { getOrdersSnapshot } from "@/services/pharmacyOrders";
 import { Order, OrderFilter } from "@/types/pharmacyOrders";
-import { useEffect, useState, useCallback } from "react";
+import { queryKeys } from "@/lib/queryKeys";
 
 export function useOrdersSnapshot(filter?: OrderFilter) {
-  const [data, setData] = useState<Order[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const query = useQuery<Order[]>({
+    queryKey: queryKeys.pharmacy.ordersSnapshot(filter),
 
-  const fetchOrders = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
+    queryFn: () => getOrdersSnapshot(filter),
 
-      const orders = await getOrdersSnapshot(filter);
-      setData(orders);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load orders.");
-    } finally {
-      setLoading(false);
-    }
-  }, [filter]);
-
-  useEffect(() => {
-    fetchOrders();
-  }, [fetchOrders]);
+    placeholderData: (previous) => previous,
+  });
 
   return {
-    data,
-    loading,
-    error,
-    refetch: fetchOrders,
+    data: query.data ?? [],
+    loading: query.isLoading,
+    error: query.isError ? "Failed to load orders." : null,
+
+    refetch: async () => {
+      await query.refetch();
+    },
   };
 }

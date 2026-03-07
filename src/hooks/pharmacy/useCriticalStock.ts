@@ -1,34 +1,23 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
 import type { InventoryItem } from "@/types/pharmacyTypes";
 import { getCriticalStockItems } from "@/services/pharmacyInventory";
+import { queryKeys } from "@/lib/queryKeys";
 
 export function useCriticalStock() {
-  const [data, setData] = useState<InventoryItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchCritical = useCallback(async () => {
-    try {
-      setError(null);
-      const items = await getCriticalStockItems();
-      setData(items);
-    } catch {
-      setError("Failed to load stock alerts.");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchCritical();
-  }, [fetchCritical]);
+  const query = useQuery<InventoryItem[]>({
+    queryKey: queryKeys.pharmacy.criticalStock(),
+    queryFn: getCriticalStockItems,
+  });
 
   return {
-    data,
-    loading,
-    error,
-    refetch: fetchCritical,
+    data: query.data ?? [],
+    loading: query.isLoading,
+    error: query.isError ? "Failed to load stock alerts." : null,
+
+    refetch: async () => {
+      await query.refetch();
+    },
   };
 }

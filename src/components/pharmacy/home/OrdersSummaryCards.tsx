@@ -33,7 +33,7 @@ export default function OrdersSummaryCards({ summary, summaryLoading }: Props) {
   ];
 
   return (
-    <div className="gap-4 grid sm:grid-cols-2 mb-6">
+    <div className="gap-4 grid sm:grid-cols-2 mb-4">
       {cards.map((card) => {
         const Icon = card.icon;
 

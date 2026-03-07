@@ -1,8 +1,9 @@
-import { OrderRow } from "@/types/pharmacyOrders";
+import { OrderFilter, OrderRow, OrderStatus } from "@/types/pharmacyOrders";
 import {
   Column,
   InventoryFilterStatus,
   InventoryItem,
+  InventoryStatus,
   RowAction,
   StatusConfig,
 } from "@/types/pharmacyTypes";
@@ -17,7 +18,10 @@ export const INVENTORY_STATUSES: {
   { label: "Out of Stock", value: "OUT_OF_STOCK" },
 ];
 
-export const ORDER_STATUSES = [
+export const ORDER_STATUSES: {
+  label: string;
+  value: OrderFilter;
+}[] = [
   { label: "All", value: "ALL" },
   { label: "New", value: "NEW" },
   { label: "Delivered", value: "DELIVERED" },
@@ -45,6 +49,9 @@ export const INVENTORY_ACTIONS: RowAction[] = [
   { id: "mark_out", label: "Mark as out of stock" },
   { id: "delete", label: "Delete medicine", danger: true },
 ];
+export const ORDERS_ACTIONS: RowAction[] = [
+  { id: "view", label: "View details" },
+];
 
 export const orderColumns: readonly Column<OrderRow>[] = [
   { key: "id", header: "Order ID" },
@@ -53,6 +60,7 @@ export const orderColumns: readonly Column<OrderRow>[] = [
   { key: "totalAmount", header: "Total" },
   { key: "formattedDate", header: "Date", hideOnMobile: true },
   { key: "status", header: "Status" },
+  { key: "action", header: "" },
 ];
 
 export const DAY_ORDER = [
@@ -65,26 +73,22 @@ export const DAY_ORDER = [
   "Sat",
 ] as const;
 
-export const ORDER_STATUS_MAP: Record<string, StatusConfig> = {
-  New: {
-    label: "New",
-    className: "bg-blue-100 text-blue-700",
-  },
-  Delivered: {
-    label: "Delivered",
-    className: "bg-green-100 text-green-700",
-  },
-  Pending: {
+export const ORDER_STATUS_MAP: Record<OrderStatus, StatusConfig> = {
+  PENDING: {
     label: "Pending",
     className: "bg-yellow-100 text-yellow-700",
   },
-  Cancelled: {
-    label: "Cancelled",
-    className: "bg-red-100 text-red-700",
+  PREPARING: {
+    label: "Preparing",
+    className: "bg-blue-100 text-blue-700",
+  },
+  READY_FOR_PICKUP: {
+    label: "Ready for Pickup",
+    className: "bg-green-100 text-green-700",
   },
 };
 
-export const INVENTORY_STATUS_MAP: Record<string, StatusConfig> = {
+export const INVENTORY_STATUS_MAP: Record<InventoryStatus, StatusConfig> = {
   in: {
     label: "In Stock",
     className: "bg-green-100 text-green-700",

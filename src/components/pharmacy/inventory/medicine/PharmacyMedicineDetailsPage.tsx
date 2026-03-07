@@ -41,7 +41,7 @@ export default function PharmacyMedicineDetailsPage() {
 
   return (
     <div className="space-y-6">
-      <PharmacyMedicineHeader item={data} onUpdate={refetch} />
+      <PharmacyMedicineHeader item={data} />
 
       <div className="gap-6 grid grid-cols-1 lg:grid-cols-[2fr_1fr]">
         <PharmacyMedicineInfo item={data} />

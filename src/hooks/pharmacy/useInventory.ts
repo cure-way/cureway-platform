@@ -1,6 +1,9 @@
-import { useEffect, useState, useCallback } from "react";
-import { InventoryFilterStatus, InventoryItem } from "@/types/pharmacyTypes";
+"use client";
+
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import { InventoryFilterStatus } from "@/types/pharmacyTypes";
 import { fetchInventoryList } from "@/services/pharmacyInventory";
+import { queryKeys } from "@/lib/queryKeys";
 
 type UseInventoryParams = {
   status: InventoryFilterStatus;
@@ -8,47 +11,35 @@ type UseInventoryParams = {
   page: number;
   limit: number;
 };
+
 export function useInventory({
   status,
   search,
   page,
   limit,
 }: UseInventoryParams) {
-  const [data, setData] = useState<InventoryItem[]>([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const query = useQuery({
+    queryKey: queryKeys.pharmacy.inventory(status, search, page, limit),
 
-  const fetchInventory = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const res = await fetchInventoryList({
+    queryFn: async () => {
+      return fetchInventoryList({
         page,
         limit,
         q: search || undefined,
         stockStatus: status === "all" ? undefined : status,
       });
+    },
 
-      setData(res.items);
-      setTotal(res.total);
-    } catch (err) {
-      setError("Failed to load inventory. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  }, [search, status, page, limit]);
-
-  useEffect(() => {
-    fetchInventory();
-  }, [fetchInventory]);
+    placeholderData: keepPreviousData,
+  });
 
   return {
-    data,
-    total,
-    loading,
-    error,
-    refetch: fetchInventory,
+    data: query.data?.items ?? [],
+    total: query.data?.total ?? 0,
+    loading: query.isLoading,
+    error: query.isError ? "Failed to load inventory. Please try again." : null,
+    refetch: async () => {
+      await query.refetch();
+    },
   };
 }

@@ -11,21 +11,13 @@ interface Props {
   open: boolean;
   onClose: () => void;
   item: InventoryItem;
-  onUpdate: () => void;
 }
 
-export default function EditMedicineDrawer({
-  open,
-  onClose,
-  item,
-  onUpdate,
-}: Props) {
+export default function EditMedicineDrawer({ open, onClose, item }: Props) {
   const { update, loading } = useUpdateInventory();
   async function handleSave(data: UpdateInventoryInput) {
     try {
       await update(item.id, data);
-
-      onUpdate();
       onClose();
 
       toast.success("Medicine updated successfully");

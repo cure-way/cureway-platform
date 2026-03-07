@@ -1,3 +1,6 @@
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
 import { getPharmacyReport } from "@/services/pharmacyOrders";
 import {
   OrderStatusDonutDatum,
@@ -5,7 +8,14 @@ import {
   WeeklyOrdersDatum,
   WeeklyStats,
 } from "@/types/pharmacyOrders";
-import { useEffect, useState } from "react";
+import { queryKeys } from "@/lib/queryKeys";
+
+interface PharmacyReportResponse {
+  weeklyStats: WeeklyStats;
+  orderStatusDonut: OrderStatusDonutDatum[];
+  weeklyOrdersStats: WeeklyOrdersDatum[];
+  topMedicines: TopMedicine[];
+}
 
 interface UsePharmacyReportResult {
   weeklyStats: WeeklyStats | null;
@@ -17,42 +27,19 @@ interface UsePharmacyReportResult {
 }
 
 export function usePharmacyReport(): UsePharmacyReportResult {
-  const [weeklyStats, setWeeklyStats] = useState<WeeklyStats | null>(null);
-  const [orderStatusDonut, setOrderStatusDonut] = useState<
-    OrderStatusDonutDatum[] | null
-  >(null);
-  const [weeklyOrdersStats, setWeeklyOrdersStats] = useState<
-    WeeklyOrdersDatum[] | null
-  >(null);
-  const [topMedicines, setTopMedicines] = useState<TopMedicine[] | null>(null);
+  const query = useQuery<PharmacyReportResponse>({
+    queryKey: queryKeys.pharmacy.report(),
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function load() {
-      try {
-        const result = await getPharmacyReport();
-        setWeeklyStats(result.weeklyStats);
-        setOrderStatusDonut(result.orderStatusDonut);
-        setWeeklyOrdersStats(result.weeklyOrdersStats);
-        setTopMedicines(result.topMedicines);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load report");
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    load();
-  }, []);
+    queryFn: getPharmacyReport,
+  });
 
   return {
-    weeklyStats,
-    orderStatusDonut,
-    weeklyOrdersStats,
-    topMedicines,
-    isLoading,
-    error,
+    weeklyStats: query.data?.weeklyStats ?? null,
+    orderStatusDonut: query.data?.orderStatusDonut ?? null,
+    weeklyOrdersStats: query.data?.weeklyOrdersStats ?? null,
+    topMedicines: query.data?.topMedicines ?? null,
+
+    isLoading: query.isLoading,
+    error: query.isError ? "Failed to load report" : null,
   };
 }

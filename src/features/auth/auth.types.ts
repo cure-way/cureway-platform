@@ -16,7 +16,7 @@
 
 export type UserRole = "PATIENT" | "PHARMACY" | "ADMIN" | "DRIVER";
 export type UserStatus = "ACTIVE" | "INACTIVE" | "SUSPENDED";
-export type VerificationStatus = "UNDER_REVIEW" | "APPROVED" | "REJECTED";
+export type VerificationStatus = "UNDER_REVIEW" | "VERIFIED" | "REJECTED";
 
 export interface AuthUser {
   id: number;

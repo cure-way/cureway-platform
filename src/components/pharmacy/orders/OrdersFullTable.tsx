@@ -3,21 +3,20 @@
 import DataTable from "../shared/DataTable";
 import ActionsDropdown from "../shared/ActionsDropdown";
 
-import { INVENTORY_ACTIONS, inventoryColumns } from "@/utils/pharmacyConstants";
+import { orderColumns, ORDERS_ACTIONS } from "@/utils/pharmacyConstants";
 import StatusBadge from "../shared/StatusBadge";
-import { useMedicineActions } from "@/hooks/pharmacy/useMedicineActions";
-import { InventoryItem } from "@/types/pharmacyTypes";
 import TableSkeleton from "../shared/TableSkeleton";
 import EmptyState from "../shared/EmptyState";
 import ErrorState from "../shared/ErrorState";
 import NullableText from "../shared/NullableText";
-import InventoryActionModal from "./InventoryActionModal";
+import { OrderRow } from "@/types/pharmacyOrders";
+import { useRouter } from "next/navigation";
 
 type Props = {
-  data: InventoryItem[];
+  data: OrderRow[];
   loading: boolean;
   error: string | null;
-  refetch: () => Promise<void>;
+  refetch: () => Promise<unknown>;
 
   total: number;
   page: number;
@@ -26,7 +25,7 @@ type Props = {
   onLimitChange: (limit: number) => void;
 };
 
-export default function InventoryTable({
+export default function OrdersFullTable({
   data,
   loading,
   error,
@@ -37,16 +36,10 @@ export default function InventoryTable({
   onPageChange,
   onLimitChange,
 }: Props) {
-  const {
-    pendingAction,
-    handleMedicineAction,
-    handleConfirm,
-    closeAction,
-    isProcessing,
-  } = useMedicineActions();
+  const router = useRouter();
 
   if (loading) {
-    return <TableSkeleton columns={inventoryColumns.length} rows={5} />;
+    return <TableSkeleton columns={orderColumns.length} rows={5} />;
   }
 
   if (error) {
@@ -60,7 +53,7 @@ export default function InventoryTable({
   if (!data.length) {
     return (
       <div className="bg-gray-50 p-6 rounded-xl">
-        <EmptyState message="No medicines found matching your filters." />
+        <EmptyState message="No orders found matching your filters." />
       </div>
     );
   }
@@ -69,7 +62,7 @@ export default function InventoryTable({
     <>
       <DataTable
         data={data}
-        columns={inventoryColumns}
+        columns={orderColumns}
         totalItems={total}
         currentPage={page}
         rowsPerPage={limit}
@@ -79,17 +72,31 @@ export default function InventoryTable({
           if (col.key === "action") {
             return (
               <ActionsDropdown
-                actions={INVENTORY_ACTIONS}
-                onAction={(actionId) => handleMedicineAction(actionId, row)}
+                actions={ORDERS_ACTIONS}
+                onAction={() => router.push(`/pharmacy/orders/${data[0].id}`)}
               />
             );
           }
 
-          if (col.key === "status") {
-            return <StatusBadge value={row.status} type="inventory" />;
+          if (col.key === "preview") {
+            return (
+              <>
+                {row.preview.firstItemName}
+                {row.preview.remainingCount > 0 && (
+                  <span className="text-gray-500 text-xs">
+                    {" +"}
+                    {row.preview.remainingCount}
+                  </span>
+                )}
+              </>
+            );
           }
 
-          const value = row[col.key as keyof InventoryItem];
+          if (col.key === "status") {
+            return <StatusBadge value={row.status} type="order" />;
+          }
+
+          const value = row[col.key as keyof OrderRow];
 
           if (value === null || value === undefined) {
             return <NullableText value={value} />;
@@ -97,13 +104,6 @@ export default function InventoryTable({
 
           return String(value);
         }}
-      />
-
-      <InventoryActionModal
-        pendingAction={pendingAction}
-        loading={isProcessing}
-        onConfirm={handleConfirm}
-        onCancel={closeAction}
       />
     </>
   );
