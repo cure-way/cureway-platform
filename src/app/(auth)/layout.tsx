@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/features/auth";
+import { getRoleHome } from "@/lib/routes";
 
 /**
  * Auth Route Layout
@@ -21,17 +22,8 @@ export default function AuthRouteLayout({
     if (isLoading) return; // wait for hydration
     if (!isAuthed || !user) return;
 
-    // Redirect based on role
-    switch (user.role) {
-      case "PHARMACY":
-        router.replace("/pharmacy/home");
-        break;
-      case "ADMIN":
-        router.replace("/admin/dashboard");
-        break;
-      default:
-        router.replace("/");
-    }
+    // Send the authenticated user to their role's correct destination.
+    router.replace(getRoleHome(user.role));
   }, [isAuthed, isLoading, user, router]);
 
   // While loading or if authenticated (redirect in progress), show spinner
