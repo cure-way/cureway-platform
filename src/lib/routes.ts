@@ -82,6 +82,46 @@ export function getHomeRoute(role: "patient" | "pharmacy" | "admin"): string {
 }
 
 /**
+ * Roles that have a dedicated portal/landing destination in this app.
+ */
+export const APP_ROLES = ["PATIENT", "PHARMACY", "ADMIN"] as const;
+export type AppRole = (typeof APP_ROLES)[number];
+
+/**
+ * Returns true when the given value is a known application role.
+ * Used to defensively reject null / undefined / unexpected roles.
+ */
+export function isAppRole(role: unknown): role is AppRole {
+  return typeof role === "string" && (APP_ROLES as readonly string[]).includes(role);
+}
+
+/**
+ * Resolve the correct landing destination for an authenticated user based on
+ * their (uppercase) auth role. This is the single source of truth used by the
+ * route guards so role-based redirects never point a user at a page their
+ * role is not allowed to render.
+ *
+ *   PATIENT  → "/"               (patient portal lives at the root)
+ *   PHARMACY → "/pharmacy/home"
+ *   ADMIN    → "/admin/dashboard"
+ *
+ * Unknown / null / undefined roles fall back to the sign-in page so a corrupt
+ * session can never get stuck rendering a blank screen.
+ */
+export function getRoleHome(role: string | null | undefined): string {
+  switch (role) {
+    case "PATIENT":
+      return ROUTES.PUBLIC.LANDING; // "/"
+    case "PHARMACY":
+      return ROUTES.PHARMACY.HOME; // "/pharmacy/home"
+    case "ADMIN":
+      return ROUTES.ADMIN.DASHBOARD; // "/admin/dashboard"
+    default:
+      return ROUTES.AUTH.SIGN_IN;
+  }
+}
+
+/**
  * Check if a path belongs to a specific portal
  */
 export function isPortalPath(
