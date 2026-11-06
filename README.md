@@ -394,30 +394,64 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Environment Variables
 
-> **Note**: No `.env.example` file exists yet. The following variables are expected based on code analysis:
+Copy `.env.local.example` to `.env.local` and fill in the values. Never commit `.env.local`
+or real secrets.
 
-| Variable                   | Required | Description          | Example                       |
-| -------------------------- | -------- | -------------------- | ----------------------------- |
-| `NEXT_PUBLIC_API_BASE_URL` | Yes      | Backend API base URL | `https://api.example.com`     |
-| `NEXT_PUBLIC_APP_URL`      | No       | Public app URL       | `https://your-app-domain.com` |
+| Variable                   | Required | Description                                         | Example                             |
+| -------------------------- | -------- | --------------------------------------------------- | ----------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`     | No       | Public origin of the deployment, no trailing slash. Defaults to the production subdomain. | `https://cureway.aymanismail.com` |
+| `NEXT_PUBLIC_API_BASE_URL` | Yes      | Backend API base URL                                | `https://api.example.com`           |
+| `NEXT_PUBLIC_API_URL`      | No       | Overrides `NEXT_PUBLIC_API_BASE_URL` when set       | `https://api.example.com`           |
 
-Create a `.env.local` file in the root directory:
-
-```env
-NEXT_PUBLIC_API_URL=https://api.example.com
-SESSION_SECRET=your-random-secret-key-here
+```bash
+cp .env.local.example .env.local
 ```
+
+### Public site URL
+
+The production site is served at **https://cureway.aymanismail.com**.
+
+`NEXT_PUBLIC_SITE_URL` is the single source of truth for the public origin. It is read
+once in [`src/lib/site.ts`](src/lib/site.ts) and everything that needs an absolute URL
+derives from it:
+
+- `metadataBase` and canonical links (`src/app/layout.tsx`)
+- Open Graph and Twitter card URLs and images (`src/app/layout.tsx`)
+- `Organization` / `WebSite` JSON-LD (`src/app/layout.tsx`)
+- `sitemap.xml` (`src/app/sitemap.ts`)
+- `robots.txt` — `Sitemap:` and `Host:` lines (`src/app/robots.ts`)
+
+Do not hardcode the origin anywhere else — import `SITE_URL` or `absoluteUrl()` from
+`@/lib/site` instead. Set `NEXT_PUBLIC_SITE_URL=http://localhost:3000` locally if you
+need canonical/OG URLs to point at your dev server.
 
 ---
 
 ## Deployment
 
+The production deployment is served on the custom subdomain
+**https://cureway.aymanismail.com**.
+
 ### Vercel (Recommended)
 
 1. Push to GitHub/GitLab
 2. Import project in [Vercel](https://vercel.com)
-3. Set environment variables
-4. Deploy
+3. Set environment variables — including `NEXT_PUBLIC_SITE_URL=https://cureway.aymanismail.com`
+   for the Production environment (use the preview/branch URL for Preview if you want
+   previews to self-canonicalize)
+4. Add `cureway.aymanismail.com` under **Project → Settings → Domains** and set it as the
+   production domain, so the Vercel-assigned project URL redirects to it
+5. Deploy
+
+### Custom domain checklist
+
+Changing the public origin also needs updates outside this repo:
+
+- Vercel: domain assigned, marked production, old Vercel-assigned project URL redirecting to it
+- Vercel env var `NEXT_PUBLIC_SITE_URL` set per environment
+- Backend API CORS allowed origins must include `https://cureway.aymanismail.com`
+- Auth provider callback / redirect URLs and any cookie `Domain` must use the new host
+- Third-party allowed-domain lists (analytics, maps, payments, reCAPTCHA) must include it
 
 ### Manual Build
 
