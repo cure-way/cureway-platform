@@ -3,14 +3,17 @@
 import { useReducer, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import UploadHeader from "@/components/patient/prescriptions/UploadHeader";
+import { PageContainer, PageHeader } from "@/components/shared";
 import UploadInitial from "@/components/patient/prescriptions/UploadInitial";
 import UploadPicker from "@/components/patient/prescriptions/UploadPicker";
 import UploadProgress from "@/components/patient/prescriptions/UploadProgress";
 import UploadError from "@/components/patient/prescriptions/UploadError";
 import UploadUnsupported from "@/components/patient/prescriptions/UploadUnsupported";
 import UploadSuccess from "@/components/patient/prescriptions/UploadSuccess";
-import { fileUploadService, prescriptionApiService } from "@/services/api.service";
+import {
+  fileUploadService,
+  prescriptionApiService,
+} from "@/services/api.service";
 
 type UploadStep =
   | "initial"
@@ -132,9 +135,7 @@ export default function UploadPrescriptionPage() {
   // is created — the console will log a warning.
   // -------------------------------
 
-  const handleFileSelected = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -157,9 +158,10 @@ export default function UploadPrescriptionPage() {
       dispatch({ type: "SET_PROGRESS", value: 65 });
 
       // Step 2: Create prescription record — POST /prescriptions
-      const pharmacyIdStr = typeof window !== "undefined"
-        ? new URLSearchParams(window.location.search).get("pharmacyId")
-        : null;
+      const pharmacyIdStr =
+        typeof window !== "undefined"
+          ? new URLSearchParams(window.location.search).get("pharmacyId")
+          : null;
       const pharmacyId = pharmacyIdStr ? Number(pharmacyIdStr) : null;
 
       if (!pharmacyId) {
@@ -205,10 +207,14 @@ export default function UploadPrescriptionPage() {
       : "Upload a clear photo of your prescription to help us prepare your order accurately";
 
   return (
-    <div className="min-h-screen bg-white px-4 sm:px-8 lg:px-16 py-8">
-      <UploadHeader
+    /* One container for the header and the body, so the two halves of the page
+       share a left and right edge. They used to sit at x=80 and x=208 because
+       each half set its own (dead) max-w-* class. */
+    <PageContainer>
+      <PageHeader
         title={headerTitle}
         subtitle={headerSubtitle}
+        showBack
         onBack={() => dispatch({ type: "BACK" })}
       />
 
@@ -219,10 +225,11 @@ export default function UploadPrescriptionPage() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.32, ease: "easeOut" }}
-          className="mt-8"
         >
           {state.step === "initial" && (
-            <UploadInitial onUploadClick={() => dispatch({ type: "GO_PICKER" })} />
+            <UploadInitial
+              onUploadClick={() => dispatch({ type: "GO_PICKER" })}
+            />
           )}
 
           {state.step === "picker" && (
@@ -239,12 +246,12 @@ export default function UploadPrescriptionPage() {
             />
           )}
 
-          {state.step === "error" && (
-            <UploadError onRetry={handleRetry} />
-          )}
+          {state.step === "error" && <UploadError onRetry={handleRetry} />}
 
           {state.step === "unsupported" && (
-            <UploadUnsupported onUploadAgain={() => dispatch({ type: "RESET" })} />
+            <UploadUnsupported
+              onUploadAgain={() => dispatch({ type: "RESET" })}
+            />
           )}
 
           {state.step === "success" && (
@@ -266,6 +273,6 @@ export default function UploadPrescriptionPage() {
         accept=".png,.jpg,.jpeg,.pdf"
         onChange={handleFileSelected}
       />
-    </div>
+    </PageContainer>
   );
 }

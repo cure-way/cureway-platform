@@ -12,13 +12,13 @@ export default function PrimaryButton({
   fullWidth = true,
 }: Props) {
   const base =
-    "rounded-2xl px-6 py-4 font-semibold text-base sm:text-lg transition-all duration-300";
+    "flex h-[52px] w-full items-center justify-center rounded-lg px-6 text-t-14-semibold md:text-t-17-semibold transition-all duration-300";
 
   const primary =
-    "bg-[#334EAC] text-white hover:opacity-90 active:scale-[0.99]";
+    "bg-primary text-white hover:bg-primary-hover active:scale-[0.99]";
 
   const outline =
-    "border border-[#334EAC] text-[#334EAC] bg-white hover:bg-[#f5f7ff] active:scale-[0.99]";
+    "border border-primary text-primary bg-white hover:bg-primary-light active:scale-[0.99]";
 
   return (
     <button
