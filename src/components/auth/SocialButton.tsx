@@ -1,5 +1,8 @@
 "use client";
 
+import { SHOWCASE_MODE } from "@/lib/showcase/config";
+import { notifyDisabled } from "@/lib/showcase/notify";
+
 export interface SocialButtonProps {
   provider: "google" | "facebook" | "apple";
   onClick?: () => void;
@@ -56,10 +59,23 @@ export function SocialButton({
     apple: "Continue with Apple",
   };
 
+  // No social provider was ever wired up: without an `onClick` these buttons
+  // silently do nothing when clicked. In showcase mode say so, consistently
+  // with every other action that cannot work here.
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+      return;
+    }
+    if (SHOWCASE_MODE) {
+      notifyDisabled(`${labels[provider]} is not connected`);
+    }
+  };
+
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={handleClick}
       disabled={disabled}
       className="flex items-center justify-center gap-3 w-full h-12 px-6 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 active:bg-gray-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
     >

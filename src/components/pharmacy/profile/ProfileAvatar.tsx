@@ -4,6 +4,8 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { FiCamera } from "react-icons/fi";
 
+import { notifyDisabled } from "@/lib/showcase/notify";
+
 interface Props {
   image: string;
   name: string;
@@ -33,9 +35,15 @@ export default function ProfileAvatar({ image, name, onSave }: Props) {
   const handleSave = () => {
     if (!selectedFile) return;
 
-    // onSave?.(selectedFile);
+    // Uploading an avatar needs the backend. The local preview above still
+    // shows the chosen file so the interaction is not a dead end.
+    if (onSave) {
+      onSave(selectedFile);
+    } else {
+      notifyDisabled("the new photo was not uploaded");
+    }
 
-    // setSelectedFile(null);
+    setSelectedFile(null);
   };
 
   return (

@@ -76,6 +76,10 @@ interface Route {
   method: string;
   pattern: RegExp;
   handler: Handler;
+  /** Number of `:param` segments — fewer means more specific. */
+  paramCount: number;
+  /** Declaration index, to keep ordering stable among equal specificity. */
+  order: number;
 }
 
 const routes: Route[] = [];
@@ -89,7 +93,13 @@ function compile(path: string): RegExp {
 }
 
 function route(method: string, path: string, handler: Handler): void {
-  routes.push({ method: method.toLowerCase(), pattern: compile(path), handler });
+  routes.push({
+    method: method.toLowerCase(),
+    pattern: compile(path),
+    handler,
+    paramCount: (path.match(/\/:[A-Za-z0-9_]+/g) ?? []).length,
+    order: routes.length,
+  });
 }
 
 const get = (p: string, h: Handler) => route("get", p, h);
@@ -208,6 +218,21 @@ get("/categories/all", () =>
     description: c.description ?? undefined,
   })),
 );
+
+get("/categories/:name", (ctx) => {
+  const name = decodeURIComponent(ctx.params[0]).toLowerCase();
+  const c =
+    CATEGORIES.find((x) => x.name.toLowerCase() === name) ??
+    CATEGORIES.find((x) => String(x.id) === name);
+  if (!c) throw notFound(`Category ${ctx.params[0]}`);
+  return {
+    id: String(c.id),
+    name: c.name,
+    image: c.categoryImageUrl ?? "",
+    imageAlt: c.name,
+    description: c.description ?? undefined,
+  };
+});
 
 get("/products/most-sales", () =>
   MEDICINES.slice(0, 3).map((m) => ({
@@ -1041,7 +1066,26 @@ export interface Resolved {
   body: unknown;
 }
 
+/**
+ * Literal routes must be tried before parameterised ones.
+ *
+ * `/orders/:id` otherwise swallows `/orders/admin`, which silently emptied the
+ * admin orders page: the id route parsed "admin" as NaN, found no order and
+ * returned 404. The same collision applies to /medicines/admin,
+ * /medicines/search and /inventory/admin. Sorting by specificity makes the
+ * table order-independent so adding a route cannot shadow an existing one.
+ */
+let sorted = false;
+
+function ensureSorted(): void {
+  if (sorted) return;
+  routes.sort((a, b) => a.paramCount - b.paramCount || a.order - b.order);
+  sorted = true;
+}
+
 export function resolve(ctx: Omit<RouteCtx, "params">): Resolved {
+  ensureSorted();
+
   for (const r of routes) {
     if (r.method !== ctx.method) continue;
     const m = ctx.path.match(r.pattern);

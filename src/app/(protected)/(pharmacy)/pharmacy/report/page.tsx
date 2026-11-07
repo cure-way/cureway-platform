@@ -70,7 +70,9 @@ export default function PharmacyReportPage() {
       </div>
 
       <div className="flex md:flex-row flex-col gap-4">
-        <div className="bg-white p-6 border rounded-xl grow">
+        {/* min-w-0 lets this flex child shrink so recharts' ResponsiveContainer
+            can measure a real width; without it the chart measured -1. */}
+        <div className="bg-white p-6 border rounded-xl grow min-w-0">
           <WeeklyOrdersBar data={weeklyOrdersStats} />
         </div>
 

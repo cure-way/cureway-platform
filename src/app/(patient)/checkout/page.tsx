@@ -14,7 +14,9 @@ import { DELIVERY_OPTIONS, PAYMENT_METHODS, ROUTES } from "@/constants/cart.cons
 import { MOCK_USER } from "@/data/mockData";
 import type { CheckoutData, DeliveryAddress, DeliveryOption, PaymentMethod } from "@/types/cart";
 import { calculateCartTotal } from "@/utils/cart.utils";
-import { toast } from "sonner";
+// react-hot-toast, not sonner: ToastProvider mounts react-hot-toast's
+// <Toaster/>, so sonner toasts never actually appeared.
+import toast from "react-hot-toast";
 
 export default function CheckoutPage() {
   const router = useRouter();

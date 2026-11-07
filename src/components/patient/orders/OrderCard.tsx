@@ -8,7 +8,9 @@ import { ViewDetailsDrawer } from "./ViewDetailsDrawer";
 import { TrackOrderModal } from "./TrackOrderModal";
 import { ReorderDialog } from "./ReorderDialog";
 import { useOrderStore } from "@/store/order.store";
-import { toast } from "sonner";
+// react-hot-toast, not sonner: ToastProvider mounts react-hot-toast's
+// <Toaster/>, so sonner toasts never actually appeared.
+import toast from "react-hot-toast";
 
 function formatOrderedLine(orderedAtISO: string) {
   const d = new Date(orderedAtISO);

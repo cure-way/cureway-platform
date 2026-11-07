@@ -8,6 +8,7 @@ import { MotionTap } from "@/components/shared/MotionTap";
 import { IconBack } from "@/components/patient/settings/Icons";
 import { useProfile } from "@/hooks/useProfile";
 import { useAuth } from "@/features/auth";
+import { SHOWCASE_MODE } from "@/lib/showcase/config";
 
 const COUNTRIES = [
   { code: "PS", name: "Palestine", dial: "+970", flag: "🇵🇸" },
@@ -130,7 +131,11 @@ export default function EditProfilePage() {
         phoneNumber: `${country.dial}${phone}`.trim() || undefined,
         dateOfBirth: dob || undefined,
       });
-      toast.success("Profile updated");
+      toast.success(
+        SHOWCASE_MODE
+          ? "Profile updated — not saved in showcase mode"
+          : "Profile updated",
+      );
       router.push("/profile");
     } catch (err) {
       toast.error(
