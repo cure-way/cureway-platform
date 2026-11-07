@@ -239,7 +239,7 @@ export const CheckoutSidebar = memo(function CheckoutSidebar({
       <button
         onClick={confirmEnabled && !confirming ? onConfirm : undefined}
         disabled={!confirmEnabled || confirming}
-        className={`w-full h-14 rounded-xl border-none text-t-17-semibold text-card transition-all flex items-center justify-center gap-2 ${
+        className={`w-full h-11 rounded-xl border-none text-t-17-semibold text-card transition-all flex items-center justify-center gap-2 ${
           confirmEnabled && !confirming
             ? "bg-primary cursor-pointer hover:bg-primary-hover shadow-sm"
             : "bg-border text-neutral cursor-default opacity-60"

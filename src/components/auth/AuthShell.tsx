@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { PageContainer } from "@/components/shared";
 
 export interface AuthShellProps {
   children: ReactNode;
@@ -32,14 +33,18 @@ export function AuthShell({ children, hero, className }: AuthShellProps) {
         </motion.div>
       )}
 
-      {/* Right side - Content area (scrollable) */}
+      {/* Right side - Content area (scrollable). The form column sits on the
+          auth container so every auth screen shares one measure and the same
+          16/24/32 gutters as the rest of the app. */}
       <div
         className={cn(
           "flex flex-col h-dvh overflow-y-auto",
           hero ? "w-full lg:w-1/2" : "w-full",
         )}
       >
-        {children}
+        <PageContainer variant="auth" className="flex flex-1 flex-col">
+          {children}
+        </PageContainer>
       </div>
     </div>
   );

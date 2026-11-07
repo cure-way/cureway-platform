@@ -22,7 +22,7 @@ export default function CategoryPage() {
   return (
     <PageContainer variant="list" className="space-y-8">
       <div className="flex flex-wrap justify-between items-center gap-4">
-        <h1 className="font-semibold text-gray-900 text-t-21">
+        <h1 className="text-page-title text-primary-darker">
           {medicines[0]?.categoryName || "Category"}
         </h1>
 

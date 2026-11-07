@@ -321,11 +321,11 @@ export default function AdminDeliveriesPage() {
                   value={trackCode}
                   onChange={(e) => setTrackCode(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleTrack()}
-                  className="flex-1 min-w-0 h-10 sm:h-12 px-3 sm:px-4 border border-border rounded-xl text-[14px] sm:text-t-17 leading-[1.2] font-semibold text-primary-darker placeholder:text-neutral focus:outline-none focus:ring-2 focus:ring-primary-dark/20 transition-shadow"
+                  className="flex-1 min-w-0 h-10 sm:h-11 px-3 sm:px-4 border border-border rounded-xl text-[14px] sm:text-t-17 leading-[1.2] font-semibold text-primary-darker placeholder:text-neutral focus:outline-none focus:ring-2 focus:ring-primary-dark/20 transition-shadow"
                 />
                 <button
                   onClick={handleTrack}
-                  className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 h-10 sm:h-12 bg-primary-dark text-white rounded-xl text-[12px] sm:text-[14px] leading-[1.2] font-semibold hover:bg-primary-dark-hover transition-colors shrink-0"
+                  className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 h-11 sm:h-11 bg-primary-dark text-white rounded-xl text-[12px] sm:text-[14px] leading-[1.2] font-semibold hover:bg-primary-dark-hover transition-colors shrink-0"
                 >
                   Track Order
                   <ArrowUpRight className="w-4 h-4" />

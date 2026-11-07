@@ -126,7 +126,7 @@ export default function RevenueChart() {
               ))}
             </div>
             <button
-              className="bg-white border border-[#EFEDED] rounded-lg h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center shrink-0 hover:bg-gray-50 transition-colors"
+              className="bg-white border border-[#EFEDED] rounded-lg h-11 w-10 sm:h-12 sm:w-12 flex items-center justify-center shrink-0 hover:bg-gray-50 transition-colors"
               aria-label="Export report"
             >
               <RevenueExportIcon />

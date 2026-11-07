@@ -23,7 +23,7 @@ export default function LocationAccessPage() {
   };
 
   return (
-    <PageContainer variant="account" className="flex flex-col gap-4">
+    <PageContainer variant="form" className="flex flex-col gap-4">
       <PageHeader
         title="Enable Location Access"
         subtitle="Please provide clear details so we can help you faster."

@@ -287,7 +287,7 @@ export function PharmacySignUpForm() {
             transition={{ delay: 0.15 }}
             className="flex flex-col gap-2 items-center text-center mb-6"
           >
-            <h1 className="text-t-30 font-semibold">
+            <h1 className="text-page-title">
               <span className="text-[#2e469b]">Welcome To </span>
               <span className="text-[#334eac] font-bold">CUREWAY</span>
             </h1>

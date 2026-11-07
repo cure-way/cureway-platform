@@ -59,7 +59,7 @@ export default function StatsBar({
 
       {/* Collapse chevron */}
       <button
-        className="hidden sm:flex w-12 h-12 items-center justify-center rounded-xl p-3 hover:bg-neutral-light transition-colors shrink-0"
+        className="hidden sm:flex w-12 h-11 items-center justify-center rounded-xl p-3 hover:bg-neutral-light transition-colors shrink-0"
         aria-label="Collapse stats"
       >
         <ChevronDown className="w-6 h-6 text-neutral-dark" />

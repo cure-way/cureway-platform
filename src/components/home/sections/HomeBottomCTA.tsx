@@ -175,7 +175,7 @@ export function HomeBottomCTA() {
 
             {/* Search now button */}
             <button
-              className="bg-primary text-primary-light text-t-17 md:text-t-21 font-semibold rounded-2xl h-14 md:h-16 flex items-center justify-center gap-3 hover:bg-primary-hover transition-colors w-full"
+              className="bg-primary text-primary-light text-t-17 md:text-t-21 font-semibold rounded-2xl h-11 md:h-16 flex items-center justify-center gap-3 hover:bg-primary-hover transition-colors w-full"
               type="button"
               aria-label="Search for nearby pharmacy"
             >

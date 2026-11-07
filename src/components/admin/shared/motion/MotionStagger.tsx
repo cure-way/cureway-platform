@@ -28,11 +28,19 @@ export default function MotionStagger({
   children,
   staggerDelay = 0.06,
   className,
-}: MotionStaggerProps) {
+  ...rest
+}: MotionStaggerProps & { [key: `data-${string}`]: string | undefined }) {
   const shouldReduce = useReducedMotion();
 
+  // Pass through data-* and the rest: PageContainer renders through this
+  // component with `as`, and its data-page-container marker has to reach the
+  // DOM for the layout audit to see it.
   if (shouldReduce) {
-    return <div className={className}>{children}</div>;
+    return (
+      <div className={className} {...rest}>
+        {children}
+      </div>
+    );
   }
 
   return (
@@ -41,6 +49,7 @@ export default function MotionStagger({
       animate="visible"
       variants={staggerContainer(staggerDelay)}
       className={className}
+      {...rest}
     >
       {children}
     </motion.div>

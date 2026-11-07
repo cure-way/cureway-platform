@@ -11,7 +11,9 @@ export default async function NotificationsPage() {
 
   return (
     <PageContainer variant="account">
-      <h1 className="text-t-21 font-bold mb-4">Notifications</h1>
+      <h1 className="text-page-title text-primary-darker mb-4">
+        Notifications
+      </h1>
 
       <div className="space-y-3">
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-500">

@@ -99,7 +99,7 @@ export function UserMenu({ cartCount = 0 }: UserMenuProps) {
       {/* Cart */}
       <Link
         href="/cart"
-        className="relative flex items-center justify-center w-10 h-10 bg-primary-light-active rounded-full hover:bg-primary-light transition-colors"
+        className="relative flex items-center justify-center w-10 h-11 bg-primary-light-active rounded-full hover:bg-primary-light transition-colors"
         aria-label={`Cart${cartCount > 0 ? `, ${cartCount} item${cartCount > 1 ? "s" : ""}` : ""}`}
       >
         <IoCartOutline className="w-5 h-5 text-secondary-darker" />

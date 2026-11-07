@@ -61,7 +61,7 @@ export default function ProfileAvatar({ image, name, onSave }: Props) {
         {/* Camera button */}
         <button
           onClick={openFilePicker}
-          className="right-0 bottom-0 absolute flex justify-center items-center bg-(--color-primary) hover:bg-(--color-primary-dark) shadow-md rounded-full w-10 h-10 text-white"
+          className="right-0 bottom-0 absolute flex justify-center items-center bg-(--color-primary) hover:bg-(--color-primary-dark) shadow-md rounded-full w-10 h-11 text-white"
         >
           <FiCamera size={18} />
         </button>

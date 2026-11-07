@@ -380,7 +380,7 @@ export default function DeliveryAddressForm({
             <button
               onClick={handleConfirm}
               disabled={!selectedResult || locState === "confirming"}
-              className={`w-full h-12 rounded-xl bg-primary text-card text-t-17-semibold border-none mt-3 flex items-center justify-center gap-2.5 transition-opacity ${!selectedResult ? "opacity-60 cursor-default" : "cursor-pointer hover:bg-primary-hover"}`}
+              className={`w-full h-11 rounded-lg bg-primary text-card text-t-14-semibold border-none mt-3 flex items-center justify-center gap-2.5 transition-opacity ${!selectedResult ? "opacity-60 cursor-default" : "cursor-pointer hover:bg-primary-hover"}`}
             >
               {locState === "confirming" ? (
                 <>

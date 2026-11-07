@@ -265,7 +265,7 @@ export function HomeMobileMenu({ isOpen }: HomeMobileMenuProps) {
         >
           <div className="px-3 py-4 space-y-4">
             {/* Mobile location */}
-            <div className="bg-secondary-light flex items-center gap-3 h-12 px-3 rounded-xl">
+            <div className="bg-secondary-light flex items-center gap-3 h-11 px-3 rounded-xl">
               <FiMapPin className="w-5 h-5 text-primary shrink-0" />
               <div className="flex-1 flex flex-col gap-1 justify-center">
                 <p className="text-t-12 font-semibold text-primary-darker">

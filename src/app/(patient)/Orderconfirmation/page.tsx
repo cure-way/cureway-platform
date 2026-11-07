@@ -151,7 +151,7 @@ function OrderConfirmationContent() {
                 <button
                   onClick={handleClearCart}
                   disabled={clearing}
-                  className="h-10 px-5 rounded-lg bg-destructive text-white text-t-14-semibold
+                  className="h-11 px-5 rounded-lg bg-destructive text-white text-t-14-semibold
                            border-none cursor-pointer hover:opacity-90 transition-opacity
                            flex items-center gap-2 disabled:opacity-60 disabled:cursor-default"
                 >

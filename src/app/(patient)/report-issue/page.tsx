@@ -21,7 +21,7 @@ export default function ReportIssuePage() {
   };
 
   return (
-    <PageContainer variant="account" className="flex flex-col gap-4">
+    <PageContainer variant="form" className="flex flex-col gap-4">
       <PageHeader
         title="Report an Issue"
         subtitle="Please provide clear details so we can help you faster."

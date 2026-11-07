@@ -46,14 +46,14 @@ export default function AdminHeader() {
       {/* Hamburger — mobile/tablet only */}
       <button
         onClick={open}
-        className="w-12 h-12 flex items-center justify-center rounded-full hover:bg-neutral-light transition-colors text-neutral-dark lg:hidden"
+        className="w-12 h-11 flex items-center justify-center rounded-full hover:bg-neutral-light transition-colors text-neutral-dark lg:hidden"
         aria-label="Open sidebar"
       >
         <Menu className="w-6 h-6" />
       </button>
 
       {/* Search Bar */}
-      <div className="hidden sm:flex items-center flex-1 min-w-0 h-12 rounded-2xl bg-[#EFF3FB] pl-4 pr-2 gap-2.5">
+      <div className="hidden sm:flex items-center flex-1 min-w-0 h-11 rounded-2xl bg-[#EFF3FB] pl-4 pr-2 gap-2.5">
         <div className="shrink-0 w-6 h-6">
           <HeaderSearchIcon />
         </div>
@@ -64,7 +64,7 @@ export default function AdminHeader() {
           aria-label="Search"
         />
         <button
-          className="shrink-0 w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#DFE5F5] transition-colors"
+          className="shrink-0 w-10 h-11 flex items-center justify-center rounded-full hover:bg-[#DFE5F5] transition-colors"
           aria-label="Voice search"
         >
           <HeaderVoiceIcon />
@@ -89,7 +89,7 @@ export default function AdminHeader() {
       <div className="flex items-center gap-2 lg:gap-3 shrink-0">
         <a
           href="/admin/notifications"
-          className="relative w-12 h-12 flex items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-0.75 hover:bg-neutral-light transition-colors"
+          className="relative w-12 h-11 flex items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-0.75 hover:bg-neutral-light transition-colors"
           aria-label="Notifications — 3 unread"
         >
           <HeaderNotificationIcon />
@@ -99,14 +99,14 @@ export default function AdminHeader() {
         </a>
 
         <button
-          className="w-12 h-12 flex items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-0.75 hover:bg-neutral-light transition-colors"
+          className="w-12 h-11 flex items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-0.75 hover:bg-neutral-light transition-colors"
           aria-label="Change language"
         >
           <HeaderTranslateIcon />
         </button>
 
         <button
-          className="hidden sm:flex w-12 h-12 items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-0.75 hover:bg-neutral-light transition-colors"
+          className="hidden sm:flex w-12 h-11 items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-0.75 hover:bg-neutral-light transition-colors"
           aria-label="Messages"
         >
           <HeaderMailIcon />

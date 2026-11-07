@@ -97,7 +97,7 @@ export default function DataTable<TData>({
           className={`${minWidthClass} rounded-2xl border border-neutral-light-active overflow-hidden`}
         >
           {/* ── Header Row ── */}
-          <div className="flex items-center h-12 bg-secondary-light border-t-2 border-secondary px-4 py-3 rounded-t-xl">
+          <div className="flex items-center h-11 bg-secondary-light border-t-2 border-secondary px-4 py-3 rounded-t-xl">
             {/* ID column header (with checkbox) */}
             <div
               className={`flex items-center gap-2 ${idCol.className ?? "flex-1"}`}

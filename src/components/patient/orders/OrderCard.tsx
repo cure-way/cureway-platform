@@ -158,7 +158,7 @@ export function OrderCard({ order }: { order: Order }) {
                   <button
                     onClick={handleCancel}
                     disabled={isCancelling}
-                    className="h-12 w-full rounded-xl border border-red-400 bg-white px-[22px] py-[10px] transition-all duration-300 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="h-11 w-full rounded-xl border border-red-400 bg-white px-[22px] py-[10px] transition-all duration-300 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <span className="text-t-17 font-bold text-red-500">
                       {isCancelling ? "Cancelling…" : "Cancel Order"}

@@ -98,7 +98,7 @@ export function CouponInput({
         {currentState === "typing" && (
           <button
             onClick={handleApply}
-            className="w-[68px] h-10 bg-primary text-card rounded-xl text-t-14-semibold flex-shrink-0 hover:bg-primary-hover transition-colors border-none cursor-pointer"
+            className="w-[68px] h-11 bg-primary text-card rounded-xl text-t-14-semibold flex-shrink-0 hover:bg-primary-hover transition-colors border-none cursor-pointer"
           >
             Apply
           </button>
@@ -107,7 +107,7 @@ export function CouponInput({
         {currentState === "loading" && (
           <button
             disabled
-            className="w-14 h-10 bg-secondary rounded-xl flex items-center justify-center flex-shrink-0 border-none cursor-not-allowed"
+            className="w-14 h-11 bg-secondary rounded-xl flex items-center justify-center flex-shrink-0 border-none cursor-not-allowed"
           >
             <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
           </button>
@@ -116,7 +116,7 @@ export function CouponInput({
         {currentState === "applied" && (
           <button
             onClick={handleRemove}
-            className="w-[104px] h-10 bg-success-light-active rounded-xl flex items-center justify-center gap-1.5 flex-shrink-0 border-none cursor-pointer"
+            className="w-[104px] h-11 bg-success-light-active rounded-xl flex items-center justify-center gap-1.5 flex-shrink-0 border-none cursor-pointer"
           >
             <span className="text-t-12 font-medium text-success-darker whitespace-nowrap">
               Applied
