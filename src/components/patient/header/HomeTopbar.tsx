@@ -15,6 +15,7 @@ import { SearchDropdown } from "@/components/patient/header/search/SearchDropdow
 import { BRAND_NAME, CONTACT_PHONE } from "@/lib/constants";
 import { UserMenu } from "./UserMenu";
 import { useAuth } from "@/features/auth";
+import { SHELL_RAIL } from "@/components/shared";
 
 /* ------------------------------------------------------------------
    HomeTopbar
@@ -38,41 +39,47 @@ export function HomeTopbar({
   onMobileSearchOpen,
 }: HomeTopbarProps) {
   return (
-    <div className="bg-white border-b border-black/10 flex items-center justify-center gap-3 md:gap-6 w-full px-3 md:px-6 lg:px-8 py-2 h-auto md:h-16">
-      {/* Logo */}
-      <Link
-        href="/"
-        className="flex items-center gap-2 shrink-0"
-        aria-label="Go to home page"
+    /* Full-bleed bar, content on the shell rail so the header lines up with
+       the page below it instead of running to the viewport edge. */
+    <div className="bg-white border-b border-black/10 w-full">
+      <div
+        className={`${SHELL_RAIL} flex items-center justify-center gap-3 md:gap-6 py-2 h-auto md:h-16`}
       >
-        <div className="w-7 h-7 md:w-8 md:h-8 relative flex items-center justify-center">
-          <Image
-            src="/logo.png"
-            alt={`${BRAND_NAME} Logo`}
-            width={32}
-            height={32}
-            className="object-contain"
-            priority
-          />
+        {/* Logo */}
+        <Link
+          href="/"
+          className="flex items-center gap-2 shrink-0"
+          aria-label="Go to home page"
+        >
+          <div className="w-7 h-7 md:w-8 md:h-8 relative flex items-center justify-center">
+            <Image
+              src="/logo.png"
+              alt={`${BRAND_NAME} Logo`}
+              width={32}
+              height={32}
+              className="object-contain"
+              priority
+            />
+          </div>
+          <p className="text-t-17-bold md:text-t-21-bold text-primary-hover leading-none">
+            {BRAND_NAME}
+          </p>
+        </Link>
+
+        {/* Desktop Search */}
+        <div className="hidden md:flex flex-1 min-w-0 max-w-full">
+          <HomeSearchBar />
         </div>
-        <p className="text-base md:text-t-21 font-black text-primary-hover leading-none">
-          {BRAND_NAME}
-        </p>
-      </Link>
 
-      {/* Desktop Search */}
-      <div className="hidden md:flex flex-1 min-w-0 max-w-full">
-        <HomeSearchBar />
+        {/* Right side actions */}
+        <HomeActions
+          isAuthenticated={isAuthenticated}
+          cartCount={cartCount}
+          mobileMenuOpen={mobileMenuOpen}
+          onToggleMobileMenu={onToggleMobileMenu}
+          onMobileSearchOpen={onMobileSearchOpen}
+        />
       </div>
-
-      {/* Right side actions */}
-      <HomeActions
-        isAuthenticated={isAuthenticated}
-        cartCount={cartCount}
-        mobileMenuOpen={mobileMenuOpen}
-        onToggleMobileMenu={onToggleMobileMenu}
-        onMobileSearchOpen={onMobileSearchOpen}
-      />
     </div>
   );
 }

@@ -22,7 +22,7 @@ export function HomeNearbyPharmacies() {
         {/* Title row */}
         <FadeUp inView offset={10} duration={0.4}>
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl md:text-3xl lg:text-t-36 font-bold text-primary-darker">
+            <h2 className="text-t-21-semibold md:text-t-25-semibold lg:text-t-30-semibold text-primary-darker">
               Nearby pharmacies
             </h2>
             <Link

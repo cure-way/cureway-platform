@@ -452,6 +452,18 @@
   --container-lg: 1024px;
   --container-xl: 1280px;
   --container-2xl: 1440px;
+
+  /* Tailwind also generates max-w-xs / 3xl / 4xl / 5xl / 6xl / 7xl from
+     these keys. Leaving them undefined does not remove the classes: it makes
+     them resolve to an invalid value, so the declaration is dropped and the
+     element silently gets no max-width at all. 19 uses shipped that way.
+     Defined here so the failure cannot recur; prefer PageContainer. */
+  --container-xs: 320px;
+  --container-3xl: 768px;
+  --container-4xl: 896px;
+  --container-5xl: 1024px;
+  --container-6xl: 1152px;
+  --container-7xl: 1280px;
 }
 
 /* ============================================================
@@ -753,15 +765,19 @@
 }
 
 /* ============================================================
-   UTILITIES LAYER - Typography & Helpers
+   TYPOGRAPHY SCALE
+
+   Declared in @layer components, NOT @layer utilities, on
+   purpose. Each class sets font-weight as well as size, so when
+   it lived in the utilities layer it was emitted after Tailwind's
+   own .font-semibold at equal specificity and won — which meant
+   `text-t-21 font-semibold` silently rendered at weight 400.
+   There were 176 such combinations across 61 files.
+
+   The components layer always loses to utilities, so font-*,
+   text-* and leading-* utilities can now override these.
    ============================================================ */
-@layer utilities {
-
-  /* --------------------------------------------------------
-     TYPOGRAPHY UTILITIES (from Typography.png)
-     Regular, SemiBold, Bold weights
-     -------------------------------------------------------- */
-
+@layer components {
   /* Regular weight type scale */
   .text-t-36 {
     font-size: var(--font-size-t-36);
@@ -951,7 +967,9 @@
     line-height: var(--line-height-t-10);
     font-weight: 400;
   }
+}
 
+@layer utilities {
   /* --------------------------------------------------------
      SPACING UTILITIES (exact pixel values)
      -------------------------------------------------------- */

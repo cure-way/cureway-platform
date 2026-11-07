@@ -19,7 +19,7 @@ export function HomeCategories() {
       {/* Title row */}
       <FadeUp inView offset={10} duration={0.4}>
         <div className="flex justify-between items-center">
-          <h2 className="font-bold text-primary-darker lg:text-t-36 text-2xl md:text-3xl">
+          <h2 className="text-t-21-semibold md:text-t-25-semibold lg:text-t-30-semibold text-primary-darker">
             Categories
           </h2>
           <Link

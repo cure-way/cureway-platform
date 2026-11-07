@@ -66,7 +66,7 @@ export function HomeBottomCTA() {
               sizes="160px"
             />
           </div>
-          <p className="text-2xl md:text-3xl lg:text-t-36 font-black leading-tight md:ml-[180px]">
+          <p className="text-t-25-bold md:text-t-30-bold lg:text-t-36-bold leading-tight md:ml-[180px]">
             <span className="text-error-hover">Free </span>
             <span className="text-primary-hover">Delivery on first order</span>
           </p>
