@@ -527,11 +527,40 @@ The build output is in `.next/` directory.
 # Run ESLint
 pnpm lint
 
-# Type checking (via build)
+# Type checking
+pnpm typecheck
+
+# Production build
 pnpm build
 ```
 
 > **Note**: No test framework is currently configured. See [TODO](#todo).
+
+### Verifying showcase mode
+
+[`scripts/verify-showcase.mjs`](scripts/verify-showcase.mjs) drives the built app in a real
+browser and is what backs the "no backend request leaves the browser" claim. It walks every
+route as each of the three roles while **aborting and recording** any request that is not
+same-origin, so a clean run proves the app never even *attempted* an external call. It also
+checks that nothing hangs, that the fixture router has no unmatched endpoint, and that the
+full purchase flow completes.
+
+```bash
+pnpm build
+pnpm start -p 3500 &
+node scripts/verify-showcase.mjs
+```
+
+Set `ORIGIN` to point it at another port, e.g.
+`ORIGIN=http://127.0.0.1:4000 node scripts/verify-showcase.mjs`.
+It exits non-zero if any external request is attempted or any page reports an issue.
+
+Playwright is deliberately **not** a dependency of this project, since it is only needed
+for this script. Install it when you want to run it:
+
+```bash
+pnpm add -D playwright
+```
 
 ---
 
