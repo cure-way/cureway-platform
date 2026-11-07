@@ -85,7 +85,7 @@ export default function DataTable<TData>({
   const shouldReduce = useReducedMotion();
 
   return (
-    <div className="bg-white border border-border rounded-[20px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] pb-4 px-4">
+    <div className="bg-white border border-border rounded-xl shadow-card pb-4 px-4">
       <TableSearch
         placeholder={searchPlaceholder}
         value={searchValue}
@@ -97,7 +97,7 @@ export default function DataTable<TData>({
           className={`${minWidthClass} rounded-2xl border border-neutral-light-active overflow-hidden`}
         >
           {/* ── Header Row ── */}
-          <div className="flex items-center h-14 bg-secondary-light border-t-2 border-secondary px-4 py-3 rounded-t-2xl">
+          <div className="flex items-center h-12 bg-secondary-light border-t-2 border-secondary px-4 py-3 rounded-t-xl">
             {/* ID column header (with checkbox) */}
             <div
               className={`flex items-center gap-2 ${idCol.className ?? "flex-1"}`}
@@ -109,7 +109,7 @@ export default function DataTable<TData>({
                   aria-label={selectAllLabel}
                 />
               </label>
-              <span className="text-[14px] leading-[1.2] font-semibold text-[#393737]">
+              <span className="text-t-12-semibold text-neutral-dark">
                 {idCol.header}
               </span>
             </div>
@@ -118,14 +118,14 @@ export default function DataTable<TData>({
             {contentCols.map((col) => (
               <span
                 key={col.id}
-                className={`${col.className ?? "flex-1"} text-[14px] leading-[1.2] font-semibold text-[#393737]`}
+                className={`${col.className ?? "flex-1"} text-t-12-semibold text-neutral-dark`}
               >
                 {col.header}
               </span>
             ))}
 
             {/* Actions column header (visually hidden) */}
-            <span className="w-13.75 text-[14px] leading-[1.2] font-semibold text-[#393737] opacity-0">
+            <span className="w-13.75 text-t-12-semibold text-neutral-dark opacity-0">
               Actions
             </span>
           </div>
@@ -133,11 +133,11 @@ export default function DataTable<TData>({
           {/* ── Body Rows ── */}
           <div>
             {loading ? (
-              <div className="flex items-center justify-center h-40 text-[14px] leading-[1.2] font-medium text-neutral">
+              <div className="flex items-center justify-center h-40 text-t-14 text-neutral">
                 <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full" />
               </div>
             ) : data.length === 0 ? (
-              <div className="flex items-center justify-center h-40 text-[14px] leading-[1.2] font-medium text-neutral">
+              <div className="flex items-center justify-center h-40 text-t-14 text-neutral">
                 No results found
               </div>
             ) : (
@@ -147,7 +147,7 @@ export default function DataTable<TData>({
                   initial={shouldReduce ? false : "hidden"}
                   animate={shouldReduce ? undefined : "visible"}
                   variants={shouldReduce ? undefined : tableRowVariants}
-                  className={`flex items-center h-16 px-4 py-3 border-t border-border transition-colors hover:bg-secondary-light/30 ${
+                  className={`flex items-center h-14 px-4 py-3 text-t-14 border-t border-border transition-colors hover:bg-secondary-light/30 ${
                     idx % 2 === 1 ? "bg-neutral-light" : ""
                   }`}
                 >

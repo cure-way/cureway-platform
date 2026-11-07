@@ -28,40 +28,40 @@ export function WeeklyOrdersBar({
           negative height and recharts warned on every render. */}
       <div className="flex-1 min-h-0">
         <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data ?? []}>
-          <CartesianGrid
-            strokeDasharray="3 3"
-            vertical={false}
-            stroke="#e5e7eb"
-          />
-          <XAxis
-            dataKey="label"
-            axisLine={false}
-            tickLine={false}
-            tick={{ fontSize: 12, fill: "#6b7280" }}
-          />
+          <BarChart data={data ?? []}>
+            <CartesianGrid
+              strokeDasharray="3 3"
+              vertical={false}
+              stroke="#e5e7eb"
+            />
+            <XAxis
+              dataKey="label"
+              axisLine={false}
+              tickLine={false}
+              tick={{ fontSize: 12, fill: "#6b7280" }}
+            />
 
-          <Tooltip
-            formatter={(value) => [`${Number(value ?? 0)} orders`, ""]}
-            separator=""
-            contentStyle={{
-              backgroundColor: "#ffffff",
-              border: "1px solid #e5e7eb",
-              borderRadius: "10px",
-              padding: "6px 12px",
-              fontSize: "12px",
-              boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
-            }}
-            cursor={{ fill: "rgba(30,64,175,0.06)" }}
-          />
+            <Tooltip
+              formatter={(value) => [`${Number(value ?? 0)} orders`, ""]}
+              separator=""
+              contentStyle={{
+                backgroundColor: "#ffffff",
+                border: "1px solid #e5e7eb",
+                borderRadius: "10px",
+                padding: "6px 12px",
+                fontSize: "12px",
+                boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
+              }}
+              cursor={{ fill: "rgba(30,64,175,0.06)" }}
+            />
 
-          <Bar
-            dataKey="orders"
-            radius={[8, 8, 0, 0]}
-            fill="var(--color-primary)"
-            animationDuration={800}
-          />
-        </BarChart>
+            <Bar
+              dataKey="orders"
+              radius={[8, 8, 0, 0]}
+              fill="var(--color-primary)"
+              animationDuration={800}
+            />
+          </BarChart>
         </ResponsiveContainer>
       </div>
     </div>

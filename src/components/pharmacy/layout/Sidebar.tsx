@@ -56,10 +56,10 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
             className="w-8 h-8"
           />
           <div>
-            <h1 className="font-semibold text-(--color-primary) text-2xl">
+            <span className="block text-t-21-semibold text-(--color-primary)">
               CureWay
-            </h1>
-            <p className="text-(--color-primary) text-sm">{displayName}</p>
+            </span>
+            <p className="text-t-12 text-(--color-primary)">{displayName}</p>
           </div>
         </div>
 

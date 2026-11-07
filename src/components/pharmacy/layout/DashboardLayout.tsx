@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import TopBar from "./Topbar";
+import { PageContainer } from "@/components/shared";
 
 export default function DashboardLayout({
   children,
@@ -18,7 +19,9 @@ export default function DashboardLayout({
       <div className="flex flex-col flex-1">
         <TopBar onMenuClick={() => setSidebarOpen(true)} />
 
-        <main className="flex-1 p-2 overflow-hidden">{children}</main>
+        <main className="flex-1 overflow-y-auto">
+          <PageContainer width="wide">{children}</PageContainer>
+        </main>
       </div>
     </div>
   );
