@@ -1,6 +1,9 @@
 # CureWay — full site review
 
-**Status:** plan only. Nothing in sections 2–4 has been changed. Awaiting approval before any fix.
+> **Status: fixed.** Everything below was found by the audit described under
+> *Method*. The high-severity issues and the agreed medium ones have been
+> fixed on `feat/showcase-polish`; see *Outcome* at the end for what was done,
+> what was deliberately left, and two corrections to this document.
 
 **Method.** Every route from the build manifest was crawled in a real browser as each of the
 three roles, at **360, 390, 768, 1024, 1280 and 1440** px — 54 role-routes × 6 widths =
@@ -304,3 +307,72 @@ the 36px touch targets are caught rather than shipped.
 - **Admin tables.** They scroll inside their own container rather than breaking the page, and
   the row/pagination layout holds up from 360 upward (`B-admin-patients-1024.png`,
   `B-admin-pharmacies-360.png`).
+
+---
+
+## Outcome
+
+Fixed on `feat/showcase-polish` and verified by re-running the same audit.
+
+| Category | Before | After |
+| --- | ---: | ---: |
+| Horizontal scroll | 26 | **0** |
+| Heading order | 87 | **0** |
+| Text under 12px | 13 | **0** |
+| Currency formats | 6 | **0** |
+| Touch targets under 44px | 66 distinct controls | **7**, all deliberate exclusions |
+| Placeholder text / missing alt / navigation failures | 0 | **0** |
+| Console errors | 0 | **0** |
+
+### Two corrections to this document
+
+1. **"They were the only touch-target failures in the entire application" was
+   wrong.** The audit capped its evidence list at four items per page, and the
+   showcase strip's four controls filled every slot, hiding the rest. There
+   were 66 distinct sub-44px controls, not 4. All but seven are now fixed.
+2. **Issue M3 overstated the currency problem on the pharmacy pages.** The
+   audit's currency check matched a number and a `$` sitting in *different*
+   blocks, so a cell reading `1` beside a cell reading `$7.50` looked like a
+   mixed format. The patient-home finding was real and is fixed; the pharmacy
+   ones were an artefact. The detector has been corrected.
+
+Both of these were faults in the audit tooling, which has been fixed alongside
+the application: the overflow detail no longer reports elements that are
+scrolling correctly inside an `overflow-x-auto` container, and the touch-target
+check now measures the effective hit area rather than the painted box.
+
+### Deliberately not fixed
+
+- **M5, hardcoded hex colours.** 474 hex values and 682 stock-palette classes,
+  including `#334eac` 108 times, remain. They are invisible to a visitor and
+  the change is broad and risky, so it is deferred. **This is the main piece of
+  outstanding cleanup** and is worth its own PR: replace each hex with the token
+  that already holds the value, deciding case by case on the handful that are
+  not an exact token match.
+- **Text inputs under 44px.** An invisible overlay would sit on top of the
+  field and swallow the caret. Reaching 44px means changing their visible
+  height, which the brief ruled out.
+- **Links inside running text** ("Forgot password?", "Sign Up", "Login Here").
+  The WCAG target-size rule exempts them, and a 44px box would overlap the
+  lines above and below.
+- **Display type at 48, 56 and 80px** in the marketing hero. These sit above
+  the scale's 36px ceiling on purpose; snapping them down would be a visible
+  jump.
+- **Arbitrary font sizes that already land on the scale** (12, 14, 30, 36px).
+  Converting them to `text-t-*` is churn with no visual effect.
+
+### Found while fixing, not in the original audit
+
+- `text-t-16`, `text-t-18`, `text-t-20` and `text-t-24` are used 30 times
+  across 16 files but are **not defined**, so those elements silently applied
+  no font size at all. Mapped to the nearest real step.
+- The patient pharmacy detail route was broken: it looked pharmacies up by ids
+  `PH001`–`PH005` while the medicine page linked with the numeric fixture id,
+  so clicking a pharmacy from a medicine landed on "Pharmacy not found".
+- That same data was Tunisia-themed — five entries all named "City Pharmacy"
+  at Tunis addresses — inconsistent with the Gaza sample data everywhere else.
+- Two further currency formats beyond the four listed in M3: a hardcoded
+  `" ILS"` suffix in the pharmacy orders table and `{currency} {amount}` in
+  admin orders.
+- Five overlays were sized with the remapped container scale and rendered at
+  roughly twice their intended width; `EditProfile` was a 1440px "modal".
