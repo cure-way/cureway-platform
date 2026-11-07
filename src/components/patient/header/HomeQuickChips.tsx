@@ -36,7 +36,7 @@ const QUICK_CHIPS: QuickChip[] = [
   {
     label: "Calendar",
     status: "Medicine refill",
-    href: "/calendar",
+    href: "/profile/saved-medicine",
     icon: (
       <IoAlarmOutline className="w-4 h-4 md:w-5 md:h-5 text-primary-darker" />
     ),

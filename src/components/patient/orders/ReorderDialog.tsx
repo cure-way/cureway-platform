@@ -4,7 +4,9 @@ import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/cart.store";
 import { ordersService } from "@/services/orders.service";
 import type { Order } from "@/types/order";
-import { toast } from "sonner";
+// react-hot-toast, not sonner: ToastProvider mounts react-hot-toast's
+// <Toaster/>, so sonner toasts never actually appeared.
+import toast from "react-hot-toast";
 
 export function ReorderDialog({ order, onClose }: { order: Order; onClose: () => void }) {
   const [state, setState] = useState<"idle" | "loading" | "success">("idle");

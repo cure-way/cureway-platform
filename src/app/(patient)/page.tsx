@@ -3,6 +3,8 @@
  * The main landing page for patients (and guests)
  * Server Component — renders all home sections from mock data.
  */
+import type { Metadata } from "next";
+
 import {
   HomePromoBanner,
   HomeHero,
@@ -12,6 +14,18 @@ import {
   HomeMostSales,
   HomeBottomCTA,
 } from "@/components/home/sections";
+
+// Self-referencing canonical for the site root. The relative paths below are
+// resolved against `metadataBase` (see `@/lib/site`), so the origin stays
+// defined in exactly one place.
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    url: "/",
+  },
+};
 
 export default function PatientHomePage() {
   return (

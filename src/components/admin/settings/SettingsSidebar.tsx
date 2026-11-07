@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/features/auth";
+import { notifyUnbuilt } from "@/lib/showcase/notify";
 
 /* ------------------------------------------------------------------
    TYPES
@@ -23,6 +24,8 @@ import { useAuth } from "@/features/auth";
 interface SettingsSubItem {
   label: string;
   href: string;
+  /** No route exists for this entry; it must not navigate or prefetch. */
+  unbuilt?: boolean;
 }
 
 interface SettingsNavItem {
@@ -30,6 +33,8 @@ interface SettingsNavItem {
   icon: React.ReactNode;
   href?: string;
   subItems?: SettingsSubItem[];
+  /** No route exists for this section. */
+  unbuilt?: boolean;
 }
 
 /* ------------------------------------------------------------------
@@ -39,7 +44,7 @@ const generalSubItems: SettingsSubItem[] = [
   { label: "Profile", href: "/admin/settings/profile" },
   { label: "Security", href: "/admin/settings/security" },
   { label: "Notification", href: "/admin/notifications" },
-  { label: "Connected App", href: "/admin/settings/connected-app" },
+  { label: "Connected App", href: "/admin/settings/connected-app", unbuilt: true },
 ];
 
 const navItems: SettingsNavItem[] = [
@@ -52,21 +57,25 @@ const navItems: SettingsNavItem[] = [
     label: "System Settings",
     icon: <Monitor className="w-6 h-6" />,
     href: "/admin/settings/system",
+    unbuilt: true,
   },
   {
     label: "App Settings",
     icon: <Smartphone className="w-6 h-6" />,
     href: "/admin/settings/app",
+    unbuilt: true,
   },
   {
     label: "Website Settings",
     icon: <Globe className="w-6 h-6" />,
     href: "/admin/settings/website",
+    unbuilt: true,
   },
   {
     label: "Other Settings",
     icon: <SlidersHorizontal className="w-6 h-6" />,
     href: "/admin/settings/other",
+    unbuilt: true,
   },
 ];
 
@@ -129,9 +138,13 @@ export default function SettingsSidebar() {
               {/* Section header */}
               <button
                 type="button"
-                onClick={() =>
-                  hasSubItems ? toggleSection(item.label) : undefined
-                }
+                onClick={() => {
+                  if (hasSubItems) {
+                    toggleSection(item.label);
+                  } else if (item.unbuilt) {
+                    notifyUnbuilt(item.label);
+                  }
+                }}
                 className={cn(
                   "flex items-center gap-3 w-full p-3 rounded-xl text-t-16 font-medium transition-colors",
                   hasSubItems && isGeneralSubpath
@@ -157,18 +170,16 @@ export default function SettingsSidebar() {
                 <div className="flex flex-col px-3">
                   {item.subItems!.map((sub) => {
                     const isActive = pathname === sub.href;
-                    return (
-                      <Link
-                        key={sub.href}
-                        href={sub.href}
-                        className={cn(
-                          "flex items-center gap-3 px-3 py-3 rounded-xl text-t-14 font-medium transition-colors",
-                          isActive
-                            ? "bg-secondary-light text-primary"
-                            : "text-neutral hover:bg-neutral-light",
-                        )}
-                      >
-                        <span className="flex-1">{sub.label}</span>
+                    const subClass = cn(
+                      "flex items-center gap-3 px-3 py-3 rounded-xl text-t-14 font-medium transition-colors w-full",
+                      isActive
+                        ? "bg-secondary-light text-primary"
+                        : "text-neutral hover:bg-neutral-light",
+                    );
+
+                    const subInner = (
+                      <>
+                        <span className="flex-1 text-left">{sub.label}</span>
                         <Circle
                           className={cn(
                             "w-4 h-4",
@@ -177,6 +188,25 @@ export default function SettingsSidebar() {
                               : "text-neutral-normal",
                           )}
                         />
+                      </>
+                    );
+
+                    if (sub.unbuilt) {
+                      return (
+                        <button
+                          key={sub.href}
+                          type="button"
+                          onClick={() => notifyUnbuilt(sub.label)}
+                          className={subClass}
+                        >
+                          {subInner}
+                        </button>
+                      );
+                    }
+
+                    return (
+                      <Link key={sub.href} href={sub.href} className={subClass}>
+                        {subInner}
                       </Link>
                     );
                   })}

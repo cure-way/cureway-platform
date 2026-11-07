@@ -1,5 +1,6 @@
 import Image from "next/image";
 import PrimaryButton from "./PrimaryButton";
+import { SHOWCASE_MODE } from "@/lib/showcase/config";
 
 interface Props {
   onClose: () => void;
@@ -42,6 +43,14 @@ export default function UploadSuccess({ onClose, onTrack }: Props) {
           </div>
         </div>
       </div>
+
+      {SHOWCASE_MODE && (
+        <p className="text-sm sm:text-base text-neutral-dark/70 max-w-2xl">
+          Your file is previewed locally and is{" "}
+          <span className="font-semibold">not stored in showcase mode</span> —
+          this version of CureWay runs without a backend.
+        </p>
+      )}
 
       <div className="w-full max-w-xl flex flex-col gap-3">
         <PrimaryButton onClick={onTrack}>Track status</PrimaryButton>

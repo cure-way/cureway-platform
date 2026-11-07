@@ -3,7 +3,9 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import type { Cart, CartItem, LoadingState } from "@/types/cart";
 import { STORAGE_KEYS, CART_LIMITS } from "@/constants/cart.constants";
-import { toast } from "sonner";
+// react-hot-toast, not sonner: ToastProvider mounts react-hot-toast's
+// <Toaster/>, so sonner toasts never actually appeared.
+import toast from "react-hot-toast";
 
 // ===================================================================
 // CART STORE — Client-Side Only

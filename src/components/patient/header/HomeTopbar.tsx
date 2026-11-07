@@ -170,7 +170,6 @@ interface HomeActionsProps {
 }
 
 function HomeActions({
-  isAuthenticated,
   cartCount = 0,
   mobileMenuOpen,
   onToggleMobileMenu,

@@ -14,6 +14,7 @@ import EditProfileModal from "./EditProfile";
 import { PharmacyProfile } from "@/types/PharmacyProfile";
 import ErrorState from "../shared/ErrorState";
 import ProfilePageSkeleton from "./ProfilePageSkeleton";
+import { notifyDisabled } from "@/lib/showcase/notify";
 
 export default function PharmacyProfilePage() {
   const { profile, loading, error } = usePharmacyProfile();
@@ -25,22 +26,16 @@ export default function PharmacyProfilePage() {
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  // Persisting the pharmacy profile and deleting the account both need the
+  // backend, so they are disabled rather than silently closing the modal.
   const handleSaveProfile = (updatedProfile: PharmacyProfile) => {
-    // setProfile(updatedProfile);
+    notifyDisabled(`changes to ${updatedProfile.name} were not saved`);
     setIsEditModalOpen(false);
   };
 
   const handleDeleteAccount = async () => {
-    try {
-      // call delete endpoint
-      console.log("Deleting account...");
-
-      setIsDeleteModalOpen(false);
-
-      // router.push("/auth/sign-in");
-    } catch (error) {
-      console.error("Failed to delete account", error);
-    }
+    notifyDisabled("account deletion");
+    setIsDeleteModalOpen(false);
   };
 
   if (loading) return <ProfilePageSkeleton />;

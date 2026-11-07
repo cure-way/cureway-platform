@@ -66,6 +66,12 @@ export interface Medicine {
 export interface PharmacyStockDTO {
   pharmacyId: number;
   pharmacyName: string;
+  /**
+   * The pharmacy's inventory row for this medicine, which POST /orders needs
+   * as `CreatePharmacyOrderItemDto.inventoryId`. Optional because the live API
+   * did not return it; without it an item cannot be added to the cart.
+   */
+  inventoryId?: number;
   cityId: number;
   cityName: string;
   address: {
@@ -93,6 +99,8 @@ export type StockAvailability = "in_stock" | "low_stock" | "out_of_stock";
 export interface PharmacyStock {
   pharmacyId: number;
   pharmacyName: string;
+  /** See `PharmacyStockDTO.inventoryId`. */
+  inventoryId?: number;
 
   cityName: string;
   addressLine: string;

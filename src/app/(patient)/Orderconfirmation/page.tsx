@@ -7,7 +7,9 @@ import Image from "next/image";
 import { useOrderStore } from "@/store/order.store";
 import { useCartStore } from "@/store/cart.store";
 import { ROUTES } from "@/constants/cart.constants";
-import { toast } from "sonner";
+// react-hot-toast, not sonner: ToastProvider mounts react-hot-toast's
+// <Toaster/>, so sonner toasts never actually appeared.
+import toast from "react-hot-toast";
 
 
 

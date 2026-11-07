@@ -394,30 +394,118 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Environment Variables
 
-> **Note**: No `.env.example` file exists yet. The following variables are expected based on code analysis:
+Copy `.env.local.example` to `.env.local` and fill in the values. Never commit `.env.local`
+or real secrets.
 
-| Variable                   | Required | Description          | Example                       |
-| -------------------------- | -------- | -------------------- | ----------------------------- |
-| `NEXT_PUBLIC_API_BASE_URL` | Yes      | Backend API base URL | `https://api.example.com`     |
-| `NEXT_PUBLIC_APP_URL`      | No       | Public app URL       | `https://your-app-domain.com` |
+| Variable                     | Required | Description                                         | Example                             |
+| ---------------------------- | -------- | --------------------------------------------------- | ----------------------------------- |
+| `NEXT_PUBLIC_SHOWCASE_MODE`  | No       | Run on local sample data with no backend. See below. | `true`                              |
+| `NEXT_PUBLIC_SITE_URL`       | No       | Public origin of the deployment, no trailing slash. Defaults to the production subdomain. | `https://cureway.aymanismail.com` |
+| `NEXT_PUBLIC_API_BASE_URL`   | No       | Backend API base URL. Only needed when showcase mode is off. | `https://api.example.com`  |
+| `NEXT_PUBLIC_API_URL`        | No       | Overrides `NEXT_PUBLIC_API_BASE_URL` when set       | `https://api.example.com`           |
 
-Create a `.env.local` file in the root directory:
-
-```env
-NEXT_PUBLIC_API_URL=https://api.example.com
-SESSION_SECRET=your-random-secret-key-here
+```bash
+cp .env.local.example .env.local
 ```
+
+### Showcase mode
+
+The original backend (Railway) has been **retired permanently**. Showcase mode runs the
+entire frontend on local sample data so it can be browsed as a portfolio piece.
+
+**`NEXT_PUBLIC_SHOWCASE_MODE=true` forces showcase mode ON — even if
+`NEXT_PUBLIC_API_BASE_URL` is also set.** Precedence, highest first:
+
+| `NEXT_PUBLIC_SHOWCASE_MODE` | `NEXT_PUBLIC_API_BASE_URL` | Result |
+| --------------------------- | -------------------------- | ------ |
+| `true`                      | set *or* unset             | **Showcase ON** (the API URL is ignored) |
+| `false`                     | set                        | Showcase OFF — talks to that API |
+| `false`                     | unset                      | Showcase OFF — requests fail with an explicit error |
+| unset                       | unset                      | **Showcase ON** (automatic, so a portfolio deploy needs no setup) |
+| unset                       | set                        | Showcase OFF — talks to that API |
+
+How it works: when showcase mode is on, the shared axios instance in
+[`src/lib/api/http.ts`](src/lib/api/http.ts) swaps its transport adapter for the fixture
+adapter in [`src/lib/showcase/`](src/lib/showcase/). Axios cannot open a socket without a
+transport adapter, so **no backend request can leave the browser** — this is structural,
+not a convention each service has to follow. Every service, hook, store and component
+above the transport is untouched.
+
+What a visitor gets:
+
+- First visit lands straight on the patient home with content — no login wall
+- A slim notice strip with a **Patient / Pharmacy / Admin** role switcher and **Reset demo**
+- Reads come from fixtures; writes change in-memory state and reset on reload
+- Actions that genuinely need a backend are disabled with an explanatory toast
+
+See [`docs/showcase-mode-plan.md`](docs/showcase-mode-plan.md) for the full design and the
+endpoint inventory.
+
+### Public site URL
+
+The production site is served at **https://cureway.aymanismail.com**.
+
+`NEXT_PUBLIC_SITE_URL` is the single source of truth for the public origin. It is read
+once in [`src/lib/site.ts`](src/lib/site.ts) and everything that needs an absolute URL
+derives from it:
+
+- `metadataBase` and canonical links (`src/app/layout.tsx`)
+- Open Graph and Twitter card URLs and images (`src/app/layout.tsx`)
+- `Organization` / `WebSite` JSON-LD (`src/app/layout.tsx`)
+- `sitemap.xml` (`src/app/sitemap.ts`)
+- `robots.txt` — `Sitemap:` and `Host:` lines (`src/app/robots.ts`)
+
+Do not hardcode the origin anywhere else — import `SITE_URL` or `absoluteUrl()` from
+`@/lib/site` instead. Set `NEXT_PUBLIC_SITE_URL=http://localhost:3000` locally if you
+need canonical/OG URLs to point at your dev server.
 
 ---
 
 ## Deployment
 
+The production deployment is served on the custom subdomain
+**https://cureway.aymanismail.com**.
+
 ### Vercel (Recommended)
 
 1. Push to GitHub/GitLab
 2. Import project in [Vercel](https://vercel.com)
-3. Set environment variables
-4. Deploy
+3. Set environment variables — including `NEXT_PUBLIC_SITE_URL=https://cureway.aymanismail.com`
+   for the Production environment (use the preview/branch URL for Preview if you want
+   previews to self-canonicalize)
+4. Add `cureway.aymanismail.com` under **Project → Settings → Domains** and set it as the
+   production domain, so the Vercel-assigned project URL redirects to it
+5. Deploy
+
+### Custom domain checklist
+
+Changing the public origin also needs updates outside this repo:
+
+- Vercel: domain assigned, marked production, old Vercel-assigned project URL redirecting to it
+- Vercel env var `NEXT_PUBLIC_SITE_URL` set per environment
+- Auth provider callback / redirect URLs and any cookie `Domain` must use the new host
+- Third-party allowed-domain lists (analytics, maps, payments, reCAPTCHA) must include it
+
+Backend CORS is **not** a concern while showcase mode is on: the app makes no backend
+requests at all.
+
+### Vercel environment variables
+
+For the showcase deployment, set these in **Project → Settings → Environment Variables**:
+
+| Action | Variable | Value | Environment |
+| ------ | -------- | ----- | ----------- |
+| **Set** | `NEXT_PUBLIC_SHOWCASE_MODE` | `true` | Production, Preview, Development |
+| **Set** | `NEXT_PUBLIC_SITE_URL` | `https://cureway.aymanismail.com` | Production |
+| **Remove** | `NEXT_PUBLIC_API_BASE_URL` | — | all environments |
+| **Remove** | `NEXT_PUBLIC_API_URL` | — | all environments |
+| **Remove** | `SESSION_SECRET` | — | all environments |
+
+Removing the API URLs is optional — `NEXT_PUBLIC_SHOWCASE_MODE=true` overrides them — but
+removing them makes the deployment's intent unambiguous and avoids pointing at a dead host.
+
+These are build-time (`NEXT_PUBLIC_*`) values, so **redeploy after changing them**;
+editing a variable alone does not affect the running deployment.
 
 ### Manual Build
 

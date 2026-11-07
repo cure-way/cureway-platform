@@ -3,7 +3,7 @@
 import { useState, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
@@ -16,10 +16,8 @@ import { cn } from "@/lib/utils";
 
 function NewPasswordForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const email = searchParams.get("email") || "";
-  const code = searchParams.get("code") || "";
-
+  // NOTE: the reset flow will need `email` and `code` from the query string
+  // once the password-reset API is implemented (see the TODO in onSubmit).
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -43,7 +41,7 @@ function NewPasswordForm() {
     { label: "One special character", met: validation.hasSpecialChar },
   ];
 
-  const onSubmit = async (data: ResetPasswordFormData) => {
+  const onSubmit = async () => {
     setIsLoading(true);
 
     try {
@@ -56,7 +54,7 @@ function NewPasswordForm() {
       setTimeout(() => {
         router.push("/auth/sign-in");
       }, 2000);
-    } catch (error) {
+    } catch {
       // TODO: handle error
     } finally {
       setIsLoading(false);

@@ -25,9 +25,9 @@ export const DEFAULT_FILTERS: SearchFilter[] = [
 
 export const categoryImages = [
   "/patient/pills.png",
-  "/patient/Cold & Flu medicine.png",
+  "/patient/Cold and Flu medicine.png",
   "/patient/Daily Essentials.png",
-  "/patient/Vitamins & Supplements.png",
+  "/patient/Vitamins and Supplements.png",
   "/patient/Discount on First Aid.png",
   "/patient/Pharnacy-shelves.png",
 ];

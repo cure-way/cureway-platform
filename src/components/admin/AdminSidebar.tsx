@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { notifyUnbuilt } from "@/lib/showcase/notify";
 import { useSidebar } from "@/contexts/SidebarContext";
 import {
   sidebarVariants,
@@ -42,6 +43,12 @@ interface NavItem {
   icon: React.FC<{ className?: string }>;
   matchPrefix?: string;
   badge?: string;
+  /**
+   * No route exists for this entry in the app. It stays in the sidebar so the
+   * intended scope is still visible, but it does not navigate or prefetch —
+   * Next.js prefetching these produced a 404 for every one on every page view.
+   */
+  unbuilt?: boolean;
 }
 
 const mainNav: NavItem[] = [
@@ -87,24 +94,28 @@ const healthcareNav: NavItem[] = [
   {
     label: "Promotions",
     href: "/admin/promotions",
+    unbuilt: true,
     icon: PromotionsIcon,
     matchPrefix: "/admin/promotions",
   },
   {
     label: "Categories",
     href: "/admin/categories",
+    unbuilt: true,
     icon: CategoriesIcon,
     matchPrefix: "/admin/categories",
   },
   {
     label: "Reports",
     href: "/admin/reports",
+    unbuilt: true,
     icon: ReportsIcon,
     matchPrefix: "/admin/reports",
   },
   {
     label: "Customer Queries",
     href: "/admin/customer-queries",
+    unbuilt: true,
     icon: SupportIcon,
     matchPrefix: "/admin/customer-queries",
   },
@@ -115,12 +126,14 @@ const settingsNav: NavItem[] = [
   {
     label: "System Settings",
     href: "/admin/settings/system",
+    unbuilt: true,
     icon: ComputerIcon,
   },
-  { label: "App Settings", href: "/admin/settings/app", icon: MobileIcon },
+  { label: "App Settings", href: "/admin/settings/app", icon: MobileIcon, unbuilt: true },
   {
     label: "Website Settings",
     href: "/admin/settings/website",
+    unbuilt: true,
     icon: InternetIcon,
   },
 ];
@@ -129,11 +142,13 @@ const helpNav: NavItem[] = [
   {
     label: "Documentation",
     href: "/admin/documentation",
+    unbuilt: true,
     icon: DocumentationIcon,
   },
   {
     label: "Changelog",
     href: "/admin/changelog",
+    unbuilt: true,
     icon: ChangelogIcon,
     badge: "V2.2.4",
   },
@@ -180,19 +195,16 @@ function NavSection({
             : pathname === item.href;
           const Icon = item.icon;
 
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              title={collapsed ? item.label : undefined}
-              className={cn(
-                "flex items-center gap-[12px] p-[12px] rounded-[12px] transition-colors",
-                isActive
-                  ? "bg-[#EFF3FB] text-[#334EAC]"
-                  : "text-[#989593] hover:bg-[#EFF3FB]/50 hover:text-[#474545]",
-                collapsed && "justify-center",
-              )}
-            >
+          const className = cn(
+            "flex items-center gap-[12px] p-[12px] rounded-[12px] transition-colors w-full text-left",
+            isActive
+              ? "bg-[#EFF3FB] text-[#334EAC]"
+              : "text-[#989593] hover:bg-[#EFF3FB]/50 hover:text-[#474545]",
+            collapsed && "justify-center",
+          );
+
+          const inner = (
+            <>
               <Icon className="w-[24px] h-[24px] shrink-0" />
               <AnimatePresence initial={false}>
                 {!collapsed && (
@@ -222,6 +234,33 @@ function NavSection({
                   </motion.span>
                 )}
               </AnimatePresence>
+            </>
+          );
+
+          // Entries with no route render as a button: no navigation and, more
+          // importantly, no Next.js prefetch (which 404'd on every page view).
+          if (item.unbuilt) {
+            return (
+              <button
+                key={item.href}
+                type="button"
+                onClick={() => notifyUnbuilt(item.label)}
+                title={collapsed ? item.label : undefined}
+                className={className}
+              >
+                {inner}
+              </button>
+            );
+          }
+
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              title={collapsed ? item.label : undefined}
+              className={className}
+            >
+              {inner}
             </Link>
           );
         })}

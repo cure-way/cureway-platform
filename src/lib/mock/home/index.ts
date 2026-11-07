@@ -64,13 +64,13 @@ export const categories: CategoryItem[] = [
     id: "cold-flu",
     name: "Cold & Flu medicine",
     description: "Flu, cough, sore throat",
-    image: "/patient/Cold & Flu medicine.png",
+    image: "/patient/Cold and Flu medicine.png",
   },
   {
     id: "vitamins-supplements",
     name: "Vitamins & Supplements",
     description: "Immunity, energy, daily nutrition",
-    image: "/patient/Vitamins & Supplements.png",
+    image: "/patient/Vitamins and Supplements.png",
   },
   {
     id: "medical-equipment",

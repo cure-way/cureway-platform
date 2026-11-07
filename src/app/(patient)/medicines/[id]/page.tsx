@@ -30,6 +30,14 @@ export default function MedicineDetailsPage() {
     return [...pharmacies].sort((a, b) => a.price - b.price);
   }, [pharmacies]);
 
+  // Add to cart from the cheapest pharmacy that actually has stock.
+  const addFromStock = useMemo(
+    () =>
+      sortedPharmacies.find((p) => p.stockQuantity > 0 && p.inventoryId) ??
+      undefined,
+    [sortedPharmacies],
+  );
+
   if (loading) return <MedicineDetailsSkeleton />;
 
   if (!loading && error)
@@ -44,7 +52,7 @@ export default function MedicineDetailsPage() {
   return (
     <div className="bg-gray-50 pb-12 min-h-screen">
       <div className="space-y-8 mx-auto px-4 sm:px-6 py-8 max-w-5xl">
-        <MedicineOverviewCard medicine={medicine} />
+        <MedicineOverviewCard medicine={medicine} stock={addFromStock} />
 
         <NearbyPharmaciesSection pharmacies={sortedPharmacies} />
 

@@ -40,7 +40,7 @@ function VerifyOTPForm() {
 
       // On success, redirect to home or dashboard
       router.push("/");
-    } catch (error) {
+    } catch {
       // TODO: handle error
     } finally {
       setIsLoading(false);
@@ -57,7 +57,7 @@ function VerifyOTPForm() {
     try {
       // TODO: Implement resend OTP API
       await new Promise((resolve) => setTimeout(resolve, 1000));
-    } catch (error) {
+    } catch {
       setCanResend(true);
     }
   };

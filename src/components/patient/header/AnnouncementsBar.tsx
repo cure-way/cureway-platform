@@ -5,6 +5,7 @@ import { MdOutlineAttachMoney, MdOutlineTranslate } from "react-icons/md";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { CONTACT_PHONE } from "@/lib/constants";
+import { SHOWCASE_MODE } from "@/lib/showcase/config";
 
 const CURRENCIES = ["USD", "EUR", "ILS"] as const;
 const LANGUAGES = [
@@ -16,6 +17,10 @@ const LANGUAGES = [
  * AnnouncementsBar
  * Blue top strip with help line, announcements text, and currency / language
  * selectors. Hidden below `lg` breakpoint.
+ *
+ * In showcase mode this renders nothing: `ShowcaseBar` occupies the same slot
+ * at the top of the page, and two stacked blue strips would look broken. The
+ * currency and language pickers are display-only anyway.
  */
 export function AnnouncementsBar() {
   const [currencyOpen, setCurrencyOpen] = useState(false);
@@ -53,6 +58,8 @@ export function AnnouncementsBar() {
     setLanguageOpen((prev) => !prev);
     setCurrencyOpen(false);
   };
+
+  if (SHOWCASE_MODE) return null;
 
   return (
     <div

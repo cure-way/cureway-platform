@@ -18,12 +18,16 @@ export function WeeklyOrdersBar({
   const totalOrdersThisWeek = data?.reduce((sum, d) => sum + d.orders, 0);
 
   return (
-    <div className="h-80">
+    <div className="h-80 flex flex-col">
       <h2 className="mb-4 font-medium text-sm text-center">
         {totalOrdersThisWeek} Orders This Week
       </h2>
 
-      <ResponsiveContainer width="100%" height="100%">
+      {/* ResponsiveContainer needs a parent with a resolved height. Inside the
+          h-80 box the heading took part of it, so the container measured a
+          negative height and recharts warned on every render. */}
+      <div className="flex-1 min-h-0">
+        <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data ?? []}>
           <CartesianGrid
             strokeDasharray="3 3"
@@ -58,7 +62,8 @@ export function WeeklyOrdersBar({
             animationDuration={800}
           />
         </BarChart>
-      </ResponsiveContainer>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
