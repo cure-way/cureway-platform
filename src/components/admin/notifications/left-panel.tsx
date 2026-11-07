@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Users, Store, Truck, Settings, Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { notifyUnbuilt } from "@/lib/showcase/notify";
 import type {
   NotificationCategory,
   NotificationCategoryId,
@@ -120,8 +121,9 @@ export default function LeftPanel({
 
       {/* ── Notification Settings — pinned to bottom ── */}
       <div className="mt-auto">
-        <Link
-          href="/admin/notifications/settings"
+        <button
+          type="button"
+          onClick={() => notifyUnbuilt("Notification Settings")}
           className={cn(
             "flex items-center gap-2 px-3 py-4 rounded-lg text-t-16 font-medium transition-colors w-full",
             isSettingsActive
@@ -136,7 +138,7 @@ export default function LeftPanel({
             )}
           />
           <span>Notification Settings</span>
-        </Link>
+        </button>
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
-import Link from "next/link";
 import {
   RevenueActivityIcon,
   RevenueExportIcon,
@@ -14,6 +13,7 @@ import {
   revenueDatasets,
   type RevenueTimeframe,
 } from "@/lib/mock/admin";
+import { notifyUnbuilt } from "@/lib/showcase/notify";
 
 /* ── Timeframe tabs ── */
 const timeframes: RevenueTimeframe[] = ["Week", "Month", "Year"];
@@ -299,12 +299,15 @@ export default function RevenueChart() {
             ))}
           </div>
         </div>
-        <Link
-          href="/admin/reports"
+        {/* /admin/reports has no route in this app, so this must not be a
+            Link: Next.js would prefetch it and log a 404 on every view. */}
+        <button
+          type="button"
+          onClick={() => notifyUnbuilt("Reports")}
           className="border border-[#EFEDED] rounded-lg p-3 text-[12px] leading-[1.2] text-[#393737] hover:bg-gray-50 transition-colors shrink-0"
         >
           View all
-        </Link>
+        </button>
       </div>
     </div>
   );
