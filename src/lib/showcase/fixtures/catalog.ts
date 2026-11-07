@@ -10,7 +10,7 @@
 import type { CategoryDTO } from "@/types/categories.types";
 import type { MedicineDTO, PharmacyStockDTO } from "@/types/medicine.types";
 
-import { CITIES, IMG, daysAgo } from "./common";
+import { CITIES, IMG, daysAgo, inventoryIdFor } from "./common";
 
 // ---------------------------------------------------------------------------
 // Categories
@@ -230,6 +230,8 @@ export function stockForMedicine(medicineId: number): PharmacyStockDTO[] {
     return {
       pharmacyId: p.pharmacyId,
       pharmacyName: p.pharmacyName,
+      // Needed for add-to-cart and POST /orders.
+      inventoryId: inventoryIdFor(medicineId),
       cityId: p.cityId,
       cityName: p.cityName,
       address: {

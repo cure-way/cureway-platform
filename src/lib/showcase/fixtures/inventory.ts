@@ -14,7 +14,9 @@ import type {
 } from "@/types/pharmacyTypes";
 
 import { MEDICINES } from "./catalog";
-import { daysAgo, monthsAhead } from "./common";
+import { daysAgo, inventoryIdFor, monthsAhead } from "./common";
+
+export { inventoryIdFor };
 
 function stockStatus(qty: number, minStock: number): StockStatus {
   if (qty <= 0) return "OUT_OF_STOCK";
@@ -44,9 +46,7 @@ const STOCK_PLAN: Record<number, { qty: number; minStock: number }> = {
   48: { qty: 7, minStock: 15 },
 };
 
-export function inventoryIdFor(medicineId: number): number {
-  return 400 + (medicineId - 30);
-}
+
 
 export function buildInventoryList(): InventoryListItem[] {
   return MEDICINES.map((m) => {

@@ -12,11 +12,13 @@ import type {
 } from "@/types/cart";
 
 // ── Contact / User ────────────────────────────────────────────────
+// Kept in step with the demo patient in src/lib/showcase/fixtures/users.ts
+// so checkout does not show a different name from the rest of the session.
 export const MOCK_USER = {
-  name:   "Mohammed Bassam",
-  email:  "Mhmd26@gmail.com",
-  phone:  "059-244-9634",
-  avatar: "/icons/profile.png",
+  name:   "Lina Haddad",
+  email:  "lina.haddad@example.ps",
+  phone:  "+970 59-244-0118",
+  avatar: "/avatar-girl-with-glaces.png",
 };
 
 // ── Saved Delivery Addresses ─────────────────────────────────────

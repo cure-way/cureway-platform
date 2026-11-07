@@ -94,6 +94,15 @@ export function money(value: number): number {
   return Math.round(value * 100) / 100;
 }
 
+/**
+ * Inventory row id for a medicine. Lives here rather than in `inventory.ts`
+ * so `catalog.ts` can use it without creating an import cycle.
+ * Stays well above the `>= 10` floor the cart and order guards enforce.
+ */
+export function inventoryIdFor(medicineId: number): number {
+  return 400 + (medicineId - 30);
+}
+
 /** Structured deep clone, so a reset always restores pristine fixtures. */
 export function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;

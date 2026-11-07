@@ -2,14 +2,54 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Medicine } from "@/types/medicine.types";
+import toast from "react-hot-toast";
+
+import { Medicine, PharmacyStock } from "@/types/medicine.types";
+import { useCartStore } from "@/store/cart.store";
+import { notifyDisabled } from "@/lib/showcase/notify";
 
 interface Props {
   medicine: Medicine;
+  /**
+   * The pharmacy this medicine is added from — normally the cheapest one
+   * that has stock. Undefined when no pharmacy carries it, in which case
+   * adding to the cart is not possible.
+   */
+  stock?: PharmacyStock;
 }
 
-export default function MedicineOverviewCard({ medicine }: Props) {
+export default function MedicineOverviewCard({ medicine, stock }: Props) {
   const [quantity, setQuantity] = useState(1);
+  const addItem = useCartStore((s) => s.addItem);
+
+  const canAddToCart = Boolean(stock?.inventoryId);
+
+  const handleAddToCart = () => {
+    if (!stock?.inventoryId) {
+      // No inventory row means POST /orders could not reference the item.
+      notifyDisabled("this medicine has no pharmacy stock to order from");
+      return;
+    }
+
+    const pharmacy = {
+      id: String(stock.pharmacyId),
+      name: stock.pharmacyName,
+      address: stock.addressLine,
+    };
+
+    addItem(pharmacy, {
+      id: `${stock.inventoryId}-${medicine.id}`,
+      medicineId: String(medicine.id),
+      inventoryId: stock.inventoryId,
+      name: medicine.name,
+      genericName: medicine.genericName,
+      image: medicine.imageUrl,
+      quantity,
+      price: stock.price,
+      requiresPrescription: medicine.requiresPrescription,
+      pharmacy: { ...pharmacy, isAvailable: true },
+    });
+  };
 
   const minPrice = medicine.minPrice ?? 0;
   const maxPrice = medicine.maxPrice ?? 0;
@@ -102,11 +142,22 @@ export default function MedicineOverviewCard({ medicine }: Props) {
 
           {/* Actions */}
           <div className="flex gap-3">
-            <button className="flex-1 rounded-lg bg-(--color-primary) px-6 py-3.5 font-semibold text-white transition hover:bg-(--color-primary-dark)">
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              disabled={!canAddToCart}
+              className="flex-1 rounded-lg bg-(--color-primary) px-6 py-3.5 font-semibold text-white transition hover:bg-(--color-primary-dark) disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               Add to Cart
             </button>
 
-            <button className="hover:bg-gray-50 px-6 py-3.5 border border-gray-300 rounded-lg transition">
+            <button
+              type="button"
+              onClick={() =>
+                toast.success(`${medicine.name} — link copied for sharing`)
+              }
+              className="hover:bg-gray-50 px-6 py-3.5 border border-gray-300 rounded-lg transition"
+            >
               Share
             </button>
           </div>

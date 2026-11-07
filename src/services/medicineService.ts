@@ -83,6 +83,7 @@ export function mapPharmacyStockDTO(dto: PharmacyStockDTO): PharmacyStock {
   return {
     pharmacyId: dto.pharmacyId,
     pharmacyName: dto.pharmacyName,
+    inventoryId: dto.inventoryId,
 
     cityName: dto.cityName,
     addressLine: dto.address.addressLine,
