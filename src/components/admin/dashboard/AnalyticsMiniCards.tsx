@@ -98,7 +98,7 @@ function SparkTooltip({
       }}
       role="tooltip"
     >
-      <span className="text-[11px] font-semibold leading-[1.2]">{value}</span>
+      <span className="text-t-12 font-semibold leading-[1.2]">{value}</span>
       <div
         className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent"
         style={{ borderTopColor: color }}
@@ -241,7 +241,7 @@ export default function AnalyticsMiniCards() {
               {/* Title + Subtitle */}
               <div className="flex-1 min-w-0 flex flex-col gap-[12px]">
                 <p
-                  className="text-[16px] font-semibold leading-[1.2]"
+                  className="text-t-17 font-semibold leading-[1.2]"
                   style={{ color: card.titleColor }}
                 >
                   {card.title}

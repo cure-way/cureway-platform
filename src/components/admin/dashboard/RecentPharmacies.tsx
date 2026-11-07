@@ -18,9 +18,9 @@ export default function RecentPharmacies() {
         <div className="w-12 h-12 rounded-full bg-[#EFF3FB] flex items-center justify-center shrink-0">
           <DashPharmacyOutlineIcon />
         </div>
-        <h3 className="flex-1 text-[16px] leading-[1.2] font-semibold text-[#212F4D]">
+        <h2 className="flex-1 text-t-17 leading-[1.2] font-semibold text-[#212F4D]">
           Recent pharmacies
-        </h3>
+        </h2>
         <Link
           href="/admin/pharmacies"
           className="border border-[#EFEDED] rounded-lg p-3 text-[12px] leading-[1.2] font-normal text-[#393737] hover:bg-[#FAF9F9] transition-colors shrink-0"
