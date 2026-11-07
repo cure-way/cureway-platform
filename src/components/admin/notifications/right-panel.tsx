@@ -37,7 +37,7 @@ export default function RightPanel({
     <div className="flex-1 min-w-0 bg-white border border-border rounded-2xl p-4 flex flex-col gap-4">
       {/* List header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-border pb-3">
-        <h2 className="text-t-18 font-medium text-neutral-darker">
+        <h2 className="text-t-17 font-medium text-neutral-darker">
           {categoryLabel}
         </h2>
         <div className="flex items-center gap-3">
@@ -68,7 +68,7 @@ export default function RightPanel({
             type="button"
             onClick={() => onTabChange(tab.key)}
             className={cn(
-              "flex flex-1 items-center justify-center gap-2 h-10 px-3 rounded-2xl text-t-12 transition-colors",
+              "flex flex-1 min-w-0 items-center justify-center gap-1.5 h-10 px-2 sm:px-3 rounded-2xl text-t-12 whitespace-nowrap transition-colors",
               activeTab === tab.key
                 ? "bg-white font-medium text-neutral-darker shadow-sm"
                 : "font-normal text-neutral-darker hover:bg-white/50",

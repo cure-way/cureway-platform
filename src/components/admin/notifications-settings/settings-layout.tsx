@@ -70,7 +70,7 @@ export default function SettingsLayout({
     <div className="flex-1 min-w-0 bg-white border border-border rounded-2xl p-4 flex flex-col gap-4">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-border pb-3">
-        <h2 className="text-t-18 font-medium text-neutral-darker">
+        <h2 className="text-t-17 font-medium text-neutral-darker">
           Notification Settings
         </h2>
         <button

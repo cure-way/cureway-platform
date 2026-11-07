@@ -39,7 +39,7 @@ export function HelpAccordion({ items }: HelpAccordionProps) {
             <div className="shrink-0 size-[35px] flex items-center justify-center text-black">
               {item.icon}
             </div>
-            <p className="flex-1 text-t-20 font-semibold text-black text-left leading-[1.2]">
+            <p className="flex-1 text-t-21 font-semibold text-black text-left leading-[1.2]">
               {item.title}
             </p>
             {openIndex === index ? (

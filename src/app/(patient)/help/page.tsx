@@ -27,7 +27,7 @@ const helpSections = [
         {faqItems.map((item) => (
           <li
             key={item}
-            className="text-t-20 font-semibold text-neutral-dark-active leading-[1.2]"
+            className="text-t-21 font-semibold text-neutral-dark-active leading-[1.2]"
           >
             {item}
           </li>
@@ -68,13 +68,13 @@ const helpSections = [
     content: (
       <div className="flex flex-col gap-6">
         <ul className="list-disc pl-9">
-          <li className="text-t-20 font-semibold text-neutral-dark-active leading-[1.2]">
+          <li className="text-t-21 font-semibold text-neutral-dark-active leading-[1.2]">
             Privacy Policy
           </li>
         </ul>
         <div className="bg-primary-light flex items-center gap-1 p-2 rounded-2xl w-full">
           <ShieldCheck className="w-5 h-5 text-neutral-dark shrink-0" />
-          <p className="text-t-20 font-normal text-neutral-dark leading-[1.5]">
+          <p className="text-t-21 font-normal text-neutral-dark leading-[1.5]">
             Your data is protected
           </p>
         </div>

@@ -53,7 +53,7 @@ export default function StatsBar({
       </div>
 
       {/* KPI pills */}
-      <div className="flex flex-wrap items-center gap-2 sm:gap-3 sm:ml-auto shrink-0">
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3 sm:ml-auto min-w-0">
         {children}
       </div>
 

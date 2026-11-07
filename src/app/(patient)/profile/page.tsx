@@ -47,7 +47,7 @@ export default function SettingsPage() {
       <div className="mx-auto w-full max-w-[1100px]">
         <div className="grid gap-6 lg:grid-cols-12">
           {/* LEFT COLUMN */}
-          <div className="lg:col-span-5">
+          <div className="min-w-0 lg:col-span-5">
             <div className="mb-4 text-[28px] font-bold leading-[120%] text-black">
               Settings
             </div>
@@ -101,7 +101,7 @@ export default function SettingsPage() {
           </div>
 
           {/* RIGHT COLUMN */}
-          <div className="lg:col-span-7">
+          <div className="min-w-0 lg:col-span-7">
             <div className="mb-4 flex justify-end">
               <MotionTap
                 as="button"

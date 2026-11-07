@@ -24,11 +24,11 @@ export function PageHeader({ title, subtitle }: PageHeaderProps) {
           aria-label="Go back"
         >
           <ChevronLeft className="w-6 h-6 text-black" />
-          <span className="text-t-20 font-bold text-black">Back</span>
+          <span className="text-t-21 font-bold text-black">Back</span>
         </button>
       </div>
       {subtitle && (
-        <p className="text-t-20 font-semibold text-black/60 leading-[1.2]">
+        <p className="text-t-21 font-semibold text-black/60 leading-[1.2]">
           {subtitle}
         </p>
       )}

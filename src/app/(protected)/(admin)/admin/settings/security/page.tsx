@@ -51,7 +51,7 @@ export default function AdminSettingsSecurityPage() {
             <Shield className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h2 className="text-t-18 font-bold text-primary-darker">
+            <h2 className="text-t-17 font-bold text-primary-darker">
               Security Settings
             </h2>
             <p className="text-t-12 text-neutral">

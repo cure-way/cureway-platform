@@ -31,7 +31,7 @@ export default function ReportIssuePage() {
 
       <div className="w-full max-w-282.5 bg-white border-[5px] border-primary/10 rounded-3xl shadow-card p-6">
         <div className="border-2 border-neutral-normal/40 rounded-3xl p-6 flex flex-col gap-6">
-          <p className="text-t-20 font-bold text-black leading-[1.2]">
+          <p className="text-t-21 font-bold text-black leading-[1.2]">
             Select Order
           </p>
 
