@@ -5,7 +5,7 @@ interface Props {
 
 export function OrdersStatusInfo({ completedPercent, pendingPercent }: Props) {
   return (
-    <div className="space-y-2 w-full max-w-xs">
+    <div className="space-y-2 w-full max-w-[20rem]">
       <div className="flex justify-between text-sm">
         <span className="text-gray-500">Completed</span>
         <span className="font-medium text-(--color-primary)">

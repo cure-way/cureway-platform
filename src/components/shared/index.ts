@@ -17,6 +17,7 @@ export { OTPInput, type OTPInputProps, type OTPInputRef } from "./OTPInput";
 export { MedicineIcon } from "./MedicineIcon";
 export {
   PageContainer,
-  type PageContainerWidth,
+  SHELL_RAIL,
+  type PageContainerVariant,
 } from "./PageContainer";
 export { PageHeader } from "./PageHeader";

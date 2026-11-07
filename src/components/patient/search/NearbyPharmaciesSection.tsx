@@ -135,7 +135,7 @@ export function NearbyPharmaciesSection({
 
       {/* Cancel Button */}
       <button
-        className="w-full max-w-3xl border border-primary rounded-2xl py-4 text-primary font-semibold text-base leading-[1.2] hover:bg-primary-light/30 transition-colors"
+        className="w-full max-w-[26rem] h-11 border border-primary rounded-lg text-primary text-t-14-semibold hover:bg-primary-light/30 transition-colors"
         onClick={onCancel}
         type="button"
       >

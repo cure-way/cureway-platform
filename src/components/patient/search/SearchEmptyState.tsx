@@ -104,7 +104,7 @@ export function SearchEmptyState({
         {suggestion && (
           <button
             onClick={() => onSearchSuggestion?.(suggestion)}
-            className="w-full max-w-3xl h-14 md:h-16 bg-primary hover:bg-primary/90 text-primary-light font-semibold text-base md:text-lg rounded-2xl transition-colors cursor-pointer"
+            className="w-full max-w-[26rem] h-11 bg-primary hover:bg-primary-hover text-white text-t-14-semibold rounded-lg transition-colors cursor-pointer"
           >
             Search for &ldquo;{suggestion}&rdquo;
           </button>

@@ -57,7 +57,7 @@ export default function PharmacyProfilePage() {
       />
 
       <div className="flex flex-1 justify-center p-10">
-        <div className="w-full max-w-4xl">
+        <div className="w-full max-w-[44rem]">
           <ProfileHeader
             name={profile.name}
             onEdit={() => setIsEditModalOpen(true)}
