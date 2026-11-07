@@ -36,8 +36,8 @@ export const CITY_DELIVERY_FEES: Record<
 /** Images that exist in `public/` — never a remote host. */
 export const IMG = {
   painRelief: "/patient/Pain Relief-X.png",
-  vitamins: "/patient/Vitamins & Supplements.png",
-  coldFlu: "/patient/Cold & Flu medicine.png",
+  vitamins: "/patient/Vitamins and Supplements.png",
+  coldFlu: "/patient/Cold and Flu medicine.png",
   dailyEssentials: "/patient/Daily Essentials.png",
   medicalEquipment: "/patient/Medical Equipment.png",
   firstAid: "/patient/Discount on First Aid.png",

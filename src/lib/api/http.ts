@@ -17,6 +17,9 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from "axios";
 
+import { showcaseAdapter } from "@/lib/showcase/adapter";
+import { SHOWCASE_BASE_URL, SHOWCASE_MODE } from "@/lib/showcase/config";
+
 // ---------------------------------------------------------------------------
 // In-memory token store (singleton)
 // ---------------------------------------------------------------------------
@@ -62,13 +65,58 @@ export function clearTokens(): void {
 // Axios instance
 // ---------------------------------------------------------------------------
 
-export const http = axios.create({
-  baseURL:
+/**
+ * Backend origin.
+ *
+ * In showcase mode nothing is ever sent, so an inert sentinel is used — the
+ * fixture adapter resolves every request before transport. Otherwise the
+ * configured API URL is used. There is deliberately NO hardcoded fallback:
+ * the retired Railway instance used to be one, which turned a missing env
+ * var into confusing network errors instead of an obvious misconfiguration.
+ */
+function resolveApiBaseUrl(): string {
+  if (SHOWCASE_MODE) return SHOWCASE_BASE_URL;
+  return (
     process.env.NEXT_PUBLIC_API_URL ||
     process.env.NEXT_PUBLIC_API_BASE_URL ||
-    "https://gsg-project-group-1-production.up.railway.app",
+    ""
+  );
+}
+
+export const http = axios.create({
+  baseURL: resolveApiBaseUrl(),
   headers: { "Content-Type": "application/json" },
   timeout: 10_000,
+});
+
+// ---------------------------------------------------------------------------
+// Showcase mode — the single switch for the whole app
+//
+// Replacing the transport adapter makes axios resolve every request from
+// local fixtures. Without an adapter axios cannot open a socket, so this is a
+// structural guarantee that no backend call leaves the browser, and no
+// service, hook, store or component needs a showcase branch.
+// ---------------------------------------------------------------------------
+
+if (SHOWCASE_MODE) {
+  http.defaults.adapter = showcaseAdapter;
+}
+
+/**
+ * Fail loudly, per request, when a real backend is expected but not
+ * configured. Deliberately not thrown at module scope: that would break the
+ * production build rather than the request that actually needs the API.
+ */
+http.interceptors.request.use((config) => {
+  if (!SHOWCASE_MODE && !http.defaults.baseURL) {
+    throw new AxiosError(
+      "No API base URL configured. Set NEXT_PUBLIC_API_BASE_URL, or set " +
+        "NEXT_PUBLIC_SHOWCASE_MODE=true to run on sample data.",
+      AxiosError.ERR_BAD_REQUEST,
+      config,
+    );
+  }
+  return config;
 });
 // ---------------------------------------------------------------------------
 // Request interceptor — attach Bearer token
@@ -143,15 +191,19 @@ http.interceptors.response.use(
     }
 
     try {
-      // Call refresh endpoint directly (bypass interceptors) to avoid loops
-      const { data } = await axios.post(
-        `${http.defaults.baseURL}/auth/refresh`,
-        { refreshToken: rt },
-        {
-          headers: { "Content-Type": "application/json" },
-          timeout: 10_000,
-        },
-      );
+      // Call refresh endpoint directly (bypass interceptors) to avoid loops.
+      // In showcase mode go through `http` instead, so the fixture adapter
+      // handles it — bare axios would attempt a real network request.
+      const { data } = SHOWCASE_MODE
+        ? await http.post("/auth/refresh", { refreshToken: rt })
+        : await axios.post(
+            `${http.defaults.baseURL}/auth/refresh`,
+            { refreshToken: rt },
+            {
+              headers: { "Content-Type": "application/json" },
+              timeout: 10_000,
+            },
+          );
 
       // Real API wraps response in { success, data: { tokens } }
       const tokens = data?.data?.tokens ?? data?.tokens;

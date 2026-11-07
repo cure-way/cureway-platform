@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import { MoreHorizontal } from "lucide-react";
 import type { DeliveryAddress } from "@/types/cart";
 import Image from "next/image";
+import { SHOWCASE_MODE } from "@/lib/showcase/config";
 
 type LocationState = "idle" | "searching" | "results" | "confirming" | "confirmed" | "denied";
 interface GeoResult { id: string; label: string; lat: number; lng: number; }
@@ -31,7 +32,42 @@ const TargetIcon = () => (
 );
 
 
+/**
+ * Sample reverse-geocode result for showcase mode.
+ *
+ * The live lookup calls OpenStreetMap's Nominatim service. Showcase mode must
+ * make zero network calls of any kind, so this returns a plausible local
+ * address instead and "use my location" still behaves normally. Picked from a
+ * small set by coordinate so repeated taps stay stable.
+ */
+function showcaseReverseGeocode(lat: number, lng: number): GeoResult[] {
+  const SAMPLES = [
+    {
+      precise: "Omar Al-Mukhtar Street, Rimal, Gaza",
+      broader: "Rimal, Gaza Governorate",
+    },
+    {
+      precise: "Al-Nasr Street, Al-Nasr, Gaza",
+      broader: "Al-Nasr, Gaza Governorate",
+    },
+    {
+      precise: "Al-Azhar University Road, Tal Al-Hawa, Gaza",
+      broader: "Tal Al-Hawa, Gaza Governorate",
+    },
+  ];
+
+  const pick =
+    SAMPLES[Math.abs(Math.round(lat * 100) + Math.round(lng * 100)) % SAMPLES.length];
+
+  return [
+    { id: "r1", label: pick.precise, lat, lng },
+    { id: "r2", label: pick.broader, lat, lng },
+  ];
+}
+
 async function reverseGeocode(lat: number, lng: number): Promise<GeoResult[]> {
+  if (SHOWCASE_MODE) return showcaseReverseGeocode(lat, lng);
+
   try {
     const resp = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1`, { headers: { "Accept-Language": "en" } });
     if (!resp.ok) throw new Error();
