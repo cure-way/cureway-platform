@@ -1082,10 +1082,19 @@
    `utilities` layer and therefore still win, so controls that
    position themselves keep doing so.
 
-   Text inputs are excluded — an overlay would swallow the caret.
-   Links inside running text are excluded too: the WCAG target
-   size rule exempts them, and a 44px box would overlap the
-   lines around it.
+   Three deliberate exclusions:
+
+   - Text inputs: an overlay would swallow the caret.
+   - Links inside running text (p, li, nested anchors): the WCAG
+     target size rule exempts them, and a 44px box would overlap
+     the lines around it. A breadcrumb or other navigation must
+     therefore not be wrapped in <p>, or its links get no hit
+     area — see admin/settings/layout.tsx.
+   - <select>: a replaced element renders no pseudo-elements, so
+     ::after cannot reach it. The remaining short selects (the
+     dial-code picker) are sized by the browser's own control
+     chrome; growing them would change the visible layout, which
+     this pass is not allowed to do.
    ============================================================ */
 @layer base {
   a[href],

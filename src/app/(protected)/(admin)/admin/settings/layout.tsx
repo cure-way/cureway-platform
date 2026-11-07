@@ -47,7 +47,14 @@ export default function AdminSettingsLayout({
             Settings
           </h1>
           {currentLabel && (
-            <p className="text-t-14 sm:text-t-17 font-normal text-neutral leading-snug">
+            /* A breadcrumb trail is navigation, not prose: the global
+               touch-target rule deliberately skips links inside <p>, so
+               these links would have had no hit area. <nav> renders
+               identically here (Tailwind preflight zeroes <p> margins). */
+            <nav
+              aria-label="Breadcrumb"
+              className="text-t-14 sm:text-t-17 font-normal text-neutral leading-snug"
+            >
               <Link href="/admin/settings/profile" className="hover:underline">
                 Settings
               </Link>
@@ -66,7 +73,7 @@ export default function AdminSettingsLayout({
               <span className="text-[12px] sm:text-t-17 font-medium text-primary">
                 {currentLabel}
               </span>
-            </p>
+            </nav>
           )}
         </div>
       </MotionStaggerItem>
