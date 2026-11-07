@@ -42,7 +42,7 @@ function VerifyCodeForm() {
       router.push(
         `/auth/forgot-password/new-password?email=${encodeURIComponent(email)}&code=${code}`,
       );
-    } catch (error) {
+    } catch {
       // TODO: handle error
     } finally {
       setIsLoading(false);
@@ -59,7 +59,7 @@ function VerifyCodeForm() {
     try {
       // TODO: Implement resend code API
       await new Promise((resolve) => setTimeout(resolve, 1000));
-    } catch (error) {
+    } catch {
       setCanResend(true);
     }
   };

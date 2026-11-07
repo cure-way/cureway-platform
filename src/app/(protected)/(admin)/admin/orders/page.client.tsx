@@ -29,28 +29,6 @@ import type { AdminOrder } from "@/services/admin.service";
 /* ------------------------------------------------------------------
    HELPERS
    ------------------------------------------------------------------ */
-function orderStatusToBadge(status: string): BadgeVariant {
-  switch (status) {
-    case "DELIVERED":
-      return "delivered";
-    case "PENDING":
-      return "pending";
-    case "PROCESSING":
-      return "processing";
-    case "OUT_FOR_DELIVERY":
-      return "en-route";
-    case "ACCEPTED":
-    case "PARTIALLY_ACCEPTED":
-      return "accepted";
-    case "REJECTED":
-      return "rejected";
-    case "CANCELLED":
-      return "cancelled";
-    default:
-      return "pending";
-  }
-}
-
 function paymentStatusToBadge(status: string): BadgeVariant {
   switch (status) {
     case "PAID":

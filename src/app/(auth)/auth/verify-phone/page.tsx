@@ -27,7 +27,7 @@ export default function VerifyPhonePage() {
 
       // Navigate to OTP verification page
       router.push("/auth/verify-otp");
-    } catch (error) {
+    } catch {
       // TODO: handle error
     } finally {
       setIsLoading(false);

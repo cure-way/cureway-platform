@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { NEARBY_PHARMACIES } from "@/services/nearbypharmacies.data";
-import { InventoryItem, Pharmacy } from "@/types/pharmacyTypes";
+import { InventoryItem } from "@/types/pharmacyTypes";
 
 type TabType = "All" | "Most sells" | "Offers" | "Rare";
 

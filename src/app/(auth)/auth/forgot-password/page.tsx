@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
       router.push(
         `/auth/forgot-password/verify?email=${encodeURIComponent(data.email)}`,
       );
-    } catch (error) {
+    } catch {
       // TODO: handle error
     } finally {
       setIsLoading(false);
