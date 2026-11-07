@@ -164,7 +164,7 @@ export default function RevenueChart() {
                   >
                     {m.change}
                   </span>
-                  <span className="text-t-12 sm:text-t-10 leading-[1.2] text-[#393737] whitespace-nowrap">
+                  <span className="text-t-12 leading-[1.2] text-[#393737] whitespace-nowrap">
                     from last week
                   </span>
                 </div>

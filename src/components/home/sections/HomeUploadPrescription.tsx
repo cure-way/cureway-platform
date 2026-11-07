@@ -36,7 +36,10 @@ export function HomeUploadPrescription() {
           </div>
 
           {/* CTA button */}
-          <button onClick={() => router.push("/prescriptions")} className="bg-primary-light text-primary text-t-12 sm:text-t-17 md:text-t-21 lg:text-t-25 font-normal rounded-lg sm:rounded-xl px-3 sm:px-5 lg:px-6 py-2 sm:py-2.5 mr-3 sm:mr-6 md:mr-8 lg:mr-10 shrink-0 hover:bg-primary-light-hover transition-colors whitespace-nowrap">
+          <button
+            onClick={() => router.push("/prescriptions")}
+            className="bg-primary-light text-primary text-t-12 sm:text-t-17 md:text-t-21 lg:text-t-25 font-normal rounded-lg sm:rounded-xl px-3 sm:px-5 lg:px-6 py-2 sm:py-2.5 mr-3 sm:mr-6 md:mr-8 lg:mr-10 shrink-0 hover:bg-primary-light-hover transition-colors whitespace-nowrap"
+          >
             Upload Prescription
           </button>
         </div>

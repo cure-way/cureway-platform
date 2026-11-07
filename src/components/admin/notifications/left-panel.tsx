@@ -106,7 +106,9 @@ export default function LeftPanel({
               <span className={cn(isActive ? "text-primary" : "text-neutral")}>
                 {cat.icon}
               </span>
-              <span className="flex-1 min-w-0 text-left truncate">{cat.label}</span>
+              <span className="flex-1 min-w-0 text-left truncate">
+                {cat.label}
+              </span>
               {isActive ? (
                 <Circle className="w-5 h-5 fill-primary text-primary" />
               ) : (

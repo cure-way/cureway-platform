@@ -10,11 +10,11 @@ export default function PharmacyMedicineInfo({
   return (
     <div className="flex flex-col justify-between space-y-6">
       <section className="flex flex-col bg-white p-8 border rounded-xl grow">
-        <h3 className="mb-8 font-semibold text-gray-900 text-sm">
+        <h3 className="mb-8 font-semibold text-gray-900 text-t-14">
           Drug Information
         </h3>
         <div className="flex sm:flex-row flex-col justify-between gap-6">
-          <div className="flex flex-col gap-4 order-2 sm:order-1 text-sm">
+          <div className="flex flex-col gap-4 order-2 sm:order-1 text-t-14">
             <Info label="Generic Name" value={item.medicineName} />
             <Info label="Brand Name" value={item.brand} />
             <Info label="Category" value={item.category} />
@@ -36,11 +36,11 @@ export default function PharmacyMedicineInfo({
       </section>
 
       <section className="bg-white p-8 border rounded-xl">
-        <h3 className="mb-8 font-semibold text-gray-900 text-sm">
+        <h3 className="mb-8 font-semibold text-gray-900 text-t-14">
           Stock & Pricing
         </h3>
 
-        <div className="gap-x-6 gap-y-4 grid grid-cols-1 sm:grid-cols-2 text-sm">
+        <div className="gap-x-6 gap-y-4 grid grid-cols-1 sm:grid-cols-2 text-t-14">
           <Info label="Current Stock" value={`${item.stock} units`} />
           <Info label="Min Stock Level" value={`${item.minStock} units`} />
           <Info label="Batch Number" value={item.batchNumber} />

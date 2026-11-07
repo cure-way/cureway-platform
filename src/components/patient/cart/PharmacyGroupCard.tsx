@@ -9,7 +9,7 @@ export default function PharmacyGroupCard({ group }: PharmacyGroupProps) {
   const displayItems = group.items.slice(0, 4);
 
   return (
-    <div className="rounded-3xl border border-border p-3 mb-4 font-[var(--font-montserrat)]">
+    <div className="rounded-2xl border border-border p-3 mb-4 font-[var(--font-montserrat)]">
       <div className="flex items-center gap-4">
         <div className="relative bg-accent rounded-2xl flex items-center justify-center flex-shrink-0 w-[140px] h-[140px]">
           <div className="flex items-center relative">
@@ -30,7 +30,7 @@ export default function PharmacyGroupCard({ group }: PharmacyGroupProps) {
                     className="object-contain"
                   />
                 ) : (
-                  <span className="text-2xl">💊</span>
+                  <span className="text-t-21">💊</span>
                 )}
               </div>
             ))}

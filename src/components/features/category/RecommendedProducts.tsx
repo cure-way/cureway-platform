@@ -30,7 +30,7 @@ export default function RecommendedProducts({
             {product.badge && (
               <div className="absolute top-2 left-2 z-10">
                 <span
-                  className={`text-xs font-medium px-2 py-1 rounded ${
+                  className={`text-t-12 font-medium px-2 py-1 rounded ${
                     badgeStyles[product.badge]
                   }`}
                 >
@@ -49,11 +49,11 @@ export default function RecommendedProducts({
               />
             </div>
 
-            <h3 className="font-medium text-neutral-darker text-sm mb-1 line-clamp-2">
+            <h3 className="font-medium text-neutral-darker text-t-14 mb-1 line-clamp-2">
               {product.name}
             </h3>
             {product.price && (
-              <p className="text-neutral-dark text-sm font-semibold">
+              <p className="text-neutral-dark text-t-14 font-semibold">
                 {formatCurrency(product.price)}
               </p>
             )}

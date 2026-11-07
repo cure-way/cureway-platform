@@ -17,7 +17,7 @@ export default function TodayInsights({ topMedicine }: Props) {
 
   return (
     <div>
-      <h3 className="mb-3 font-semibold text-gray-900 text-sm">
+      <h3 className="mb-3 font-semibold text-gray-900 text-t-14">
         Today Summary
       </h3>
 
@@ -30,10 +30,10 @@ export default function TodayInsights({ topMedicine }: Props) {
             <span className="text-green-600">✔</span>
 
             <div>
-              <p className="mb-1 font-medium text-gray-900 text-sm">
+              <p className="mb-1 font-medium text-gray-900 text-t-14">
                 {item.title}
               </p>
-              <p className="text-gray-500 text-xs">{item.value}</p>
+              <p className="text-gray-500 text-t-12">{item.value}</p>
             </div>
           </div>
         ))}

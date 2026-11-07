@@ -73,9 +73,7 @@ export function PageHeader({
           )}
 
           <div className="min-w-0">
-            <h1 className="text-t-21-semibold md:text-t-30-semibold text-primary-darker">
-              {title}
-            </h1>
+            <h1 className="text-page-title text-primary-darker">{title}</h1>
             {subtitle && (
               <p className="mt-1 text-t-14 text-neutral-dark">{subtitle}</p>
             )}

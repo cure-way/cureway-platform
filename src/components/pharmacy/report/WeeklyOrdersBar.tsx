@@ -19,7 +19,7 @@ export function WeeklyOrdersBar({
 
   return (
     <div className="h-80 flex flex-col">
-      <h2 className="mb-4 font-medium text-sm text-center">
+      <h2 className="mb-4 font-medium text-t-14 text-center">
         {totalOrdersThisWeek} Orders This Week
       </h2>
 

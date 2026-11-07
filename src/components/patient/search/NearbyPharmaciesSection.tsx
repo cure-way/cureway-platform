@@ -8,7 +8,7 @@ import { formatCurrency } from "@/lib/format";
 const MOCK_NEARBY_PHARMACIES: NearbyPharmacy[] = [
   {
     id: "np1",
-    name: "City Pharmacy",
+    name: "Amal Pharmacy",
     location: "AlRemal area, Gaza",
     rating: 4.9,
     deliveryRange: "25-30 minutes",
@@ -45,15 +45,15 @@ export function NearbyPharmaciesSection({
       <div className="w-full border-2 border-primary-light-active rounded-2xl p-3">
         {/* Header */}
         <div className="border-b border-black/10 pb-4 mb-2">
-          <h3 className="font-bold text-primary-dark-active text-2xl md:text-[30px] leading-[1.2] mb-3">
+          <h3 className="font-bold text-primary-dark-active text-t-21 md:text-[30px] leading-[1.2] mb-3">
             Nearby Pharmacies
           </h3>
           <ul className="space-y-1">
-            <li className="flex items-start gap-1.5 text-black/50 text-sm md:text-lg font-medium">
+            <li className="flex items-start gap-1.5 text-black/50 text-t-14 md:text-t-17 font-medium">
               <span className="mt-0.5">·</span>
               These pharmacies are far away from you
             </li>
-            <li className="flex items-start gap-1.5 text-black/50 text-sm md:text-lg font-medium">
+            <li className="flex items-start gap-1.5 text-black/50 text-t-14 md:text-t-17 font-medium">
               <span className="mt-0.5">·</span>
               Note that it may take a long time
             </li>
@@ -83,14 +83,14 @@ export function NearbyPharmaciesSection({
                   <RiFirstAidKitFill className="w-7 h-7 text-primary-light-active" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-bold text-primary text-lg md:text-xl leading-[1.2]">
+                  <p className="font-bold text-primary text-t-17 md:text-t-17 leading-[1.2]">
                     {pharmacy.name}
                   </p>
-                  <p className="text-neutral-dark text-sm md:text-lg font-normal leading-[1.2]">
+                  <p className="text-neutral-dark text-t-14 md:text-t-17 font-normal leading-[1.2]">
                     {pharmacy.location}
                   </p>
                 </div>
-                <p className="font-bold text-success-dark text-base leading-[1.2] shrink-0">
+                <p className="font-bold text-success-dark text-t-14 leading-[1.2] shrink-0">
                   {formatCurrency(pharmacy.price)}
                 </p>
               </div>

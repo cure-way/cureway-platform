@@ -63,7 +63,7 @@ export function HeaderQuickChips({ isAuthenticated }: HeaderQuickChipsProps) {
           <Link
             key={chip.href}
             href={chip.href}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs md:text-sm font-medium text-black/70 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors whitespace-nowrap"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-t-12 md:text-t-14 font-medium text-black/70 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors whitespace-nowrap"
           >
             {chip.icon}
             {chip.label}

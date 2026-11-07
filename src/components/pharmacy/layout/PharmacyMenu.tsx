@@ -57,14 +57,14 @@ export default function PharmacyMenu() {
         aria-haspopup="true"
         aria-expanded={open}
       >
-        <div className="flex justify-center items-center bg-(--color-secondary-light) rounded-full w-8 h-8 font-semibold text-(--color-primary) text-sm">
+        <div className="flex justify-center items-center bg-(--color-secondary-light) rounded-full w-8 h-8 font-semibold text-(--color-primary) text-t-14">
           {initials}
         </div>
-        <span className="hidden sm:block max-w-40 font-medium text-gray-700 text-sm truncate">
+        <span className="hidden sm:block max-w-40 font-medium text-gray-700 text-t-14 truncate">
           {displayName}
         </span>
         <FaChevronDown
-          className={`text-xs text-gray-500 transition-transform ${
+          className={`text-t-12 text-gray-500 transition-transform ${
             open ? "rotate-180" : ""
           }`}
         />
@@ -74,11 +74,11 @@ export default function PharmacyMenu() {
         <div className="right-0 z-50 absolute bg-white shadow-xl mt-2 border border-gray-100 rounded-xl w-64">
           {/* User info header */}
           <div className="px-4 py-3 border-gray-100 border-b">
-            <p className="font-semibold text-gray-900 text-sm truncate">
+            <p className="font-semibold text-gray-900 text-t-14 truncate">
               {displayName}
             </p>
             {email && (
-              <p className="mt-0.5 text-gray-500 text-xs truncate">{email}</p>
+              <p className="mt-0.5 text-gray-500 text-t-12 truncate">{email}</p>
             )}
             {verificationStatus && (
               <span
@@ -104,7 +104,7 @@ export default function PharmacyMenu() {
             <Link
               href="/pharmacy/profile"
               onClick={() => setOpen(false)}
-              className="flex items-center gap-3 hover:bg-gray-50 px-4 py-2.5 text-gray-700 text-sm transition-colors"
+              className="flex items-center gap-3 hover:bg-gray-50 px-4 py-2.5 text-gray-700 text-t-14 transition-colors"
             >
               <FaUserCircle className="w-4 h-4 text-gray-400" />
               Profile
@@ -112,7 +112,7 @@ export default function PharmacyMenu() {
             <Link
               href="/pharmacy/home"
               onClick={() => setOpen(false)}
-              className="flex items-center gap-3 hover:bg-gray-50 px-4 py-2.5 text-gray-700 text-sm transition-colors"
+              className="flex items-center gap-3 hover:bg-gray-50 px-4 py-2.5 text-gray-700 text-t-14 transition-colors"
             >
               <FaCog className="w-4 h-4 text-gray-400" />
               Settings
@@ -123,7 +123,7 @@ export default function PharmacyMenu() {
           <div className="py-1 border-gray-100 border-t">
             <button
               onClick={handleLogout}
-              className="flex items-center gap-3 hover:bg-red-50 px-4 py-2.5 w-full text-red-600 text-sm transition-colors"
+              className="flex items-center gap-3 hover:bg-red-50 px-4 py-2.5 w-full text-red-600 text-t-14 transition-colors"
             >
               <FaSignOutAlt className="w-4 h-4" />
               Log out

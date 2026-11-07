@@ -23,7 +23,7 @@ export function SearchSection({
     <>
       {items.length !== 0 ? (
         <div>
-          <p className="mb-2 font-semibold text-gray-500 text-xs">
+          <p className="mb-2 font-semibold text-gray-500 text-t-12">
             Suggestions
           </p>
           <ul className="space-y-2">
@@ -37,8 +37,8 @@ export function SearchSection({
                 >
                   <span className="mt-0.5">{icon}</span>
                   <div>
-                    <p className="text-sm">{item.title}</p>
-                    <p className="text-gray-500 text-xs">{item.subtitle}</p>
+                    <p className="text-t-14">{item.title}</p>
+                    <p className="text-gray-500 text-t-12">{item.subtitle}</p>
                   </div>
                 </li>
               );
@@ -46,7 +46,7 @@ export function SearchSection({
           </ul>
         </div>
       ) : (
-        <p className="py-4 text-gray-500 text-sm text-center">
+        <p className="py-4 text-gray-500 text-t-14 text-center">
           No Found {title} for &ldquo;{query}&rdquo;
         </p>
       )}

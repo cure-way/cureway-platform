@@ -76,14 +76,14 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
                 key={item.href}
                 href={item.href}
                 onClick={onClose}
-                className={`flex items-center gap-3 rounded-lg px-4 py-2 text-sm font-medium transition
+                className={`flex items-center gap-3 rounded-lg px-4 py-2 text-t-14 font-medium transition
                   ${
                     isActive
                       ? "bg-(--color-secondary-light) text-(--color-primary)"
                       : "text-gray-600 hover:bg-gray-100"
                   }`}
               >
-                <Icon className="text-lg" />
+                <Icon className="text-t-17" />
                 {item.label}
               </Link>
             );

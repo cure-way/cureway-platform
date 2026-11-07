@@ -75,9 +75,11 @@ export function HeaderActions({
       <div className="hidden md:flex bg-secondary-light items-center gap-2 h-11 px-2 rounded-lg w-40 lg:w-45">
         <FiMapPin className="w-4 h-4 text-black/60 shrink-0" />
         <div className="flex-1 flex flex-col gap-1 justify-center">
-          <p className="text-xs font-semibold text-black/50">Select Location</p>
+          <p className="text-t-12 font-semibold text-black/50">
+            Select Location
+          </p>
           <div className="flex items-center gap-1">
-            <p className="flex-1 text-xs text-black/80 truncate">
+            <p className="flex-1 text-t-12 text-black/80 truncate">
               26 Salah El Din St...
             </p>
             <FaChevronDown className="w-2 h-2 text-black/60 rotate-90 shrink-0" />
@@ -93,7 +95,7 @@ export function HeaderActions({
         >
           <IoNotificationsOutline className="w-6 h-6 text-black/60" />
           {notificationCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-t-12 w-5 h-5 flex items-center justify-center rounded-full">
               {notificationCount > 9 ? "9+" : notificationCount}
             </span>
           )}
@@ -137,11 +139,11 @@ export function MobileMenu({ isOpen }: MobileMenuProps) {
             <div className="bg-secondary-light flex items-center gap-2 h-11 px-2 rounded-lg">
               <FiMapPin className="w-4 h-4 text-black/60 shrink-0" />
               <div className="flex-1 flex flex-col gap-1 justify-center">
-                <p className="text-xs font-semibold text-black/50">
+                <p className="text-t-12 font-semibold text-black/50">
                   Select Location
                 </p>
                 <div className="flex items-center gap-1">
-                  <p className="flex-1 text-xs text-black/80 truncate">
+                  <p className="flex-1 text-t-12 text-black/80 truncate">
                     26 Salah El Din St...
                   </p>
                   <FaChevronDown className="w-2 h-2 text-black/60 rotate-90 shrink-0" />
@@ -152,7 +154,7 @@ export function MobileMenu({ isOpen }: MobileMenuProps) {
             {/* Mobile help */}
             <div className="flex items-center gap-2 px-2">
               <FaPhoneAlt className="text-black/60 w-4 h-4" />
-              <p className="text-sm text-black/60">
+              <p className="text-t-14 text-black/60">
                 <span className="font-semibold">Need help? call us:</span>{" "}
                 <span className="text-black/40">{CONTACT_PHONE}</span>
               </p>
@@ -162,19 +164,19 @@ export function MobileMenu({ isOpen }: MobileMenuProps) {
             <nav className="space-y-2">
               <Link
                 href="/"
-                className="block px-2 py-2 text-sm font-medium text-black/80 hover:bg-gray-100 rounded-lg transition-colors"
+                className="block px-2 py-2 text-t-14 font-medium text-black/80 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 Home
               </Link>
               <Link
                 href="/categories"
-                className="block px-2 py-2 text-sm font-medium text-black/80 hover:bg-gray-100 rounded-lg transition-colors"
+                className="block px-2 py-2 text-t-14 font-medium text-black/80 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 Categories
               </Link>
               <Link
                 href="/pharmacies"
-                className="block px-2 py-2 text-sm font-medium text-black/80 hover:bg-gray-100 rounded-lg transition-colors"
+                className="block px-2 py-2 text-t-14 font-medium text-black/80 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 Nearby Pharmacies
               </Link>
@@ -182,35 +184,35 @@ export function MobileMenu({ isOpen }: MobileMenuProps) {
                 <>
                   {user && (
                     <div className="px-2 py-2 border-t border-gray-200 mt-2">
-                      <p className="text-sm font-semibold text-gray-900 truncate">
+                      <p className="text-t-14 font-semibold text-gray-900 truncate">
                         {user.name}
                       </p>
-                      <p className="text-xs text-gray-500 truncate">
+                      <p className="text-t-12 text-gray-500 truncate">
                         {user.email}
                       </p>
                     </div>
                   )}
                   <Link
                     href="/orders"
-                    className="block px-2 py-2 text-sm font-medium text-black/80 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="block px-2 py-2 text-t-14 font-medium text-black/80 hover:bg-gray-100 rounded-lg transition-colors"
                   >
                     Orders
                   </Link>
                   <Link
                     href="/prescriptions"
-                    className="block px-2 py-2 text-sm font-medium text-black/80 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="block px-2 py-2 text-t-14 font-medium text-black/80 hover:bg-gray-100 rounded-lg transition-colors"
                   >
                     Prescriptions
                   </Link>
                   <Link
                     href="/profile"
-                    className="block px-2 py-2 text-sm font-medium text-black/80 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="block px-2 py-2 text-t-14 font-medium text-black/80 hover:bg-gray-100 rounded-lg transition-colors"
                   >
                     Profile
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="block w-full text-left px-2 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    className="block w-full text-left px-2 py-2 text-t-14 font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                   >
                     Sign Out
                   </button>
@@ -219,13 +221,13 @@ export function MobileMenu({ isOpen }: MobileMenuProps) {
                 <div className="pt-2 space-y-2 border-t border-gray-200">
                   <Link
                     href="/auth/sign-in"
-                    className="block px-2 py-2 text-sm font-medium text-center text-black/80 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="block px-2 py-2 text-t-14 font-medium text-center text-black/80 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors"
                   >
                     Sign In
                   </Link>
                   <Link
                     href="/auth/sign-up"
-                    className="block px-2 py-2 text-sm font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+                    className="block px-2 py-2 text-t-14 font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
                   >
                     Sign Up
                   </Link>

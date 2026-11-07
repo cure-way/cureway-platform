@@ -268,11 +268,11 @@ export function HomeMobileMenu({ isOpen }: HomeMobileMenuProps) {
             <div className="bg-secondary-light flex items-center gap-3 h-12 px-3 rounded-xl">
               <FiMapPin className="w-5 h-5 text-primary shrink-0" />
               <div className="flex-1 flex flex-col gap-1 justify-center">
-                <p className="text-xs font-semibold text-primary-darker">
+                <p className="text-t-12 font-semibold text-primary-darker">
                   Select Location
                 </p>
                 <div className="flex items-center gap-1">
-                  <p className="flex-1 text-xs text-primary truncate">
+                  <p className="flex-1 text-t-12 text-primary truncate">
                     26 Salah El Din St...
                   </p>
                   <FaChevronRight className="w-2 h-2 text-primary shrink-0" />
@@ -283,7 +283,7 @@ export function HomeMobileMenu({ isOpen }: HomeMobileMenuProps) {
             {/* Mobile help */}
             <div className="flex items-center gap-2 px-2">
               <FaPhoneAlt className="text-primary w-4 h-4" />
-              <p className="text-sm text-primary-darker">
+              <p className="text-t-14 text-primary-darker">
                 <span className="font-semibold">Need help? call us:</span>{" "}
                 <span className="text-primary-light-active">
                   {CONTACT_PHONE}
@@ -301,7 +301,7 @@ export function HomeMobileMenu({ isOpen }: HomeMobileMenuProps) {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="block px-2 py-2 text-sm font-medium text-primary-darker hover:bg-primary-light rounded-lg transition-colors"
+                  className="block px-2 py-2 text-t-14 font-medium text-primary-darker hover:bg-primary-light rounded-lg transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -311,10 +311,10 @@ export function HomeMobileMenu({ isOpen }: HomeMobileMenuProps) {
                 <>
                   {user && (
                     <div className="px-2 py-2 border-t border-gray-200 mt-2">
-                      <p className="text-sm font-semibold text-gray-900 truncate">
+                      <p className="text-t-14 font-semibold text-gray-900 truncate">
                         {user.name}
                       </p>
-                      <p className="text-xs text-gray-500 truncate">
+                      <p className="text-t-12 text-gray-500 truncate">
                         {user.email}
                       </p>
                     </div>
@@ -327,14 +327,14 @@ export function HomeMobileMenu({ isOpen }: HomeMobileMenuProps) {
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="block px-2 py-2 text-sm font-medium text-primary-darker hover:bg-primary-light rounded-lg transition-colors"
+                      className="block px-2 py-2 text-t-14 font-medium text-primary-darker hover:bg-primary-light rounded-lg transition-colors"
                     >
                       {link.label}
                     </Link>
                   ))}
                   <button
                     onClick={handleLogout}
-                    className="block w-full text-left px-2 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    className="block w-full text-left px-2 py-2 text-t-14 font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                   >
                     Sign Out
                   </button>
@@ -343,13 +343,13 @@ export function HomeMobileMenu({ isOpen }: HomeMobileMenuProps) {
                 <div className="pt-2 space-y-2 border-t border-gray-200">
                   <Link
                     href="/auth/sign-in"
-                    className="block px-2 py-2 text-sm font-medium text-center text-primary-darker border border-neutral rounded-lg hover:bg-primary-light transition-colors"
+                    className="block px-2 py-2 text-t-14 font-medium text-center text-primary-darker border border-neutral rounded-lg hover:bg-primary-light transition-colors"
                   >
                     Sign In
                   </Link>
                   <Link
                     href="/auth/sign-up"
-                    className="block px-2 py-2 text-sm font-medium text-center text-white bg-primary rounded-lg hover:bg-primary-hover transition-colors"
+                    className="block px-2 py-2 text-t-14 font-medium text-center text-white bg-primary rounded-lg hover:bg-primary-hover transition-colors"
                   >
                     Sign Up
                   </Link>

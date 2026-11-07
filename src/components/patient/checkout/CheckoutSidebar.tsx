@@ -48,7 +48,7 @@ export const CheckoutSidebar = memo(function CheckoutSidebar({
   );
 
   return (
-    <div className="w-full bg-card rounded-3xl border-t-4 border-t-secondary px-4 py-6 flex flex-col gap-4 shadow-card sticky top-6 font-[var(--font-montserrat)]">
+    <div className="w-full bg-card rounded-2xl border-t-4 border-t-secondary px-4 py-6 flex flex-col gap-4 shadow-card sticky top-6 font-[var(--font-montserrat)]">
       {/* Header */}
       <div className="pb-3 border-b border-border">
         <h3 className="text-t-25-bold text-foreground m-0">
@@ -66,7 +66,7 @@ export const CheckoutSidebar = memo(function CheckoutSidebar({
         return (
           <div
             key={group.pharmacy.id}
-            className="w-full rounded-3xl px-2 py-3 bg-card border border-neutral-light-active flex flex-col gap-2.5"
+            className="w-full rounded-2xl px-2 py-3 bg-card border border-neutral-light-active flex flex-col gap-2.5"
           >
             <div className="flex items-center gap-3">
               <div className="relative w-[90px] h-16 flex-shrink-0">
@@ -91,7 +91,7 @@ export const CheckoutSidebar = memo(function CheckoutSidebar({
                             }}
                           />
                         ) : (
-                          <span className="text-sm">💊</span>
+                          <span className="text-t-14">💊</span>
                         )}
                       </div>
                     ))}

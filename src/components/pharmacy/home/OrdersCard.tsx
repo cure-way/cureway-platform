@@ -25,7 +25,7 @@ export default function OrdersCard({
   return (
     <div className="flex flex-col bg-white mb-4 p-4 border rounded-xl h-74">
       <div className="flex justify-between items-center mb-2">
-        <h2 className="font-semibold text-gray-900 text-sm">Orders</h2>
+        <h2 className="font-semibold text-gray-900 text-t-14">Orders</h2>
         <StatusDropdown
           options={ORDER_STATUSES}
           value={status}
@@ -48,7 +48,7 @@ export default function OrdersCard({
         <div className="flex justify-end mt-3">
           <Link
             href="/pharmacy/orders"
-            className="font-medium text-(--color-primary) text-xs"
+            className="font-medium text-(--color-primary) text-t-12"
           >
             View All Orders →
           </Link>

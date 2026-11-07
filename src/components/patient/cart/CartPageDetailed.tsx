@@ -54,7 +54,7 @@ export default function CartPageDetailed() {
   if (cart.groups.length === 0)
     return (
       <div className="text-center py-16 px-6 font-[var(--font-montserrat)]">
-        <div className="text-6xl mb-6">🛒</div>
+        <div className="text-t-30 mb-6">🛒</div>
         <h2 className="text-t-30-bold text-primary mb-3">Your cart is empty</h2>
         <p className="text-t-17 text-muted-foreground mb-8">
           Add medicines to get started
@@ -71,7 +71,7 @@ export default function CartPageDetailed() {
   return (
     <div className="py-2">
       <div className="flex flex-col xl:flex-row gap-6 items-start">
-        <div className="flex-1 min-w-0 bg-card rounded-3xl border-t-4 border-t-secondary p-4 sm:p-6 shadow-card">
+        <div className="flex-1 min-w-0 bg-card rounded-2xl border-t-4 border-t-secondary p-4 sm:p-6 shadow-card">
           <CartTableHeader />
           {cart.groups.map((group) =>
             group.items.map((item) => (

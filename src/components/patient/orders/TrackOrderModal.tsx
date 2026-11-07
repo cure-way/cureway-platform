@@ -147,7 +147,7 @@ export function TrackOrderModal({
         className="fixed inset-0 bg-black/45 z-[1000] flex items-center justify-center p-4 sm:p-5 backdrop-blur-sm"
       >
         <div
-          className="track-modal w-full max-w-[520px] bg-card rounded-3xl p-6 sm:p-8 shadow-2xl relative font-[var(--font-montserrat)]"
+          className="track-modal w-full max-w-[520px] bg-card rounded-2xl p-6 sm:p-8 shadow-2xl relative font-[var(--font-montserrat)]"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close */}

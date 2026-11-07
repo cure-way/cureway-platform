@@ -34,7 +34,7 @@ export default function PatientHomePage() {
       <HomePromoBanner />
 
       {/* 2-7. Main content — bordered container per Figma node 1209:375 */}
-      <div className="mx-3 md:mx-6 lg:mx-12 border-2 md:border-4 border-primary/10 rounded-2xl md:rounded-3xl bg-white overflow-hidden">
+      <div className="mx-3 md:mx-6 lg:mx-12 border-2 md:border-4 border-primary/10 rounded-2xl md:rounded-2xl bg-white overflow-hidden">
         <div className="flex flex-col gap-8 md:gap-10 lg:gap-14 pt-4 md:pt-6 lg:pt-8">
           {/* 2. Hero section */}
           <HomeHero />

@@ -27,7 +27,7 @@ export default function OrdersTable({ data }: { data: OrderRow[] }) {
             <span>
               {row.preview.firstItemName}
               {row.preview.remainingCount > 0 && (
-                <span className="ml-1 text-gray-500 text-xs">
+                <span className="ml-1 text-gray-500 text-t-12">
                   +{row.preview.remainingCount}
                 </span>
               )}

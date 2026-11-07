@@ -15,7 +15,7 @@ import {
 const textareaBase = [
   "w-full px-4 py-3 rounded-xl border bg-white",
   "transition-all duration-200",
-  "text-base text-gray-900",
+  "text-t-14 text-gray-900",
   "placeholder:text-[#a29e9d]",
   "focus:outline-none focus:ring-2 focus:ring-[#334eac]/20 focus:border-[#334eac]",
   "disabled:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60",

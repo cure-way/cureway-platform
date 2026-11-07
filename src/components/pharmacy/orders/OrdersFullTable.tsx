@@ -84,7 +84,7 @@ export default function OrdersFullTable({
               <>
                 {row.preview.firstItemName}
                 {row.preview.remainingCount > 0 && (
-                  <span className="text-gray-500 text-xs">
+                  <span className="text-gray-500 text-t-12">
                     {" +"}
                     {row.preview.remainingCount}
                   </span>

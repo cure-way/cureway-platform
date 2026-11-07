@@ -39,7 +39,7 @@ export default function DataTable<T extends { id: string | number }>({
     <div className="shadow-sm border border-gray-300 rounded-2xl overflow-hidden">
       {/* TABLE */}
       <div>
-        <table className="w-full text-sm table-fixed">
+        <table className="w-full text-t-14 table-fixed">
           <thead className="top-0 z-10 sticky bg-gray-100">
             <tr>
               {columns.map((col) => (
@@ -85,7 +85,7 @@ export default function DataTable<T extends { id: string | number }>({
 
       {/* FOOTER */}
       <div className="flex sm:flex-row flex-col flex-wrap justify-between items-center gap-4 px-5 py-4 border-gray-300 border-t">
-        <div className="flex items-center gap-2 text-gray-700 text-sm">
+        <div className="flex items-center gap-2 text-gray-700 text-t-14">
           <span className="text-(--color-primary) font-medium">
             Rows per page
           </span>
@@ -113,7 +113,7 @@ export default function DataTable<T extends { id: string | number }>({
               <button
                 key={p}
                 onClick={() => onPageChange(p)}
-                className={`h-9 w-9 rounded-lg text-sm font-medium ${
+                className={`h-9 w-9 rounded-lg text-t-14 font-medium ${
                   p === currentPage
                     ? "bg-(--color-primary) text-white"
                     : "border border-gray-300 text-(--color-primary) hover:bg-gray-100"

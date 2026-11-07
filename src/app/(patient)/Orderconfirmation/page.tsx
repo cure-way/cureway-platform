@@ -109,7 +109,7 @@ function OrderConfirmationContent() {
         />
 
         <div>
-          <div className="bg-card rounded-3xl border border-border shadow-card overflow-hidden">
+          <div className="bg-card rounded-2xl border border-border shadow-card overflow-hidden">
             {/* Checkmark */}
             <div className="flex items-center px-8 pt-8 pb-2">
               <div className="flex-1 h-px bg-border" />
@@ -226,7 +226,7 @@ function OrderConfirmationContent() {
                           ))}
                         </div>
                       ) : (
-                        <span className="text-3xl">💊</span>
+                        <span className="text-t-25">💊</span>
                       )}
                       {extraQty > 0 && (
                         <div className="absolute bottom-1 right-1 bg-white text-primary text-t-12 font-bold rounded-md px-1.5 py-0.5 border border-border shadow-sm leading-none">

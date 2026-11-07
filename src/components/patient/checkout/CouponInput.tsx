@@ -140,7 +140,7 @@ export function CouponInput({
 
       {currentState === "applied" && discountPercent !== undefined && (
         <p className="text-t-14 text-neutral flex items-center gap-1.5 mt-2">
-          <span className="text-base text-neutral">•</span>
+          <span className="text-t-14 text-neutral">•</span>
           {"This Promo code will save "}
           {discountPercent}%
         </p>

@@ -35,7 +35,7 @@ export function HeaderSearch() {
           ref={inputRef}
           type="text"
           placeholder="Search medicine, pharmacy..."
-          className="bg-transparent outline-none w-full text-xs md:text-sm focus-visible:outline-none"
+          className="bg-transparent outline-none w-full text-t-12 md:text-t-14 focus-visible:outline-none"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}

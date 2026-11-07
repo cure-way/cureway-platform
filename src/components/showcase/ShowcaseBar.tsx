@@ -20,7 +20,13 @@
  * the viewport subtract the live value rather than a hardcoded number.
  */
 
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { IoInformationCircleOutline, IoRefreshOutline } from "react-icons/io5";
@@ -179,7 +185,10 @@ export function ShowcaseBar() {
             onClick={openWelcome}
             className="inline-flex items-center gap-1.5 px-3 py-2 min-h-11 rounded-md text-t-12 sm:text-t-14 font-semibold text-primary-light hover:bg-white/15 transition-colors cursor-pointer"
           >
-            <IoInformationCircleOutline aria-hidden="true" className="w-4 h-4" />
+            <IoInformationCircleOutline
+              aria-hidden="true"
+              className="w-4 h-4"
+            />
             About this demo
           </button>
 

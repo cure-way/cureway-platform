@@ -72,22 +72,24 @@ export default function MedicineOverviewCard({ medicine, stock }: Props) {
         <div className="space-y-6">
           {/* Title */}
           <div>
-            <h1 className="mb-2 font-bold text-gray-900 text-2xl sm:text-3xl">
+            <h1 className="mb-2 text-page-title text-primary-darker">
               {medicine.name}
             </h1>
 
-            <p className="text-gray-500 text-sm">{medicine.genericName}</p>
+            <p className="text-gray-500 text-t-14">{medicine.genericName}</p>
 
-            <p className="mt-1 text-gray-500 text-sm">
+            <p className="mt-1 text-gray-500 text-t-14">
               {medicine.manufacturer}
             </p>
           </div>
 
           {/* Price */}
-          <div className="font-bold text-gray-900 text-3xl">{displayPrice}</div>
+          <div className="font-bold text-gray-900 text-t-25">
+            {displayPrice}
+          </div>
 
           {/* Badges */}
-          <div className="flex flex-wrap gap-2 text-sm">
+          <div className="flex flex-wrap gap-2 text-t-14">
             <span className="bg-gray-100 px-3 py-1 rounded-lg text-gray-700">
               {medicine.dosageForm}
             </span>
@@ -113,7 +115,7 @@ export default function MedicineOverviewCard({ medicine, stock }: Props) {
 
           {/* Quantity */}
           <div className="space-y-2">
-            <label className="font-medium text-gray-700 text-sm">
+            <label className="font-medium text-gray-700 text-t-14">
               Quantity
             </label>
 
@@ -125,7 +127,7 @@ export default function MedicineOverviewCard({ medicine, stock }: Props) {
                 −
               </button>
 
-              <span className="w-12 font-semibold text-lg text-center">
+              <span className="w-12 font-semibold text-t-17 text-center">
                 {quantity}
               </span>
 

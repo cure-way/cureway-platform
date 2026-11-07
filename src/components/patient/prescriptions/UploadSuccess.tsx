@@ -19,7 +19,7 @@ export default function UploadSuccess({ onClose, onTrack }: Props) {
       />
 
       <div className="flex flex-col gap-2">
-        <h2 className="text-t-21-semibold md:text-t-30-semibold text-black leading-[1.2]">
+        <h2 className="text-page-title text-black leading-[1.2]">
           Prescription uploaded
         </h2>
 

@@ -81,7 +81,7 @@ export function PatientHeader({
                     priority
                   />
                 </div>
-                <p className="text-base md:text-xl font-black text-black leading-none">
+                <p className="text-t-14 md:text-t-17 font-bold text-black leading-none">
                   {BRAND_NAME}
                 </p>
               </Link>

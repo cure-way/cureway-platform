@@ -129,7 +129,7 @@ export const DUMMY_SEARCH_DATA: SearchDto[] = [
   {
     id: "p1",
     type: "pharmacy",
-    name: "City Pharmacy",
+    name: "Al-Quds Pharmacy",
     deliveryTime: 15,
     distance: 2.55,
   },

@@ -287,11 +287,11 @@ export function PharmacySignUpForm() {
             transition={{ delay: 0.15 }}
             className="flex flex-col gap-2 items-center text-center mb-6"
           >
-            <h1 className="text-4xl font-semibold">
+            <h1 className="text-t-30 font-semibold">
               <span className="text-[#2e469b]">Welcome To </span>
               <span className="text-[#334eac] font-bold">CUREWAY</span>
             </h1>
-            <p className="text-lg font-medium text-[#334eac]">
+            <p className="text-t-17 font-medium text-[#334eac]">
               Your trusted way to better health
             </p>
           </motion.div>
@@ -353,7 +353,7 @@ export function PharmacySignUpForm() {
           >
             {globalError && (
               <div className="p-3 mb-4 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-sm text-red-600">{globalError}</p>
+                <p className="text-t-14 text-red-600">{globalError}</p>
               </div>
             )}
             {renderStepForm()}
@@ -364,7 +364,7 @@ export function PharmacySignUpForm() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="text-center mt-6 text-base"
+            className="text-center mt-6 text-t-14"
           >
             <span className="text-[#797776]">Already have an account? </span>
             <Link

@@ -55,10 +55,10 @@ export default function RegistrationSubmittedPage() {
 
             {/* Text Content */}
             <div className="flex flex-col items-center gap-4 text-center">
-              <h1 className="text-2xl font-semibold text-[#5b5958] leading-tight">
+              <h1 className="text-page-title text-[#5b5958] leading-tight">
                 Thanks for Registering
               </h1>
-              <p className="text-lg font-medium text-[#5b5958] leading-snug">
+              <p className="text-t-17 font-medium text-[#5b5958] leading-snug">
                 Our team will review your documents
                 <br />
                 and notify you once your account is approved
@@ -76,7 +76,7 @@ export default function RegistrationSubmittedPage() {
                 href="/auth/sign-in"
                 className={cn(
                   "flex items-center justify-center w-full h-12 rounded-xl",
-                  "bg-[#334eac] text-white text-lg font-medium",
+                  "bg-[#334eac] text-white text-t-17 font-medium",
                   "transition-all duration-200",
                   "hover:bg-[#2e469b] active:bg-[#283d87]",
                   "focus:outline-none focus:ring-2 focus:ring-[#334eac]/50 focus:ring-offset-2",

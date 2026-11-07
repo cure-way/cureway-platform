@@ -127,7 +127,7 @@ function ConcentricDonut({
         <span className="text-t-17-semibold leading-[1.2] text-[#212F4D] transition-all duration-300">
           {centerPct}
         </span>
-        <span className="text-t-12 sm:text-t-10 leading-[1.2] text-[#989593] text-center">
+        <span className="text-t-12 leading-[1.2] text-[#989593] text-center">
           rate
         </span>
       </div>

@@ -113,10 +113,10 @@ function VerifyOTPForm() {
 
             {/* Title and description */}
             <div className="flex flex-col gap-2">
-              <h1 className="text-2xl font-semibold text-black/80 leading-tight">
+              <h1 className="text-page-title text-black/80 leading-tight">
                 Verify your phone number
               </h1>
-              <p className="text-base text-[#5b5958]">
+              <p className="text-t-14 text-[#5b5958]">
                 Please enter that code we sent to {phoneNumber}
               </p>
             </div>
@@ -138,7 +138,7 @@ function VerifyOTPForm() {
                 onClick={() => handleVerify(otp.join(""))}
                 disabled={isButtonDisabled}
                 className={cn(
-                  "w-full max-w-[358px] h-14 rounded-xl text-lg font-medium text-white",
+                  "w-full max-w-[358px] h-14 rounded-xl text-t-17 font-medium text-white",
                   "transition-all duration-200",
                   "focus:outline-none focus:ring-2 focus:ring-[#334eac]/50 focus:ring-offset-2",
                   isButtonDisabled
@@ -151,7 +151,7 @@ function VerifyOTPForm() {
               </motion.button>
 
               {/* Resend link */}
-              <p className="text-base text-center">
+              <p className="text-t-14 text-center">
                 <span className="text-[#797776]">
                   Didn&apos;t get the code?{" "}
                 </span>

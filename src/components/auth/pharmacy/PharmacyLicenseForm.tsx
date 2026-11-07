@@ -79,7 +79,7 @@ export function PharmacyLicenseForm({
           onClick={onBack}
           disabled={isLoading}
           className={cn(
-            "flex-1 h-12 rounded-xl border-2 border-[#334eac] text-[#334eac] text-base font-semibold",
+            "flex-1 h-12 rounded-xl border-2 border-[#334eac] text-[#334eac] text-t-14 font-semibold",
             "transition-all duration-200",
             "hover:bg-[#f8f9fc]",
             "disabled:opacity-50 disabled:cursor-not-allowed",
@@ -93,7 +93,7 @@ export function PharmacyLicenseForm({
           type="submit"
           disabled={isLoading}
           className={cn(
-            "flex-1 h-12 rounded-xl bg-[#334eac] text-white text-base font-semibold",
+            "flex-1 h-12 rounded-xl bg-[#334eac] text-white text-t-14 font-semibold",
             "transition-all duration-200",
             "hover:bg-[#2e469b] active:bg-[#283d87]",
             "disabled:opacity-50 disabled:cursor-not-allowed",

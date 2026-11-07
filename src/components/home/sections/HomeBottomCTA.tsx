@@ -79,7 +79,7 @@ export function HomeBottomCTA() {
         <div className="flex-1 flex flex-col gap-8 md:gap-10">
           <FadeUp inView offset={12} duration={0.45}>
             <div className="flex flex-col gap-4">
-              <h2 className="text-2xl md:text-3xl lg:text-[36px] font-semibold leading-snug">
+              <h2 className="text-t-21 md:text-t-25 lg:text-[36px] font-semibold leading-snug">
                 Find the{" "}
                 <span className="font-bold bg-gradient-to-r from-primary-hover to-neutral bg-clip-text text-transparent">
                   Nearby Pharmacy

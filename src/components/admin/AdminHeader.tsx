@@ -53,7 +53,7 @@ export default function AdminHeader() {
       </button>
 
       {/* Search Bar */}
-      <div className="hidden sm:flex items-center flex-1 min-w-0 h-12 rounded-3xl bg-[#EFF3FB] pl-4 pr-2 gap-2.5">
+      <div className="hidden sm:flex items-center flex-1 min-w-0 h-12 rounded-2xl bg-[#EFF3FB] pl-4 pr-2 gap-2.5">
         <div className="shrink-0 w-6 h-6">
           <HeaderSearchIcon />
         </div>
@@ -77,7 +77,7 @@ export default function AdminHeader() {
       {/* Add New Button */}
       <button
         aria-label="Add new"
-        className="flex items-center gap-2 px-4 py-3 rounded-lg bg-[#263B81] text-[#EBEDF7] text-base font-semibold leading-[1.2] hover:bg-[#1E2F68] transition-colors whitespace-nowrap shrink-0"
+        className="flex items-center gap-2 px-4 py-3 rounded-lg bg-[#263B81] text-[#EBEDF7] text-t-14 font-semibold leading-[1.2] hover:bg-[#1E2F68] transition-colors whitespace-nowrap shrink-0"
       >
         <div className="w-6 h-6 shrink-0">
           <HeaderAddIcon />

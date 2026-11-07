@@ -44,7 +44,7 @@ export default function CartItemCard({
                 unoptimized
               />
             ) : (
-              <span className="text-3xl">💊</span>
+              <span className="text-t-25">💊</span>
             )}
           </div>
 

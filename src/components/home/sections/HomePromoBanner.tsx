@@ -44,11 +44,11 @@ export function HomePromoBanner() {
 
           {/* Text content */}
           <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
-            <span className="text-error-hover font-black text-3xl md:text-6xl lg:text-[80px] leading-none shrink-0">
+            <span className="text-error-hover font-bold text-t-25 md:text-t-30 lg:text-[80px] leading-none shrink-0">
               {discount}
             </span>
             <div className="flex flex-col gap-0.5 md:gap-2 min-w-0">
-              <p className="text-t-17 md:text-t-25 lg:text-t-30 font-extrabold leading-tight md:leading-normal">
+              <p className="text-t-17 md:text-t-25 lg:text-t-30 font-bold leading-tight md:leading-normal">
                 <span className="text-error-hover">Discount on</span>{" "}
                 <span className="text-black/60 font-bold">First Aid</span>
               </p>

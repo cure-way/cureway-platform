@@ -15,7 +15,7 @@ export default function WelcomeSection() {
     <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-[8px] pb-[8px]">
       {/* Greeting */}
       <div className="flex-1 flex flex-col gap-[4px] sm:gap-[8px] min-w-0">
-        <h1 className="text-t-21-semibold md:text-t-30-semibold text-primary-darker">
+        <h1 className="text-page-title text-primary-darker">
           Welcome{user?.name ? ` ${user.name}` : " Admin"} 👋🏻
         </h1>
         <p className="mt-1 text-t-14 text-neutral-dark">

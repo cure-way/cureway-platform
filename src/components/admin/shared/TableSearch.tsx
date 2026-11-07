@@ -24,7 +24,7 @@ export default function TableSearch({
       )}
     >
       {/* Search input */}
-      <div className="flex flex-1 min-w-0 items-center gap-2.5 h-12 rounded-3xl bg-secondary-light pl-4 pr-2 py-4">
+      <div className="flex flex-1 min-w-0 items-center gap-2.5 h-12 rounded-2xl bg-secondary-light pl-4 pr-2 py-4">
         <Search className="w-6 h-6 text-neutral shrink-0" />
         <input
           type="text"

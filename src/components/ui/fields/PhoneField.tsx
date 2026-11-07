@@ -379,7 +379,7 @@ export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(
             </button>
 
             {/* Dial Code Display */}
-            <span className="text-sm font-medium text-gray-600 pr-3">
+            <span className="text-t-14 font-medium text-gray-600 pr-3">
               {countryData.dialCode}
             </span>
 
@@ -421,7 +421,7 @@ export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(
                     selectedCountry === c.code && "bg-gray-50 font-medium",
                   )}
                 >
-                  <span className="text-lg leading-none">{c.flag}</span>
+                  <span className="text-t-17 leading-none">{c.flag}</span>
                   <span className="flex-1">{c.name}</span>
                   <span className="text-gray-500">{c.dialCode}</span>
                 </button>

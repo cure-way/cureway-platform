@@ -50,7 +50,7 @@ export default function ProductGrid({ medicines, loading, error }: Props) {
             </Link>
 
             {medicine.requiresPrescription && (
-              <span className="top-2 left-2 absolute bg-orange-100 px-2 py-0.5 rounded-md font-medium text-orange-700 text-xs">
+              <span className="top-2 left-2 absolute bg-orange-100 px-2 py-0.5 rounded-md font-medium text-orange-700 text-t-12">
                 Rx
               </span>
             )}
@@ -65,23 +65,23 @@ export default function ProductGrid({ medicines, loading, error }: Props) {
 
           <div className="flex flex-col flex-1">
             {/* Title */}
-            <h2 className="font-semibold text-gray-800 text-sm line-clamp-2">
+            <h2 className="font-semibold text-gray-800 text-t-14 line-clamp-2">
               {medicine.name}
             </h2>
 
             {/* Meta */}
-            <p className="mt-1 text-gray-500 text-xs">
+            <p className="mt-1 text-gray-500 text-t-12">
               {medicine.dosageForm} · {medicine.packSize} {medicine.packUnit}
             </p>
 
             <div className="mt-auto">
               {/* Price Range */}
-              <div className="mt-3 font-semibold text-green-600 text-sm">
+              <div className="mt-3 font-semibold text-green-600 text-t-14">
                 {formatPriceRange(medicine.minPrice, medicine.maxPrice)}
               </div>
 
               {/* Button */}
-              <button className="bg-(--color-primary) hover:bg-(--color-primary-dark) mt-3 py-2 rounded-lg w-full text-white text-sm transition">
+              <button className="bg-(--color-primary) hover:bg-(--color-primary-dark) mt-3 py-2 rounded-lg w-full text-white text-t-14 transition">
                 View Pharmacies
               </button>
             </div>

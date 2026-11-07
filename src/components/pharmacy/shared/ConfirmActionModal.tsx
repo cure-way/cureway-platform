@@ -47,16 +47,16 @@ export default function ConfirmActionModal({
       >
         {/* Header */}
         <div className="bg-red-50 px-6 py-4 border-b rounded-t-xl">
-          <h2 className="font-semibold text-gray-800 text-sm">{title}</h2>
+          <h2 className="font-semibold text-gray-800 text-t-14">{title}</h2>
         </div>
 
         {/* Body */}
         <div className="px-6 py-6 text-center">
-          <div className="flex justify-center items-center mb-4 text-red-600 text-3xl">
+          <div className="flex justify-center items-center mb-4 text-red-600 text-t-25">
             {icon ?? <FiAlertTriangle />}
           </div>
 
-          <p className="text-gray-700 text-sm">{description}</p>
+          <p className="text-gray-700 text-t-14">{description}</p>
         </div>
 
         {/* Footer */}
@@ -64,14 +64,14 @@ export default function ConfirmActionModal({
           <button
             onClick={onConfirm}
             disabled={loading}
-            className={`px-5 py-2 rounded-lg text-sm font-medium ${confirmStyles}`}
+            className={`px-5 py-2 rounded-lg text-t-14 font-medium ${confirmStyles}`}
           >
             {loading ? "Processing..." : confirmLabel}
           </button>
 
           <button
             onClick={onCancel}
-            className="px-5 py-2 border rounded-lg text-gray-600 text-sm"
+            className="px-5 py-2 border rounded-lg text-gray-600 text-t-14"
           >
             {cancelLabel}
           </button>

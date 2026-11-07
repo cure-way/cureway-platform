@@ -59,7 +59,7 @@ export function SearchResults({ results }: SearchResultsProps) {
 
   if (results.length === 0) {
     return (
-      <div className="p-4 text-center text-gray-500 text-sm">
+      <div className="p-4 text-center text-gray-500 text-t-14">
         No results found
       </div>
     );
@@ -69,12 +69,12 @@ export function SearchResults({ results }: SearchResultsProps) {
 
   return (
     <div className="p-3 md:p-4">
-      <p className="font-semibold text-black text-sm mb-3">Suggestions</p>
+      <p className="font-semibold text-black text-t-14 mb-3">Suggestions</p>
 
       {/* Medicines Section */}
       {medicineResults.length > 0 && (
         <div className="mb-3">
-          <p className="text-primary font-medium text-xs mb-2 px-2">
+          <p className="text-primary font-medium text-t-12 mb-2 px-2">
             Medicines
           </p>
           <ul className="space-y-0.5">
@@ -95,12 +95,12 @@ export function SearchResults({ results }: SearchResultsProps) {
                   aria-selected={idx === activeIndex}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-base">💊</span>
+                    <span className="text-t-14">💊</span>
                     <div>
-                      <p className="font-semibold text-black text-sm">
+                      <p className="font-semibold text-black text-t-14">
                         {item.title}
                       </p>
-                      <p className="text-gray-500 text-xs">{item.subtitle}</p>
+                      <p className="text-gray-500 text-t-12">{item.subtitle}</p>
                     </div>
                   </div>
                   <ArrowUpLeft className="w-4 h-4 text-gray-400 shrink-0" />
@@ -114,7 +114,7 @@ export function SearchResults({ results }: SearchResultsProps) {
       {/* Pharmacies Section */}
       {pharmacyResults.length > 0 && (
         <div className="mb-3">
-          <p className="text-primary font-medium text-xs mb-2 px-2">
+          <p className="text-primary font-medium text-t-12 mb-2 px-2">
             Pharmacies
           </p>
           <ul className="space-y-0.5">
@@ -135,12 +135,12 @@ export function SearchResults({ results }: SearchResultsProps) {
                   aria-selected={idx === activeIndex}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-base">🏥</span>
+                    <span className="text-t-14">🏥</span>
                     <div>
-                      <p className="font-semibold text-black text-sm">
+                      <p className="font-semibold text-black text-t-14">
                         {item.title}
                       </p>
-                      <p className="text-gray-500 text-xs">{item.subtitle}</p>
+                      <p className="text-gray-500 text-t-12">{item.subtitle}</p>
                     </div>
                   </div>
                   <ArrowUpLeft className="w-4 h-4 text-gray-400 shrink-0" />
@@ -154,7 +154,7 @@ export function SearchResults({ results }: SearchResultsProps) {
       {/* Show all results link */}
       <button
         type="button"
-        className={`w-full text-center py-3 text-sm border-t border-gray-100 transition-colors ${
+        className={`w-full text-center py-3 text-t-14 border-t border-gray-100 transition-colors ${
           activeIndex === flatItems.length
             ? "text-primary bg-primary-light"
             : "text-gray-500 hover:text-primary"

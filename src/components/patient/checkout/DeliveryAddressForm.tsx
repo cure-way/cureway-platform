@@ -368,7 +368,7 @@ export default function DeliveryAddressForm({
                   <button
                     key={r.id}
                     onClick={() => setSelectedResult(r)}
-                    className={`w-full min-h-[65px] rounded-xl px-4 py-2.5 text-center flex items-center justify-center transition-all border cursor-pointer ${isSel ? "border-primary-dark bg-primary/5" : "border-neutral-light-active bg-transparent"}`}
+                    className={`w-full min-h-11 rounded-xl px-4 py-2.5 text-center flex items-center justify-center transition-all border cursor-pointer ${isSel ? "border-primary-dark bg-primary/5" : "border-neutral-light-active bg-transparent"}`}
                   >
                     <span className="text-t-12 text-neutral-dark leading-relaxed">
                       {r.label}

@@ -778,156 +778,166 @@
    text-* and leading-* utilities can now override these.
    ============================================================ */
 @layer components {
+  /* --------------------------------------------------------
+     SEMANTIC ROLE CLASSES
+
+     A responsive pair such as `text-t-21-semibold md:text-t-30-semibold`
+     does NOT work: both classes sit in this layer and the cascade falls
+     back to source order, where the 21 rule comes last and wins at every
+     width. These single classes carry their own media query instead.
+     -------------------------------------------------------- */
+  .text-page-title {
+    font-size: var(--font-size-t-21);
+    line-height: var(--line-height-t-21);
+    font-weight: 600;
+  }
+  @media (min-width: 768px) {
+    .text-page-title {
+      font-size: var(--font-size-t-30);
+      line-height: var(--line-height-t-30);
+    }
+  }
+
+  .text-section-title {
+    font-size: var(--font-size-t-17);
+    line-height: var(--line-height-t-17);
+    font-weight: 600;
+  }
+  @media (min-width: 768px) {
+    .text-section-title {
+      font-size: var(--font-size-t-21);
+      line-height: var(--line-height-t-21);
+    }
+  }
+
   /* Regular weight type scale */
+  .text-t-8 {
+    font-size: var(--font-size-t-8);
+    line-height: var(--line-height-t-8);
+    font-weight: 400;
+  }
+  .text-t-10 {
+    font-size: var(--font-size-t-10);
+    line-height: var(--line-height-t-10);
+    font-weight: 400;
+  }
+  .text-t-12 {
+    font-size: var(--font-size-t-12);
+    line-height: var(--line-height-t-12);
+    font-weight: 400;
+  }
+  .text-t-14 {
+    font-size: var(--font-size-t-14);
+    line-height: var(--line-height-t-14);
+    font-weight: 400;
+  }
+  .text-t-17 {
+    font-size: var(--font-size-t-17);
+    line-height: var(--line-height-t-17);
+    font-weight: 400;
+  }
+  .text-t-21 {
+    font-size: var(--font-size-t-21);
+    line-height: var(--line-height-t-21);
+    font-weight: 400;
+  }
+  .text-t-25 {
+    font-size: var(--font-size-t-25);
+    line-height: var(--line-height-t-25);
+    font-weight: 400;
+  }
+  .text-t-30 {
+    font-size: var(--font-size-t-30);
+    line-height: var(--line-height-t-30);
+    font-weight: 400;
+  }
   .text-t-36 {
     font-size: var(--font-size-t-36);
     line-height: var(--line-height-t-36);
     font-weight: 400;
   }
 
-  .text-t-30 {
-    font-size: var(--font-size-t-30);
-    line-height: var(--line-height-t-30);
-    font-weight: 400;
-  }
-
-  .text-t-25 {
-    font-size: var(--font-size-t-25);
-    line-height: var(--line-height-t-25);
-    font-weight: 400;
-  }
-
-  .text-t-21 {
-    font-size: var(--font-size-t-21);
-    line-height: var(--line-height-t-21);
-    font-weight: 400;
-  }
-
-  .text-t-17 {
-    font-size: var(--font-size-t-17);
-    line-height: var(--line-height-t-17);
-    font-weight: 400;
-  }
-
-  .text-t-14 {
-    font-size: var(--font-size-t-14);
-    line-height: var(--line-height-t-14);
-    font-weight: 400;
-  }
-
-  .text-t-12 {
-    font-size: var(--font-size-t-12);
-    line-height: var(--line-height-t-12);
-    font-weight: 400;
-  }
-
-  .text-t-10 {
+  /* SemiBold type scale */
+  .text-t-10-semibold {
     font-size: var(--font-size-t-10);
     line-height: var(--line-height-t-10);
-    font-weight: 400;
+    font-weight: 600;
   }
-
-  .text-t-8 {
-    font-size: var(--font-size-t-8);
-    line-height: var(--line-height-t-8);
-    font-weight: 400;
+  .text-t-12-semibold {
+    font-size: var(--font-size-t-12);
+    line-height: var(--line-height-t-12);
+    font-weight: 600;
   }
-
-  /* SemiBold type scale */
+  .text-t-14-semibold {
+    font-size: var(--font-size-t-14);
+    line-height: var(--line-height-t-14);
+    font-weight: 600;
+  }
+  .text-t-17-semibold {
+    font-size: var(--font-size-t-17);
+    line-height: var(--line-height-t-17);
+    font-weight: 600;
+  }
+  .text-t-21-semibold {
+    font-size: var(--font-size-t-21);
+    line-height: var(--line-height-t-21);
+    font-weight: 600;
+  }
+  .text-t-25-semibold {
+    font-size: var(--font-size-t-25);
+    line-height: var(--line-height-t-25);
+    font-weight: 600;
+  }
+  .text-t-30-semibold {
+    font-size: var(--font-size-t-30);
+    line-height: var(--line-height-t-30);
+    font-weight: 600;
+  }
   .text-t-36-semibold {
     font-size: var(--font-size-t-36);
     line-height: var(--line-height-t-36);
     font-weight: 600;
   }
 
-  .text-t-30-semibold {
-    font-size: var(--font-size-t-30);
-    line-height: var(--line-height-t-30);
-    font-weight: 600;
-  }
-
-  .text-t-25-semibold {
-    font-size: var(--font-size-t-25);
-    line-height: var(--line-height-t-25);
-    font-weight: 600;
-  }
-
-  .text-t-21-semibold {
-    font-size: var(--font-size-t-21);
-    line-height: var(--line-height-t-21);
-    font-weight: 600;
-  }
-
-  .text-t-17-semibold {
-    font-size: var(--font-size-t-17);
-    line-height: var(--line-height-t-17);
-    font-weight: 600;
-  }
-
-  .text-t-14-semibold {
-    font-size: var(--font-size-t-14);
-    line-height: var(--line-height-t-14);
-    font-weight: 600;
-  }
-
-  .text-t-12-semibold {
-    font-size: var(--font-size-t-12);
-    line-height: var(--line-height-t-12);
-    font-weight: 600;
-  }
-
-  .text-t-10-semibold {
+  /* Bold type scale */
+  .text-t-10-bold {
     font-size: var(--font-size-t-10);
     line-height: var(--line-height-t-10);
-    font-weight: 600;
-  }
-
-  /* Bold type scale */
-  .text-t-36-bold {
-    font-size: var(--font-size-t-36);
-    line-height: var(--line-height-t-36);
     font-weight: 700;
   }
-
-  .text-t-30-bold {
-    font-size: var(--font-size-t-30);
-    line-height: var(--line-height-t-30);
-    font-weight: 700;
-  }
-
-  .text-t-25-bold {
-    font-size: var(--font-size-t-25);
-    line-height: var(--line-height-t-25);
-    font-weight: 700;
-  }
-
-  .text-t-21-bold {
-    font-size: var(--font-size-t-21);
-    line-height: var(--line-height-t-21);
-    font-weight: 700;
-  }
-
-  .text-t-17-bold {
-    font-size: var(--font-size-t-17);
-    line-height: var(--line-height-t-17);
-    font-weight: 700;
-  }
-
-  .text-t-14-bold {
-    font-size: var(--font-size-t-14);
-    line-height: var(--line-height-t-14);
-    font-weight: 700;
-  }
-
   .text-t-12-bold {
     font-size: var(--font-size-t-12);
     line-height: var(--line-height-t-12);
     font-weight: 700;
   }
-
-  .text-t-10-bold {
-    font-size: var(--font-size-t-10);
-    line-height: var(--line-height-t-10);
+  .text-t-14-bold {
+    font-size: var(--font-size-t-14);
+    line-height: var(--line-height-t-14);
+    font-weight: 700;
+  }
+  .text-t-17-bold {
+    font-size: var(--font-size-t-17);
+    line-height: var(--line-height-t-17);
+    font-weight: 700;
+  }
+  .text-t-21-bold {
+    font-size: var(--font-size-t-21);
+    line-height: var(--line-height-t-21);
+    font-weight: 700;
+  }
+  .text-t-25-bold {
+    font-size: var(--font-size-t-25);
+    line-height: var(--line-height-t-25);
+    font-weight: 700;
+  }
+  .text-t-30-bold {
+    font-size: var(--font-size-t-30);
+    line-height: var(--line-height-t-30);
+    font-weight: 700;
+  }
+  .text-t-36-bold {
+    font-size: var(--font-size-t-36);
+    line-height: var(--line-height-t-36);
     font-weight: 700;
   }
 

@@ -9,7 +9,7 @@ export default function PrivacyPolicyPage() {
       />
 
       <div className="w-full flex flex-col gap-4 items-center">
-        <div className="w-full bg-white border border-primary-light rounded-3xl p-6 min-h-[335px] flex flex-col justify-center">
+        <div className="w-full bg-white border border-primary-light rounded-2xl p-6 min-h-[335px] flex flex-col justify-center">
           <div className="text-t-17 font-semibold text-neutral-dark-active leading-[1.2] space-y-4">
             <p>Your privacy is important to us.</p>
             <p>

@@ -28,11 +28,11 @@ export function SearchFilters({
           return (
             <div
               key={filter.key}
-              className="flex items-start gap-2 bg-gray-50 px-3 py-2 border rounded-lg w-full sm:w-fit text-sm"
+              className="flex items-start gap-2 bg-gray-50 px-3 py-2 border rounded-lg w-full sm:w-fit text-t-14"
             >
               <div>
                 <p className="font-medium">{filter.label}</p>
-                <p className="text-gray-500 text-xs">{filter.description}</p>
+                <p className="text-gray-500 text-t-12">{filter.description}</p>
               </div>
 
               <FilterToggle
@@ -47,7 +47,7 @@ export function SearchFilters({
       <div className="flex gap-2">
         <button
           type="button"
-          className="flex-1 hover:bg-gray-100 py-2 border rounded-lg text-gray-700 text-sm"
+          className="flex-1 hover:bg-gray-100 py-2 border rounded-lg text-gray-700 text-t-14"
           onClick={onClear}
         >
           Clear all
@@ -55,7 +55,7 @@ export function SearchFilters({
 
         <button
           type="button"
-          className="flex-1 bg-primary hover:bg-primary-hover py-2 rounded-lg text-white text-sm"
+          className="flex-1 bg-primary hover:bg-primary-hover py-2 rounded-lg text-white text-t-14"
           onClick={onApply}
         >
           Apply filters

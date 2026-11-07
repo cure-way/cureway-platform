@@ -27,7 +27,7 @@ export function HelpAccordion({ items }: HelpAccordionProps) {
       {items.map((item, index) => (
         <div
           key={item.title}
-          className="bg-white border border-neutral-normal/30 rounded-3xl px-8 md:px-20 py-8 md:py-10"
+          className="bg-white border border-neutral-normal/30 rounded-2xl px-8 md:px-20 py-8 md:py-10"
         >
           <button
             onClick={() => toggle(index)}

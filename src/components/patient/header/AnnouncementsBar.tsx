@@ -132,7 +132,7 @@ export function AnnouncementsBar() {
                         setCurrencyOpen(false);
                       }
                     }}
-                    className={`px-4 py-2 text-sm font-semibold cursor-pointer hover:bg-primary-light transition-colors ${
+                    className={`px-4 py-2 text-t-14 font-semibold cursor-pointer hover:bg-primary-light transition-colors ${
                       selectedCurrency === currency
                         ? "bg-primary text-white hover:bg-primary-hover"
                         : "text-primary-darker"
@@ -196,7 +196,7 @@ export function AnnouncementsBar() {
                         setLanguageOpen(false);
                       }
                     }}
-                    className={`px-4 py-2 text-sm font-semibold cursor-pointer hover:bg-primary-light transition-colors ${
+                    className={`px-4 py-2 text-t-14 font-semibold cursor-pointer hover:bg-primary-light transition-colors ${
                       selectedLanguage === lang.value
                         ? "bg-primary text-white hover:bg-primary-hover"
                         : "text-primary-darker"

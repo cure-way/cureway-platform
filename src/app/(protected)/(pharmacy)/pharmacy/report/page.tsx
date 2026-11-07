@@ -62,7 +62,7 @@ export default function PharmacyReportPage() {
         icon={<FiBarChart2 />}
       />
       {weeklyStats?.totalOrders === 0 && (
-        <div className="p-2 font-medium text-gray-500 text-sm">
+        <div className="p-2 font-medium text-gray-500 text-t-14">
           No orders recorded in the last 7 days.
         </div>
       )}

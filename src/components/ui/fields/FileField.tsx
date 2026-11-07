@@ -78,8 +78,8 @@ export const FileField = forwardRef<HTMLInputElement, FileFieldProps>(
           )}
         >
           {uploadIcon || <Upload className="w-8 h-8 text-gray-400" />}
-          <span className="text-sm text-gray-500">{uploadTitle}</span>
-          <span className="text-xs text-gray-400">{uploadSubtitle}</span>
+          <span className="text-t-14 text-gray-500">{uploadTitle}</span>
+          <span className="text-t-12 text-gray-400">{uploadSubtitle}</span>
           <input
             ref={ref}
             id={fieldId}

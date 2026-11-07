@@ -59,7 +59,7 @@ export function AuthLayout({
                 aria-label="Go back"
               >
                 <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                <span className="text-sm font-medium">Back</span>
+                <span className="text-t-14 font-medium">Back</span>
               </motion.button>
             )}
 

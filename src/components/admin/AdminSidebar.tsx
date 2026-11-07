@@ -129,7 +129,12 @@ const settingsNav: NavItem[] = [
     unbuilt: true,
     icon: ComputerIcon,
   },
-  { label: "App Settings", href: "/admin/settings/app", icon: MobileIcon, unbuilt: true },
+  {
+    label: "App Settings",
+    href: "/admin/settings/app",
+    icon: MobileIcon,
+    unbuilt: true,
+  },
   {
     label: "Website Settings",
     href: "/admin/settings/website",
@@ -332,9 +337,7 @@ export default function AdminSidebar() {
               height={40}
               className="rounded-full"
             />
-            <span className="text-t-25 font-black text-[#121B3C]">
-              CUREWAY
-            </span>
+            <span className="text-t-25 font-bold text-[#121B3C]">CUREWAY</span>
           </Link>
           <button
             onClick={close}
@@ -386,7 +389,7 @@ export default function AdminSidebar() {
                   height={40}
                   className="rounded-full"
                 />
-                <span className="text-t-25 font-black text-[#121B3C]">
+                <span className="text-t-25 font-bold text-[#121B3C]">
                   CUREWAY
                 </span>
               </Link>

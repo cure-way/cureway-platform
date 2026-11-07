@@ -68,7 +68,7 @@ export function ReorderDialog({
         className="fixed inset-0 bg-black/40 z-[1000] flex items-center justify-center p-4 backdrop-blur-sm"
       >
         <div
-          className="reorder-dialog w-full max-w-[400px] bg-card rounded-3xl p-6 shadow-2xl font-[var(--font-montserrat)]"
+          className="reorder-dialog w-full max-w-[400px] bg-card rounded-2xl p-6 shadow-2xl font-[var(--font-montserrat)]"
           onClick={(e) => e.stopPropagation()}
         >
           {state === "success" ? (
@@ -123,7 +123,7 @@ export function ReorderDialog({
                 <div className="bg-neutral-light rounded-xl p-3 mb-5 flex flex-col gap-2">
                   {previewItems.map((item) => (
                     <div key={item.id} className="flex items-center gap-2">
-                      <span className="text-base">💊</span>
+                      <span className="text-t-14">💊</span>
                       <span className="text-t-14 text-foreground truncate flex-1">
                         {item.name}
                       </span>

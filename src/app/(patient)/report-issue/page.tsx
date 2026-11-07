@@ -27,8 +27,8 @@ export default function ReportIssuePage() {
         subtitle="Please provide clear details so we can help you faster."
       />
 
-      <div className="w-full bg-white border-[5px] border-primary/10 rounded-3xl shadow-card p-6">
-        <div className="border-2 border-neutral-normal/40 rounded-3xl p-6 flex flex-col gap-6">
+      <div className="w-full bg-white border-[5px] border-primary/10 rounded-2xl shadow-card p-6">
+        <div className="border-2 border-neutral-normal/40 rounded-2xl p-6 flex flex-col gap-6">
           <p className="text-t-21 font-bold text-black leading-[1.2]">
             Select Order
           </p>
@@ -37,7 +37,7 @@ export default function ReportIssuePage() {
           <div className="relative">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="w-full border border-neutral-normal/40 rounded-3xl p-6 flex items-center gap-2"
+              className="w-full border border-neutral-normal/40 rounded-2xl p-6 flex items-center gap-2"
               type="button"
               aria-expanded={isDropdownOpen}
               aria-haspopup="listbox"
@@ -80,7 +80,7 @@ export default function ReportIssuePage() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Describe the Issue"
-            className="w-full border border-neutral-normal/40 rounded-3xl p-6 text-t-17 text-black placeholder:text-neutral leading-[1.2] resize-none min-h-37.5 focus:outline-none focus:border-primary transition-colors"
+            className="w-full border border-neutral-normal/40 rounded-2xl p-6 text-t-17 text-black placeholder:text-neutral leading-[1.2] resize-none min-h-37.5 focus:outline-none focus:border-primary transition-colors"
           />
         </div>
 

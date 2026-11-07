@@ -21,7 +21,7 @@ export function SearchFilterTags({ tags, onRemove }: SearchFilterTagsProps) {
         <button
           key={tag.id}
           type="button"
-          className="flex items-center gap-2 border border-primary-light-active rounded-2xl text-primary-darker text-sm font-medium px-3 py-1.5 h-12 hover:bg-primary-light/30 transition-colors"
+          className="flex items-center gap-2 border border-primary-light-active rounded-2xl text-primary-darker text-t-14 font-medium px-3 py-1.5 h-12 hover:bg-primary-light/30 transition-colors"
           onClick={() => onRemove(tag.id)}
           aria-label={`Remove ${tag.label} filter`}
         >

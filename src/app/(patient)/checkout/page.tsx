@@ -162,7 +162,7 @@ export default function CheckoutPage() {
         />
 
         <div className="flex flex-col xl:flex-row gap-6 items-start">
-          <div className="flex-1 min-w-0 bg-card rounded-3xl border-t-4 border-t-secondary p-4 sm:p-6 shadow-card flex flex-col gap-4">
+          <div className="flex-1 min-w-0 bg-card rounded-2xl border-t-4 border-t-secondary p-4 sm:p-6 shadow-card flex flex-col gap-4">
             <ContactInformation contact={checkoutData.contact} />
             <div className="h-px bg-border" />
 

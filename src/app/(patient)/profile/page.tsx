@@ -15,7 +15,7 @@ import {
   IconTime,
 } from "@/components/patient/settings/Icons";
 import { MotionTap } from "@/components/shared/MotionTap";
-import { PageContainer } from "@/components/shared";
+import { PageContainer, PageHeader } from "@/components/shared";
 import { useProfile } from "@/hooks/useProfile";
 import { useAuth } from "@/features/auth";
 
@@ -45,13 +45,14 @@ export default function SettingsPage() {
 
   return (
     <PageContainer variant="account">
+      <PageHeader
+        title="Profile"
+        subtitle="Your account, preferences and saved items"
+      />
+
       <div className="grid gap-6 lg:grid-cols-12">
         {/* LEFT COLUMN */}
         <div className="min-w-0 lg:col-span-5">
-          <div className="mb-4 text-t-30 font-bold leading-[120%] text-black">
-            Settings
-          </div>
-
           <MotionTap className="rounded-[24px] border-t-[5px] border-t-[#5678C5] bg-white p-6 shadow-card">
             <div className="flex flex-col items-center gap-4 pb-4">
               <div className="h-[120px] w-[120px] overflow-hidden rounded-full bg-[#EBEDF7]">

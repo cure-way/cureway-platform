@@ -25,7 +25,7 @@ export function AuthUserTypeSwitch({
 }: AuthUserTypeSwitchProps) {
   return (
     <div className={cn("flex items-center justify-center gap-8", className)}>
-      <span className="text-lg font-medium text-black/80">
+      <span className="text-t-17 font-medium text-black/80">
         Select User Type
       </span>
       <div className="flex items-center gap-4">
@@ -55,7 +55,7 @@ export function AuthUserTypeSwitch({
           </motion.div>
           <span
             className={cn(
-              "text-base transition-colors",
+              "text-t-14 transition-colors",
               value === "patient"
                 ? "text-[#334eac] font-medium"
                 : "text-[#797776]",
@@ -91,7 +91,7 @@ export function AuthUserTypeSwitch({
           </motion.div>
           <span
             className={cn(
-              "text-base transition-colors",
+              "text-t-14 transition-colors",
               value === "pharmacist"
                 ? "text-[#334eac] font-medium"
                 : "text-[#797776]",

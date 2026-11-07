@@ -1,18 +1,14 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
 import { MotionTap } from "@/components/shared/MotionTap";
-import { PageContainer } from "@/components/shared";
+import { PageContainer, PageHeader } from "@/components/shared";
 import {
   HistoryOrderCard,
   HistoryOrder,
 } from "@/components/patient/history/HistoryOrderCard";
-import { IconBack } from "@/components/patient/history/Icons";
 
 export default function HistoryPage() {
-  const router = useRouter();
-
   const orders: HistoryOrder[] = [
     {
       id: "#0325",
@@ -42,23 +38,12 @@ export default function HistoryPage() {
 
   return (
     <PageContainer variant="account">
-      {/* Header: History + Back (يمين) */}
-      <div className="mb-4 flex items-center justify-between">
-        <div className="text-[48px] font-bold leading-[120%] text-black">
-          History
-        </div>
-
-        <MotionTap
-          as="button"
-          onClick={() => router.back()}
-          className="inline-flex items-center gap-2"
-        >
-          <IconBack />
-          <span className="text-t-25 font-bold leading-[120%] text-[#1E2B57]">
-            Back
-          </span>
-        </MotionTap>
-      </div>
+      <PageHeader
+        title="History"
+        subtitle="Medicines you have ordered before"
+        showBack
+        backHref="/profile"
+      />
 
       {/* List */}
       <div className="flex flex-col gap-4">

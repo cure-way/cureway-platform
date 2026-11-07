@@ -80,7 +80,7 @@ export default function ProfileAvatar({ image, name, onSave }: Props) {
       {selectedFile && (
         <button
           onClick={handleSave}
-          className="hover:bg-(--color-primary) px-4 py-2 border rounded-lg h-fit text-gray-500 hover:text-white text-sm transition-all roundedlg"
+          className="hover:bg-(--color-primary) px-4 py-2 border rounded-lg h-fit text-gray-500 hover:text-white text-t-14 transition-all roundedlg"
         >
           Save Image
         </button>

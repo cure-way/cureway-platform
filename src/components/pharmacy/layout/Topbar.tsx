@@ -38,7 +38,7 @@ export default function TopBar({ onMenuClick }: TopBarProps) {
             onFocus={() => setIsOpen(true)}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="What do you want to find?"
-            className="px-4 py-2 border border-gray-200 focus:border-(--color-primary-active) rounded-full focus:outline-none w-full text-sm"
+            className="px-4 py-2 border border-gray-200 focus:border-(--color-primary-active) rounded-full focus:outline-none w-full text-t-14"
           />
 
           <div className="top-full right-0 left-0 z-50 absolute mt-2">
@@ -71,7 +71,7 @@ export default function TopBar({ onMenuClick }: TopBarProps) {
           onFocus={() => setIsOpen(true)}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="What do you want to find?"
-          className="px-4 py-2 border border-gray-200 focus:border-(--color-primary-active) rounded-full focus:outline-none w-full text-sm"
+          className="px-4 py-2 border border-gray-200 focus:border-(--color-primary-active) rounded-full focus:outline-none w-full text-t-14"
         />
 
         <div className="top-full right-0 left-0 z-50 absolute mt-2">

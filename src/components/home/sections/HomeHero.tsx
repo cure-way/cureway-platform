@@ -31,7 +31,7 @@ export function HomeHero() {
           className="flex-1 flex flex-col gap-5 md:gap-6 lg:gap-8 min-w-0"
         >
           <div className="flex flex-col gap-3 md:gap-4 lg:gap-6">
-            <h1 className="text-2xl md:text-4xl lg:text-[56px] font-extrabold text-primary-darker leading-tight md:leading-normal">
+            <h1 className="text-t-21 md:text-t-30 lg:text-[56px] font-bold text-primary-darker leading-tight md:leading-normal">
               {heading}
             </h1>
             <p className="text-t-17 md:text-t-21 lg:text-t-25 text-secondary leading-[1.5] max-w-[545px]">
@@ -85,7 +85,7 @@ export function HomeHero() {
           {/* Floating badges */}
           {heroBadges.map((badge, i) => {
             const innerClasses =
-              "rounded-3xl shadow-[0px_4px_4px_rgba(0,0,0,0.15)] px-4 py-3 md:px-5 md:py-4 hidden md:flex flex-col gap-2";
+              "rounded-2xl shadow-[0px_4px_4px_rgba(0,0,0,0.15)] px-4 py-3 md:px-5 md:py-4 hidden md:flex flex-col gap-2";
 
             if (badge.variant === "primary") {
               return (
@@ -97,14 +97,12 @@ export function HomeHero() {
                 >
                   <div className={`${innerClasses} bg-primary text-white`}>
                     <div className="flex items-center justify-between">
-                      <span className="font-black text-t-21">
-                        {badge.value}
-                      </span>
+                      <span className="font-bold text-t-21">{badge.value}</span>
                       <div className="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center">
                         <span className="text-t-14 text-primary">👤</span>
                       </div>
                     </div>
-                    <p className="text-t-14 font-extrabold list-disc">
+                    <p className="text-t-14 font-bold list-disc">
                       • {badge.label}
                     </p>
                   </div>
@@ -124,12 +122,12 @@ export function HomeHero() {
                     className={`${innerClasses} bg-primary-light text-primary-hover`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-black text-t-25 md:text-t-30">
+                      <span className="font-bold text-t-25 md:text-t-30">
                         {badge.value}
                       </span>
-                      <span className="text-3xl">🏅</span>
+                      <span className="text-t-25">🏅</span>
                     </div>
-                    <p className="text-t-14 md:text-t-17 font-extrabold">
+                    <p className="text-t-14 md:text-t-17 font-bold">
                       • {badge.label}
                     </p>
                   </div>
@@ -148,10 +146,10 @@ export function HomeHero() {
                   className={`${innerClasses} bg-white border border-primary text-primary`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-black text-t-14">{badge.value}</span>
-                    <span className="text-xl">🏅</span>
+                    <span className="font-bold text-t-14">{badge.value}</span>
+                    <span className="text-t-17">🏅</span>
                   </div>
-                  <p className="text-t-12 font-extrabold text-primary">
+                  <p className="text-t-12 font-bold text-primary">
                     • {badge.label}
                   </p>
                 </div>

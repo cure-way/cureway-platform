@@ -103,7 +103,7 @@ function NewPasswordForm() {
               <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center">
                 <Check className="w-10 h-10 text-green-600" />
               </div>
-              <h1 className="text-2xl font-semibold text-black/80">
+              <h1 className="text-page-title text-black/80">
                 Password Reset Successfully
               </h1>
               <p className="text-gray-600">
@@ -166,10 +166,10 @@ function NewPasswordForm() {
 
             {/* Title and description */}
             <div className="flex flex-col gap-2">
-              <h1 className="text-2xl font-semibold text-black/80 leading-tight">
+              <h1 className="text-page-title text-black/80 leading-tight">
                 Create New Password
               </h1>
-              <p className="text-gray-600 text-base">
+              <p className="text-gray-600 text-t-14">
                 Your new password must be different from your previous password.
               </p>
             </div>
@@ -208,7 +208,7 @@ function NewPasswordForm() {
                 disabled={isButtonDisabled}
                 whileTap={{ scale: isButtonDisabled ? 1 : 0.98 }}
                 className={cn(
-                  "w-full h-[61px] rounded-3xl text-base font-semibold transition-all duration-200",
+                  "w-full h-[61px] rounded-2xl text-t-14 font-semibold transition-all duration-200",
                   "flex items-center justify-center",
                   isButtonDisabled
                     ? "bg-gray-200 text-gray-400 cursor-not-allowed"
@@ -230,7 +230,7 @@ function NewPasswordForm() {
             <div className="text-center">
               <Link
                 href="/auth/sign-in"
-                className="text-sm text-[#334eac] hover:underline font-medium"
+                className="text-t-14 text-[#334eac] hover:underline font-medium"
               >
                 Back to Sign In
               </Link>

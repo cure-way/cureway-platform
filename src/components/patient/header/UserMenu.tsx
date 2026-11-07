@@ -78,7 +78,7 @@ export function UserMenu({ cartCount = 0 }: UserMenuProps) {
       <div className="flex items-center">
         <Link
           href="/pharmacy/home"
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary-darker bg-primary-light hover:bg-primary-light-active rounded-lg transition-colors"
+          className="flex items-center gap-2 px-4 py-2 text-t-14 font-medium text-primary-darker bg-primary-light hover:bg-primary-light-active rounded-lg transition-colors"
         >
           Pharmacy Dashboard
         </Link>
@@ -128,7 +128,7 @@ export function UserMenu({ cartCount = 0 }: UserMenuProps) {
               className="object-cover rounded-full"
             />
           ) : (
-            <span className="text-sm font-semibold text-primary-darker select-none">
+            <span className="text-t-14 font-semibold text-primary-darker select-none">
               {initials}
             </span>
           )}
@@ -146,10 +146,12 @@ export function UserMenu({ cartCount = 0 }: UserMenuProps) {
             >
               {/* User info */}
               <div className="px-4 py-3 border-b border-gray-100">
-                <p className="text-sm font-semibold text-gray-900 truncate">
+                <p className="text-t-14 font-semibold text-gray-900 truncate">
                   {user?.name}
                 </p>
-                <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                <p className="text-t-12 text-gray-500 truncate">
+                  {user?.email}
+                </p>
               </div>
 
               {/* Links */}
@@ -178,7 +180,7 @@ export function UserMenu({ cartCount = 0 }: UserMenuProps) {
               <div className="border-t border-gray-100 pt-1">
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                  className="flex items-center gap-3 w-full px-4 py-2.5 text-t-14 text-red-600 hover:bg-red-50 transition-colors"
                 >
                   <IoLogOutOutline className="w-4 h-4" />
                   Sign Out
@@ -209,7 +211,7 @@ function DropdownLink({
     <Link
       href={href}
       onClick={onClick}
-      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+      className="flex items-center gap-3 px-4 py-2.5 text-t-14 text-gray-700 hover:bg-gray-50 transition-colors"
     >
       {icon}
       {label}

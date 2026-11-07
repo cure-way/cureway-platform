@@ -120,7 +120,7 @@ export default function MedicineForm({
     <form
       id="medicine-form"
       onSubmit={handleSubmit(onFormSubmit)}
-      className="space-y-4 text-sm"
+      className="space-y-4 text-t-14"
     >
       <MedicineImageField
         imagePreview={imagePreview}

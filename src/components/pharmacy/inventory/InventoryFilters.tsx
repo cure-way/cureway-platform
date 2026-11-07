@@ -32,7 +32,7 @@ export default function InventoryFilters({
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Search Medicine..."
-          className="bg-transparent py-2 pr-3 pl-9 outline-none w-full text-sm"
+          className="bg-transparent py-2 pr-3 pl-9 outline-none w-full text-t-14"
         />
       </div>
 

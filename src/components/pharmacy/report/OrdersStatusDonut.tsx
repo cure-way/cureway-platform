@@ -68,7 +68,7 @@ export function OrdersStatusDonut({
         </PieChart>
 
         <div className="absolute text-center pointer-events-none">
-          <p className="text-gray-500 text-sm">Orders</p>
+          <p className="text-gray-500 text-t-14">Orders</p>
         </div>
       </div>
 

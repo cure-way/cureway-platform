@@ -40,7 +40,7 @@ export default function AddMedicineModal({ open, onClose }: Props) {
       >
         {/* Header */}
         <div className="flex justify-between items-center p-4 border-b shrink-0">
-          <h2 className="font-semibold text-gray-900 text-sm">
+          <h2 className="font-semibold text-gray-900 text-t-14">
             Add new medicine
           </h2>
 
@@ -64,7 +64,7 @@ export default function AddMedicineModal({ open, onClose }: Props) {
             type="submit"
             form="medicine-form"
             disabled={isLoading}
-            className="w-full bg-(--color-primary) text-white py-2 rounded-lg text-sm disabled:opacity-50"
+            className="w-full bg-(--color-primary) text-white py-2 rounded-lg text-t-14 disabled:opacity-50"
           >
             {isLoading ? "Saving..." : "Save"}
           </button>
@@ -72,7 +72,7 @@ export default function AddMedicineModal({ open, onClose }: Props) {
           <button
             onClick={onClose}
             disabled={isLoading}
-            className="py-2 border rounded-lg w-full text-gray-600 text-sm"
+            className="py-2 border rounded-lg w-full text-gray-600 text-t-14"
           >
             Cancel
           </button>

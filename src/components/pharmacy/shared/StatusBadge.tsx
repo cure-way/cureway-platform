@@ -22,7 +22,7 @@ export default function StatusBadge({
 
     return (
       <span
-        className={`inline-flex rounded-full px-4 py-1.5 text-xs font-medium ${config.className}`}
+        className={`inline-flex rounded-full px-4 py-1.5 text-t-12 font-medium ${config.className}`}
       >
         {config.label}
       </span>
@@ -36,7 +36,7 @@ export default function StatusBadge({
 
   return (
     <span
-      className={`inline-flex rounded-full px-4 py-1.5 text-xs font-medium ${config.className}`}
+      className={`inline-flex rounded-full px-4 py-1.5 text-t-12 font-medium ${config.className}`}
     >
       {config.label}
     </span>

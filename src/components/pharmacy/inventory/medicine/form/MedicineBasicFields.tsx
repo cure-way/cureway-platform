@@ -157,5 +157,5 @@ export default function MedicineBasicFields({
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
 
-  return <p className="mt-1 text-red-500 text-xs">{message}</p>;
+  return <p className="mt-1 text-red-500 text-t-12">{message}</p>;
 }

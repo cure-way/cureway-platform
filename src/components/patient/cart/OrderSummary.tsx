@@ -16,7 +16,7 @@ export default function OrderSummary({
   onContinueShopping,
 }: Props) {
   return (
-    <div className="bg-card rounded-3xl border-t-4 border-t-secondary p-6 shadow-card font-[var(--font-montserrat)] sticky top-6">
+    <div className="bg-card rounded-2xl border-t-4 border-t-secondary p-6 shadow-card font-[var(--font-montserrat)] sticky top-6">
       <div className="pb-3 mb-4 border-b border-border">
         <h3 className="text-t-21-bold text-foreground">Order summary</h3>
       </div>

@@ -48,9 +48,7 @@ export default function AdminSettingsLayout({
       {/* Page Header + Breadcrumb */}
       <MotionStaggerItem>
         <div className="space-y-1 sm:space-y-2">
-          <h1 className="text-t-21-semibold md:text-t-30-semibold text-primary-darker">
-            Settings
-          </h1>
+          <h1 className="text-page-title text-primary-darker">Settings</h1>
           {currentLabel && (
             /* A breadcrumb trail is navigation, not prose: the global
                touch-target rule deliberately skips links inside <p>, so

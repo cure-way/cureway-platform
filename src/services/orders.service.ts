@@ -36,7 +36,10 @@ import type {
 // Internal helpers
 // =============================================================================
 
-interface CityDto { id: number; name: string; }
+interface CityDto {
+  id: number;
+  name: string;
+}
 
 /**
  * GET /cities → return the cityId that best matches cityName.
@@ -78,12 +81,12 @@ async function resolveCityId(cityName: string): Promise<number> {
 
 function adaptItem(item: CreatePharmacyOrderItemResponseDto): OrderItem {
   return {
-    id:          String(item.inventoryId),
-    name:        item.medicineName,
+    id: String(item.inventoryId),
+    name: item.medicineName,
     genericName: undefined,
-    image:       undefined,
-    quantity:    item.quantity,
-    unitPrice:   item.unitPrice,
+    image: undefined,
+    quantity: item.quantity,
+    unitPrice: item.unitPrice,
   };
 }
 
@@ -105,19 +108,19 @@ function adaptListItem(dto: PatientOrderListItemDto): Order {
   const addressText = dto.deliveryAddress?.addressText ?? "";
 
   return {
-    id:              String(dto.id),
-    pharmacyName:    pharmacyNames,
-    pharmacyId:      String(dto.pharmacyOrders?.[0]?.pharmacyId ?? ""),
-    address:         addressText,
+    id: String(dto.id),
+    pharmacyName: pharmacyNames,
+    pharmacyId: String(dto.pharmacyOrders?.[0]?.pharmacyId ?? ""),
+    address: addressText,
     deliveryAddress: addressText || undefined,
-    itemsCount:      totalItems,
-    total:           dto.totalAmount ?? 0,
-    deliveryFee:     dto.deliveryFee ?? 0,
+    itemsCount: totalItems,
+    total: dto.totalAmount ?? 0,
+    deliveryFee: dto.deliveryFee ?? 0,
     discount,
-    currency:        dto.currency ?? "ILS",
-    orderedAtISO:    dto.createdAt,
-    status:          mapApiOrderStatus(dto.status),
-    items:           [],
+    currency: dto.currency ?? "ILS",
+    orderedAtISO: dto.createdAt,
+    status: mapApiOrderStatus(dto.status),
+    items: [],
   };
 }
 
@@ -131,15 +134,13 @@ function adaptDetailItem(dto: PatientOrderDetailsResponseDto): Order {
     po.items.map(adaptItem),
   );
 
-  const pharmacyGroups: OrderPharmacyGroup[] = dto.pharmacyOrders.map(
-    (po) => ({
-      pharmacyId:      String(po.pharmacyId),
-      pharmacyName:    po.pharmacyName,
-      pharmacyAddress: po.pharmacyLocation?.address ?? "",
-      subtotal:        po.subtotal,
-      items:           po.items.map(adaptItem),
-    }),
-  );
+  const pharmacyGroups: OrderPharmacyGroup[] = dto.pharmacyOrders.map((po) => ({
+    pharmacyId: String(po.pharmacyId),
+    pharmacyName: po.pharmacyName,
+    pharmacyAddress: po.pharmacyLocation?.address ?? "",
+    subtotal: po.subtotal,
+    items: po.items.map(adaptItem),
+  }));
 
   const addressText = dto.deliveryAddress?.addressText ?? "";
   const discount = Math.max(
@@ -148,20 +149,20 @@ function adaptDetailItem(dto: PatientOrderDetailsResponseDto): Order {
   );
 
   return {
-    id:              String(dto.id),
-    pharmacyName:    pharmacyNames,
-    pharmacyId:      String(dto.pharmacyOrders[0]?.pharmacyId ?? ""),
-    address:         addressText,
+    id: String(dto.id),
+    pharmacyName: pharmacyNames,
+    pharmacyId: String(dto.pharmacyOrders[0]?.pharmacyId ?? ""),
+    address: addressText,
     deliveryAddress: addressText || undefined,
-    itemsCount:      allItems.length,
-    items:           allItems,
+    itemsCount: allItems.length,
+    items: allItems,
     pharmacyGroups,
-    total:           dto.totalAmount ?? 0,
-    deliveryFee:     dto.deliveryFee ?? 0,
+    total: dto.totalAmount ?? 0,
+    deliveryFee: dto.deliveryFee ?? 0,
     discount,
-    currency:        dto.currency ?? "ILS",
-    orderedAtISO:    dto.createdAt,
-    status:          mapApiOrderStatus(dto.status),
+    currency: dto.currency ?? "ILS",
+    orderedAtISO: dto.createdAt,
+    status: mapApiOrderStatus(dto.status),
   };
 }
 
@@ -170,10 +171,8 @@ function adaptDetailItem(dto: PatientOrderDetailsResponseDto): Order {
 // =============================================================================
 
 export const ordersService = {
-
   // ──────────────────────────────────────────────────────────────────────────
   async createOrder(checkoutData: CheckoutData, cart: Cart): Promise<Order> {
-
     // ── Step 1: Auth ───────────────────────────────────────────────────────
     if (!getAccessToken()) {
       throw new Error("You are not signed in. Please sign in and try again.");
@@ -210,21 +209,22 @@ export const ordersService = {
     }
 
     // ── Step 3: Create delivery address ───────────────────────────────────
-    const addr        = checkoutData.deliveryAddress;
-    const addressLine1 = addr?.street?.trim() || addr?.city?.trim() || "Delivery Address";
-    const cityName     = addr?.city?.trim() ?? "";
+    const addr = checkoutData.deliveryAddress;
+    const addressLine1 =
+      addr?.street?.trim() || addr?.city?.trim() || "Delivery Address";
+    const cityName = addr?.city?.trim() ?? "";
 
     let deliveryAddressId: number;
     try {
-      const cityId  = await resolveCityId(cityName);
+      const cityId = await resolveCityId(cityName);
       const created = await patientAddressService.createAddress({
         cityId,
         addressLine1,
-        addressLine2: addr?.area?.trim()            || null,
-        label:        "Order Address",
-        isDefault:    false,
-        latitude:     addr?.coordinates?.lat        ?? null,
-        longitude:    addr?.coordinates?.lng        ?? null,
+        addressLine2: addr?.area?.trim() || null,
+        label: "Order Address",
+        isDefault: false,
+        latitude: addr?.coordinates?.lat ?? null,
+        longitude: addr?.coordinates?.lng ?? null,
       });
       deliveryAddressId = created.id;
     } catch (err) {
@@ -249,7 +249,7 @@ export const ordersService = {
         pharmacyId: Number(group.pharmacy.id),
         items: group.items.map((item) => ({
           inventoryId: item.inventoryId as number,
-          quantity:    item.quantity,
+          quantity: item.quantity,
           ...(item.prescriptionId
             ? { prescriptionId: item.prescriptionId }
             : {}),
@@ -259,8 +259,8 @@ export const ordersService = {
 
     const dto: CreateOrderDto = {
       deliveryAddressId,
-      currency:   "ILS",
-      notes:      notes || undefined,
+      currency: "ILS",
+      notes: notes || undefined,
       pharmacies,
     };
 
@@ -278,11 +278,11 @@ export const ordersService = {
     // ── Adapt response → UI Order ─────────────────────────────────────────
     const pharmacyGroups: OrderPharmacyGroup[] = response.pharmacies.map(
       (p) => ({
-        pharmacyId:      String(p.pharmacyId),
-        pharmacyName:    p.pharmacyName,
+        pharmacyId: String(p.pharmacyId),
+        pharmacyName: p.pharmacyName,
         pharmacyAddress: p.pharmacyLocation?.address ?? "",
-        subtotal:        p.subtotal,
-        items:           p.items.map(adaptItem),
+        subtotal: p.subtotal,
+        items: p.items.map(adaptItem),
       }),
     );
 
@@ -291,28 +291,28 @@ export const ordersService = {
       [addr?.street, addr?.area, addr?.city].filter(Boolean).join(", ");
 
     return {
-      id:              String(response.id),
-      pharmacyName:    response.pharmacies.map((p) => p.pharmacyName).join(" + "),
-      pharmacyId:      String(response.pharmacies[0]?.pharmacyId ?? ""),
-      address:         responseAddress,
+      id: String(response.id),
+      pharmacyName: response.pharmacies.map((p) => p.pharmacyName).join(" + "),
+      pharmacyId: String(response.pharmacies[0]?.pharmacyId ?? ""),
+      address: responseAddress,
       deliveryAddress: responseAddress || undefined,
-      itemsCount:      response.itemsCount,
-      items:           response.pharmacies.flatMap((p) => p.items.map(adaptItem)),
+      itemsCount: response.itemsCount,
+      items: response.pharmacies.flatMap((p) => p.items.map(adaptItem)),
       pharmacyGroups,
-      total:           response.total,
-      deliveryFee:     response.deliveryFee,
-      discount:        response.discount ?? 0,
-      currency:        response.currency ?? "ILS",
-      orderedAtISO:    response.createdAt,
-      status:          "processing",
-      paymentMethod:   checkoutData.paymentMethod?.name ?? "",
+      total: response.total,
+      deliveryFee: response.deliveryFee,
+      discount: response.discount ?? 0,
+      currency: response.currency ?? "ILS",
+      orderedAtISO: response.createdAt,
+      status: "processing",
+      paymentMethod: checkoutData.paymentMethod?.name ?? "",
     };
   },
 
   // ──────────────────────────────────────────────────────────────────────────
   async getOrders(): Promise<Order[]> {
     const result = await ordersApiService.getMyOrders({
-      limit:     100,
+      limit: 100,
       sortOrder: "desc",
     });
     return (result.data ?? []).map(adaptListItem);

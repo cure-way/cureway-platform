@@ -43,15 +43,15 @@ export default function CategoryGrid({ categories, loading, error }: Props) {
               className="flex items-center gap-4 bg-white shadow-sm hover:shadow-md p-4 border border-gray-100 rounded-xl transition cursor-pointer"
             >
               <div className="relative flex justify-center items-center bg-gray-100 rounded-lg w-12 h-12 overflow-hidden">
-                <FaPills className="text-2xl text-(--color-primary)" />
+                <FaPills className="text-t-21 text-(--color-primary)" />
               </div>
 
               <div>
-                <h2 className="font-semibold text-gray-800 text-sm">
+                <h2 className="font-semibold text-gray-800 text-t-14">
                   {category.name}
                 </h2>
 
-                <p className="text-gray-500 text-xs">
+                <p className="text-gray-500 text-t-12">
                   {category.description ?? "Explore medicines in this category"}
                 </p>
               </div>

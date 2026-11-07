@@ -95,7 +95,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
       <div className="flex flex-col gap-1 w-full">
         <div
           className={cn(
-            "flex flex-col w-full min-h-[61px] justify-center gap-1 px-4 py-2 bg-white rounded-md border transition-colors",
+            "flex flex-col w-full min-h-[52px] justify-center gap-1 px-4 py-2 bg-white rounded-md border transition-colors",
             error
               ? "border-red-500 focus-within:border-red-600"
               : "border-black focus-within:border-gray-600",
@@ -103,7 +103,9 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
           )}
         >
           {label && (
-            <label className="text-sm font-medium text-black">{label}</label>
+            <label className="text-t-12-semibold text-neutral-dark">
+              {label}
+            </label>
           )}
           <div className="phone-input-wrapper">
             <PhoneInputWithCountry
@@ -118,7 +120,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
               className="w-full"
               numberInputProps={{
                 className:
-                  "text-sm text-gray-900 placeholder:text-gray-400 outline-none bg-transparent border-none focus:ring-0 p-0",
+                  "text-t-14 text-gray-900 placeholder:text-gray-400 outline-none bg-transparent border-none focus:ring-0 p-0",
                 name: name,
               }}
               countrySelectProps={{
@@ -135,13 +137,13 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="text-xs text-red-500 px-1"
+            className="text-t-12 text-error px-1"
           >
             {error}
           </motion.p>
         )}
         {helperText && !error && (
-          <p className="text-xs text-gray-500 px-1">{helperText}</p>
+          <p className="text-t-12 text-neutral px-1">{helperText}</p>
         )}
       </div>
     );

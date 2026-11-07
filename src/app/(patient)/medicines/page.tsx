@@ -16,7 +16,7 @@ export default function MedicinesPage() {
   return (
     <PageContainer variant="list" className="space-y-8">
       <div>
-        <h1 className="font-bold text-2xl">Medicines</h1>
+        <h1 className="font-bold text-t-21">Medicines</h1>
         <p className="text-gray-600">Browse all available medicines</p>
       </div>
 

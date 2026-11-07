@@ -44,7 +44,7 @@ export function OrderStatusBadge({ status }: Props) {
         s.wrap,
       )}
     >
-      <span className={cx("text-sm font-medium leading-[120%]", s.text)}>
+      <span className={cx("text-t-14 font-medium leading-[120%]", s.text)}>
         {s.label}
       </span>
     </div>

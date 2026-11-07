@@ -13,13 +13,13 @@ export default function InventorySnapshot() {
   return (
     <div className="bg-white p-4 border rounded-xl">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="font-semibold text-gray-900 text-sm">
+        <h2 className="font-semibold text-gray-900 text-t-14">
           Inventory Snapshot
         </h2>
 
         <button
           onClick={() => router.push("/pharmacy/inventory")}
-          className="font-medium text-(--color-primary) text-xs"
+          className="font-medium text-(--color-primary) text-t-12"
         >
           View All →
         </button>

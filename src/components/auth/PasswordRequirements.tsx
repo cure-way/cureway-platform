@@ -22,7 +22,7 @@ export function PasswordRequirements({
       exit={{ opacity: 0, height: 0 }}
       className="flex flex-col gap-2 p-3 bg-gray-50 rounded-lg"
     >
-      <p className="text-xs font-medium text-gray-700 mb-1">
+      <p className="text-t-12 font-medium text-gray-700 mb-1">
         Password must contain:
       </p>
       {requirements.map((req, index) => (
@@ -41,7 +41,7 @@ export function PasswordRequirements({
             {req.met && <Check className="w-3 h-3 text-white" />}
           </div>
           <span
-            className={`text-xs ${req.met ? "text-green-700" : "text-gray-600"}`}
+            className={`text-t-12 ${req.met ? "text-green-700" : "text-gray-600"}`}
           >
             {req.label}
           </span>

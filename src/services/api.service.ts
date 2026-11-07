@@ -104,33 +104,36 @@ export const patientAddressService = {
 
   async getAddressById(id: number): Promise<PatientAddressResponse> {
     try {
-      const response = await http.get<ApiSuccessResponse<PatientAddressResponse>>(
-        API_ENDPOINTS.ADDRESSES.GET_BY_ID(id),
-      );
+      const response = await http.get<
+        ApiSuccessResponse<PatientAddressResponse>
+      >(API_ENDPOINTS.ADDRESSES.GET_BY_ID(id));
       return unwrap(response.data);
     } catch (err) {
       throw normalizeError(err);
     }
   },
 
-  async createAddress(dto: CreatePatientAddressDto): Promise<PatientAddressResponse> {
+  async createAddress(
+    dto: CreatePatientAddressDto,
+  ): Promise<PatientAddressResponse> {
     try {
-      const response = await http.post<ApiSuccessResponse<PatientAddressResponse>>(
-        API_ENDPOINTS.ADDRESSES.CREATE,
-        dto,
-      );
+      const response = await http.post<
+        ApiSuccessResponse<PatientAddressResponse>
+      >(API_ENDPOINTS.ADDRESSES.CREATE, dto);
       return unwrap(response.data);
     } catch (err) {
       throw normalizeError(err);
     }
   },
 
-  async updateAddress(id: number, dto: UpdatePatientAddressDto): Promise<PatientAddressResponse> {
+  async updateAddress(
+    id: number,
+    dto: UpdatePatientAddressDto,
+  ): Promise<PatientAddressResponse> {
     try {
-      const response = await http.patch<ApiSuccessResponse<PatientAddressResponse>>(
-        API_ENDPOINTS.ADDRESSES.UPDATE(id),
-        dto,
-      );
+      const response = await http.patch<
+        ApiSuccessResponse<PatientAddressResponse>
+      >(API_ENDPOINTS.ADDRESSES.UPDATE(id), dto);
       return unwrap(response.data);
     } catch (err) {
       throw normalizeError(err);
@@ -159,12 +162,13 @@ export const patientAddressService = {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const prescriptionApiService = {
-  async createPrescription(dto: CreatePrescriptionDto): Promise<PrescriptionResponseDto> {
+  async createPrescription(
+    dto: CreatePrescriptionDto,
+  ): Promise<PrescriptionResponseDto> {
     try {
-      const response = await http.post<ApiSuccessResponse<PrescriptionResponseDto>>(
-        API_ENDPOINTS.PRESCRIPTION.CREATE,
-        dto,
-      );
+      const response = await http.post<
+        ApiSuccessResponse<PrescriptionResponseDto>
+      >(API_ENDPOINTS.PRESCRIPTION.CREATE, dto);
       return unwrap(response.data);
     } catch (err) {
       throw normalizeError(err);
@@ -173,21 +177,23 @@ export const prescriptionApiService = {
 
   async getMyPrescription(id: number): Promise<PrescriptionResponseDto> {
     try {
-      const response = await http.get<ApiSuccessResponse<PrescriptionResponseDto>>(
-        API_ENDPOINTS.PRESCRIPTION.GET_MY(id),
-      );
+      const response = await http.get<
+        ApiSuccessResponse<PrescriptionResponseDto>
+      >(API_ENDPOINTS.PRESCRIPTION.GET_MY(id));
       return unwrap(response.data);
     } catch (err) {
       throw normalizeError(err);
     }
   },
 
-  async reuploadPrescription(id: number, dto: ReuploadPrescriptionDto): Promise<PrescriptionResponseDto> {
+  async reuploadPrescription(
+    id: number,
+    dto: ReuploadPrescriptionDto,
+  ): Promise<PrescriptionResponseDto> {
     try {
-      const response = await http.patch<ApiSuccessResponse<PrescriptionResponseDto>>(
-        API_ENDPOINTS.PRESCRIPTION.REUPLOAD(id),
-        dto,
-      );
+      const response = await http.patch<
+        ApiSuccessResponse<PrescriptionResponseDto>
+      >(API_ENDPOINTS.PRESCRIPTION.REUPLOAD(id), dto);
       return unwrap(response.data);
     } catch (err) {
       throw normalizeError(err);
@@ -378,14 +384,14 @@ export function mapApiOrderStatus(
  */
 export function mapPharmacyOrderStatus(status: string): string {
   const map: Record<string, string> = {
-    PENDING:          "Pending",
-    ACCEPTED:         "Accepted",
-    REJECTED:         "Rejected",
-    PREPARING:        "Preparing",
+    PENDING: "Pending",
+    ACCEPTED: "Accepted",
+    REJECTED: "Rejected",
+    PREPARING: "Preparing",
     READY_FOR_PICKUP: "Ready for Pickup",
     OUT_FOR_DELIVERY: "Out for Delivery",
-    DELIVERED:        "Delivered",
-    CANCELLED:        "Cancelled",
+    DELIVERED: "Delivered",
+    CANCELLED: "Cancelled",
   };
   return map[status] ?? status;
 }

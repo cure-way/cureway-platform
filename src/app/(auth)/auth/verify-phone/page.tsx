@@ -76,10 +76,10 @@ export default function VerifyPhonePage() {
           >
             {/* Title and description */}
             <div className="flex flex-col gap-2">
-              <h1 className="text-2xl font-semibold text-black/80 leading-tight">
+              <h1 className="text-page-title text-black/80 leading-tight">
                 What phone number would you like to use?
               </h1>
-              <p className="text-base text-[#5b5958]">
+              <p className="text-t-14 text-[#5b5958]">
                 we will send you a Verification to this number
               </p>
             </div>
@@ -100,7 +100,7 @@ export default function VerifyPhonePage() {
               onClick={handleSendCode}
               disabled={isButtonDisabled}
               className={cn(
-                "w-full max-w-[358px] mx-auto h-14 rounded-xl text-lg font-medium text-white",
+                "w-full max-w-[358px] mx-auto h-14 rounded-xl text-t-17 font-medium text-white",
                 "transition-all duration-200",
                 "focus:outline-none focus:ring-2 focus:ring-[#334eac]/50 focus:ring-offset-2",
                 isButtonDisabled

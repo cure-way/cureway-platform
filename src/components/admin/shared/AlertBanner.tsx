@@ -49,10 +49,10 @@ const variants = {
       "bg-error-light border border-error-light-active rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3",
     iconWrap:
       "w-14 h-14 rounded-full bg-error-light-active flex items-center justify-center shrink-0",
-    title: "text-xl leading-normal font-extrabold text-error-darker",
-    description: "text-sm leading-[1.2] text-error-dark/70",
+    title: "text-t-17 leading-normal font-bold text-error-darker",
+    description: "text-t-14 leading-[1.2] text-error-dark/70",
     button:
-      "flex items-center gap-2 px-4 py-2.5 border border-error-dark rounded-xl text-sm leading-[1.2] font-semibold text-error-dark hover:bg-error-light-active transition-colors shrink-0",
+      "flex items-center gap-2 px-4 py-2.5 border border-error-dark rounded-xl text-t-14 leading-[1.2] font-semibold text-error-dark hover:bg-error-light-active transition-colors shrink-0",
     defaultIcon: <AlertCircle className="w-7 h-7 text-error-dark" />,
     actionIcon: <ArrowUpRight className="w-4 h-4" />,
   },
@@ -61,11 +61,12 @@ const variants = {
     wrapper:
       "flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-5 bg-white rounded-xl border-l-4 border-error-light-active pl-4 sm:pl-8 pr-4 sm:pr-6 py-4 sm:py-5",
     iconWrap: "shrink-0 w-10 h-10 sm:w-14 sm:h-14",
-    title: "text-base sm:text-lg font-semibold leading-[1.2] text-error-darker",
+    title:
+      "text-t-14 sm:text-t-17 font-semibold leading-[1.2] text-error-darker",
     description:
-      "text-xs sm:text-sm font-normal leading-[1.2] text-neutral max-w-[500px]",
+      "text-t-12 sm:text-t-14 font-normal leading-[1.2] text-neutral max-w-[500px]",
     button:
-      "flex items-center gap-2 bg-white border border-secondary-light-active rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 shrink-0 hover:bg-neutral-light transition-colors text-xs sm:text-sm font-semibold leading-[1.2] text-primary-dark w-full sm:w-auto justify-center sm:justify-start",
+      "flex items-center gap-2 bg-white border border-secondary-light-active rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 shrink-0 hover:bg-neutral-light transition-colors text-t-12 sm:text-t-14 font-semibold leading-[1.2] text-primary-dark w-full sm:w-auto justify-center sm:justify-start",
     defaultIcon: <AlertErrorSvg />,
     actionIcon: <ArrowRightRotated />,
   },

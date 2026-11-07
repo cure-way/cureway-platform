@@ -15,7 +15,9 @@ export default function SimilarProductsSection({ medicines }: Props) {
 
   return (
     <div className="bg-white shadow-sm mb-6 p-6 sm:p-8 border border-gray-200 rounded-2xl">
-      <h2 className="mb-6 font-bold text-gray-900 text-xl">Similar Products</h2>
+      <h2 className="mb-6 font-bold text-gray-900 text-t-17">
+        Similar Products
+      </h2>
 
       <div className="-mx-2 px-2 overflow-x-auto">
         <div className="flex gap-4 pb-2">
@@ -25,13 +27,13 @@ export default function SimilarProductsSection({ medicines }: Props) {
               onClick={() => router.push(`/medicines/${medicine.id}`)}
               className="bg-gray-50 hover:shadow-md p-4 border border-gray-200 rounded-xl w-60 transition cursor-pointer shrink-0"
             >
-              <h2 className="mb-2 font-semibold text-gray-900 text-sm truncate">
+              <h2 className="mb-2 font-semibold text-gray-900 text-t-14 truncate">
                 {medicine.name}
               </h2>
 
-              <p className="text-gray-600 text-xs">{medicine.dosageForm}</p>
+              <p className="text-gray-600 text-t-12">{medicine.dosageForm}</p>
 
-              <div className="mt-2 font-semibold text-gray-900 text-sm">
+              <div className="mt-2 font-semibold text-gray-900 text-t-14">
                 {formatCurrency(medicine.minPrice ?? 0)}
               </div>
             </div>
