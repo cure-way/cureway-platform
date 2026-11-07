@@ -2,57 +2,7 @@
 
 import { Plus } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
-import { cn } from "@/lib/utils";
 import { buttonTap, transition } from "./motion";
-
-/* ── Main header layout ── */
-
-interface PageHeaderProps {
-  icon: React.ReactNode;
-  title: string;
-  subtitle: string;
-  /** Slot for action buttons (use HeaderPrimaryButton / HeaderIconButton) */
-  actions?: React.ReactNode;
-  className?: string;
-}
-
-/**
- * Consistent page header for all admin routes.
- * Renders icon | title + subtitle | action buttons.
- */
-export default function PageHeader({
-  icon,
-  title,
-  subtitle,
-  actions,
-  className,
-}: PageHeaderProps) {
-  return (
-    <div
-      className={cn("flex flex-row items-center gap-2 pb-2 sm:pb-4", className)}
-    >
-      <div className="flex items-center gap-2.5 sm:gap-4 flex-1 min-w-0">
-        <span className="shrink-0 [&>svg]:w-7 [&>svg]:h-7 sm:[&>svg]:w-10 sm:[&>svg]:h-10">
-          {icon}
-        </span>
-        <div className="min-w-0 flex-1">
-          <h1 className="text-t-17 sm:text-t-25 leading-[1.2] font-bold text-primary-darker truncate">
-            {title}
-          </h1>
-          <p className="text-t-14 sm:text-t-17 leading-[1.2] font-medium text-neutral mt-0.5 sm:mt-1">
-            {subtitle}
-          </p>
-        </div>
-      </div>
-
-      {actions && (
-        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          {actions}
-        </div>
-      )}
-    </div>
-  );
-}
 
 /* ── Reusable header action buttons ── */
 

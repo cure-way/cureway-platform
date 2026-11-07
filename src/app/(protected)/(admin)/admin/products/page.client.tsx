@@ -4,7 +4,6 @@ import { RefreshCw, MoreVertical, Package, PackageX } from "lucide-react";
 import Image from "next/image";
 import {
   PageShell,
-  PageHeader,
   HeaderPrimaryButton,
   HeaderIconButton,
   StatsBar,
@@ -20,6 +19,7 @@ import { ProductsPageIcon } from "@/components/admin/shared/icons";
 import { useAdminInventory } from "@/hooks/admin.hooks";
 import type { AdminInventoryItem } from "@/services/admin.service";
 import { formatCurrency } from "@/lib/format";
+import { PageHeader } from "@/components/shared";
 
 /* ------------------------------------------------------------------
    HELPERS

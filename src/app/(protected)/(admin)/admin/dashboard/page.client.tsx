@@ -18,7 +18,7 @@ import { PageContainer } from "@/components/shared";
 
 export default function AdminDashboardPage() {
   return (
-    <PageContainer width="wide" as={MotionStagger} className="space-y-6">
+    <PageContainer variant="dashboard" as={MotionStagger} className="space-y-6">
       {/* Welcome & Quick Actions */}
       <MotionStaggerItem>
         <WelcomeSection />

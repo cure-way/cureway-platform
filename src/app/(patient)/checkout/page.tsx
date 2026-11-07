@@ -10,18 +10,29 @@ import PaymentMethods from "@/components/patient/checkout/Paymentmethods";
 import { OrderNotes } from "@/components/patient/checkout/OrderNotes";
 import { CheckoutSidebar } from "@/components/patient/checkout/CheckoutSidebar";
 import { LoadingSpinner } from "@/components/shared/LoadingSpinner";
-import { DELIVERY_OPTIONS, PAYMENT_METHODS, ROUTES } from "@/constants/cart.constants";
+import {
+  DELIVERY_OPTIONS,
+  PAYMENT_METHODS,
+  ROUTES,
+} from "@/constants/cart.constants";
 import { MOCK_USER } from "@/data/mockData";
-import type { CheckoutData, DeliveryAddress, DeliveryOption, PaymentMethod } from "@/types/cart";
+import type {
+  CheckoutData,
+  DeliveryAddress,
+  DeliveryOption,
+  PaymentMethod,
+} from "@/types/cart";
 import { calculateCartTotal } from "@/utils/cart.utils";
 // react-hot-toast, not sonner: ToastProvider mounts react-hot-toast's
 // <Toaster/>, so sonner toasts never actually appeared.
 import toast from "react-hot-toast";
+import { PageContainer, PageHeader } from "@/components/shared";
 
 export default function CheckoutPage() {
   const router = useRouter();
-  
-  const { cart, applyCoupon, removeCoupon, getCartSubtotal, getCartItemCount } = useCartStore();
+
+  const { cart, applyCoupon, removeCoupon, getCartSubtotal, getCartItemCount } =
+    useCartStore();
   const { setPendingCheckout } = useOrderStore();
 
   const [checkoutData, setCheckoutData] = useState<CheckoutData>({
@@ -45,11 +56,8 @@ export default function CheckoutPage() {
     .flatMap((g) => g.items)
     .some((i) => i.requiresPrescription && !i.prescriptionUploaded);
 
-
-
   const subtotal = getCartSubtotal();
   const deliveryFee = checkoutData.deliveryOption?.price ?? 0;
-  
 
   const total = useMemo(() => {
     return calculateCartTotal(subtotal, deliveryFee, checkoutData.discount);
@@ -82,9 +90,12 @@ export default function CheckoutPage() {
     setCheckoutData((p) => ({ ...p, discount: 0 }));
   }, [removeCoupon]);
 
-  const handleAddressSelect = useCallback((addr: DeliveryAddress) => {
-    if (!uiFrozen) setCheckoutData((p) => ({ ...p, deliveryAddress: addr }));
-  }, [uiFrozen]);
+  const handleAddressSelect = useCallback(
+    (addr: DeliveryAddress) => {
+      if (!uiFrozen) setCheckoutData((p) => ({ ...p, deliveryAddress: addr }));
+    },
+    [uiFrozen],
+  );
 
   const handlePlaceOrder = useCallback(() => {
     if (uiFrozen) return;
@@ -111,72 +122,103 @@ export default function CheckoutPage() {
   const handleConfirmOrder = useCallback(() => {
     if (!uiFrozen || !cart) return;
 
-    setPendingCheckout({ 
-        checkoutData: { ...checkoutData, deliveryFee, total }, 
-        cart 
+    setPendingCheckout({
+      checkoutData: { ...checkoutData, deliveryFee, total },
+      cart,
     });
     router.push(ROUTES.ORDER_CONFIRMATION);
-  }, [uiFrozen, cart, checkoutData, deliveryFee, total, setPendingCheckout, router]);
+  }, [
+    uiFrozen,
+    cart,
+    checkoutData,
+    deliveryFee,
+    total,
+    setPendingCheckout,
+    router,
+  ]);
 
-  if (!cart) return <div className="min-h-screen flex items-center justify-center"><LoadingSpinner size="lg" /></div>;
+  if (!cart)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
 
   const totalItems = getCartItemCount();
-  const isFormComplete = Boolean(checkoutData.deliveryAddress) && 
-                         Boolean(checkoutData.deliveryOption) && 
-                         Boolean(checkoutData.paymentMethod) && 
-                         prescriptionReviewed;
+  const isFormComplete =
+    Boolean(checkoutData.deliveryAddress) &&
+    Boolean(checkoutData.deliveryOption) &&
+    Boolean(checkoutData.paymentMethod) &&
+    prescriptionReviewed;
 
   return (
     <div className="min-h-screen bg-neutral-light font-[var(--font-montserrat)]">
-      <div className="w-full bg-accent px-4 sm:px-8 lg:px-10 xl:px-20 pt-4 pb-8">
-        <div className="max-w-[1392px] mx-auto flex items-center justify-between gap-4">
-          <h1 className="text-t-36-bold text-primary">Checkout</h1>
-          <span className="text-t-21 text-foreground">[ {totalItems} items in total ]</span>
-        </div>
-      </div>
+      <PageContainer variant="list">
+        <PageHeader
+          title="Checkout"
+          subtitle={`${totalItems} items in total`}
+          showBack
+          backHref="/cart"
+        />
 
-      <div className="max-w-[1392px] mx-auto px-4 sm:px-8 lg:px-10 xl:px-20 py-6">
         <div className="flex flex-col xl:flex-row gap-6 items-start">
           <div className="flex-1 min-w-0 bg-card rounded-3xl border-t-4 border-t-secondary p-4 sm:p-6 shadow-card flex flex-col gap-4">
             <ContactInformation contact={checkoutData.contact} />
             <div className="h-px bg-border" />
-            
-            <DeliveryAddressForm selectedAddress={checkoutData.deliveryAddress} onAddressSelect={handleAddressSelect} />
-            <div className="h-px bg-border" />
 
-            <DeliveryOptions 
-              options={[...DELIVERY_OPTIONS] as DeliveryOption[]} 
-              selected={checkoutData.deliveryOption} 
-              frozen={uiFrozen} 
-              onSelect={(opt) => !uiFrozen && setCheckoutData(p => ({ ...p, deliveryOption: opt }))} 
+            <DeliveryAddressForm
+              selectedAddress={checkoutData.deliveryAddress}
+              onAddressSelect={handleAddressSelect}
             />
             <div className="h-px bg-border" />
 
-            <PaymentMethods 
-              methods={PAYMENT_METHODS as unknown as PaymentMethod[]} 
-              selected={checkoutData.paymentMethod} 
-              frozen={uiFrozen} 
-              onSelect={(method) => !uiFrozen && setCheckoutData(p => ({ ...p, paymentMethod: method }))} 
+            <DeliveryOptions
+              options={[...DELIVERY_OPTIONS] as DeliveryOption[]}
+              selected={checkoutData.deliveryOption}
+              frozen={uiFrozen}
+              onSelect={(opt) =>
+                !uiFrozen &&
+                setCheckoutData((p) => ({ ...p, deliveryOption: opt }))
+              }
             />
             <div className="h-px bg-border" />
 
-            <OrderNotes 
-              notes={checkoutData.orderNotes ?? ""} 
-              onChange={(notes) => !uiFrozen && setCheckoutData(p => ({ ...p, orderNotes: notes }))} 
+            <PaymentMethods
+              methods={PAYMENT_METHODS as unknown as PaymentMethod[]}
+              selected={checkoutData.paymentMethod}
+              frozen={uiFrozen}
+              onSelect={(method) =>
+                !uiFrozen &&
+                setCheckoutData((p) => ({ ...p, paymentMethod: method }))
+              }
+            />
+            <div className="h-px bg-border" />
+
+            <OrderNotes
+              notes={checkoutData.orderNotes ?? ""}
+              onChange={(notes) =>
+                !uiFrozen &&
+                setCheckoutData((p) => ({ ...p, orderNotes: notes }))
+              }
             />
 
             <button
               onClick={handlePlaceOrder}
               disabled={!isFormComplete || uiFrozen}
               className={`w-full h-[65px] rounded-xl border-none text-t-17-semibold transition-all ${
-                isFormComplete && !uiFrozen ? "bg-primary text-card cursor-pointer" : "bg-border text-neutral opacity-70"
+                isFormComplete && !uiFrozen
+                  ? "bg-primary text-card cursor-pointer"
+                  : "bg-border text-neutral opacity-70"
               }`}
             >
               {uiFrozen ? "Order Details Locked" : "Place Order"}
             </button>
-            
+
             {uiFrozen && (
-              <button onClick={() => setUiFrozen(false)} className="text-primary underline bg-transparent border-none py-2">
+              <button
+                onClick={() => setUiFrozen(false)}
+                className="text-primary underline bg-transparent border-none py-2"
+              >
                 Edit Order Details
               </button>
             )}
@@ -200,7 +242,7 @@ export default function CheckoutPage() {
             />
           </div>
         </div>
-      </div>
+      </PageContainer>
     </div>
   );
 }

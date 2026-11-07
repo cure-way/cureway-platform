@@ -15,7 +15,6 @@ import {
 import { useState } from "react";
 import {
   PageShell,
-  PageHeader,
   HeaderPrimaryButton,
   HeaderIconButton,
   StatsBar,
@@ -31,6 +30,7 @@ import { DeliveriesPageIcon } from "@/components/admin/shared/icons";
 import { useAdminDeliveries } from "@/hooks/admin.hooks";
 import type { AdminDelivery } from "@/services/admin.service";
 import { formatCurrency } from "@/lib/format";
+import { PageHeader } from "@/components/shared";
 
 /* ------------------------------------------------------------------
    HELPERS

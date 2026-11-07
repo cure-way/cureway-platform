@@ -18,7 +18,9 @@ export function Switch({ checked, onCheckedChange, ariaLabel }: SwitchProps) {
       onClick={() => onCheckedChange(!checked)}
       className={[
         "relative inline-flex h-[20px] w-[32px] items-center rounded-full border transition",
-        checked ? "border-[rgba(0,0,0,0.2)] bg-[#279543]" : "border-[#D9D9D9] bg-[#EAEAEA]",
+        checked
+          ? "border-[rgba(0,0,0,0.2)] bg-[#279543]"
+          : "border-[#D9D9D9] bg-[#EAEAEA]",
       ].join(" ")}
     >
       <span

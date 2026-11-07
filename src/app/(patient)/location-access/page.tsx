@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader } from "@/components/patient/PageHeader";
+import { PageContainer, PageHeader } from "@/components/shared";
 import { Button } from "@/components/shared/Button";
 
 export default function LocationAccessPage() {
@@ -23,17 +23,15 @@ export default function LocationAccessPage() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-3 px-3 md:px-6 lg:px-12 py-6">
-      <div className="w-full max-w-[1280px]">
-        <PageHeader
-          title="Enable Location Access"
-          subtitle="Please provide clear details so we can help you faster."
-        />
-      </div>
+    <PageContainer variant="account" className="flex flex-col gap-4">
+      <PageHeader
+        title="Enable Location Access"
+        subtitle="Please provide clear details so we can help you faster."
+      />
 
-      <div className="w-full max-w-282.5 bg-white rounded-3xl shadow-card p-6 flex flex-col items-center justify-center gap-20 min-h-96">
+      <div className="w-full bg-white rounded-3xl shadow-card p-6 flex flex-col items-center justify-center gap-20 min-h-96">
         {/* Message Box */}
-        <div className="w-full max-w-282.5 bg-white border border-black/50 rounded-3xl p-6">
+        <div className="w-full bg-white border border-black/50 rounded-3xl p-6">
           <p className="text-t-21 font-bold text-[#494949] text-center leading-[1.2]">
             We use your location to show nearby pharmacies and calculate
             delivery accurately.
@@ -62,6 +60,6 @@ export default function LocationAccessPage() {
           </Button>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

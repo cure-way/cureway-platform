@@ -3,7 +3,6 @@
 import { RefreshCw, MoreVertical, UserCheck } from "lucide-react";
 import {
   PageShell,
-  PageHeader,
   HeaderIconButton,
   StatsBar,
   KpiPill,
@@ -17,6 +16,7 @@ import type { BadgeVariant } from "@/components/admin/shared";
 import { PatientsPageIcon } from "@/components/admin/shared/icons";
 import { useAdminPatients } from "@/hooks/admin.hooks";
 import type { AdminPatient } from "@/services/admin.service";
+import { PageHeader } from "@/components/shared";
 
 /* ------------------------------------------------------------------
    HELPERS

@@ -21,11 +21,13 @@ export default function CartItemCard({
   onUploadPrescription,
   highlightPrescription = false,
 }: Props) {
-  const prescriptionInfo = item.prescriptionInfo as {
-    genericName?: string;
-    dosage?: string;
-    form?: string;
-  } | undefined;
+  const prescriptionInfo = item.prescriptionInfo as
+    | {
+        genericName?: string;
+        dosage?: string;
+        form?: string;
+      }
+    | undefined;
 
   return (
     <div className="pb-6 border-b border-border mb-6 font-[var(--font-montserrat)]">
@@ -39,7 +41,7 @@ export default function CartItemCard({
                 width={72}
                 height={72}
                 className="object-contain"
-                unoptimized 
+                unoptimized
               />
             ) : (
               <span className="text-3xl">💊</span>
@@ -103,9 +105,7 @@ export default function CartItemCard({
         requiresPrescription={item.requiresPrescription}
         prescriptionUploaded={item.prescriptionUploaded}
         onUploadPrescription={
-          onUploadPrescription
-            ? () => onUploadPrescription(item.id)
-            : undefined
+          onUploadPrescription ? () => onUploadPrescription(item.id) : undefined
         }
         highlightPrescription={highlightPrescription}
       />

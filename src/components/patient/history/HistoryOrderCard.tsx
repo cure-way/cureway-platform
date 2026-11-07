@@ -67,9 +67,7 @@ export function HistoryOrderCard({
             <IconPin />
           </div>
           <div className="min-w-0">
-            <div className="text-[12px] font-semibold text-[#6B7280]">
-              From
-            </div>
+            <div className="text-[12px] font-semibold text-[#6B7280]">From</div>
             <div className="text-t-14 font-medium text-[#111827]">
               {order.fromLine1}
             </div>
@@ -88,8 +86,12 @@ export function HistoryOrderCard({
       {/* Product box */}
       <div className="mx-4 mt-3 rounded-[10px] border border-[#EFEDED] bg-[#FAFAFA] px-3 py-3">
         <div className="flex items-center justify-between">
-          <div className="text-[12px] text-[#6B7280]">{order.productCountLabel}</div>
-          <div className="text-[12px] text-[#6B7280]">{order.quantityLabel}</div>
+          <div className="text-[12px] text-[#6B7280]">
+            {order.productCountLabel}
+          </div>
+          <div className="text-[12px] text-[#6B7280]">
+            {order.quantityLabel}
+          </div>
         </div>
 
         <div className="mt-3 flex items-center justify-between gap-3">

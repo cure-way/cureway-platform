@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { NEARBY_PHARMACIES } from "@/services/nearbypharmacies.data";
 import { formatCurrency } from "@/lib/format";
+import { PageContainer, PageHeader } from "@/components/shared";
 
 export default function NearbyPharmaciesPage() {
   const [pharmacies] = useState(NEARBY_PHARMACIES);
@@ -20,39 +21,14 @@ export default function NearbyPharmaciesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              Nearby Pharmacies
-            </h1>
-            <p className="text-sm text-gray-500 mt-1">
-              Pharmacies near your location
-            </p>
-          </div>
-          <button
-            onClick={handleBack}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors font-medium"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            Back
-          </button>
-        </div>
-      </div>
+      <PageContainer variant="list">
+        <PageHeader
+          title="Nearby Pharmacies"
+          subtitle="Pharmacies near your location"
+          showBack
+          onBack={handleBack}
+        />
 
-      <div className="max-w-6xl mx-auto px-6 py-8">
         <div className="space-y-4">
           {pharmacies.map((pharmacy, index) => (
             <div
@@ -183,7 +159,7 @@ export default function NearbyPharmaciesPage() {
             </div>
           ))}
         </div>
-      </div>
+      </PageContainer>
 
       <style jsx>{`
         @keyframes fadeInUp {

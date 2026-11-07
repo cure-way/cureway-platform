@@ -1,11 +1,9 @@
-
 // ===================================================================
 // INLINE ERROR COMPONENT
 // ===================================================================
 
 import { motion } from "framer-motion";
-import {  AlertTriangle, RefreshCw } from "lucide-react";
-
+import { AlertTriangle, RefreshCw } from "lucide-react";
 
 interface InlineErrorProps {
   message: string;

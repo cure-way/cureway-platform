@@ -1,4 +1,5 @@
 import { requirePatient } from "@/lib/auth";
+import { PageContainer } from "@/components/shared";
 
 /**
  * Notifications Page (Protected)
@@ -9,7 +10,7 @@ export default async function NotificationsPage() {
   await requirePatient();
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <PageContainer variant="account">
       <h1 className="text-2xl font-bold mb-4">Notifications</h1>
 
       <div className="space-y-3">
@@ -43,6 +44,6 @@ export default async function NotificationsPage() {
           </p>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

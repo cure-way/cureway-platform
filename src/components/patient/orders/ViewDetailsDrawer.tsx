@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import type { Order } from "@/types/order";
 import { formatCurrency } from "@/lib/format";
 
-
 function Section({
   title,
   children,
@@ -40,7 +39,10 @@ export function ViewDetailsDrawer({
     };
   }, [onClose]);
 
-  const statusCfgMap: Record<string, { label: string; textCls: string; bgCls: string }> = {
+  const statusCfgMap: Record<
+    string,
+    { label: string; textCls: string; bgCls: string }
+  > = {
     processing: {
       label: "Processing",
       textCls: "text-warning",
@@ -65,7 +67,8 @@ export function ViewDetailsDrawer({
 
   const statusCfg = statusCfgMap[order.status] || statusCfgMap.processing;
 
-  const hasGroups = Array.isArray(order.pharmacyGroups) && order.pharmacyGroups.length > 0;
+  const hasGroups =
+    Array.isArray(order.pharmacyGroups) && order.pharmacyGroups.length > 0;
   const flatItems = order.items ?? [];
 
   const subtotal = hasGroups
@@ -107,7 +110,15 @@ export function ViewDetailsDrawer({
             onClick={onClose}
             className="w-9 h-9 rounded-full bg-neutral-light flex items-center justify-center border-none cursor-pointer hover:bg-neutral-light-hover transition-colors flex-shrink-0 mt-0.5"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            >
               <path d="M18 6 6 18M6 6l12 12" />
             </svg>
           </button>
@@ -119,13 +130,20 @@ export function ViewDetailsDrawer({
             <Section title={`Pharmacies (${order.pharmacyGroups!.length})`}>
               <div className="flex flex-col gap-3">
                 {order.pharmacyGroups!.map((group) => (
-                  <div key={group.pharmacyId} className="flex items-center gap-3">
+                  <div
+                    key={group.pharmacyId}
+                    className="flex items-center gap-3"
+                  >
                     <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center flex-shrink-0">
                       <span className="text-primary">🏠</span>
                     </div>
                     <div>
-                      <p className="text-t-14-bold text-foreground m-0">{group.pharmacyName}</p>
-                      <p className="text-t-12 text-muted-foreground m-0">Subtotal: {formatCurrency(group.subtotal)}</p>
+                      <p className="text-t-14-bold text-foreground m-0">
+                        {group.pharmacyName}
+                      </p>
+                      <p className="text-t-12 text-muted-foreground m-0">
+                        Subtotal: {formatCurrency(group.subtotal)}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -135,28 +153,43 @@ export function ViewDetailsDrawer({
             <Section title="Pharmacy">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center flex-shrink-0">
-                   <span className="text-primary">🏠</span>
+                  <span className="text-primary">🏠</span>
                 </div>
                 <div>
-                  <p className="text-t-14-bold text-foreground m-0">{order.pharmacyName}</p>
-                  <p className="text-t-12 text-muted-foreground m-0">{order.address}</p>
+                  <p className="text-t-14-bold text-foreground m-0">
+                    {order.pharmacyName}
+                  </p>
+                  <p className="text-t-12 text-muted-foreground m-0">
+                    {order.address}
+                  </p>
                 </div>
               </div>
             </Section>
           )}
 
-          <Section title={`Items (${hasGroups ? "Grouped" : flatItems.length})`}>
-             <div className="flex flex-col gap-3">
-                {flatItems.map((item) => (
-                  <div key={item.id} className="flex items-center gap-3 bg-neutral-light rounded-xl p-3">
-                    <div className="flex-1 min-w-0">
-                      <p className="text-t-14-semibold text-foreground m-0 truncate">{item.name}</p>
-                      <p className="text-t-12 text-muted-foreground m-0">Qty: {item.quantity}</p>
-                    </div>
-                    <span className="text-t-14-bold text-primary">{formatCurrency(item.unitPrice * item.quantity)}</span>
+          <Section
+            title={`Items (${hasGroups ? "Grouped" : flatItems.length})`}
+          >
+            <div className="flex flex-col gap-3">
+              {flatItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center gap-3 bg-neutral-light rounded-xl p-3"
+                >
+                  <div className="flex-1 min-w-0">
+                    <p className="text-t-14-semibold text-foreground m-0 truncate">
+                      {item.name}
+                    </p>
+                    <p className="text-t-12 text-muted-foreground m-0">
+                      Qty: {item.quantity}
+                    </p>
                   </div>
-                ))}
-             </div>
+                  <span className="text-t-14-bold text-primary">
+                    {formatCurrency(item.unitPrice * item.quantity)}
+                  </span>
+                </div>
+              ))}
+            </div>
           </Section>
 
           <Section title="Price Breakdown">
@@ -167,7 +200,9 @@ export function ViewDetailsDrawer({
               </div>
               <div className="flex justify-between pt-2 border-t border-border mt-1 font-bold">
                 <span className="text-t-17">Total</span>
-                <span className="text-primary">{formatCurrency(order.total)}</span>
+                <span className="text-primary">
+                  {formatCurrency(order.total)}
+                </span>
               </div>
             </div>
           </Section>

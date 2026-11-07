@@ -11,6 +11,7 @@ import {
 } from "@/components/patient/search";
 import type { FilterTag } from "@/components/patient/search";
 import { Loader2 } from "lucide-react";
+import { PageContainer } from "@/components/shared";
 import {
   DEFAULT_FILTER_TAGS,
   searchMedicines,
@@ -134,7 +135,7 @@ function SearchPageContent() {
   const spellSuggestion = useMemo(() => getSuggestion(query), [query]);
 
   return (
-    <div className="max-w-[1280px] mx-auto px-4 md:px-6 py-6">
+    <PageContainer variant="list">
       {/* Results Header */}
       {pageState === "results" && results.length > 0 && (
         <div className="mb-4">
@@ -228,7 +229,7 @@ function SearchPageContent() {
       {pageState === "network-error" && (
         <SearchEmptyState state="network-error" onTryAgain={handleTryAgain} />
       )}
-    </div>
+    </PageContainer>
   );
 }
 

@@ -26,7 +26,8 @@ export default function OrderSummary({
           <span>
             <span className="text-t-17-semibold text-foreground">Subtotal</span>
             <span className="text-t-17 text-muted-foreground">
-              {" "}({totalItems} items)
+              {" "}
+              ({totalItems} items)
             </span>
           </span>
           <span className="text-t-25-bold text-primary">
@@ -36,10 +37,11 @@ export default function OrderSummary({
         </div>
       </div>
 
-    
-         
       <p className="text-t-12 text-muted-foreground mb-6">
-        · {"This price isn't final. Shipping and VAT will be added in the next step."}
+        ·{" "}
+        {
+          "This price isn't final. Shipping and VAT will be added in the next step."
+        }
       </p>
 
       <button

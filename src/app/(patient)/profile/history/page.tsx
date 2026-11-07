@@ -3,7 +3,11 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { MotionTap } from "@/components/shared/MotionTap";
-import { HistoryOrderCard, HistoryOrder } from "@/components/patient/history/HistoryOrderCard";
+import { PageContainer } from "@/components/shared";
+import {
+  HistoryOrderCard,
+  HistoryOrder,
+} from "@/components/patient/history/HistoryOrderCard";
 import { IconBack } from "@/components/patient/history/Icons";
 
 export default function HistoryPage() {
@@ -37,40 +41,38 @@ export default function HistoryPage() {
   ];
 
   return (
-    <div className="w-full px-4 py-6">
-      <div className="mx-auto w-full max-w-[1100px]">
-        {/* Header: History + Back (يمين) */}
-        <div className="mb-4 flex items-center justify-between">
-          <div className="text-[48px] font-bold leading-[120%] text-black">
-            History
-          </div>
-
-          <MotionTap
-            as="button"
-            onClick={() => router.back()}
-            className="inline-flex items-center gap-2"
-          >
-            <IconBack />
-            <span className="text-t-25 font-bold leading-[120%] text-[#1E2B57]">
-              Back
-            </span>
-          </MotionTap>
+    <PageContainer variant="account">
+      {/* Header: History + Back (يمين) */}
+      <div className="mb-4 flex items-center justify-between">
+        <div className="text-[48px] font-bold leading-[120%] text-black">
+          History
         </div>
 
-        {/* List */}
-        <div className="flex flex-col gap-4">
-          {orders.map((o, idx) => (
-            <MotionTap key={idx} className="will-change-transform">
-              <HistoryOrderCard
-                order={o}
-                onCopy={(id) => console.log("copy", id)}
-                onReorder={(id) => console.log("reorder", id)}
-                onShowDetails={(id) => console.log("show details", id)}
-              />
-            </MotionTap>
-          ))}
-        </div>
+        <MotionTap
+          as="button"
+          onClick={() => router.back()}
+          className="inline-flex items-center gap-2"
+        >
+          <IconBack />
+          <span className="text-t-25 font-bold leading-[120%] text-[#1E2B57]">
+            Back
+          </span>
+        </MotionTap>
       </div>
-    </div>
+
+      {/* List */}
+      <div className="flex flex-col gap-4">
+        {orders.map((o, idx) => (
+          <MotionTap key={idx} className="will-change-transform">
+            <HistoryOrderCard
+              order={o}
+              onCopy={(id) => console.log("copy", id)}
+              onReorder={(id) => console.log("reorder", id)}
+              onShowDetails={(id) => console.log("show details", id)}
+            />
+          </MotionTap>
+        ))}
+      </div>
+    </PageContainer>
   );
 }

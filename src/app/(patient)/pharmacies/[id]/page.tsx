@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { NEARBY_PHARMACIES } from "@/services/nearbypharmacies.data";
 import { InventoryItem } from "@/types/pharmacyTypes";
+import { PageContainer, PageHeader } from "@/components/shared";
 
 type TabType = "All" | "Most sells" | "Offers" | "Rare";
 
@@ -46,36 +47,14 @@ export default function PharmacyDetailsPage() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <div className="top-0 z-10 sticky bg-white border-gray-200 border-b">
-        <div className="flex justify-between items-center mx-auto px-6 py-6 max-w-6xl">
-          <div>
-            <h1 className="font-bold text-gray-900 text-2xl">
-              {pharmacy.name}
-            </h1>
-          </div>
-          <button
-            onClick={() => router.back()}
-            className="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            <span className="font-medium">Back</span>
-          </button>
-        </div>
-      </div>
+      <PageContainer variant="detail">
+        <PageHeader
+          title={pharmacy.name}
+          subtitle={pharmacy.address}
+          showBack
+          onBack={() => router.back()}
+        />
 
-      <div className="mx-auto px-6 py-8 max-w-6xl">
         <div className="bg-white shadow-sm mb-8 p-8 border border-gray-200 rounded-2xl">
           <div className="flex items-start gap-2 mb-6">
             <div className="bg-blue-600 mt-2 rounded-full w-2 h-2"></div>
@@ -204,7 +183,7 @@ export default function PharmacyDetailsPage() {
             ))}
           </div>
         </div>
-      </div>
+      </PageContainer>
     </div>
   );
 }

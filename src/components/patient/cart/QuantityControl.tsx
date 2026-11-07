@@ -6,7 +6,11 @@ interface Props {
   onDecrease: () => void;
 }
 
-export default function QuantityControl({ quantity, onIncrease, onDecrease }: Props) {
+export default function QuantityControl({
+  quantity,
+  onIncrease,
+  onDecrease,
+}: Props) {
   return (
     <div className="w-28 md:w-36 flex justify-center flex-shrink-0">
       <div className="flex items-center gap-4">

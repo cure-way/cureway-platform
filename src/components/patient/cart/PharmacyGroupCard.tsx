@@ -1,6 +1,5 @@
 "use client";
 
-
 import Image from "next/image";
 import type { PharmacyGroupProps } from "@/types/cart";
 import { formatCurrency } from "@/lib/format";

@@ -30,7 +30,8 @@ export function OrderCard({ order }: { order: Order }) {
   const [showTrack, setShowTrack] = useState(false);
   const [showReorder, setShowReorder] = useState(false);
 
-  const isActive = order.status === "processing" || order.status === "on_the_way";
+  const isActive =
+    order.status === "processing" || order.status === "on_the_way";
   const isDelivered = order.status === "delivered";
   const isCancelled = order.status === "cancelled";
   const isCancelling = cancellingId === order.id;
@@ -68,7 +69,9 @@ export function OrderCard({ order }: { order: Order }) {
       await cancelOrder(order.id);
       toast.success(`Order #${order.id} has been cancelled.`);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to cancel order.");
+      toast.error(
+        err instanceof Error ? err.message : "Failed to cancel order.",
+      );
     }
   };
 
@@ -90,13 +93,23 @@ export function OrderCard({ order }: { order: Order }) {
               </div>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
-                  <Image src="/icons/hospital.png" alt="pharmacy" width={20} height={20} />
+                  <Image
+                    src="/icons/hospital.png"
+                    alt="pharmacy"
+                    width={20}
+                    height={20}
+                  />
                   <span className="text-base font-medium text-black/80">
                     {order.pharmacyName}
                   </span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Image src="/icons/location.png" alt="location" width={20} height={20} />
+                  <Image
+                    src="/icons/location.png"
+                    alt="location"
+                    width={20}
+                    height={20}
+                  />
                   <span className="text-sm text-black/60">{order.address}</span>
                 </div>
               </div>
@@ -119,8 +132,13 @@ export function OrderCard({ order }: { order: Order }) {
             <div className="flex flex-col gap-4">
               {isActive && (
                 <>
-                  <button onClick={() => setShowTrack(true)} className={primaryBtn}>
-                    <span className="text-xl font-bold text-white">Track Order</span>
+                  <button
+                    onClick={() => setShowTrack(true)}
+                    className={primaryBtn}
+                  >
+                    <span className="text-xl font-bold text-white">
+                      Track Order
+                    </span>
                   </button>
 
                   <button
@@ -157,8 +175,13 @@ export function OrderCard({ order }: { order: Order }) {
                     </span>
                   </button>
 
-                  <button onClick={() => setShowReorder(true)} className={primaryBtn}>
-                    <span className="text-xl font-bold text-white">Reorder</span>
+                  <button
+                    onClick={() => setShowReorder(true)}
+                    className={primaryBtn}
+                  >
+                    <span className="text-xl font-bold text-white">
+                      Reorder
+                    </span>
                   </button>
                 </>
               )}
@@ -169,7 +192,10 @@ export function OrderCard({ order }: { order: Order }) {
 
       {/* Drawer uses the freshly-fetched detailedOrder */}
       {showDetails && detailedOrder && (
-        <ViewDetailsDrawer order={detailedOrder} onClose={() => setShowDetails(false)} />
+        <ViewDetailsDrawer
+          order={detailedOrder}
+          onClose={() => setShowDetails(false)}
+        />
       )}
       {showTrack && (
         <TrackOrderModal order={order} onClose={() => setShowTrack(false)} />

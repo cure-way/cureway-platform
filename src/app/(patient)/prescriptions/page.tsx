@@ -210,7 +210,7 @@ export default function UploadPrescriptionPage() {
     /* One container for the header and the body, so the two halves of the page
        share a left and right edge. They used to sit at x=80 and x=208 because
        each half set its own (dead) max-w-* class. */
-    <PageContainer>
+    <PageContainer variant="form">
       <PageHeader
         title={headerTitle}
         subtitle={headerSubtitle}

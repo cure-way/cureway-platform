@@ -7,6 +7,7 @@ import { applyCategoryFilters } from "@/services/categoriesService";
 
 import { categoryMedicinesFilters } from "@/utils/constants";
 import { useParams, useSearchParams } from "next/navigation";
+import { PageContainer } from "@/components/shared";
 
 export default function CategoryPage() {
   const params = useParams();
@@ -19,7 +20,7 @@ export default function CategoryPage() {
   const filteredMedicines = applyCategoryFilters(medicines, sort);
 
   return (
-    <div className="space-y-8 px-16 py-8">
+    <PageContainer variant="list" className="space-y-8">
       <div className="flex flex-wrap justify-between items-center gap-4">
         <h1 className="font-semibold text-gray-900 text-2xl">
           {medicines[0]?.categoryName || "Category"}
@@ -37,6 +38,6 @@ export default function CategoryPage() {
         loading={loading}
         error={error}
       />
-    </div>
+    </PageContainer>
   );
 }

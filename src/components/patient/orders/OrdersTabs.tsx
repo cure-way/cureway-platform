@@ -22,7 +22,7 @@ export function OrdersTabs({ activeTab, tabs, onChange }: Props) {
       className={cx(
         "w-full rounded-xl bg-white p-2",
         "flex items-center gap-6",
-        "font-[var(--font-montserrat)]"
+        "font-[var(--font-montserrat)]",
       )}
     >
       {tabs.map((t) => {
@@ -42,16 +42,15 @@ export function OrdersTabs({ activeTab, tabs, onChange }: Props) {
               selected
                 ? "bg-[#263B81] text-white"
                 : "bg-white text-[#263B81] hover:bg-[#263B81]/10",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#263B81]/40"
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#263B81]/40",
             )}
           >
             <span className="inline-flex items-center gap-2">
-             
               {isAll && (
                 <span
                   className={cx(
                     "inline-block h-2 w-2 rounded-full",
-                    selected ? "bg-white" : "bg-[#263B81]"
+                    selected ? "bg-white" : "bg-[#263B81]",
                   )}
                 />
               )}

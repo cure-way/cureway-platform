@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import SettingsSidebar from "@/components/admin/settings/SettingsSidebar";
 import { MotionStagger, MotionStaggerItem } from "@/components/admin/shared";
+import { PageContainer } from "@/components/shared";
 
 /* ------------------------------------------------------------------
    BREADCRUMB MAPPING
@@ -39,11 +40,15 @@ export default function AdminSettingsLayout({
   const parent = parentLabels[lastSegment];
 
   return (
-    <MotionStagger className="flex-1 bg-neutral-light-hover px-3 sm:pl-4 sm:pr-6 py-3 sm:py-4 space-y-4 sm:space-y-6">
+    <PageContainer
+      variant="dashboard"
+      as={MotionStagger}
+      className="bg-neutral-light-hover space-y-6"
+    >
       {/* Page Header + Breadcrumb */}
       <MotionStaggerItem>
         <div className="space-y-1 sm:space-y-2">
-          <h1 className="text-t-17 sm:text-t-25 font-bold text-primary-darker leading-snug">
+          <h1 className="text-t-21-semibold md:text-t-30-semibold text-primary-darker">
             Settings
           </h1>
           {currentLabel && (
@@ -85,6 +90,6 @@ export default function AdminSettingsLayout({
           <div className="flex-1 min-w-0">{children}</div>
         </div>
       </MotionStaggerItem>
-    </MotionStagger>
+    </PageContainer>
   );
 }

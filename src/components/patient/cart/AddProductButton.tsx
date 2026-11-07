@@ -1,6 +1,5 @@
 "use client";
 
-
 interface Props {
   onClick: () => void;
 }

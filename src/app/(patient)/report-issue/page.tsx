@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { PageHeader } from "@/components/patient/PageHeader";
+import { PageContainer, PageHeader } from "@/components/shared";
 import { Button } from "@/components/shared/Button";
 
 export default function ReportIssuePage() {
@@ -21,15 +21,13 @@ export default function ReportIssuePage() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-3 px-3 md:px-6 lg:px-12 py-6">
-      <div className="w-full max-w-[1280px]">
-        <PageHeader
-          title="Report an Issue"
-          subtitle="Please provide clear details so we can help you faster."
-        />
-      </div>
+    <PageContainer variant="account" className="flex flex-col gap-4">
+      <PageHeader
+        title="Report an Issue"
+        subtitle="Please provide clear details so we can help you faster."
+      />
 
-      <div className="w-full max-w-282.5 bg-white border-[5px] border-primary/10 rounded-3xl shadow-card p-6">
+      <div className="w-full bg-white border-[5px] border-primary/10 rounded-3xl shadow-card p-6">
         <div className="border-2 border-neutral-normal/40 rounded-3xl p-6 flex flex-col gap-6">
           <p className="text-t-21 font-bold text-black leading-[1.2]">
             Select Order
@@ -99,6 +97,6 @@ export default function ReportIssuePage() {
           </Button>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }
