@@ -68,10 +68,10 @@ export function SavedMedicineCard({
         {/* Content */}
         <div className="flex items-start justify-between gap-3 px-2">
           <div className="min-w-0">
-            <div className="truncate text-[18px] font-bold text-[#17234D]">
+            <div className="truncate text-t-17 font-bold text-[#17234D]">
               {item.name}
             </div>
-            <div className="mt-1 text-[16px] text-[#00000099]">
+            <div className="mt-1 text-t-17 text-[#00000099]">
               {item.sub1}
               <br />
               {item.sub2}
@@ -95,7 +95,7 @@ export function SavedMedicineCard({
 
         {/* Price row */}
         <div className="flex items-center gap-4 px-2">
-          <span className="text-[20px] font-bold text-[#279543]">
+          <span className="text-t-21 font-bold text-[#279543]">
             {item.price}
           </span>
 
@@ -113,7 +113,7 @@ export function SavedMedicineCard({
             onClick={() => onAddToCart?.(item.id)}
             className="flex h-[40px] flex-1 items-center justify-center rounded-[12px] bg-[#334EAC]"
           >
-            <span className="whitespace-nowrap text-[18px] font-bold leading-none text-[#EBEDF7]">
+            <span className="whitespace-nowrap text-t-17 font-bold leading-none text-[#EBEDF7]">
               Add to cart
             </span>
           </MotionTap>
@@ -123,7 +123,7 @@ export function SavedMedicineCard({
             onClick={() => onRemove?.(item.id)}
             className="flex h-[40px] flex-1 items-center justify-center rounded-[12px] border border-[#334EAC] bg-white"
           >
-            <span className="whitespace-nowrap text-[18px] font-bold leading-none text-[#334EAC]">
+            <span className="whitespace-nowrap text-t-17 font-bold leading-none text-[#334EAC]">
               Remove
             </span>
           </MotionTap>

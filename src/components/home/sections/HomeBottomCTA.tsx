@@ -66,7 +66,7 @@ export function HomeBottomCTA() {
               sizes="160px"
             />
           </div>
-          <p className="text-2xl md:text-3xl lg:text-[40px] font-black leading-tight md:ml-[180px]">
+          <p className="text-2xl md:text-3xl lg:text-t-36 font-black leading-tight md:ml-[180px]">
             <span className="text-error-hover">Free </span>
             <span className="text-primary-hover">Delivery on first order</span>
           </p>
@@ -87,7 +87,7 @@ export function HomeBottomCTA() {
                 <br />
                 right at your fingertips
               </h2>
-              <p className="text-t-17 md:text-t-21 lg:text-[24px] text-black/60">
+              <p className="text-t-17 md:text-t-21 lg:text-t-25 text-black/60">
                 We care gives you the tools and information you need to
               </p>
             </div>
@@ -105,10 +105,10 @@ export function HomeBottomCTA() {
                     {stepIcons[step.icon]}
                   </div>
                   <div className="flex flex-col gap-2">
-                    <p className="text-t-17 md:text-t-21 lg:text-[24px] font-semibold text-primary-hover leading-[1.2]">
+                    <p className="text-t-17 md:text-t-21 lg:text-t-25 font-semibold text-primary-hover leading-[1.2]">
                       {step.title}
                     </p>
-                    <p className="text-t-14 md:text-t-17 lg:text-[20px] text-black/50 leading-relaxed">
+                    <p className="text-t-14 md:text-t-17 lg:text-t-21 text-black/50 leading-relaxed">
                       {step.description}
                     </p>
                   </div>

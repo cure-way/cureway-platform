@@ -48,7 +48,7 @@ export default function SettingsPage() {
         <div className="grid gap-6 lg:grid-cols-12">
           {/* LEFT COLUMN */}
           <div className="min-w-0 lg:col-span-5">
-            <div className="mb-4 text-[28px] font-bold leading-[120%] text-black">
+            <div className="mb-4 text-t-30 font-bold leading-[120%] text-black">
               Settings
             </div>
 
@@ -75,10 +75,10 @@ export default function SettingsPage() {
                   </div>
                 ) : (
                   <div className="text-center">
-                    <div className="text-[24px] font-bold text-[#17234D]">
+                    <div className="text-t-25 font-bold text-[#17234D]">
                       {displayName}
                     </div>
-                    <div className="mt-1 text-[16px] text-[rgba(0,0,0,0.8)]">
+                    <div className="mt-1 text-t-17 text-[rgba(0,0,0,0.8)]">
                       {displayEmail}
                     </div>
                     <div className="mt-1 text-[14px] text-[#989593]">
@@ -92,7 +92,7 @@ export default function SettingsPage() {
                   href="/profile/edit-profile"
                   className="inline-flex h-[56px] items-center justify-center rounded-[24px] bg-[#EBEDF7] px-[22px]"
                 >
-                  <span className="text-[20px] font-semibold text-[#334EAC]">
+                  <span className="text-t-21 font-semibold text-[#334EAC]">
                     Edit Profile
                   </span>
                 </MotionTap>
@@ -109,7 +109,7 @@ export default function SettingsPage() {
                 className="inline-flex items-center gap-2"
               >
                 <IconBack />
-                <span className="text-[20px] font-bold text-black">Back</span>
+                <span className="text-t-21 font-bold text-black">Back</span>
               </MotionTap>
             </div>
 
@@ -141,7 +141,7 @@ export default function SettingsPage() {
                   </div>
 
                   <div className="flex-1">
-                    <div className="text-[20px] font-semibold text-[#121B3C]">
+                    <div className="text-t-21 font-semibold text-[#121B3C]">
                       Medicine reminders
                     </div>
                     <div className="text-[14px] text-[#334EAC]">
@@ -162,7 +162,7 @@ export default function SettingsPage() {
                     </div>
 
                     <div className="flex-1">
-                      <div className="text-[20px] font-semibold text-[#17234D]">
+                      <div className="text-t-21 font-semibold text-[#17234D]">
                         Notification
                       </div>
                       <div className="text-[14px] text-[#334EAC]">
@@ -216,7 +216,7 @@ export default function SettingsPage() {
                     onClick={handleLogout}
                     className="mx-auto flex h-[56px] w-full max-w-[406px] items-center justify-center rounded-[24px] border border-[#263B81] bg-white"
                   >
-                    <span className="text-[24px] text-[#334EAC]">Logout</span>
+                    <span className="text-t-25 text-[#334EAC]">Logout</span>
                   </MotionTap>
                 </div>
               </div>

@@ -43,11 +43,11 @@ export default function AdminSettingsLayout({
       {/* Page Header + Breadcrumb */}
       <MotionStaggerItem>
         <div className="space-y-1 sm:space-y-2">
-          <h1 className="text-[18px] sm:text-t-25 font-bold text-primary-darker leading-snug">
+          <h1 className="text-t-17 sm:text-t-25 font-bold text-primary-darker leading-snug">
             Settings
           </h1>
           {currentLabel && (
-            <p className="text-[13px] sm:text-t-17 font-normal text-neutral leading-snug">
+            <p className="text-t-14 sm:text-t-17 font-normal text-neutral leading-snug">
               <Link href="/admin/settings/profile" className="hover:underline">
                 Settings
               </Link>

@@ -19,7 +19,7 @@ export default function ProfileSidebar({
   onDelete,
 }: Props) {
   const baseItem =
-    "flex items-center gap-3 py-4 px-2 rounded-lg text-[15px] transition-colors";
+    "flex items-center gap-3 py-4 px-2 rounded-lg text-t-14 transition-colors";
 
   return (
     <aside className="bg-white p-6 rounded-2xl w-72 h-fit">
@@ -55,7 +55,7 @@ export default function ProfileSidebar({
         <div className="border-[#E5E7EB] border-t" />
 
         {/* Notifications */}
-        <div className="flex items-center gap-3 px-2 py-4 text-[#374151] text-[15px]">
+        <div className="flex items-center gap-3 px-2 py-4 text-[#374151] text-t-14">
           <FiBell size={20} className="text-[#475569]" />
 
           <span className="flex-1">Notification Preferences</span>
@@ -92,7 +92,7 @@ export default function ProfileSidebar({
         {/* Delete */}
         <button
           onClick={onDelete}
-          className="mt-6 text-[15px] text-red-500 hover:text-red-600 text-left"
+          className="mt-6 text-t-14 text-red-500 hover:text-red-600 text-left"
         >
           Delete Account
         </button>

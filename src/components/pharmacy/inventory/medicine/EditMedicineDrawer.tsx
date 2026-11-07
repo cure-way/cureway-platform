@@ -41,7 +41,7 @@ export default function EditMedicineDrawer({ open, onClose, item }: Props) {
 
       <aside
         className={clsx(
-          "top-0 right-0 z-999 fixed bg-white shadow-xl w-full sm:max-w-sm h-full",
+          "top-0 right-0 z-999 fixed bg-white shadow-xl w-full sm:max-w-[24rem] h-full",
           "flex flex-col",
           "transform transition-transform duration-300 ease-out",
           open ? "translate-x-0" : "translate-x-full",

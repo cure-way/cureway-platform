@@ -15,10 +15,10 @@ export default function WelcomeSection() {
     <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-[8px] pb-[8px]">
       {/* Greeting */}
       <div className="flex-1 flex flex-col gap-[4px] sm:gap-[8px] min-w-0">
-        <h1 className="text-[18px] sm:text-[24px] font-bold leading-[1.2] text-[#121B3C]">
+        <h1 className="text-t-17 sm:text-t-25 font-bold leading-[1.2] text-[#121B3C]">
           Welcome{user?.name ? ` ${user.name}` : " Admin"} 👋🏻
         </h1>
-        <p className="text-[13px] sm:text-[18px] font-normal leading-[1.2] text-[#989593]">
+        <p className="text-t-14 sm:text-t-17 font-normal leading-[1.2] text-[#989593]">
           Here&apos;s a quick overview of today&apos;s operations
         </p>
       </div>

@@ -95,21 +95,21 @@ export default function SavedMedicinePage() {
             className="inline-flex items-center gap-2"
           >
             <IconBack />
-            <span className="text-[24px] font-bold leading-[120%] text-black">
+            <span className="text-t-25 font-bold leading-[120%] text-black">
               Back
             </span>
           </MotionTap>
         </div>
 
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="text-[20px] font-medium leading-[120%] text-[#263B81]">
+          <div className="text-t-21 font-medium leading-[120%] text-[#263B81]">
             Your Frequently used medicines
           </div>
 
           <div className="w-full max-w-[418px]">
             <input
               placeholder="Search"
-              className="h-[64px] w-full rounded-[16px] border border-[#CAC6C4] bg-white px-4 text-[16px] outline-none"
+              className="h-[64px] w-full rounded-[16px] border border-[#CAC6C4] bg-white px-4 text-t-17 outline-none"
             />
           </div>
         </div>

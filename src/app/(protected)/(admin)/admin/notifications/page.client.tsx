@@ -96,10 +96,10 @@ export default function AdminNotificationsPage() {
       <MotionStaggerItem>
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-3">
           <div className="space-y-0.5 sm:space-y-1">
-            <h1 className="text-[18px] sm:text-t-25 font-bold text-primary-darker leading-snug">
+            <h1 className="text-t-17 sm:text-t-25 font-bold text-primary-darker leading-snug">
               All Notifications
             </h1>
-            <p className="text-[13px] sm:text-t-17 font-normal text-neutral">
+            <p className="text-t-14 sm:text-t-17 font-normal text-neutral">
               Stay updated with your all notifications and activities
             </p>
           </div>

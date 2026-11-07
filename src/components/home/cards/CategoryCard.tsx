@@ -24,10 +24,10 @@ export function CategoryCard({ category }: CategoryCardProps) {
       </div>
       {/* Text */}
       <div className="flex flex-col items-center gap-2 px-2 pb-4 text-center">
-        <p className="font-bold text-primary-hover text-t-17 md:text-[20px] leading-[1.2]">
+        <p className="font-bold text-primary-hover text-t-17 md:text-t-21 leading-[1.2]">
           {category.name}
         </p>
-        <p className="text-black/60 text-t-14 md:text-[18px] leading-[1.2]">
+        <p className="text-black/60 text-t-14 md:text-t-17 leading-[1.2]">
           {category.description}
         </p>
       </div>

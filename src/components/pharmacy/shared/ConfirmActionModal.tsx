@@ -42,7 +42,7 @@ export default function ConfirmActionModal({
       onClick={onCancel}
     >
       <div
-        className="bg-white shadow-lg rounded-xl w-full max-w-md"
+        className="bg-white shadow-lg rounded-xl w-full max-w-[28rem]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

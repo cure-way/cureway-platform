@@ -51,7 +51,7 @@ export default function HistoryPage() {
             className="inline-flex items-center gap-2"
           >
             <IconBack />
-            <span className="text-[24px] font-bold leading-[120%] text-[#1E2B57]">
+            <span className="text-t-25 font-bold leading-[120%] text-[#1E2B57]">
               Back
             </span>
           </MotionTap>

@@ -108,7 +108,7 @@ export default function SettingsSidebar() {
         onClick={() => setMobileOpen(!mobileOpen)}
         className="flex items-center justify-between lg:hidden w-full"
       >
-        <h2 className="text-[15px] font-medium text-neutral-darker">
+        <h2 className="text-t-14 font-medium text-neutral-darker">
           Settings Menu
         </h2>
         {mobileOpen ? (

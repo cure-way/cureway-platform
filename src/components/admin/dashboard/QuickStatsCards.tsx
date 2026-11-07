@@ -51,7 +51,7 @@ export default function QuickStatsCards() {
           {/* Text */}
           <div className="flex-1 min-w-0 flex flex-col gap-[8px] justify-center">
             <p
-              className="text-[18px] font-semibold leading-[1.2]"
+              className="text-t-17 font-semibold leading-[1.2]"
               style={{ color: stat.labelColor }}
             >
               {stat.label}

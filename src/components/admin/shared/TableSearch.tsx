@@ -31,7 +31,7 @@ export default function TableSearch({
           placeholder={placeholder}
           value={value ?? ""}
           onChange={(e) => onSearch?.(e.target.value)}
-          className="flex-1 bg-transparent text-[16px] font-medium text-foreground placeholder:text-neutral outline-none min-w-0"
+          className="flex-1 bg-transparent text-t-17 font-medium text-foreground placeholder:text-neutral outline-none min-w-0"
           aria-label="Search table"
         />
         <button

@@ -82,7 +82,7 @@ export default function PharmacyMenu() {
             )}
             {verificationStatus && (
               <span
-                className={`inline-block mt-1.5 px-2 py-0.5 text-[11px] font-medium rounded-full ${
+                className={`inline-block mt-1.5 px-2 py-0.5 text-t-12 font-medium rounded-full ${
                   verificationStatus === "VERIFIED"
                     ? "bg-green-50 text-green-700"
                     : verificationStatus === "REJECTED"

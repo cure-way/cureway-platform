@@ -29,3 +29,14 @@ Branch naming:
 - `docs/<topic>` — documentation
 
 Do not commit directly to `main`, and do not force-push shared branches you did not create.
+
+## Styling
+
+Tailwind's container scale is remapped to breakpoint widths in this project:
+`max-w-md` is 768px and `max-w-2xl` is 1440px, not 448px and 672px. Use an
+explicit value such as `max-w-[28rem]` for dialogs, cards and other non-page
+containers. See docs/design-system/TOKENS.md.
+
+Typography uses the `text-t-*` scale (36/30/25/21/17/14/12/10/8). There is no
+`text-t-16`, `-18`, `-20` or `-24`; those silently apply no font size. Keep
+readable text at 12px or larger on mobile.

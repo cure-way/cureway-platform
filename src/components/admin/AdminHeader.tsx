@@ -60,7 +60,7 @@ export default function AdminHeader() {
         <input
           type="text"
           placeholder="Search medicine, pharmacy.."
-          className="flex-1 bg-transparent text-[16px] font-medium leading-[1.2] text-foreground placeholder:text-[#989593] outline-none min-w-0"
+          className="flex-1 bg-transparent text-t-17 font-medium leading-[1.2] text-foreground placeholder:text-[#989593] outline-none min-w-0"
           aria-label="Search"
         />
         <button

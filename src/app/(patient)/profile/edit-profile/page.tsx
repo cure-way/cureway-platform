@@ -21,7 +21,7 @@ const COUNTRIES = [
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="text-[16px] font-semibold text-[#17234D]">{children}</div>
+    <div className="text-t-17 font-semibold text-[#17234D]">{children}</div>
   );
 }
 
@@ -45,7 +45,7 @@ function TextInput({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         type={type}
-        className="h-full w-full bg-transparent text-[16px] font-medium text-[#494949] outline-none"
+        className="h-full w-full bg-transparent text-t-17 font-medium text-[#494949] outline-none"
       />
       {rightIcon && <div>{rightIcon}</div>}
     </div>
@@ -154,7 +154,7 @@ export default function EditProfilePage() {
       <div className="mx-auto w-full max-w-[1100px]">
         {/* ✅ Header row (مثل Settings) */}
         <div className="mb-4 flex items-center justify-between">
-          <div className="text-[26px] font-bold text-black">Edit Profile</div>
+          <div className="text-t-25 font-bold text-black">Edit Profile</div>
 
           <MotionTap
             as="button"
@@ -162,7 +162,7 @@ export default function EditProfilePage() {
             className="flex items-center gap-2"
           >
             <IconBack />
-            <span className="text-[18px] font-bold">Back</span>
+            <span className="text-t-17 font-bold">Back</span>
           </MotionTap>
         </div>
 
@@ -190,7 +190,7 @@ export default function EditProfilePage() {
                   onClick={() => console.log("change photo")}
                   className="flex h-[50px] w-full max-w-[220px] items-center justify-center rounded-[24px] bg-[#EBEDF7]"
                 >
-                  <span className="text-[18px] font-semibold text-[#334EAC]">
+                  <span className="text-t-17 font-semibold text-[#334EAC]">
                     Change photo
                   </span>
                 </MotionTap>
@@ -247,7 +247,7 @@ export default function EditProfilePage() {
                         );
                         if (selected) setCountry(selected);
                       }}
-                      className="bg-transparent text-[16px] font-medium outline-none"
+                      className="bg-transparent text-t-17 font-medium outline-none"
                     >
                       {COUNTRIES.map((c) => (
                         <option key={c.code} value={c.code}>
@@ -261,7 +261,7 @@ export default function EditProfilePage() {
                     <input
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full bg-transparent text-[16px] outline-none"
+                      className="w-full bg-transparent text-t-17 outline-none"
                       placeholder="Phone number"
                     />
                   </div>
@@ -274,7 +274,7 @@ export default function EditProfilePage() {
                     disabled={updating || loading}
                     className="flex h-[50px] w-full max-w-[360px] items-center justify-center rounded-[24px] bg-[#334EAC] disabled:opacity-50"
                   >
-                    <span className="text-[20px] font-semibold text-white">
+                    <span className="text-t-21 font-semibold text-white">
                       {updating ? "Saving..." : "Save changes"}
                     </span>
                   </MotionTap>
@@ -284,7 +284,7 @@ export default function EditProfilePage() {
                     onClick={handleLogout}
                     className="flex h-[50px] w-full max-w-[360px] items-center justify-center rounded-[24px] border border-[#263B81]"
                   >
-                    <span className="text-[20px] font-semibold text-[#334EAC]">
+                    <span className="text-t-21 font-semibold text-[#334EAC]">
                       Logout
                     </span>
                   </MotionTap>

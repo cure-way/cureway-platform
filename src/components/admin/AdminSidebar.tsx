@@ -214,7 +214,7 @@ function NavSection({
                     animate={{ opacity: 1, width: "auto" }}
                     exit={{ opacity: 0, width: 0 }}
                     transition={{ duration: duration.fast }}
-                    className="text-[16px] font-medium whitespace-nowrap truncate overflow-hidden"
+                    className="text-t-17 font-medium whitespace-nowrap truncate overflow-hidden"
                   >
                     {item.label}
                   </motion.span>
@@ -332,7 +332,7 @@ export default function AdminSidebar() {
               height={40}
               className="rounded-full"
             />
-            <span className="text-[24px] font-black text-[#121B3C]">
+            <span className="text-t-25 font-black text-[#121B3C]">
               CUREWAY
             </span>
           </Link>
@@ -386,7 +386,7 @@ export default function AdminSidebar() {
                   height={40}
                   className="rounded-full"
                 />
-                <span className="text-[24px] font-black text-[#121B3C]">
+                <span className="text-t-25 font-black text-[#121B3C]">
                   CUREWAY
                 </span>
               </Link>

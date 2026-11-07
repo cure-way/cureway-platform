@@ -35,7 +35,7 @@ export default function AddMedicineModal({ open, onClose }: Props) {
       onClick={onClose}
     >
       <div
-        className="flex flex-col bg-white shadow-xl rounded-2xl w-full max-w-md h-[80vh] overflow-hidden"
+        className="flex flex-col bg-white shadow-xl rounded-2xl w-full max-w-[28rem] h-[80vh] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

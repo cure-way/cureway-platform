@@ -34,7 +34,7 @@ export function HomeHero() {
             <h1 className="text-2xl md:text-4xl lg:text-[56px] font-extrabold text-primary-darker leading-tight md:leading-normal">
               {heading}
             </h1>
-            <p className="text-t-17 md:text-t-21 lg:text-[24px] text-secondary leading-[1.5] max-w-[545px]">
+            <p className="text-t-17 md:text-t-21 lg:text-t-25 text-secondary leading-[1.5] max-w-[545px]">
               {subheading}
             </p>
           </div>
@@ -54,7 +54,7 @@ export function HomeHero() {
                       <TbTruckDelivery className="w-6 h-6 md:w-8 md:h-8 text-primary" />
                     )}
                   </div>
-                  <span className="text-t-14 md:text-t-17 lg:text-[18px] font-semibold text-primary-dark text-left">
+                  <span className="text-t-14 md:text-t-17 lg:text-t-17 font-semibold text-primary-dark text-left">
                     {cta.label}
                   </span>
                 </button>

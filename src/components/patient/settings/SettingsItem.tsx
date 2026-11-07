@@ -42,7 +42,7 @@ export function SettingsLinkItem({
       ) : null}
 
       <div className="min-w-0 flex-1">
-        <div className="truncate text-[20px] font-semibold leading-[120%] text-[#121B3C]">
+        <div className="truncate text-t-21 font-semibold leading-[120%] text-[#121B3C]">
           {title}
         </div>
         {subtitle ? (
@@ -82,7 +82,7 @@ export function SettingsActionItem({
       ) : null}
 
       <div className="min-w-0 flex-1">
-        <div className="truncate text-[20px] font-semibold leading-[120%] text-[#121B3C]">
+        <div className="truncate text-t-21 font-semibold leading-[120%] text-[#121B3C]">
           {title}
         </div>
         {subtitle ? (
