@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 function VerifyCodeForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const email = searchParams.get("email") || "sondoos66@gmail.com";
+  const email = searchParams.get("email") || "your email address";
 
   const [isLoading, setIsLoading] = useState(false);
   const [otp, setOtp] = useState<string[]>(Array(4).fill(""));
