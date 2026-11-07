@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { NEARBY_PHARMACIES } from "@/services/nearbypharmacies.data";
+import { formatCurrency } from "@/lib/format";
 
 export default function NearbyPharmaciesPage() {
   const [pharmacies] = useState(NEARBY_PHARMACIES);
@@ -166,7 +167,7 @@ export default function NearbyPharmaciesPage() {
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
-                    Delivery fee {pharmacy.deliveryFee}$
+                    Delivery fee {formatCurrency(pharmacy.deliveryFee)}
                   </div>
                 </div>
 

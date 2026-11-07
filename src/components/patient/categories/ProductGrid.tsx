@@ -2,6 +2,7 @@ import { Medicine } from "@/types/medicine.types";
 import { Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { formatPriceRange } from "@/lib/format";
 
 interface Props {
   medicines: Medicine[];
@@ -64,9 +65,9 @@ export default function ProductGrid({ medicines, loading, error }: Props) {
 
           <div className="flex flex-col flex-1">
             {/* Title */}
-            <h3 className="font-semibold text-gray-800 text-sm line-clamp-2">
+            <h2 className="font-semibold text-gray-800 text-sm line-clamp-2">
               {medicine.name}
-            </h3>
+            </h2>
 
             {/* Meta */}
             <p className="mt-1 text-gray-500 text-xs">
@@ -76,8 +77,7 @@ export default function ProductGrid({ medicines, loading, error }: Props) {
             <div className="mt-auto">
               {/* Price Range */}
               <div className="mt-3 font-semibold text-green-600 text-sm">
-                ${medicine.minPrice.toFixed(2)} – $
-                {medicine.maxPrice.toFixed(2)}
+                {formatPriceRange(medicine.minPrice, medicine.maxPrice)}
               </div>
 
               {/* Button */}

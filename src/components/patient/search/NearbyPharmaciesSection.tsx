@@ -3,6 +3,7 @@
 import { NearbyPharmacy } from "@/types/search";
 import { Star, Clock, Route } from "lucide-react";
 import { RiFirstAidKitFill } from "react-icons/ri";
+import { formatCurrency } from "@/lib/format";
 
 const MOCK_NEARBY_PHARMACIES: NearbyPharmacy[] = [
   {
@@ -74,7 +75,7 @@ export function NearbyPharmaciesSection({
                   onSelectPharmacy?.(pharmacy);
                 }
               }}
-              aria-label={`${pharmacy.name} - $${pharmacy.price.toFixed(2)}`}
+              aria-label={`${pharmacy.name} - ${formatCurrency(pharmacy.price)}`}
             >
               {/* Top row: icon + name + price */}
               <div className="flex items-center gap-2.5 mb-4">
@@ -90,7 +91,7 @@ export function NearbyPharmaciesSection({
                   </p>
                 </div>
                 <p className="font-bold text-success-dark text-base leading-[1.2] shrink-0">
-                  ${pharmacy.price.toFixed(2)}
+                  {formatCurrency(pharmacy.price)}
                 </p>
               </div>
 
@@ -100,28 +101,28 @@ export function NearbyPharmaciesSection({
                   {/* Rating badge */}
                   <div className="flex items-center gap-1 bg-white rounded-lg px-2 py-1 h-9">
                     <Star className="w-3 h-3 text-warning fill-warning" />
-                    <span className="text-[10px] font-semibold text-neutral-darker">
+                    <span className="text-t-12 font-semibold text-neutral-darker">
                       {pharmacy.rating}
                     </span>
                   </div>
                   {/* Time badge */}
                   <div className="flex items-center gap-1 bg-white rounded-lg px-2 py-1 h-9">
                     <Clock className="w-3 h-3 text-neutral-dark-active" />
-                    <span className="text-[10px] font-medium text-neutral-dark-active">
+                    <span className="text-t-12 font-medium text-neutral-dark-active">
                       {pharmacy.deliveryRange}
                     </span>
                   </div>
                   {/* Distance badge */}
                   <div className="flex items-center gap-1 bg-white rounded-lg px-2 py-1 h-9">
                     <Route className="w-3 h-3 text-neutral-dark-active" />
-                    <span className="text-[10px] font-medium text-neutral-dark-active">
+                    <span className="text-t-12 font-medium text-neutral-dark-active">
                       {pharmacy.distance}
                     </span>
                   </div>
                 </div>
                 {pharmacy.freeDelivery && (
                   <div className="bg-success-light-hover rounded-lg px-2 py-1 h-9 flex items-center justify-center">
-                    <span className="text-[8px] font-semibold text-success-darker text-center">
+                    <span className="text-t-12 font-semibold text-success-darker text-center">
                       Free Delivery
                     </span>
                   </div>

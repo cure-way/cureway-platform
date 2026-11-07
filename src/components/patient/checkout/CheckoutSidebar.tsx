@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ChevronUp, ChevronDown } from "lucide-react";
 import { CouponInput } from "./CouponInput";
 import type { CartGroup } from "@/types/cart";
+import { formatCurrency } from "@/lib/format";
 
 
 interface Props {
@@ -91,7 +92,7 @@ export const CheckoutSidebar = memo(function CheckoutSidebar({
                     ))}
                   </div>
                 </div>
-                <div className="absolute bottom-1.5 right-1.5 bg-primary-light text-primary text-[11px] font-bold rounded-lg px-1.5 py-0.5 z-20 border border-card shadow-sm whitespace-nowrap">
+                <div className="absolute bottom-1.5 right-1.5 bg-primary-light text-primary text-t-12 font-bold rounded-lg px-1.5 py-0.5 z-20 border border-card shadow-sm whitespace-nowrap">
                   +{totalQty}
                 </div>
               </div>
@@ -103,7 +104,7 @@ export const CheckoutSidebar = memo(function CheckoutSidebar({
                   {group.pharmacy.address}
                 </p>
                 <p className="text-t-12 text-muted-foreground">
-                  {totalQty} items | {group.subtotal.toFixed(2)}$
+                  {totalQty} items | {formatCurrency(group.subtotal)}
                 </p>
               </div>
             </div>
@@ -180,7 +181,7 @@ export const CheckoutSidebar = memo(function CheckoutSidebar({
             <div key={label} className="flex items-center justify-between px-1">
               <span className="text-t-14-semibold text-primary">{label}</span>
               <span className="text-t-14 text-primary">
-                {val === 0 ? "00.00$" : `${val.toFixed(2)}$`}
+                {formatCurrency(val)}
               </span>
             </div>
           ))}
@@ -190,7 +191,7 @@ export const CheckoutSidebar = memo(function CheckoutSidebar({
               <span className="text-neutral-dark font-normal">({totalItems} items)</span>
             </span>
             <span className="flex items-baseline gap-px">
-              <span className="text-t-25-bold text-primary">{total.toFixed(2)}</span>
+              <span className="text-t-25-bold text-primary">{formatCurrency(total)}</span>
               <span className="text-t-17-semibold text-primary">$</span>
             </span>
           </div>

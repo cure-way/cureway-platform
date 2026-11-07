@@ -11,6 +11,7 @@ import { useOrderStore } from "@/store/order.store";
 // react-hot-toast, not sonner: ToastProvider mounts react-hot-toast's
 // <Toaster/>, so sonner toasts never actually appeared.
 import toast from "react-hot-toast";
+import { formatCurrency } from "@/lib/format";
 
 function formatOrderedLine(orderedAtISO: string) {
   const d = new Date(orderedAtISO);
@@ -107,7 +108,7 @@ export function OrderCard({ order }: { order: Order }) {
               <div className="flex items-center gap-2">
                 <span className="text-xl font-bold text-black/60">Total :</span>
                 <span className="text-xl font-bold text-black/60">
-                  {order.total.toFixed(2)}{order.currency ?? "$"}
+                  {formatCurrency(order.total, order.currency ?? "USD")}
                 </span>
               </div>
             </div>

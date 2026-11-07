@@ -5,6 +5,7 @@ import { orderColumns } from "@/utils/pharmacyConstants";
 import SimpleTable from "../shared/SimpleTable";
 import StatusBadge from "../shared/StatusBadge";
 import type { OrderRow } from "@/types/pharmacyOrders";
+import { formatCurrency } from "@/lib/format";
 
 export default function OrdersTable({ data }: { data: OrderRow[] }) {
   const router = useRouter();
@@ -35,7 +36,7 @@ export default function OrdersTable({ data }: { data: OrderRow[] }) {
         }
 
         if (col.key === "totalAmount") {
-          return `${row.totalAmount.toFixed(2)} ILS`;
+          return formatCurrency(row.totalAmount);
         }
 
         return String(row[col.key as keyof OrderRow]);

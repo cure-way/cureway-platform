@@ -2,6 +2,7 @@ import Image from "next/image";
 import { IoHeartOutline } from "react-icons/io5";
 import type { Medicine } from "@/types/medicine.types";
 import Link from "next/link";
+import { formatCurrency } from "@/lib/format";
 
 interface ProductCardProps {
   product: Medicine;
@@ -37,28 +38,28 @@ export function ProductCard({ product }: ProductCardProps) {
       {/* Details */}
       <div className="flex flex-col flex-1 gap-2 px-3 md:px-4 pt-3 pb-1 min-h-0">
         <div className="flex-1 min-w-0">
-          <p className="font-bold text-primary-darker text-t-14 md:text-[18px] truncate leading-[1.2]">
+          <p className="font-bold text-primary-darker text-t-14 md:text-t-17 truncate leading-[1.2]">
             {product.name}
           </p>
 
-          <p className="text-black/60 text-t-12 md:text-[16px] truncate">
+          <p className="text-black/60 text-t-12 md:text-t-17 truncate">
             {product.categoryName}
           </p>
 
-          <p className="text-black/50 text-t-12 md:text-[16px] truncate">
+          <p className="text-black/50 text-t-12 md:text-t-17 truncate">
             {product.dosageForm}
           </p>
         </div>
 
         {/* Price */}
         <div className="flex items-center gap-2">
-          <span className="font-bold text-success-dark text-t-17 md:text-[20px] leading-[1.2]">
-            ${product.minPrice.toFixed(2)}
+          <span className="font-bold text-success-dark text-t-17 md:text-t-21 leading-[1.2]">
+            {formatCurrency(product.minPrice)}
           </span>
 
           {hasRange && (
             <span className="text-black/40 text-t-12 md:text-t-14 line-through leading-[1.2]">
-              ${product.maxPrice.toFixed(2)}
+              {formatCurrency(product.maxPrice)}
             </span>
           )}
         </div>
@@ -66,7 +67,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
       {/* Add to cart */}
       <button
-        className="bg-primary-light hover:bg-primary-light-hover py-2.5 rounded-xl w-full font-normal text-primary text-t-14 md:text-t-17 lg:text-[24px] transition-colors"
+        className="bg-primary-light hover:bg-primary-light-hover py-2.5 rounded-xl w-full font-normal text-primary text-t-14 md:text-t-17 lg:text-t-25 transition-colors"
         type="button"
       >
         Add to cart

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Globe } from "lucide-react";
 import { SearchResult } from "@/types/search";
 import { cn } from "@/lib/utils";
+import { formatCurrency } from "@/lib/format";
 
 interface SearchResultCardProps {
   result: SearchResult;
@@ -31,7 +32,7 @@ export function SearchResultCard({ result, onClick }: SearchResultCardProps) {
           onClick?.(result);
         }
       }}
-      aria-label={`${result.title} - $${price.toFixed(2)} at ${pharmacyName}`}
+      aria-label={`${result.title} - ${formatCurrency(price)} at ${pharmacyName}`}
     >
       {/* Medicine Info Row */}
       <div className="flex items-start gap-4 p-4">
@@ -82,11 +83,11 @@ export function SearchResultCard({ result, onClick }: SearchResultCardProps) {
           {/* Price */}
           <div className="flex items-baseline gap-2 mt-2">
             <span className="font-bold text-primary text-base">
-              ${price.toFixed(2)}
+              {formatCurrency(price)}
             </span>
             {originalPrice > price && (
               <span className="text-gray-400 text-sm line-through">
-                ${originalPrice.toFixed(2)}
+                {formatCurrency(originalPrice)}
               </span>
             )}
           </div>

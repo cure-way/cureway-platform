@@ -3,6 +3,7 @@
 
 import Image from "next/image";
 import type { PharmacyGroupProps } from "@/types/cart";
+import { formatCurrency } from "@/lib/format";
 
 export default function PharmacyGroupCard({ group }: PharmacyGroupProps) {
   const itemCount = group.items.reduce((s, i) => s + i.quantity, 0);
@@ -51,7 +52,7 @@ export default function PharmacyGroupCard({ group }: PharmacyGroupProps) {
             {group.pharmacy.address ?? "Gaza City"}
           </p>
           <p className="text-t-17 text-muted-foreground font-[var(--font-montserrat)]">
-            {itemCount} items | ${group.subtotal.toFixed(2)}
+            {itemCount} items | {formatCurrency(group.subtotal)}
           </p>
         </div>
       </div>

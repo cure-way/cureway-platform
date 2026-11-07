@@ -1,5 +1,6 @@
 import { PharmacyStock } from "@/types/medicine.types";
 import { useRouter } from "next/navigation";
+import { formatCurrency } from "@/lib/format";
 
 interface PharmacyCardProps {
   pharmacy: PharmacyStock;
@@ -31,9 +32,9 @@ export function PharmacyCard({ pharmacy }: PharmacyCardProps) {
         <div className={`mt-1.5 h-2 w-2 rounded-full ${availabilityColor}`} />
 
         <div className="flex-1 min-w-0">
-          <h3 className="mb-1 font-semibold text-gray-900 text-sm truncate">
+          <h2 className="mb-1 font-semibold text-gray-900 text-sm truncate">
             {pharmacy.pharmacyName}
-          </h3>
+          </h2>
 
           <p className="text-gray-600 text-xs">{pharmacy.cityName}</p>
 
@@ -44,13 +45,13 @@ export function PharmacyCard({ pharmacy }: PharmacyCardProps) {
       </div>
 
       <div className="mb-3 font-semibold text-gray-900 text-sm">
-        ${(pharmacy.price ?? 0).toFixed(2)}
+        {formatCurrency(pharmacy.price ?? 0)}
       </div>
 
       <div className="flex justify-between items-center text-xs">
         <span className="text-gray-600">
           {pharmacy.deliveryFee
-            ? `Delivery $${pharmacy.deliveryFee}`
+            ? `Delivery ${formatCurrency(pharmacy.deliveryFee)}`
             : "No delivery fee"}
         </span>
 

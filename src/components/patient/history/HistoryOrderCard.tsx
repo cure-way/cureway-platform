@@ -51,7 +51,7 @@ export function HistoryOrderCard({
       <div className="flex items-start gap-4 px-4 py-3">
         <div className="h-[56px] w-[56px] rounded-[14px] bg-[#EEF1FF]" />
         <div className="min-w-0">
-          <div className="text-[16px] font-semibold text-[#1E2B57]">
+          <div className="text-t-17 font-semibold text-[#1E2B57]">
             {order.pharmacyName}
           </div>
           <div className="mt-1 text-[12px] text-[#9CA3AF]">
@@ -70,7 +70,7 @@ export function HistoryOrderCard({
             <div className="text-[12px] font-semibold text-[#6B7280]">
               From
             </div>
-            <div className="text-[13px] font-medium text-[#111827]">
+            <div className="text-t-14 font-medium text-[#111827]">
               {order.fromLine1}
             </div>
             <div className="text-[12px] text-[#9CA3AF]">{order.fromLine2}</div>

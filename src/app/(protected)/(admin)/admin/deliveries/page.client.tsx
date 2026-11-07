@@ -30,6 +30,7 @@ import type { ColumnDef, BadgeVariant } from "@/components/admin/shared";
 import { DeliveriesPageIcon } from "@/components/admin/shared/icons";
 import { useAdminDeliveries } from "@/hooks/admin.hooks";
 import type { AdminDelivery } from "@/services/admin.service";
+import { formatCurrency } from "@/lib/format";
 
 /* ------------------------------------------------------------------
    HELPERS
@@ -141,7 +142,7 @@ const columns: ColumnDef<AdminDelivery>[] = [
     header: "Earning",
     cell: (d) => (
       <span className="text-[14px] leading-[1.2] font-semibold text-primary-dark">
-        {d.earning != null ? `$${d.earning.toFixed(2)}` : "—"}
+        {d.earning != null ? formatCurrency(d.earning) : "—"}
       </span>
     ),
   },
@@ -310,7 +311,7 @@ export default function AdminDeliveriesPage() {
 
             {/* Order Code Tracker */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
-              <span className="text-[13px] sm:text-[14px] leading-[1.2] font-medium text-neutral-darker whitespace-nowrap">
+              <span className="text-t-14 sm:text-[14px] leading-[1.2] font-medium text-neutral-darker whitespace-nowrap">
                 Type your Order code:
               </span>
               <div className="flex flex-1 w-full sm:w-auto gap-2">
@@ -320,7 +321,7 @@ export default function AdminDeliveriesPage() {
                   value={trackCode}
                   onChange={(e) => setTrackCode(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleTrack()}
-                  className="flex-1 min-w-0 h-10 sm:h-12 px-3 sm:px-4 border border-border rounded-xl text-[14px] sm:text-[16px] leading-[1.2] font-semibold text-primary-darker placeholder:text-neutral focus:outline-none focus:ring-2 focus:ring-primary-dark/20 transition-shadow"
+                  className="flex-1 min-w-0 h-10 sm:h-12 px-3 sm:px-4 border border-border rounded-xl text-[14px] sm:text-t-17 leading-[1.2] font-semibold text-primary-darker placeholder:text-neutral focus:outline-none focus:ring-2 focus:ring-primary-dark/20 transition-shadow"
                 />
                 <button
                   onClick={handleTrack}

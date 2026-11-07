@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Product } from "./services";
+import { formatCurrency } from "@/lib/format";
 
 interface RecommendedProductsProps {
   products: Product[];
@@ -53,7 +54,7 @@ export default function RecommendedProducts({
             </h3>
             {product.price && (
               <p className="text-neutral-dark text-sm font-semibold">
-                ${product.price.toFixed(2)}
+                {formatCurrency(product.price)}
               </p>
             )}
           </div>
