@@ -1,7 +1,7 @@
 /**
  * Showcase mode — public surface.
  *
- * See `docs/SHOWCASE_MODE_PLAN.md` for the design and the endpoint inventory.
+ * See `docs/showcase-mode-plan.md` for the design and the endpoint inventory.
  */
 
 export {

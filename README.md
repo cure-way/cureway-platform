@@ -438,7 +438,7 @@ What a visitor gets:
 - Reads come from fixtures; writes change in-memory state and reset on reload
 - Actions that genuinely need a backend are disabled with an explanatory toast
 
-See [`docs/SHOWCASE_MODE_PLAN.md`](docs/SHOWCASE_MODE_PLAN.md) for the full design and the
+See [`docs/showcase-mode-plan.md`](docs/showcase-mode-plan.md) for the full design and the
 endpoint inventory.
 
 ### Public site URL

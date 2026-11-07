@@ -5,7 +5,7 @@
  * single place where API response envelopes are produced, so the shapes can
  * never drift between services.
  *
- * Reference for the full endpoint inventory: docs/SHOWCASE_MODE_PLAN.md §1.
+ * Reference for the full endpoint inventory: docs/showcase-mode-plan.md §1.
  */
 
 import type { DemoRole } from "./config";
