@@ -163,7 +163,7 @@ export function ShowcaseBar() {
                 onClick={() => handleSwitch(r)}
                 aria-pressed={r === role}
                 disabled={switching}
-                className={`px-3 py-1.5 min-h-9 rounded-md text-t-12 sm:text-t-14 font-semibold transition-colors cursor-pointer disabled:cursor-wait ${
+                className={`px-3 py-2 min-h-11 rounded-md text-t-12 sm:text-t-14 font-semibold transition-colors cursor-pointer disabled:cursor-wait ${
                   r === role
                     ? "bg-white text-primary"
                     : "text-primary-light hover:bg-white/15"
@@ -177,7 +177,7 @@ export function ShowcaseBar() {
           <button
             type="button"
             onClick={openWelcome}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-9 rounded-md text-t-12 sm:text-t-14 font-semibold text-primary-light hover:bg-white/15 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-2 min-h-11 rounded-md text-t-12 sm:text-t-14 font-semibold text-primary-light hover:bg-white/15 transition-colors cursor-pointer"
           >
             <IoInformationCircleOutline aria-hidden="true" className="w-4 h-4" />
             About this demo
@@ -187,7 +187,7 @@ export function ShowcaseBar() {
             type="button"
             onClick={handleReset}
             title="Restore the original sample data"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-9 rounded-md text-t-12 sm:text-t-14 font-semibold text-primary-light hover:bg-white/15 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-2 min-h-11 rounded-md text-t-12 sm:text-t-14 font-semibold text-primary-light hover:bg-white/15 transition-colors cursor-pointer"
           >
             <IoRefreshOutline aria-hidden="true" className="w-4 h-4" />
             Reset demo
