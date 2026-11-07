@@ -102,9 +102,9 @@ export default function NearbyPharmaciesPage() {
                       </svg>
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-base font-semibold text-gray-900 leading-tight">
+                      <h2 className="text-base font-semibold text-gray-900 leading-tight">
                         {pharmacy.name}
-                      </h3>
+                      </h2>
                       <p className="text-sm text-gray-500 mt-0.5 leading-snug">
                         {pharmacy.address}
                       </p>

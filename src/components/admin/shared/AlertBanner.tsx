@@ -112,7 +112,7 @@ export default function AlertBanner({
               : ""
           }`}
         >
-          <h3 className={v.title}>{title}</h3>
+          <h2 className={v.title}>{title}</h2>
           {description && <p className={v.description}>{description}</p>}
         </div>
       </div>
