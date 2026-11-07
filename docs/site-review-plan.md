@@ -312,7 +312,8 @@ the 36px touch targets are caught rather than shipped.
 
 ## Outcome
 
-Fixed on `feat/showcase-polish` and verified by re-running the same audit.
+Fixed on `feat/showcase-polish` and verified by re-running the same audit over
+all **324 pages** (54 role-routes x 6 widths).
 
 | Category | Before | After |
 | --- | ---: | ---: |
@@ -320,23 +321,62 @@ Fixed on `feat/showcase-polish` and verified by re-running the same audit.
 | Heading order | 87 | **0** |
 | Text under 12px | 13 | **0** |
 | Currency formats | 6 | **0** |
-| Touch targets under 44px | 66 distinct controls | **7**, all deliberate exclusions |
+| Touch targets under 44px | 66 distinct controls | **0 actionable** |
 | Placeholder text / missing alt / navigation failures | 0 | **0** |
 | Console errors | 0 | **0** |
 
-### Two corrections to this document
+The re-run reports 232 touch-target findings, and every one falls into one of
+the three documented exclusions below: 244 occurrences of a text input, 30 of a
+link inside running text (`Sign Up`, `Login Here`), and 6 of the dial-code
+`<select>`. No button, icon control, card action, breadcrumb or navigation item
+is under 44px at any width in any role.
+
+### Hit areas: measured, and proved visually inert
+
+Comparing `540f414` (the commit before the hit-area work) with the branch tip,
+same build, same widths:
+
+| Page @ width | Controls under 44px, before | After | Control count |
+| --- | ---: | ---: | ---: |
+| patient home @360 / @390 | 22 / 23 | **0 / 0** | 44 |
+| patient search @360 / @390 | 7 / 7 | **0 / 0** | 12 |
+| patient profile @360 / @390 | 13 / 13 | **0 / 0** | 22 |
+| pharmacy home @360 / @390 | 13 / 13 | **0 / 0** | 18 |
+| pharmacy orders @360 / @390 | 24 / 24 | **0 / 0** | 29 |
+| admin dashboard @360 / @390 | 17 / 17 | **0 / 0** | 47 |
+| admin settings @360 / @390 | 8 / 8 | **0 / 0** | 38 |
+| admin notifications @360 / @390 | 29 / 31 | **0 / 0** | 61 |
+
+236 failing controls to zero. The control count is identical on both sides, so
+nothing was added or removed. Screenshotting the same 16 pages on both builds
+and differencing them pixel by pixel: **14 of 16 are byte-for-byte identical**;
+`pharmacy-home` differs by 13 and 17 pixels at a maximum channel delta of 1,
+which is text anti-aliasing. Nothing visible moved, resized or changed colour
+(`T-*-before.png` / `T-*-after.png`).
+
+The named controls are all covered: the CUREWAY logo link, the voice-search
+button, the cart button and the pharmacy sidebar items all measure 44px or more
+at 360 and 390 while painting exactly as before.
+
+### Three corrections to this document
 
 1. **"They were the only touch-target failures in the entire application" was
    wrong.** The audit capped its evidence list at four items per page, and the
    showcase strip's four controls filled every slot, hiding the rest. There
-   were 66 distinct sub-44px controls, not 4. All but seven are now fixed.
+   were 66 distinct sub-44px controls, not 4. All of them are now fixed.
 2. **Issue M3 overstated the currency problem on the pharmacy pages.** The
    audit's currency check matched a number and a `$` sitting in *different*
    blocks, so a cell reading `1` beside a cell reading `$7.50` looked like a
    mixed format. The patient-home finding was real and is fixed; the pharmacy
    ones were an artefact. The detector has been corrected.
+3. **The first count of seven remaining failures included four that were real.**
+   The admin settings breadcrumb was marked up as a `<p>`, so the rule that
+   exempts links in running text swallowed it and its links stayed 18px tall. A
+   breadcrumb is navigation, so it is now a `<nav aria-label="Breadcrumb">`,
+   which renders identically (the pixel diff above covers this page). Only the
+   three genuine exclusion classes remain.
 
-Both of these were faults in the audit tooling, which has been fixed alongside
+All of these were faults in the audit tooling or in the first pass of the fix, which has been fixed alongside
 the application: the overflow detail no longer reports elements that are
 scrolling correctly inside an `overflow-x-auto` container, and the touch-target
 check now measures the effective hit area rather than the painted box.
@@ -354,7 +394,13 @@ check now measures the effective hit area rather than the painted box.
   height, which the brief ruled out.
 - **Links inside running text** ("Forgot password?", "Sign Up", "Login Here").
   The WCAG target-size rule exempts them, and a 44px box would overlap the
-  lines above and below.
+  lines above and below. The corollary is a trap worth knowing: navigation
+  wrapped in a `<p>` inherits this exemption and silently loses its hit area.
+- **The dial-code `<select>`** on the sign-up forms. A replaced element paints
+  no pseudo-elements, so the hit-area rule cannot reach it; the browser sizes
+  it from its own control chrome, and growing it would change the visible
+  layout, which the brief ruled out. It is the only `<select>` in the app that
+  measures under 44px.
 - **Display type at 48, 56 and 80px** in the marketing hero. These sit above
   the scale's 36px ceiling on purpose; snapping them down would be a visible
   jump.
@@ -376,3 +422,36 @@ check now measures the effective hit area rather than the painted box.
   admin orders.
 - Five overlays were sized with the remapped container scale and rendered at
   roughly twice their intended width; `EditProfile` was a 1440px "modal".
+
+---
+
+## Verification
+
+`node scripts/verify-showcase.mjs` against the production build:
+
+```
+routes checked (role x route) : 76
+external requests ATTEMPTED   : 0
+benign framework warnings     : 14 (excluded by name, listed in the output)
+pages with issues             : 0
+```
+
+The purchase flow completes end to end — medicine → cart → checkout → Place
+Order → Confirm — and the order list goes from 6 to 7 with the new order
+present. Pharmacy and admin tables all populate. Lint 0 errors and 1 known
+`exhaustive-deps` warning, typecheck clean, build 53/53.
+
+## Before / after evidence
+
+Captured on two builds of the same tree: `f0cbfb3` (branch point) and the
+branch tip, at device scale 2, then downscaled.
+
+| Pair | Issue | What changed |
+| --- | --- | --- |
+| `C-H1-admin-header-768-*` | H1 | page width 826 → 768; the avatar was clipped off-screen and now sits inside the header |
+| `C-H2-patient-profile-360-*` | H2 | page width 409 → 360 |
+| `C-H3-patient-orders-768-*` | H3 | page width 863 → 768 |
+| `C-M2-admin-dashboard-390-*` | M2 + the strip | the strip wrapped one word per line with the role switcher sitting on top of the text; it now reads as prose in two rows, and no dashboard text is under 12px |
+| `C-M3-currency-home-1440-*` | M3 | every price on the page is `$0.00` |
+| `C-drift-home-390-*`, `C-drift-cart-1440-*` | M1 | the typography consolidation at the two widths the brief named, for judging visual drift |
+| `T-*-before` / `T-*-after` | touch targets | pixel-identical pairs — the hit areas changed nothing visible |
