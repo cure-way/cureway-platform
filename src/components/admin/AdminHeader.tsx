@@ -117,7 +117,7 @@ export default function AdminHeader() {
       <div className="relative shrink-0" ref={profileRef}>
         <button
           onClick={() => setProfileOpen((v) => !v)}
-          className="w-12 h-12 rounded-full overflow-hidden hover:ring-2 hover:ring-primary/20 transition-all shrink-0 bg-primary-light flex items-center justify-center text-primary font-semibold text-t-14"
+          className="w-12 h-11 rounded-full overflow-hidden hover:ring-2 hover:ring-primary/20 transition-all shrink-0 bg-primary-light flex items-center justify-center text-primary font-semibold text-t-14"
           aria-label="User profile"
           aria-expanded={profileOpen}
         >
@@ -146,7 +146,7 @@ export default function AdminHeader() {
             >
               {/* User Info */}
               <div className="flex items-center gap-3 px-4 py-3">
-                <div className="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center text-primary font-semibold text-t-12 shrink-0">
+                <div className="w-10 h-11 rounded-full bg-primary-light flex items-center justify-center text-primary font-semibold text-t-12 shrink-0">
                   {initials}
                 </div>
                 <div className="min-w-0">

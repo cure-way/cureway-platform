@@ -39,14 +39,14 @@ export function OrderCard({ order }: { order: Order }) {
 
   // 🔵 Primary Blue Button
   const primaryBtn =
-    "h-12 w-full rounded-xl border border-[#334EAC] bg-[#334EAC] px-[22px] py-[10px]" +
+    "h-11 w-full rounded-xl border border-[#334EAC] bg-[#334EAC] px-[22px] py-[10px]" +
     " transition-all duration-300 ease-in-out hover:bg-[#2C4294]" +
     " active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#334EAC]/35" +
     " disabled:opacity-50 disabled:cursor-not-allowed";
 
   // ⚪ White Outline Button
   const outlineBtn =
-    "h-12 w-full rounded-xl border border-[#334EAC] bg-white px-[22px] py-[10px]" +
+    "h-11 w-full rounded-xl border border-[#334EAC] bg-white px-[22px] py-[10px]" +
     " transition-all duration-300 ease-in-out hover:bg-[#F5F7FF]" +
     " active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#334EAC]/25" +
     " disabled:opacity-50 disabled:cursor-not-allowed";

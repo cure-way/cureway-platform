@@ -51,7 +51,7 @@ export default function TablePagination({
         <button
           onClick={() => onPageChange?.(currentPage - 1)}
           disabled={currentPage <= 1}
-          className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-neutral-light transition-colors disabled:opacity-40"
+          className="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-neutral-light transition-colors disabled:opacity-40"
           aria-label="Previous page"
         >
           <ChevronLeft className="w-4 h-4 text-primary" />
@@ -63,7 +63,7 @@ export default function TablePagination({
               key={page}
               onClick={() => onPageChange?.(page)}
               className={cn(
-                "w-14 h-10 flex items-center justify-center rounded-xl text-t-17 font-semibold transition-colors",
+                "w-11 h-11 flex items-center justify-center rounded-lg text-t-14-semibold transition-colors",
                 page === currentPage
                   ? "bg-primary text-white"
                   : "border border-primary-light-active text-primary font-medium hover:bg-primary-light",
@@ -78,7 +78,7 @@ export default function TablePagination({
         <button
           onClick={() => onPageChange?.(currentPage + 1)}
           disabled={currentPage >= totalPages}
-          className="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-neutral-light transition-colors disabled:opacity-40"
+          className="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-neutral-light transition-colors disabled:opacity-40"
           aria-label="Next page"
         >
           <ChevronRight className="w-4 h-4 text-primary" />

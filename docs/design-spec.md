@@ -367,3 +367,89 @@ On patient routes the quick-action chip row sits in the shell, outside
 The patient shell needs the same container treatment as the dashboard shell —
 one line in the patient layout, done in the rollout rather than the pilot so
 it does not change every patient page at once.
+
+---
+
+## 9. Route → page type → container variant
+
+Every route in all three roles. Pages of the same type share one variant and
+therefore land on identical left and right edges at every breakpoint. No page
+sets its own max-width.
+
+| Variant | Max width | Measured content edge @1440 | @390 |
+| --- | ---: | ---: | ---: |
+| `list` | 1120px | x=192, 1056px wide | x=16, 358px |
+| `detail` | 960px | x=272, 896px | x=16, 358px |
+| `form` | 880px | x=312, 816px | x=16, 358px |
+| `account` | 960px | x=272, 896px | x=16, 358px |
+| `auth` | 1280px | inside the split-screen form column | x=16, 358px |
+| `dashboard` | 1440px | x=288 (pharmacy) / x=312 (admin), after the sidebar | x=16 |
+
+Horizontal padding is 16 / 24 / 32 at base / md / lg for every variant.
+
+### Patient
+
+| Route | Page type | Variant |
+| --- | --- | --- |
+| `/` | landing (marketing) | `list` for the content block; the promo banner and hero stay full-bleed |
+| `/medicines` | listing | `list` |
+| `/categories` | listing | `list` |
+| `/categories/[id]` | listing | `list` |
+| `/pharmacies` | listing | `list` |
+| `/search` | listing | `list` |
+| `/profile/saved-medicine` | listing | `list` |
+| `/cart` | purchase flow (two-column) | `list` |
+| `/checkout` | purchase flow (two-column) | `list` |
+| `/medicines/[id]` | detail | `detail` |
+| `/pharmacies/[id]` | detail | `detail` |
+| `/prescriptions` | form / flow | `form` |
+| `/profile/edit-profile` | form / flow | `form` |
+| `/report-issue` | form / flow | `form` |
+| `/location-access` | form / flow | `form` |
+| `/Orderconfirmation` | form / flow | `form` |
+| `/profile` | account | `account` |
+| `/profile/history` | account | `account` |
+| `/orders` | account | `account` |
+| `/notifications` | account | `account` |
+| `/help` | account | `account` |
+| `/privacy` | account | `account` |
+| `/terms` | account | `account` |
+
+### Auth
+
+`/auth`, `/auth/sign-in`, `/auth/sign-up`, `/auth/verify-phone`,
+`/auth/verify-otp`, `/auth/registration-submitted`, `/auth/forgot-password`,
+`/auth/forgot-password/verify`, `/auth/forgot-password/new-password`,
+`/auth/pharmacy/sign-in`, `/auth/pharmacy/sign-up` — all **`auth`**, applied
+once in `AuthShell`'s form column.
+
+### Pharmacy
+
+`/pharmacy`, `/pharmacy/home`, `/pharmacy/orders`, `/pharmacy/orders/[orderId]`,
+`/pharmacy/inventory`, `/pharmacy/inventory/[medicineId]`,
+`/pharmacy/notifications`, `/pharmacy/profile`, `/pharmacy/report` — all
+**`dashboard`**, applied once in `DashboardLayout`.
+
+### Admin
+
+`/admin`, `/admin/dashboard`, `/admin/patients`, `/admin/pharmacies`,
+`/admin/orders`, `/admin/deliveries`, `/admin/products`, `/admin/notifications`,
+`/admin/settings`, `/admin/settings/profile`, `/admin/settings/security` — all
+**`dashboard`**, applied once in `PageShell` (and in the two pages that render
+their own stagger container).
+
+### Judgment calls
+
+- **Cart and checkout are `list`, not `form`.** Both are two-column at `xl`;
+  an 880px form column would cramp the order summary beside the items. They
+  share one variant with each other, which is what the rule asks for.
+- **`form` is 880px, not 720px**, so a two-column step inside a flow still has
+  room.
+- **`account` and `detail` are both 960px.** They are separate names because
+  they answer different questions and may diverge; today they measure the same.
+- **The landing page keeps its full-bleed promo banner and hero.** Only its
+  bordered content block sits on the container, so it aligns with the shell and
+  with every listing page.
+- **The dashboard content edge differs by 24px between pharmacy and admin**
+  because their sidebars are different widths. The containers are identical;
+  only the space left over differs.
