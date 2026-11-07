@@ -756,6 +756,7 @@
    UTILITIES LAYER - Typography & Helpers
    ============================================================ */
 @layer utilities {
+
   /* --------------------------------------------------------
      TYPOGRAPHY UTILITIES (from Typography.png)
      Regular, SemiBold, Bold weights
@@ -1063,5 +1064,57 @@
   }
   .m-80px {
     margin: 80px;
+  }
+}
+
+/* ============================================================
+   TOUCH TARGETS
+
+   Every interactive control gets at least a 44x44 CSS-pixel hit
+   area without changing its visible size, styling or layout.
+
+   An invisible ::after is centred over the control and grown to
+   44px in each axis. It is a child of the control, so clicks on
+   it land on the control itself.
+
+   `position: relative` is declared in @layer base on purpose:
+   Tailwind's absolute/fixed/sticky utilities live in the later
+   `utilities` layer and therefore still win, so controls that
+   position themselves keep doing so.
+
+   Text inputs are excluded — an overlay would swallow the caret.
+   Links inside running text are excluded too: the WCAG target
+   size rule exempts them, and a 44px box would overlap the
+   lines around it.
+   ============================================================ */
+@layer base {
+  a[href],
+  button,
+  summary,
+  [role="button"],
+  label:has(> input[type="checkbox"]),
+  label:has(> input[type="radio"]) {
+    position: relative;
+  }
+
+  a[href]::after,
+  button::after,
+  summary::after,
+  [role="button"]::after,
+  label:has(> input[type="checkbox"])::after,
+  label:has(> input[type="radio"])::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+
+  p a[href]::after,
+  li a[href]::after,
+  a[href] a[href]::after {
+    content: none;
   }
 }
