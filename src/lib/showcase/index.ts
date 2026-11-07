@@ -12,9 +12,9 @@ export {
   SHOWCASE_MODE,
   SHOWCASE_NOTICE,
   getDemoRole,
-  isNoticeDismissed,
+  hasSeenWelcome,
   setDemoRole,
-  setNoticeDismissed,
+  setWelcomeSeen,
   type DemoRole,
 } from "./config";
 

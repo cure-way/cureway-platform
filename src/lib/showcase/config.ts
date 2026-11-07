@@ -67,8 +67,8 @@ export const SHOWCASE_BASE_URL = "http://showcase.local";
 export const SHOWCASE_KEYS = {
   /** Which role the visitor is currently exploring as. */
   ROLE: "cureway_demo_role",
-  /** Whether the notice text has been dismissed (strip collapses to a pill). */
-  NOTICE_DISMISSED: "cureway_showcase_notice_dismissed",
+  /** Whether the welcome dialog has already been shown to this visitor. */
+  WELCOME_SEEN: "cureway_showcase_welcome_seen",
 } as const;
 
 /** Placeholder refresh token so `AuthProvider` hydrates instead of bailing. */
@@ -124,24 +124,40 @@ export function setDemoRole(role: DemoRole): void {
 }
 
 // ---------------------------------------------------------------------------
-// Notice dismissal
+// Welcome dialog
 // ---------------------------------------------------------------------------
 
-export function isNoticeDismissed(): boolean {
-  return readStorage(SHOWCASE_KEYS.NOTICE_DISMISSED) === "true";
+/** True once the visitor has seen the welcome dialog at least once. */
+export function hasSeenWelcome(): boolean {
+  return readStorage(SHOWCASE_KEYS.WELCOME_SEEN) === "true";
 }
 
-export function setNoticeDismissed(dismissed: boolean): void {
-  writeStorage(SHOWCASE_KEYS.NOTICE_DISMISSED, dismissed ? "true" : "false");
+export function setWelcomeSeen(seen: boolean): void {
+  writeStorage(SHOWCASE_KEYS.WELCOME_SEEN, seen ? "true" : "false");
 }
 
-/** Copy shown in the showcase notice. */
+/** Copy shown in the showcase strip. */
 export const SHOWCASE_NOTICE = {
   lead: "Showcase version.",
   body:
     "CureWay was built as a production project for Code2Career at Gaza Sky Geeks. " +
     "The live backend has been retired, so this version runs on sample data.",
 } as const;
+
+/** Personal site credited in the welcome dialog. */
+export const SHOWCASE_AUTHOR = {
+  name: "Ayman Ismail",
+  url: "https://www.aymanismail.com",
+} as const;
+
+/**
+ * CSS custom property holding the rendered height of the showcase strip.
+ *
+ * The strip is sticky and wraps to two rows on narrow screens, so its height
+ * is not a constant. Layouts that pin themselves to the viewport subtract this
+ * value; it defaults to 0px, which is what non-showcase builds get.
+ */
+export const SHOWCASE_BAR_HEIGHT_VAR = "--showcase-bar-h";
 
 /** Message used by every action that cannot work without a backend. */
 export const SHOWCASE_DISABLED_MESSAGE = "Disabled in showcase mode";

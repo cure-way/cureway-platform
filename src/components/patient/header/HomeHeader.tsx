@@ -43,7 +43,7 @@ export function HomeHeader({
             ? { duration: 0 }
             : { duration: 0.5, ease: "easeOut" }
         }
-        className="bg-white w-full sticky top-0 z-40"
+        className="bg-white w-full sticky top-[var(--showcase-bar-h,0px)] z-40"
         role="banner"
       >
         {/* Row 1 – Blue announcements bar (desktop only) */}

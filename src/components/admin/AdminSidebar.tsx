@@ -315,7 +315,7 @@ export default function AdminSidebar() {
       {/* â”€â”€ Mobile drawer â”€â”€ */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-80 bg-white flex flex-col border-r border-[#EFEDED] transition-transform duration-300 lg:hidden",
+          "fixed top-[var(--showcase-bar-h,0px)] bottom-0 left-0 z-50 w-80 bg-white flex flex-col border-r border-[#EFEDED] transition-transform duration-300 lg:hidden",
           isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
@@ -356,7 +356,7 @@ export default function AdminSidebar() {
         animate={collapsed ? "collapsed" : "expanded"}
         variants={sidebarVariants}
         transition={spring.snappy}
-        className="hidden lg:flex flex-col bg-white border-r border-[#EFEDED] h-screen sticky top-0 shrink-0 overflow-hidden"
+        className="hidden lg:flex flex-col bg-white border-r border-[#EFEDED] h-[calc(100dvh-var(--showcase-bar-h,0px))] sticky top-[var(--showcase-bar-h,0px)] shrink-0 overflow-hidden"
       >
         {/* Desktop header */}
         <div

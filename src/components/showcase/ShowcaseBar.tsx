@@ -3,25 +3,26 @@
 /**
  * ShowcaseBar
  *
- * Slim strip above every portal explaining that this deployment runs on
- * sample data, with the role switcher that lets a visitor explore the
- * Patient, Pharmacy and Admin sides.
+ * Always-visible strip above every portal. It states that this deployment runs
+ * on sample data and carries the controls a visitor needs: the role switcher,
+ * Reset demo, and a button that reopens the welcome dialog.
  *
- * Visual language is deliberately borrowed from `AnnouncementsBar`
- * (`bg-primary` + `text-primary-light` + `text-t-14 font-semibold`) so it
- * reads as part of the existing design system rather than a dev banner.
- * `AnnouncementsBar` hides itself in showcase mode so the two never stack.
+ * It is deliberately not dismissible — the switcher is the only way to reach
+ * the pharmacy and admin portals, so hiding the strip would strand a visitor.
  *
- * Dismissing the notice collapses the strip to a compact row: the role
- * switcher stays reachable, because losing it would strand a visitor in
- * whichever portal they happened to be in.
+ * Visual language is borrowed from `AnnouncementsBar` (`bg-primary` +
+ * `text-primary-light` + `text-t-14`), which hides itself in showcase mode so
+ * the two blue strips never stack.
+ *
+ * Layout: the strip is sticky, and its rendered height is published as the
+ * `--showcase-bar-h` custom property. It wraps onto a second row on narrow
+ * screens, so that height is not a constant — layouts that pin themselves to
+ * the viewport subtract the live value rather than a hardcoded number.
  */
 
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { HiX } from "react-icons/hi";
 import { IoInformationCircleOutline, IoRefreshOutline } from "react-icons/io5";
 
 import { useAuth } from "@/features/auth";
@@ -29,17 +30,16 @@ import { getRoleHome } from "@/lib/routes";
 import {
   DEMO_ROLES,
   DEMO_ROLE_LABELS,
+  SHOWCASE_BAR_HEIGHT_VAR,
   SHOWCASE_MODE,
   SHOWCASE_NOTICE,
   type DemoRole,
 } from "@/lib/showcase/config";
 import {
-  getNoticeDismissedServerSnapshot,
-  getNoticeDismissedSnapshot,
   getRoleServerSnapshot,
   getRoleSnapshot,
+  openWelcome,
   selectDemoRole,
-  setNoticeDismissedState,
   subscribeShowcase,
 } from "@/lib/showcase/store";
 import { exposeShowcaseDiagnostics } from "@/lib/showcase/adapter";
@@ -59,26 +59,42 @@ export function ShowcaseBar() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { refreshIfNeeded } = useAuth();
-  const prefersReducedMotion = useReducedMotion();
 
-  // Read from the external store rather than an effect, so the server and
-  // client markup agree without a cascading render after mount.
   const role = useSyncExternalStore(
     subscribeShowcase,
     getRoleSnapshot,
     getRoleServerSnapshot,
   );
-  const dismissed = useSyncExternalStore(
-    subscribeShowcase,
-    getNoticeDismissedSnapshot,
-    getNoticeDismissedServerSnapshot,
-  );
-  const expanded = !dismissed;
 
   const [switching, setSwitching] = useState(false);
+  const barRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     exposeShowcaseDiagnostics();
+  }, []);
+
+  // Publish the strip's live height so pinned layouts can subtract it. A
+  // ResizeObserver keeps it correct when the strip wraps to a second row.
+  useEffect(() => {
+    const node = barRef.current;
+    if (!node) return;
+
+    const root = document.documentElement;
+    const publish = () => {
+      root.style.setProperty(
+        SHOWCASE_BAR_HEIGHT_VAR,
+        `${Math.ceil(node.getBoundingClientRect().height)}px`,
+      );
+    };
+
+    publish();
+    const observer = new ResizeObserver(publish);
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty(SHOWCASE_BAR_HEIGHT_VAR);
+    };
   }, []);
 
   const handleSwitch = useCallback(
@@ -114,112 +130,69 @@ export function ShowcaseBar() {
     window.location.reload();
   }, [queryClient]);
 
-  const handleDismiss = useCallback(() => {
-    setNoticeDismissedState(true);
-  }, []);
-
-  const handleReopen = useCallback(() => {
-    setNoticeDismissedState(false);
-  }, []);
-
   if (!SHOWCASE_MODE) return null;
-
-  const switcher = (
-    <div
-      className="flex items-center gap-1 bg-white/15 rounded-lg p-0.5 shrink-0"
-      role="group"
-      aria-label="Explore CureWay as a different role"
-    >
-      {DEMO_ROLES.map((r) => {
-        const active = r === role;
-        return (
-          <button
-            key={r}
-            type="button"
-            onClick={() => handleSwitch(r)}
-            aria-pressed={active}
-            disabled={switching}
-            className={`px-2.5 py-1 rounded-md text-t-14 font-semibold transition-colors cursor-pointer disabled:cursor-wait ${
-              active
-                ? "bg-white text-primary"
-                : "text-primary-light hover:bg-white/15"
-            }`}
-          >
-            {DEMO_ROLE_LABELS[r]}
-          </button>
-        );
-      })}
-    </div>
-  );
-
-  const resetButton = (
-    <button
-      type="button"
-      onClick={handleReset}
-      title="Restore the original sample data"
-      className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-t-14 font-semibold text-primary-light hover:bg-white/15 transition-colors cursor-pointer shrink-0"
-    >
-      <IoRefreshOutline className="w-4 h-4" aria-hidden="true" />
-      <span className="hidden sm:inline">Reset demo</span>
-      <span className="sr-only sm:hidden">Reset demo</span>
-    </button>
-  );
 
   return (
     <div
-      className="bg-primary w-full"
+      ref={barRef}
+      className="bg-primary w-full sticky top-0 z-[60]"
       role="region"
       aria-label="Showcase mode"
-      data-showcase-bar={expanded ? "expanded" : "collapsed"}
+      data-showcase-bar="visible"
     >
-      <div className="flex items-center gap-2 md:gap-3 px-3 md:px-6 lg:px-8 py-2">
-        <AnimatePresence initial={false} mode="wait">
-          {expanded ? (
-            <motion.p
-              key="notice"
-              initial={prefersReducedMotion ? undefined : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={prefersReducedMotion ? undefined : { opacity: 0 }}
-              transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.18 }}
-              className="text-t-14 text-primary-light min-w-0 flex-1"
-            >
-              <span className="font-bold text-white">{SHOWCASE_NOTICE.lead}</span>{" "}
-              <span className="font-medium">{SHOWCASE_NOTICE.body}</span>
-            </motion.p>
-          ) : (
-            <motion.button
-              key="reopen"
-              type="button"
-              onClick={handleReopen}
-              initial={prefersReducedMotion ? undefined : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={prefersReducedMotion ? undefined : { opacity: 0 }}
-              transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.18 }}
-              aria-label="Show the showcase notice again"
-              className="flex items-center gap-1.5 text-t-14 font-semibold text-primary-light hover:text-white transition-colors cursor-pointer min-w-0 flex-1 text-left"
-            >
-              <IoInformationCircleOutline
-                className="w-4 h-4 shrink-0"
-                aria-hidden="true"
-              />
-              <span className="truncate">Showcase version — sample data</span>
-            </motion.button>
-          )}
-        </AnimatePresence>
+      {/*
+        Wraps to two rows below `lg`: the notice takes the full first row and
+        the controls sit on the second, so nothing is ever truncated.
+      */}
+      <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-4 px-3 sm:px-4 md:px-6 lg:px-8 py-2">
+        <p className="text-t-12 sm:text-t-14 text-primary-light min-w-0 lg:flex-1">
+          <span className="font-bold text-white">{SHOWCASE_NOTICE.lead}</span>{" "}
+          <span className="font-medium">{SHOWCASE_NOTICE.body}</span>
+        </p>
 
-        {switcher}
-        {resetButton}
+        <div className="flex items-center flex-wrap gap-x-2 gap-y-1.5 shrink-0">
+          <div
+            className="flex items-center gap-1 bg-white/15 rounded-lg p-0.5"
+            role="group"
+            aria-label="Explore CureWay as a different role"
+          >
+            {DEMO_ROLES.map((r) => (
+              <button
+                key={r}
+                type="button"
+                onClick={() => handleSwitch(r)}
+                aria-pressed={r === role}
+                disabled={switching}
+                className={`px-3 py-1.5 min-h-9 rounded-md text-t-12 sm:text-t-14 font-semibold transition-colors cursor-pointer disabled:cursor-wait ${
+                  r === role
+                    ? "bg-white text-primary"
+                    : "text-primary-light hover:bg-white/15"
+                }`}
+              >
+                {DEMO_ROLE_LABELS[r]}
+              </button>
+            ))}
+          </div>
 
-        {expanded && (
           <button
             type="button"
-            onClick={handleDismiss}
-            aria-label="Dismiss the showcase notice"
-            className="p-1 rounded-md text-primary-light hover:bg-white/15 hover:text-white transition-colors cursor-pointer shrink-0"
+            onClick={openWelcome}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-9 rounded-md text-t-12 sm:text-t-14 font-semibold text-primary-light hover:bg-white/15 transition-colors cursor-pointer"
           >
-            <HiX className="w-4 h-4" aria-hidden="true" />
+            <IoInformationCircleOutline aria-hidden="true" className="w-4 h-4" />
+            About this demo
           </button>
-        )}
+
+          <button
+            type="button"
+            onClick={handleReset}
+            title="Restore the original sample data"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-9 rounded-md text-t-12 sm:text-t-14 font-semibold text-primary-light hover:bg-white/15 transition-colors cursor-pointer"
+          >
+            <IoRefreshOutline aria-hidden="true" className="w-4 h-4" />
+            Reset demo
+          </button>
+        </div>
       </div>
     </div>
   );
