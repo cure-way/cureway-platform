@@ -5,6 +5,7 @@ import { ScrollToTop } from "@/components/shared/ScrollToTop";
 import { AuthProvider } from "@/features/auth";
 import ToastProvider from "@/components/shared/ToastProvider";
 import QueryProvider from "@/hooks/query-provider";
+import { MotionProvider } from "@/components/shared/MotionProvider";
 import { ShowcaseBar } from "@/components/showcase/ShowcaseBar";
 import { WelcomeDialog } from "@/components/showcase/WelcomeDialog";
 import {
@@ -108,16 +109,18 @@ export default function RootLayout({
           // Serialized from `structuredData` above — no user input involved.
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-        <AuthProvider>
-          <QueryProvider>
-            <ShowcaseBar />
-            <WelcomeDialog />
-            <ScrollToTop />
-            <div id="dropdown-portal" />
-            <ToastProvider />
-            {children}
-          </QueryProvider>
-        </AuthProvider>
+        <MotionProvider>
+          <AuthProvider>
+            <QueryProvider>
+              <ShowcaseBar />
+              <WelcomeDialog />
+              <ScrollToTop />
+              <div id="dropdown-portal" />
+              <ToastProvider />
+              {children}
+            </QueryProvider>
+          </AuthProvider>
+        </MotionProvider>
       </body>
     </html>
   );
