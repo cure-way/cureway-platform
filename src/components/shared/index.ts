@@ -15,3 +15,8 @@ export {
 export { PhoneField, type PhoneFieldProps } from "./PhoneField";
 export { OTPInput, type OTPInputProps, type OTPInputRef } from "./OTPInput";
 export { MedicineIcon } from "./MedicineIcon";
+export {
+  PageContainer,
+  type PageContainerWidth,
+} from "./PageContainer";
+export { PageHeader } from "./PageHeader";
