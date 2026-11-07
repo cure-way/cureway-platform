@@ -36,10 +36,10 @@ function SegmentTooltip({
         className="w-2.5 h-2.5 rounded-sm shrink-0"
         style={{ backgroundColor: color }}
       />
-      <span className="text-[11px] font-medium leading-[1.2] opacity-70">
+      <span className="text-t-12 font-medium leading-[1.2] opacity-70">
         {label}
       </span>
-      <span className="text-[13px] font-semibold leading-[1.2]">{sales}</span>
+      <span className="text-t-14 font-semibold leading-[1.2]">{sales}</span>
       <div
         className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-[#212F4D]"
         aria-hidden="true"
@@ -163,9 +163,9 @@ export default function TopCategories() {
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-4">
           <TopCategoryIcon />
-          <h3 className="flex-1 text-[16px] font-semibold leading-[1.2] text-[#212F4D]">
+          <h2 className="flex-1 text-t-17 font-semibold leading-[1.2] text-[#212F4D]">
             Top Categories
-          </h3>
+          </h2>
           <div className="bg-white border border-[#EFEDED] rounded-lg h-full px-4 py-3 flex items-center gap-4 shrink-0">
             <CalendarSmallIcon />
             <span className="text-[12px] font-medium leading-[1.2] text-[#5B5958] whitespace-nowrap">
@@ -213,7 +213,7 @@ export default function TopCategories() {
                   }`}
                 >
                   <span
-                    className={`text-[16px] ${isHidden ? "text-[#C5C3C1]" : "text-[#393737]"}`}
+                    className={`text-t-17 ${isHidden ? "text-[#C5C3C1]" : "text-[#393737]"}`}
                   >
                     {cat.sales}
                   </span>

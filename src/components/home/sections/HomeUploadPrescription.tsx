@@ -30,13 +30,13 @@ export function HomeUploadPrescription() {
             <p className="text-t-14 sm:text-t-21 md:text-t-25 lg:text-t-30 font-semibold text-primary-light leading-snug">
               Upload Prescriptions to Place Order
             </p>
-            <p className="text-[10px] sm:text-t-14 md:text-t-17 lg:text-[24px] text-primary-light-active leading-snug lg:leading-[1.5] hidden sm:block">
+            <p className="text-t-12 sm:text-t-14 md:text-t-17 lg:text-t-25 text-primary-light-active leading-snug lg:leading-[1.5] hidden sm:block">
               Upload only .jpg, .png, .jpeg or .pdf files, Size limit is 10 MB
             </p>
           </div>
 
           {/* CTA button */}
-          <button onClick={() => router.push("/prescriptions")} className="bg-primary-light text-primary text-t-12 sm:text-t-17 md:text-t-21 lg:text-[24px] font-normal rounded-lg sm:rounded-xl px-3 sm:px-5 lg:px-6 py-2 sm:py-2.5 mr-3 sm:mr-6 md:mr-8 lg:mr-10 shrink-0 hover:bg-primary-light-hover transition-colors whitespace-nowrap">
+          <button onClick={() => router.push("/prescriptions")} className="bg-primary-light text-primary text-t-12 sm:text-t-17 md:text-t-21 lg:text-t-25 font-normal rounded-lg sm:rounded-xl px-3 sm:px-5 lg:px-6 py-2 sm:py-2.5 mr-3 sm:mr-6 md:mr-8 lg:mr-10 shrink-0 hover:bg-primary-light-hover transition-colors whitespace-nowrap">
             Upload Prescription
           </button>
         </div>

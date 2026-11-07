@@ -39,21 +39,21 @@ export default function StatsBar({
             "flex items-center sm:border-r sm:border-neutral-light-active sm:pr-4 shrink-0",
           )}
         >
-          <span className="text-[16px] sm:text-[20px] leading-normal font-extrabold text-secondary-darker">
+          <span className="text-t-17 sm:text-t-21 leading-normal font-extrabold text-secondary-darker">
             {count}
           </span>
         </div>
 
         {/* Description */}
         {description && (
-          <span className="text-[14px] sm:text-[18px] leading-[1.2] font-semibold text-neutral-dark flex-1 min-w-0 truncate sm:whitespace-normal sm:overflow-visible">
+          <span className="text-[14px] sm:text-t-17 leading-[1.2] font-semibold text-neutral-dark flex-1 min-w-0 truncate sm:whitespace-normal sm:overflow-visible">
             {description}
           </span>
         )}
       </div>
 
       {/* KPI pills */}
-      <div className="flex flex-wrap items-center gap-2 sm:gap-3 sm:ml-auto shrink-0">
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3 sm:ml-auto min-w-0">
         {children}
       </div>
 
@@ -127,13 +127,13 @@ export function KpiPill({
           {icon}
         </span>
         <span
-          className={`text-[13px] sm:text-[16px] leading-normal font-extrabold ${s.valueText}`}
+          className={`text-t-14 sm:text-t-17 leading-normal font-extrabold ${s.valueText}`}
         >
           {value}
         </span>
       </div>
       <span
-        className={`text-[13px] sm:text-[16px] leading-normal font-medium ${s.labelText}`}
+        className={`text-t-14 sm:text-t-17 leading-normal font-medium ${s.labelText}`}
       >
         {label}
       </span>

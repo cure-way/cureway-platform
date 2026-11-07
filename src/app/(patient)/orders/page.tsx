@@ -77,7 +77,7 @@ export default function OrdersPage() {
               Track and manage your orders
             </p>
           </div>
-          <div className="flex-shrink-0 overflow-x-auto">
+          <div className="min-w-0 overflow-x-auto">
             <div className="bg-card rounded-xl border border-border p-2 flex gap-1 whitespace-nowrap">
               {tabs.map((t) => {
                 const sel = t.key === activeTab;

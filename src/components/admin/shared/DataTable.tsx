@@ -102,11 +102,13 @@ export default function DataTable<TData>({
             <div
               className={`flex items-center gap-2 ${idCol.className ?? "flex-1"}`}
             >
-              <input
-                type="checkbox"
-                className="w-4 h-4 rounded accent-primary"
-                aria-label={selectAllLabel}
-              />
+              <label className="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 rounded accent-primary"
+                  aria-label={selectAllLabel}
+                />
+              </label>
               <span className="text-[14px] leading-[1.2] font-semibold text-[#393737]">
                 {idCol.header}
               </span>
@@ -153,11 +155,13 @@ export default function DataTable<TData>({
                   <div
                     className={`flex items-center gap-0.5 ${idCol.className ?? "flex-1"}`}
                   >
-                    <input
-                      type="checkbox"
-                      className="w-4 h-4 rounded accent-primary"
-                      aria-label={`Select ${getRowLabel(row)}`}
-                    />
+                    <label className="inline-flex items-center">
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 rounded accent-primary"
+                        aria-label={`Select ${getRowLabel(row)}`}
+                      />
+                    </label>
                     {idCol.cell(row)}
                   </div>
 

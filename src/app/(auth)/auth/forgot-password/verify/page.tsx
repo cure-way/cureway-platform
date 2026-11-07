@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 function VerifyCodeForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const email = searchParams.get("email") || "sondoos66@gmail.com";
+  const email = searchParams.get("email");
 
   const [isLoading, setIsLoading] = useState(false);
   const [otp, setOtp] = useState<string[]>(Array(4).fill(""));
@@ -40,7 +40,7 @@ function VerifyCodeForm() {
 
       // On success, redirect to new password page
       router.push(
-        `/auth/forgot-password/new-password?email=${encodeURIComponent(email)}&code=${code}`,
+        `/auth/forgot-password/new-password?email=${encodeURIComponent(email ?? "")}&code=${code}`,
       );
     } catch {
       // TODO: handle error
@@ -120,12 +120,16 @@ function VerifyCodeForm() {
               </h1>
               <p className="text-base text-[#5b5958]">
                 Please Enter the code we send to{" "}
-                <a
-                  href={`mailto:${email}`}
-                  className="text-[#334eac] hover:underline"
-                >
-                  {email}
-                </a>
+                {email ? (
+                  <a
+                    href={`mailto:${email}`}
+                    className="text-[#334eac] hover:underline"
+                  >
+                    {email}
+                  </a>
+                ) : (
+                  <span className="text-[#334eac]">your email address</span>
+                )}
               </p>
             </div>
 

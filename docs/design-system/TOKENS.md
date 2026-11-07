@@ -646,3 +646,25 @@ If you have existing components using the old color system:
 | `bg-primary-inverse`  | `bg-primary-darker` |
 
 The numbered scale (`primary-50` through `primary-900`) provides more granular control and follows standard design system conventions.
+
+---
+
+## Container widths — read this before using `max-w-*`
+
+This project **remaps Tailwind's container scale to breakpoint widths**. The
+`max-w-*` utilities therefore do *not* mean what they mean in stock Tailwind:
+
+| Class | Stock Tailwind | **In this project** |
+| ----- | -------------- | ------------------- |
+| `max-w-sm` | 384px | **640px** |
+| `max-w-md` | 448px | **768px** |
+| `max-w-lg` | 512px | **1024px** |
+| `max-w-xl` | 576px | **1280px** |
+| `max-w-2xl` | 672px | **1440px** |
+
+Sizing a dialog `max-w-md` gives a 768px panel, not a 448px one. Five overlays
+shipped at roughly twice their intended width because of this.
+
+**Use an explicit value for anything that is not a page container** —
+`max-w-[28rem]` rather than `max-w-md`. Keep the named classes for full-width
+page containers, which is what the custom scale is for.

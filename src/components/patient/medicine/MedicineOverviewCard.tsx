@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 
 import { Medicine, PharmacyStock } from "@/types/medicine.types";
 import { useCartStore } from "@/store/cart.store";
+import { formatPriceRange } from "@/lib/format";
 import { notifyDisabled } from "@/lib/showcase/notify";
 
 interface Props {
@@ -54,10 +55,7 @@ export default function MedicineOverviewCard({ medicine, stock }: Props) {
   const minPrice = medicine.minPrice ?? 0;
   const maxPrice = medicine.maxPrice ?? 0;
 
-  const displayPrice =
-    minPrice === maxPrice
-      ? `$${minPrice.toFixed(2)}`
-      : `$${minPrice.toFixed(2)} – $${maxPrice.toFixed(2)}`;
+  const displayPrice = formatPriceRange(minPrice, maxPrice);
 
   return (
     <div className="bg-white shadow-sm p-6 sm:p-8 border border-gray-200 rounded-2xl">

@@ -115,7 +115,14 @@ async function newRole(browser, role) {
     permissions: ['geolocation'],
     geolocation: { latitude: 31.5175, longitude: 34.4515 },  // Gaza
   });
-  await ctx.addInitScript(r => { try { localStorage.setItem('cureway_demo_role', r); } catch {} }, role);
+  await ctx.addInitScript((r) => {
+    try {
+      localStorage.setItem("cureway_demo_role", r);
+      // Mark the welcome dialog as seen: it is modal, so on a first visit it
+      // would block every interaction this script performs.
+      localStorage.setItem("cureway_showcase_welcome_seen", "true");
+    } catch {}
+  }, role);
   const page = await ctx.newPage();
   await page.route('**/*', route => {
     const u = route.request().url();

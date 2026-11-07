@@ -10,6 +10,7 @@ import { ROUTES } from "@/constants/cart.constants";
 // react-hot-toast, not sonner: ToastProvider mounts react-hot-toast's
 // <Toaster/>, so sonner toasts never actually appeared.
 import toast from "react-hot-toast";
+import { formatCurrency } from "@/lib/format";
 
 
 
@@ -199,7 +200,7 @@ function OrderConfirmationContent() {
                       <span className="text-3xl">💊</span>
                     )}
                     {extraQty > 0 && (
-                      <div className="absolute bottom-1 right-1 bg-white text-primary text-[10px] font-bold rounded-md px-1.5 py-0.5 border border-border shadow-sm leading-none">
+                      <div className="absolute bottom-1 right-1 bg-white text-primary text-t-12 font-bold rounded-md px-1.5 py-0.5 border border-border shadow-sm leading-none">
                         +{extraQty}
                       </div>
                     )}
@@ -216,7 +217,7 @@ function OrderConfirmationContent() {
                     <p className="text-t-14 text-muted-foreground m-0 mt-1">
                       {totalQty} items
                       <span className="mx-1 text-border">|</span>
-                      {group.subtotal.toFixed(2)}$
+                      {formatCurrency(group.subtotal)}
                     </p>
                   </div>
                 </div>
@@ -231,7 +232,7 @@ function OrderConfirmationContent() {
               <span className="font-normal text-muted-foreground">({totalItems} items)</span>
             </span>
             <span className="text-t-25-bold text-primary">
-              {checkoutData.total.toFixed(2)}$
+              {formatCurrency(checkoutData.total)}
             </span>
           </div>
 

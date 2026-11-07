@@ -63,11 +63,11 @@ export default function DeleteAccountModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="delete-account-title"
-        className="relative bg-white shadow-2xl mx-4 p-6 rounded-2xl w-full max-w-md"
+        className="relative bg-white shadow-2xl mx-4 p-6 rounded-2xl w-full max-w-[28rem]"
       >
         <h2
           id="delete-account-title"
-          className="mb-3 font-semibold text-[#1E293B] text-[20px]"
+          className="mb-3 font-semibold text-[#1E293B] text-t-21"
         >
           Delete Account
         </h2>
@@ -91,7 +91,7 @@ export default function DeleteAccountModal({
         {error && (
           <div className="flex items-center gap-2 mt-3">
             <FiAlertTriangle className="text-amber-500" size={18} />
-            <p className="text-[13px] text-amber-500">{error}</p>
+            <p className="text-t-14 text-amber-500">{error}</p>
           </div>
         )}
 

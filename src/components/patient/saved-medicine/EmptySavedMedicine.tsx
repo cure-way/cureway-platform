@@ -17,10 +17,10 @@ export function EmptySavedMedicine({ onBrowse }: { onBrowse?: () => void }) {
           </div>
 
           <div className="text-center">
-            <div className="text-[24px] font-semibold leading-[120%] text-[#334EAC]">
+            <div className="text-t-25 font-semibold leading-[120%] text-[#334EAC]">
               No Saved Medicine Yet
             </div>
-            <div className="mt-3 text-[18px] font-medium leading-[120%] text-[#474545]">
+            <div className="mt-3 text-t-17 font-medium leading-[120%] text-[#474545]">
               • Save medicine to access them faster
             </div>
           </div>
@@ -31,7 +31,7 @@ export function EmptySavedMedicine({ onBrowse }: { onBrowse?: () => void }) {
               onClick={onBrowse}
               className="mx-auto flex h-[65px] w-full max-w-[586px] items-center justify-center rounded-[12px] bg-[#334EAC]"
             >
-              <span className="text-[20px] font-semibold leading-none text-[#EBEDF7]">
+              <span className="text-t-21 font-semibold leading-none text-[#EBEDF7]">
                 Browse Medicine
               </span>
             </MotionTap>

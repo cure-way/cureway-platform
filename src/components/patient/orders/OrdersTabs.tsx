@@ -37,7 +37,7 @@ export function OrdersTabs({ activeTab, tabs, onChange }: Props) {
             className={cx(
               "h-16 rounded-lg px-4",
               "whitespace-nowrap",
-              "text-[18px] font-semibold leading-[120%]",
+              "text-t-17 font-semibold leading-[120%]",
               "transition-all duration-300 ease-in-out",
               selected
                 ? "bg-[#263B81] text-white"

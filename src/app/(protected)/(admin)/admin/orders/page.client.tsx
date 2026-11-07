@@ -25,6 +25,7 @@ import type { ColumnDef, BadgeVariant } from "@/components/admin/shared";
 import { OrdersPageIcon } from "@/components/admin/shared/icons";
 import { useAdminOrders } from "@/hooks/admin.hooks";
 import type { AdminOrder } from "@/services/admin.service";
+import { formatCurrency } from "@/lib/format";
 
 /* ------------------------------------------------------------------
    HELPERS
@@ -142,7 +143,7 @@ const columns: ColumnDef<AdminOrder>[] = [
     header: "Amount",
     cell: (o) => (
       <span className="text-[14px] leading-[1.2] font-semibold text-primary-dark">
-        {o.currency} {(o.totalAmount ?? 0).toFixed(2)}
+        {formatCurrency(o.totalAmount ?? 0, o.currency)}
       </span>
     ),
   },

@@ -25,7 +25,7 @@ export default function NotificationsList({
 
   if (notifications.length === 0) {
     return (
-      <div className="flex-1 grid place-items-center text-t-16 text-neutral">
+      <div className="flex-1 grid place-items-center text-t-17 text-neutral">
         No notifications found
       </div>
     );

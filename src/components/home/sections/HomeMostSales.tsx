@@ -19,13 +19,13 @@ export function HomeMostSales() {
       {/* Title row */}
       <FadeUp inView offset={10} duration={0.4}>
         <div className="flex justify-between items-center">
-          <h2 className="font-bold text-primary-darker lg:text-[40px] text-2xl md:text-3xl">
+          <h2 className="font-bold text-primary-darker lg:text-t-36 text-2xl md:text-3xl">
             Most Sales
           </h2>
 
           <Link
             href="/medicines"
-            className="flex items-center gap-2 text-primary text-t-17 md:text-t-21 lg:text-[24px] hover:underline"
+            className="flex items-center gap-2 text-primary text-t-17 md:text-t-21 lg:text-t-25 hover:underline"
           >
             see all
             <FaChevronRight className="w-3 md:w-4 h-3 md:h-4" />

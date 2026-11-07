@@ -47,9 +47,9 @@ export default function CategoryGrid({ categories, loading, error }: Props) {
               </div>
 
               <div>
-                <h4 className="font-semibold text-gray-800 text-sm">
+                <h2 className="font-semibold text-gray-800 text-sm">
                   {category.name}
-                </h4>
+                </h2>
 
                 <p className="text-gray-500 text-xs">
                   {category.description ?? "Explore medicines in this category"}

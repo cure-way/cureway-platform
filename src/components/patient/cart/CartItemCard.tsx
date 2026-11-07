@@ -4,6 +4,7 @@ import Image from "next/image";
 import type { CartItem } from "@/types/cart";
 import QuantityControl from "./QuantityControl";
 import PharmacyInfo from "./PharmacyInfo";
+import { formatCurrency } from "@/lib/format";
 
 interface Props {
   item: CartItem;
@@ -86,13 +87,13 @@ export default function CartItemCard({
 
         <div className="hidden md:block w-36 text-center flex-shrink-0">
           <span className="text-t-21-bold text-foreground">
-            ${item.price.toFixed(2)}
+            {formatCurrency(item.price)}
           </span>
         </div>
 
         <div className="hidden md:block w-36 text-center flex-shrink-0">
           <span className="text-t-21-bold text-foreground">
-            ${(item.price * item.quantity).toFixed(2)}
+            {formatCurrency(item.price * item.quantity)}
           </span>
         </div>
       </div>

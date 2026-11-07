@@ -48,11 +48,11 @@ export function HomePromoBanner() {
               {discount}
             </span>
             <div className="flex flex-col gap-0.5 md:gap-2 min-w-0">
-              <p className="text-t-17 md:text-t-25 lg:text-[32px] font-extrabold leading-tight md:leading-normal">
+              <p className="text-t-17 md:text-t-25 lg:text-t-30 font-extrabold leading-tight md:leading-normal">
                 <span className="text-error-hover">Discount on</span>{" "}
                 <span className="text-black/60 font-bold">First Aid</span>
               </p>
-              <p className="text-t-12 md:text-t-17 lg:text-[24px] text-black/40 leading-snug md:leading-normal lg:leading-normal line-clamp-2">
+              <p className="text-t-12 md:text-t-17 lg:text-t-25 text-black/40 leading-snug md:leading-normal lg:leading-normal line-clamp-2">
                 {subtitle}
               </p>
             </div>

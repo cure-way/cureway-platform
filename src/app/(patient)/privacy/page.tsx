@@ -25,7 +25,7 @@ export default function PrivacyPolicyPage() {
           </div>
         </div>
 
-        <p className="text-t-20 font-normal text-neutral-dark-active leading-[1.5] text-center">
+        <p className="text-t-21 font-normal text-neutral-dark-active leading-[1.5] text-center">
           By using this application, you agree to our privacy policy
         </p>
       </div>

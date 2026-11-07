@@ -57,10 +57,10 @@ export default function EditProfileModal({
         onClick={onClose}
       />
 
-      <div className="relative bg-white shadow-2xl mx-4 rounded-2xl w-full max-w-2xl">
+      <div className="relative bg-white shadow-2xl mx-4 rounded-2xl w-full max-w-[42rem]">
         {/* header */}
         <div className="flex justify-between items-center px-6 py-5 border-[#E2E8F0] border-b">
-          <h2 className="font-semibold text-[#1E293B] text-[20px]">
+          <h2 className="font-semibold text-[#1E293B] text-t-21">
             Edit Profile
           </h2>
 
@@ -176,7 +176,7 @@ function Field({
 
       {children}
 
-      {error && <p className="mt-1 text-[13px] text-red-500">{error}</p>}
+      {error && <p className="mt-1 text-t-14 text-red-500">{error}</p>}
     </div>
   );
 }

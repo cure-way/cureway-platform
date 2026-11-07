@@ -2,6 +2,7 @@
 
 import { Medicine } from "@/types/medicine.types";
 import { useRouter } from "next/navigation";
+import { formatCurrency } from "@/lib/format";
 
 interface Props {
   medicines: Medicine[];
@@ -24,14 +25,14 @@ export default function SimilarProductsSection({ medicines }: Props) {
               onClick={() => router.push(`/medicines/${medicine.id}`)}
               className="bg-gray-50 hover:shadow-md p-4 border border-gray-200 rounded-xl w-60 transition cursor-pointer shrink-0"
             >
-              <h3 className="mb-2 font-semibold text-gray-900 text-sm truncate">
+              <h2 className="mb-2 font-semibold text-gray-900 text-sm truncate">
                 {medicine.name}
-              </h3>
+              </h2>
 
               <p className="text-gray-600 text-xs">{medicine.dosageForm}</p>
 
               <div className="mt-2 font-semibold text-gray-900 text-sm">
-                ${(medicine.minPrice ?? 0).toFixed(2)}
+                {formatCurrency(medicine.minPrice ?? 0)}
               </div>
             </div>
           ))}

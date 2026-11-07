@@ -60,7 +60,7 @@ export default function LeftPanel({
     <div className="bg-white border border-border rounded-2xl p-4 w-full lg:max-w-[320px] shrink-0 flex flex-col h-full gap-4">
       {/* Category header */}
       <div className="flex items-center justify-between border-b border-border pb-3">
-        <h2 className="text-t-18 font-medium text-neutral-darker">
+        <h2 className="text-t-17 font-medium text-neutral-darker">
           Notification
         </h2>
         <span className="text-t-14 font-semibold text-primary whitespace-nowrap">
@@ -79,11 +79,11 @@ export default function LeftPanel({
               <Link
                 key={cat.id}
                 href="/admin/notifications"
-                className="flex items-center gap-3 px-3 py-3 rounded-xl text-t-16 font-medium transition-colors w-full text-neutral hover:bg-neutral-light"
+                className="flex items-center gap-3 px-3 py-3 rounded-xl text-t-17 font-medium transition-colors w-full text-neutral hover:bg-neutral-light"
               >
                 <span className="text-neutral">{cat.icon}</span>
                 <span className="flex-1 text-left">{cat.label}</span>
-                <span className="text-t-16 font-medium text-primary">
+                <span className="text-t-17 font-medium text-primary">
                   {cat.count}
                 </span>
               </Link>
@@ -97,7 +97,7 @@ export default function LeftPanel({
               type="button"
               onClick={() => onCategoryChange?.(cat.id)}
               className={cn(
-                "flex items-center gap-3 px-3 py-3 rounded-xl text-t-16 font-medium transition-colors w-full",
+                "flex items-center gap-3 px-3 py-3 rounded-xl text-t-17 font-medium transition-colors w-full min-w-0",
                 isActive
                   ? "bg-secondary-light text-primary"
                   : "text-neutral hover:bg-neutral-light",
@@ -106,11 +106,11 @@ export default function LeftPanel({
               <span className={cn(isActive ? "text-primary" : "text-neutral")}>
                 {cat.icon}
               </span>
-              <span className="flex-1 text-left">{cat.label}</span>
+              <span className="flex-1 min-w-0 text-left truncate">{cat.label}</span>
               {isActive ? (
                 <Circle className="w-5 h-5 fill-primary text-primary" />
               ) : (
-                <span className="text-t-16 font-medium text-primary">
+                <span className="text-t-17 font-medium text-primary">
                   {cat.count}
                 </span>
               )}
@@ -125,7 +125,7 @@ export default function LeftPanel({
           type="button"
           onClick={() => notifyUnbuilt("Notification Settings")}
           className={cn(
-            "flex items-center gap-2 px-3 py-4 rounded-lg text-t-16 font-medium transition-colors w-full",
+            "flex items-center gap-2 px-3 py-4 rounded-lg text-t-17 font-medium transition-colors w-full",
             isSettingsActive
               ? "bg-secondary-light text-primary"
               : "bg-neutral-light border border-border text-neutral-darker hover:bg-neutral-light-active",

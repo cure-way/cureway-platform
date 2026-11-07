@@ -15,9 +15,9 @@ export default function RecentPatients() {
         <div className="w-12 h-12 rounded-full bg-[#FFFAEF] flex items-center justify-center shrink-0">
           <DashPatientsIcon />
         </div>
-        <h3 className="flex-1 text-[16px] leading-[1.2] font-semibold text-[#594920]">
+        <h2 className="flex-1 text-t-17 leading-[1.2] font-semibold text-[#594920]">
           Recent patients
-        </h3>
+        </h2>
         <Link
           href="/admin/patients"
           className="border border-[#EFEDED] rounded-lg p-3 text-[12px] leading-[1.2] font-normal text-[#393737] hover:bg-[#FAF9F9] transition-colors shrink-0"

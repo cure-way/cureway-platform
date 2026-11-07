@@ -108,7 +108,7 @@ export default function SettingsSidebar() {
         onClick={() => setMobileOpen(!mobileOpen)}
         className="flex items-center justify-between lg:hidden w-full"
       >
-        <h2 className="text-[15px] font-medium text-neutral-darker">
+        <h2 className="text-t-14 font-medium text-neutral-darker">
           Settings Menu
         </h2>
         {mobileOpen ? (
@@ -119,7 +119,7 @@ export default function SettingsSidebar() {
       </button>
       {/* Header — desktop only */}
       <div className="hidden lg:block border-b border-border pb-3">
-        <h2 className="text-t-18 font-medium text-neutral-darker">Settings</h2>
+        <h2 className="text-t-17 font-medium text-neutral-darker">Settings</h2>
       </div>
 
       {/* Navigation — always visible on lg+, toggled on mobile */}
@@ -146,7 +146,7 @@ export default function SettingsSidebar() {
                   }
                 }}
                 className={cn(
-                  "flex items-center gap-3 w-full p-3 rounded-xl text-t-16 font-medium transition-colors",
+                  "flex items-center gap-3 w-full p-3 rounded-xl text-t-17 font-medium transition-colors",
                   hasSubItems && isGeneralSubpath
                     ? "text-neutral"
                     : "text-neutral hover:bg-neutral-light",

@@ -34,7 +34,7 @@ export default function LocationAccessPage() {
       <div className="w-full max-w-282.5 bg-white rounded-3xl shadow-card p-6 flex flex-col items-center justify-center gap-20 min-h-96">
         {/* Message Box */}
         <div className="w-full max-w-282.5 bg-white border border-black/50 rounded-3xl p-6">
-          <p className="text-t-20 font-bold text-[#494949] text-center leading-[1.2]">
+          <p className="text-t-21 font-bold text-[#494949] text-center leading-[1.2]">
             We use your location to show nearby pharmacies and calculate
             delivery accurately.
           </p>

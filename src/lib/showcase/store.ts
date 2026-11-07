@@ -14,9 +14,9 @@
 
 import {
   getDemoRole,
-  isNoticeDismissed,
+  hasSeenWelcome,
   setDemoRole,
-  setNoticeDismissed,
+  setWelcomeSeen,
   type DemoRole,
 } from "./config";
 
@@ -58,23 +58,32 @@ export function selectDemoRole(role: DemoRole): void {
 }
 
 // ---------------------------------------------------------------------------
-// Notice dismissal
+// Welcome dialog
 // ---------------------------------------------------------------------------
 
-let noticeCache: boolean | null = null;
+let welcomeOpen: boolean | null = null;
 
-export function getNoticeDismissedSnapshot(): boolean {
-  if (noticeCache === null) noticeCache = isNoticeDismissed();
-  return noticeCache;
+/**
+ * Whether the welcome dialog is open. On a first visit it opens by itself;
+ * afterwards it only opens from the strip's "About this demo" button.
+ */
+export function getWelcomeOpenSnapshot(): boolean {
+  if (welcomeOpen === null) welcomeOpen = !hasSeenWelcome();
+  return welcomeOpen;
 }
 
-/** Render the full notice on the server; it is the informative default. */
-export function getNoticeDismissedServerSnapshot(): boolean {
+/** Closed during SSR: the dialog is a client-only, per-visitor decision. */
+export function getWelcomeOpenServerSnapshot(): boolean {
   return false;
 }
 
-export function setNoticeDismissedState(dismissed: boolean): void {
-  setNoticeDismissed(dismissed);
-  noticeCache = dismissed;
+export function openWelcome(): void {
+  welcomeOpen = true;
+  emit();
+}
+
+export function closeWelcome(): void {
+  welcomeOpen = false;
+  setWelcomeSeen(true);
   emit();
 }

@@ -56,7 +56,7 @@ function ProfileForm({
                 className="w-20 h-20 rounded-full object-cover"
               />
             ) : (
-              <div className="w-20 h-20 rounded-full bg-primary-light flex items-center justify-center text-primary font-bold text-t-24">
+              <div className="w-20 h-20 rounded-full bg-primary-light flex items-center justify-center text-primary font-bold text-t-25">
                 {initials}
               </div>
             )}
@@ -68,7 +68,7 @@ function ProfileForm({
             </button>
           </div>
           <div className="text-center sm:text-left">
-            <h2 className="text-t-18 font-bold text-primary-darker">
+            <h2 className="text-t-17 font-bold text-primary-darker">
               {user.name || "—"}
             </h2>
             <p className="text-t-14 text-neutral">{user.email}</p>

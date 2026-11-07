@@ -36,10 +36,10 @@ export default function PageHeader({
           {icon}
         </span>
         <div className="min-w-0 flex-1">
-          <h1 className="text-[18px] sm:text-[24px] leading-[1.2] font-bold text-primary-darker truncate">
+          <h1 className="text-t-17 sm:text-t-25 leading-[1.2] font-bold text-primary-darker truncate">
             {title}
           </h1>
-          <p className="text-[13px] sm:text-[16px] leading-[1.2] font-medium text-neutral mt-0.5 sm:mt-1">
+          <p className="text-t-14 sm:text-t-17 leading-[1.2] font-medium text-neutral mt-0.5 sm:mt-1">
             {subtitle}
           </p>
         </div>

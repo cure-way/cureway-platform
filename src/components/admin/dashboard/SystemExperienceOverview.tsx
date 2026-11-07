@@ -33,10 +33,10 @@ function RingTooltip({
         className="w-2.5 h-2.5 rounded-sm shrink-0"
         style={{ backgroundColor: segment.color }}
       />
-      <span className="text-[11px] font-medium leading-[1.2] opacity-70">
+      <span className="text-t-12 font-medium leading-[1.2] opacity-70">
         {segment.label}
       </span>
-      <span className="text-[13px] font-semibold leading-[1.2]">
+      <span className="text-t-14 font-semibold leading-[1.2]">
         {segment.value}%
       </span>
       <div
@@ -126,10 +126,10 @@ function ConcentricDonut({
       </svg>
       {/* Center label */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-[16px] font-semibold leading-[1.2] text-[#212F4D] transition-all duration-300">
+        <span className="text-t-17 font-semibold leading-[1.2] text-[#212F4D] transition-all duration-300">
           {centerPct}
         </span>
-        <span className="text-[10px] leading-[1.2] text-[#989593] text-center">
+        <span className="text-t-12 sm:text-t-10 leading-[1.2] text-[#989593] text-center">
           rate
         </span>
       </div>
@@ -180,9 +180,9 @@ export default function SystemExperienceOverview() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-4">
             <TableEyeIcon />
-            <h3 className="text-[16px] font-semibold leading-[1.2] text-[#212F4D]">
+            <h2 className="text-t-17 font-semibold leading-[1.2] text-[#212F4D]">
               System Experience Overview
-            </h3>
+            </h2>
           </div>
           <p className="text-[12px] leading-[1.2] text-[#989593]">
             End-to-end service performance by role.
@@ -220,7 +220,7 @@ export default function SystemExperienceOverview() {
             <p className="text-[12px] font-medium text-[#989593] mb-0">
               {dataset.totalLabel}
             </p>
-            <p className="text-[18px] font-medium text-[#393737] transition-all duration-300">
+            <p className="text-t-17 font-medium text-[#393737] transition-all duration-300">
               {dataset.totalValue}
             </p>
           </div>

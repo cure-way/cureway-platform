@@ -24,14 +24,14 @@ export default function TableSearch({
       )}
     >
       {/* Search input */}
-      <div className="flex flex-1 items-center gap-2.5 h-12 rounded-3xl bg-secondary-light pl-4 pr-2 py-4">
+      <div className="flex flex-1 min-w-0 items-center gap-2.5 h-12 rounded-3xl bg-secondary-light pl-4 pr-2 py-4">
         <Search className="w-6 h-6 text-neutral shrink-0" />
         <input
           type="text"
           placeholder={placeholder}
           value={value ?? ""}
           onChange={(e) => onSearch?.(e.target.value)}
-          className="flex-1 bg-transparent text-[16px] font-medium text-foreground placeholder:text-neutral outline-none min-w-0"
+          className="flex-1 bg-transparent text-t-17 font-medium text-foreground placeholder:text-neutral outline-none min-w-0"
           aria-label="Search table"
         />
         <button

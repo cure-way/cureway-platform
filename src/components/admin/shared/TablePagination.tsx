@@ -33,7 +33,7 @@ export default function TablePagination({
       )}
     >
       {/* Rows per page */}
-      <div className="flex items-center gap-2 text-[16px] text-[#393737]">
+      <div className="flex items-center gap-2 text-t-17 text-[#393737]">
         <span className="font-medium">Row per page</span>
         <button
           onClick={() => onRowsPerPageChange?.(rowsPerPage)}
@@ -63,7 +63,7 @@ export default function TablePagination({
               key={page}
               onClick={() => onPageChange?.(page)}
               className={cn(
-                "w-14 h-10 flex items-center justify-center rounded-xl text-[16px] font-semibold transition-colors",
+                "w-14 h-10 flex items-center justify-center rounded-xl text-t-17 font-semibold transition-colors",
                 page === currentPage
                   ? "bg-primary text-white"
                   : "border border-primary-light-active text-primary font-medium hover:bg-primary-light",

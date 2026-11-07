@@ -3,6 +3,7 @@ import React, { memo } from "react";
 import { MoreHorizontal } from "lucide-react";
 import type { DeliveryOption } from "@/types/cart";
 import Image from "next/image";
+import { formatCurrency } from "@/lib/format";
 
 interface Props {
   options: DeliveryOption[];
@@ -70,7 +71,7 @@ const DeliveryOptions = memo(function DeliveryOptions({
                   </div>
 
                   <span className="text-t-17-semibold flex-shrink-0 text-success">
-                    {option.price.toFixed(2)}$
+                    {formatCurrency(option.price)}
                   </span>
                 </div>
 

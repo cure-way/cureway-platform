@@ -58,9 +58,9 @@ export default function MostSalesSection({
 
               {/* Content */}
               <div className="flex flex-col flex-1 mt-4">
-                <h3 className="min-h-10 font-semibold text-gray-800 group-hover:text-(--color-primary) text-sm line-clamp-2 transition-colors duration-200">
+                <h2 className="min-h-10 font-semibold text-gray-800 group-hover:text-(--color-primary) text-sm line-clamp-2 transition-colors duration-200">
                   {category.name}
-                </h3>
+                </h2>
 
                 <p className="mt-1 min-h-8 text-gray-500 text-xs line-clamp-2">
                   {category.description ?? category.name}

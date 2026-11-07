@@ -42,7 +42,7 @@ export default function AdminHeader() {
         : (user?.role ?? "Admin");
 
   return (
-    <header className="sticky top-0 z-20 flex items-center gap-6 px-6 py-4 bg-white border-b border-[#EFEDED]">
+    <header className="sticky top-0 z-20 flex items-center gap-3 lg:gap-6 px-4 lg:px-6 py-4 bg-white border-b border-[#EFEDED]">
       {/* Hamburger — mobile/tablet only */}
       <button
         onClick={open}
@@ -53,14 +53,14 @@ export default function AdminHeader() {
       </button>
 
       {/* Search Bar */}
-      <div className="hidden sm:flex items-center flex-1 h-12 rounded-3xl bg-[#EFF3FB] pl-4 pr-2 gap-2.5">
+      <div className="hidden sm:flex items-center flex-1 min-w-0 h-12 rounded-3xl bg-[#EFF3FB] pl-4 pr-2 gap-2.5">
         <div className="shrink-0 w-6 h-6">
           <HeaderSearchIcon />
         </div>
         <input
           type="text"
           placeholder="Search medicine, pharmacy.."
-          className="flex-1 bg-transparent text-[16px] font-medium leading-[1.2] text-foreground placeholder:text-[#989593] outline-none min-w-0"
+          className="flex-1 bg-transparent text-t-17 font-medium leading-[1.2] text-foreground placeholder:text-[#989593] outline-none min-w-0"
           aria-label="Search"
         />
         <button
@@ -86,14 +86,14 @@ export default function AdminHeader() {
       </button>
 
       {/* Action Icons */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 lg:gap-3 shrink-0">
         <a
           href="/admin/notifications"
           className="relative w-12 h-12 flex items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-0.75 hover:bg-neutral-light transition-colors"
           aria-label="Notifications — 3 unread"
         >
           <HeaderNotificationIcon />
-          <span className="absolute -top-1.25 left-7.5 w-5 h-5 rounded-2xl bg-[#121B3C] text-[#EBEDF7] text-[12px] font-medium leading-[1.2] flex items-center justify-center px-3 py-1">
+          <span className="absolute -top-1 -right-1 min-w-5 h-5 rounded-full bg-[#121B3C] text-[#EBEDF7] text-t-12 font-medium leading-none flex items-center justify-center px-1.5">
             3
           </span>
         </a>
@@ -114,7 +114,7 @@ export default function AdminHeader() {
       </div>
 
       {/* Avatar + Dropdown */}
-      <div className="relative" ref={profileRef}>
+      <div className="relative shrink-0" ref={profileRef}>
         <button
           onClick={() => setProfileOpen((v) => !v)}
           className="w-12 h-12 rounded-full overflow-hidden hover:ring-2 hover:ring-primary/20 transition-all shrink-0 bg-primary-light flex items-center justify-center text-primary font-semibold text-t-14"

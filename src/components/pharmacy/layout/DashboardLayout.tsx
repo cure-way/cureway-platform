@@ -12,7 +12,7 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex bg-gray-50 h-screen overflow-hidden">
+    <div className="flex bg-gray-50 h-[calc(100dvh-var(--showcase-bar-h,0px))] overflow-hidden">
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <div className="flex flex-col flex-1">

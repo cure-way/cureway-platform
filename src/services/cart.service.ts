@@ -18,6 +18,7 @@ import type {
   CartItem, 
 } from "@/types/cart";
 import type { CreateOrderDto, PatientAddressResponse } from "@/types/api.types";
+import { formatCurrency } from "@/lib/format";
 
 /** Simulated network latency for mock calls */
 const delay = (ms = 400) => new Promise<void>((r) => setTimeout(r, ms));
@@ -155,7 +156,7 @@ export const cartService = {
 
     return {
       cart: cloneCart(_cart),
-      discount: `$${discountAmount.toFixed(2)}`,
+      discount: formatCurrency(discountAmount),
     };
   },
 

@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import type { Order } from "@/types/order";
+import { formatCurrency } from "@/lib/format";
 
 
 function Section({
@@ -124,7 +125,7 @@ export function ViewDetailsDrawer({
                     </div>
                     <div>
                       <p className="text-t-14-bold text-foreground m-0">{group.pharmacyName}</p>
-                      <p className="text-t-12 text-muted-foreground m-0">Subtotal: ${group.subtotal.toFixed(2)}</p>
+                      <p className="text-t-12 text-muted-foreground m-0">Subtotal: {formatCurrency(group.subtotal)}</p>
                     </div>
                   </div>
                 ))}
@@ -152,7 +153,7 @@ export function ViewDetailsDrawer({
                       <p className="text-t-14-semibold text-foreground m-0 truncate">{item.name}</p>
                       <p className="text-t-12 text-muted-foreground m-0">Qty: {item.quantity}</p>
                     </div>
-                    <span className="text-t-14-bold text-primary">${(item.unitPrice * item.quantity).toFixed(2)}</span>
+                    <span className="text-t-14-bold text-primary">{formatCurrency(item.unitPrice * item.quantity)}</span>
                   </div>
                 ))}
              </div>
@@ -162,11 +163,11 @@ export function ViewDetailsDrawer({
             <div className="flex flex-col gap-2">
               <div className="flex justify-between text-t-14 text-muted-foreground">
                 <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>{formatCurrency(subtotal)}</span>
               </div>
               <div className="flex justify-between pt-2 border-t border-border mt-1 font-bold">
                 <span className="text-t-17">Total</span>
-                <span className="text-primary">${order.total.toFixed(2)}</span>
+                <span className="text-primary">{formatCurrency(order.total)}</span>
               </div>
             </div>
           </Section>

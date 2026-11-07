@@ -19,6 +19,7 @@ import type { ColumnDef, BadgeVariant } from "@/components/admin/shared";
 import { ProductsPageIcon } from "@/components/admin/shared/icons";
 import { useAdminInventory } from "@/hooks/admin.hooks";
 import type { AdminInventoryItem } from "@/services/admin.service";
+import { formatCurrency } from "@/lib/format";
 
 /* ------------------------------------------------------------------
    HELPERS
@@ -112,7 +113,7 @@ const columns: ColumnDef<AdminInventoryItem>[] = [
     header: "Price",
     cell: (p) => (
       <span className="text-[14px] leading-[1.2] font-semibold text-primary-dark">
-        {(p.sellPrice ?? 0).toFixed(2)}
+        {formatCurrency(p.sellPrice ?? 0)}
       </span>
     ),
   },
@@ -206,7 +207,7 @@ export default function AdminProductsPage() {
             {lowStockCount > 0 && (
               <div className="flex items-center bg-warning-light px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg self-stretch">
                 <p className="text-warning-darker">
-                  <span className="text-[13px] sm:text-[16px] leading-[1.2] font-medium">
+                  <span className="text-t-14 sm:text-t-17 leading-[1.2] font-medium">
                     Low stock{" "}
                   </span>
                   <span className="text-[12px] sm:text-[14px] leading-[1.2] font-semibold">

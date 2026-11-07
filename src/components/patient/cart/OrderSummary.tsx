@@ -1,5 +1,7 @@
 "use client";
 
+import { formatCurrency } from "@/lib/format";
+
 interface Props {
   subtotal: number;
   totalItems: number;
@@ -28,7 +30,7 @@ export default function OrderSummary({
             </span>
           </span>
           <span className="text-t-25-bold text-primary">
-            {subtotal.toFixed(2)}
+            {formatCurrency(subtotal)}
             <span className="text-t-14">$</span>
           </span>
         </div>

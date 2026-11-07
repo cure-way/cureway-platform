@@ -67,9 +67,11 @@ export function AuthHero({
             transition={{ duration: 0.4 }}
             className="flex flex-col gap-4"
           >
-            <h2 className="text-4xl font-bold text-white leading-tight">
+            {/* Decorative hero copy, not a section heading: it renders
+                before the page's own h1 and would break the outline. */}
+            <p className="text-4xl font-bold text-white leading-tight">
               {title}
-            </h2>
+            </p>
             <p className="text-base text-white/90">{subtitle}</p>
           </motion.div>
         </AnimatePresence>

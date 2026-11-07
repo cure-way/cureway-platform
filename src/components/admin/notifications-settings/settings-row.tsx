@@ -64,10 +64,10 @@ export default function SettingsRow({
     <div className="flex items-center gap-4 p-4 border border-border rounded-xl">
       {/* Text content */}
       <div className="flex-1 min-w-0 space-y-4">
-        <h3 className="text-t-18 font-semibold text-neutral-darker leading-snug">
+        <h3 className="text-t-17 font-semibold text-neutral-darker leading-snug">
           {title}
         </h3>
-        <p className="text-t-16 font-normal text-neutral leading-snug max-w-[500px]">
+        <p className="text-t-17 font-normal text-neutral leading-snug max-w-[500px]">
           {description}
         </p>
       </div>

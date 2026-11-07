@@ -8,7 +8,7 @@ interface Props {
 export default function ProfileHeader({ name, onEdit }: Props) {
   return (
     <div className="flex justify-between items-center mb-6">
-      <h1 className="font-semibold text-[#0F172A] text-[26px]">{name}</h1>
+      <h1 className="font-semibold text-[#0F172A] text-t-25">{name}</h1>
 
       <button
         onClick={onEdit}

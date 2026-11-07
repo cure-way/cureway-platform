@@ -8,7 +8,7 @@ import { AuthGuard } from "@/features/auth/AuthGuard";
 
 function AdminLayoutInner({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen bg-neutral-light">
+    <div className="flex min-h-[calc(100dvh-var(--showcase-bar-h,0px))] bg-neutral-light">
       <AdminSidebar />
 
       {/* Main Content — fills remaining width */}
