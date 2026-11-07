@@ -30,7 +30,7 @@ const QUICK_CHIPS: QuickChip[] = [
   },
   {
     label: "Calendar",
-    href: "/calendar",
+    href: "/profile/saved-medicine",
     icon: <IoCalendarOutline className="w-4 h-4" />,
     requiresAuth: true,
   },
