@@ -18,7 +18,12 @@ import axios, {
 } from "axios";
 
 import { showcaseAdapter } from "@/lib/showcase/adapter";
-import { SHOWCASE_BASE_URL, SHOWCASE_MODE } from "@/lib/showcase/config";
+import {
+  SHOWCASE_ACCESS_TOKEN,
+  SHOWCASE_BASE_URL,
+  SHOWCASE_MODE,
+  SHOWCASE_REFRESH_TOKEN,
+} from "@/lib/showcase/config";
 
 // ---------------------------------------------------------------------------
 // In-memory token store (singleton)
@@ -33,12 +38,24 @@ export function getAccessToken(): string | null {
   if (!accessToken && isClient) {
     accessToken = localStorage.getItem("cureway_at");
   }
+  // Showcase mode has a standing demo session, so code that gates on a token
+  // (e.g. the auth check in orders.service) behaves as if signed in.
+  if (!accessToken && SHOWCASE_MODE) {
+    accessToken = SHOWCASE_ACCESS_TOKEN;
+  }
   return accessToken;
 }
 
 export function getRefreshToken(): string | null {
   if (!refreshToken && isClient) {
     refreshToken = localStorage.getItem("cureway_rt");
+  }
+  // Without this, AuthProvider's mount-time refresh() throws "No refresh
+  // token available" before reaching the adapter and the visitor is bounced
+  // to the sign-in page. Resolving it here keeps the first paint independent
+  // of React effect ordering and works with localStorage unavailable.
+  if (!refreshToken && SHOWCASE_MODE) {
+    refreshToken = SHOWCASE_REFRESH_TOKEN;
   }
   return refreshToken;
 }

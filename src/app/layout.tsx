@@ -5,6 +5,7 @@ import { ScrollToTop } from "@/components/shared/ScrollToTop";
 import { AuthProvider } from "@/features/auth";
 import ToastProvider from "@/components/shared/ToastProvider";
 import QueryProvider from "@/hooks/query-provider";
+import { ShowcaseBar } from "@/components/showcase/ShowcaseBar";
 import {
   SITE_DESCRIPTION,
   SITE_NAME,
@@ -108,6 +109,7 @@ export default function RootLayout({
         />
         <AuthProvider>
           <QueryProvider>
+            <ShowcaseBar />
             <ScrollToTop />
             <div id="dropdown-portal" />
             <ToastProvider />

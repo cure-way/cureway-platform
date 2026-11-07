@@ -135,29 +135,6 @@ export function setNoticeDismissed(dismissed: boolean): void {
   writeStorage(SHOWCASE_KEYS.NOTICE_DISMISSED, dismissed ? "true" : "false");
 }
 
-// ---------------------------------------------------------------------------
-// Session seeding
-// ---------------------------------------------------------------------------
-
-/**
- * Ensure a refresh token exists so `AuthProvider`'s mount-time
- * `authApi.refresh()` reaches the fixture adapter instead of throwing
- * "No refresh token available" and dropping the visitor at the sign-in page.
- *
- * Called from the showcase strip, which mounts inside `AuthProvider`.
- */
-export function seedDemoSession(): void {
-  if (!SHOWCASE_MODE || typeof window === "undefined") return;
-  try {
-    if (!window.localStorage.getItem("cureway_rt")) {
-      window.localStorage.setItem("cureway_rt", SHOWCASE_REFRESH_TOKEN);
-      window.localStorage.setItem("cureway_at", SHOWCASE_ACCESS_TOKEN);
-    }
-  } catch {
-    // Ignore — the adapter still serves /auth/refresh if a token is present.
-  }
-}
-
 /** Copy shown in the showcase notice. */
 export const SHOWCASE_NOTICE = {
   lead: "Showcase version.",
@@ -168,3 +145,11 @@ export const SHOWCASE_NOTICE = {
 
 /** Message used by every action that cannot work without a backend. */
 export const SHOWCASE_DISABLED_MESSAGE = "Disabled in showcase mode";
+
+/**
+ * Message for links to sections that were never built in the original
+ * project. Kept distinct from the message above: calling these "disabled in
+ * showcase mode" would imply they would work against a live backend.
+ */
+export const SHOWCASE_UNBUILT_MESSAGE =
+  "This section was not built in the original project";

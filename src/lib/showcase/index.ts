@@ -13,7 +13,6 @@ export {
   SHOWCASE_NOTICE,
   getDemoRole,
   isNoticeDismissed,
-  seedDemoSession,
   setDemoRole,
   setNoticeDismissed,
   type DemoRole,
