@@ -36,9 +36,7 @@ function RingTooltip({
       <span className="text-t-12 font-medium leading-[1.2] opacity-70">
         {segment.label}
       </span>
-      <span className="text-t-14 font-semibold leading-[1.2]">
-        {segment.value}%
-      </span>
+      <span className="text-t-14-semibold leading-[1.2]">{segment.value}%</span>
       <div
         className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-[#212F4D]"
         aria-hidden="true"
@@ -126,7 +124,7 @@ function ConcentricDonut({
       </svg>
       {/* Center label */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-t-17 font-semibold leading-[1.2] text-[#212F4D] transition-all duration-300">
+        <span className="text-t-17-semibold leading-[1.2] text-[#212F4D] transition-all duration-300">
           {centerPct}
         </span>
         <span className="text-t-12 sm:text-t-10 leading-[1.2] text-[#989593] text-center">
@@ -173,14 +171,14 @@ export default function SystemExperienceOverview() {
   }, []);
 
   return (
-    <div className="bg-white rounded-2xl border border-[#EFEDED] px-5 py-4 flex flex-col gap-6">
+    <div className="bg-white rounded-xl border border-border px-5 py-4 flex flex-col gap-6">
       {/* Header + Tabs */}
       <div className="flex flex-col gap-4">
         {/* Title */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-4">
             <TableEyeIcon />
-            <h2 className="text-t-17 font-semibold leading-[1.2] text-[#212F4D]">
+            <h2 className="text-t-17-semibold leading-[1.2] text-[#212F4D]">
               System Experience Overview
             </h2>
           </div>

@@ -39,7 +39,7 @@ function SegmentTooltip({
       <span className="text-t-12 font-medium leading-[1.2] opacity-70">
         {label}
       </span>
-      <span className="text-t-14 font-semibold leading-[1.2]">{sales}</span>
+      <span className="text-t-14-semibold leading-[1.2]">{sales}</span>
       <div
         className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-[#212F4D]"
         aria-hidden="true"
@@ -158,12 +158,12 @@ export default function TopCategories() {
   }, []);
 
   return (
-    <div className="bg-white rounded-2xl border border-[#EFEDED] px-5 py-4 flex flex-col gap-8">
+    <div className="bg-white rounded-xl border border-border px-5 py-4 flex flex-col gap-8">
       {/* Header */}
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-4">
           <TopCategoryIcon />
-          <h2 className="flex-1 text-t-17 font-semibold leading-[1.2] text-[#212F4D]">
+          <h2 className="flex-1 text-t-17-semibold leading-[1.2] text-[#212F4D]">
             Top Categories
           </h2>
           <div className="bg-white border border-[#EFEDED] rounded-lg h-full px-4 py-3 flex items-center gap-4 shrink-0">

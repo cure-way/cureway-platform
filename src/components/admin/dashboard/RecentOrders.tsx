@@ -52,16 +52,14 @@ export default function RecentOrders() {
   const orders = data.slice(0, 5);
 
   return (
-    <div className="bg-white rounded-2xl border border-[#EFEDED] flex flex-col p-4 gap-6">
+    <div className="bg-white rounded-xl border border-border flex flex-col p-4 gap-6">
       {/* Header */}
       <div className="flex items-center gap-4">
         <div className="w-16 h-16 rounded-full bg-[#EFF3FB] flex items-center justify-center shrink-0">
           <OrderBoxIcon />
         </div>
         <div className="flex-1 flex flex-col gap-2 min-w-0">
-          <h2 className="text-t-21 leading-[1.2] font-semibold text-[#212F4D]">
-            Recent orders
-          </h2>
+          <h2 className="text-t-21-semibold text-[#212F4D]">Recent orders</h2>
           <p className="text-[14px] leading-[1.2] font-normal text-[#989593]">
             Revenue generated from completed orders
           </p>

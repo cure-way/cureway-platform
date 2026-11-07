@@ -9,13 +9,13 @@ export default function RecentPatients() {
   const patients = data.slice(0, 4);
 
   return (
-    <div className="bg-white rounded-2xl border border-[#EFEDED] flex flex-col p-4 gap-4">
+    <div className="bg-white rounded-xl border border-border flex flex-col p-4 gap-4">
       {/* Header */}
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 rounded-full bg-[#FFFAEF] flex items-center justify-center shrink-0">
           <DashPatientsIcon />
         </div>
-        <h2 className="flex-1 text-t-17 leading-[1.2] font-semibold text-[#594920]">
+        <h2 className="flex-1 text-t-17-semibold text-[#594920]">
           Recent patients
         </h2>
         <Link

@@ -14,10 +14,11 @@ import {
   RecentOrders,
 } from "@/components/admin/dashboard";
 import { MotionStagger, MotionStaggerItem } from "@/components/admin/shared";
+import { PageContainer } from "@/components/shared";
 
 export default function AdminDashboardPage() {
   return (
-    <MotionStagger className="flex-1 p-3 sm:p-4 space-y-4">
+    <PageContainer width="wide" as={MotionStagger} className="space-y-6">
       {/* Welcome & Quick Actions */}
       <MotionStaggerItem>
         <WelcomeSection />
@@ -62,6 +63,6 @@ export default function AdminDashboardPage() {
       <MotionStaggerItem>
         <RecentOrders />
       </MotionStaggerItem>
-    </MotionStagger>
+    </PageContainer>
   );
 }
