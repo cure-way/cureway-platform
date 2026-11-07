@@ -28,16 +28,15 @@ export function SavedMedicineCard({
   onOpen?: (id: string) => void;
 }) {
   return (
-    <MotionTap className="rounded-[24px] border border-[#EBEDF7] bg-white p-6 shadow-card">
-      <div className="flex flex-col gap-4">
+    <MotionTap className="rounded-xl bg-white p-4 shadow-card md:p-6">
+      <div className="flex flex-col gap-3">
         {/* Image box */}
-        <div className="relative rounded-[20px] bg-[linear-gradient(180deg,#F7F8FF_0%,#DFE5FF_100%)] p-3 shadow-[0px_2px_2px_0px_#00000026]">
-          
+        <div className="relative rounded-lg bg-[linear-gradient(180deg,#F7F8FF_0%,#DFE5FF_100%)] p-3">
           {/* ✅ Save icon بدل heart */}
           <div className="absolute right-3 top-3">
             <MotionTap
               as="button"
-              className="grid h-8 w-8 place-items-center rounded-full bg-[#EBEDF7] active:bg-[#C0C8E5]"
+              className="grid h-8 w-8 place-items-center rounded-full bg-primary-light active:bg-primary-light-active"
               onClick={() => console.log("toggle saved", item.id)}
             >
               <IconSave />
@@ -46,15 +45,15 @@ export function SavedMedicineCard({
 
           {/* Discount تحت يمين */}
           {item.discountLabel ? (
-            <div className="absolute bottom-3 right-3 rounded-[8px] bg-[#279543] px-2 py-1">
-              <span className="text-[12px] font-semibold text-[#EBF9EE]">
+            <div className="absolute bottom-3 right-3 rounded-sm bg-success px-2 py-1">
+              <span className="text-t-12-semibold text-white">
                 {item.discountLabel}
               </span>
             </div>
           ) : null}
 
           {/* صورة الدواء */}
-          <div className="mx-auto grid h-[182px] w-[182px] place-items-center overflow-hidden rounded-[16px] bg-white/60">
+          <div className="mx-auto grid aspect-square w-full max-w-[160px] place-items-center overflow-hidden rounded-lg bg-white/60">
             <Image
               src={item.imageSrc ?? "/images/medicines/placeholder.png"}
               alt={item.name}
@@ -66,12 +65,12 @@ export function SavedMedicineCard({
         </div>
 
         {/* Content */}
-        <div className="flex items-start justify-between gap-3 px-2">
+        <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <div className="truncate text-t-17 font-bold text-[#17234D]">
+            <div className="truncate text-t-17-semibold text-primary-darker">
               {item.name}
             </div>
-            <div className="mt-1 text-t-17 text-[#00000099]">
+            <div className="mt-1 text-t-14 text-neutral-dark">
               {item.sub1}
               <br />
               {item.sub2}
@@ -94,26 +93,24 @@ export function SavedMedicineCard({
         </div>
 
         {/* Price row */}
-        <div className="flex items-center gap-4 px-2">
-          <span className="text-t-21 font-bold text-[#279543]">
-            {item.price}
-          </span>
+        <div className="flex items-center gap-2">
+          <span className="text-t-17-semibold text-success">{item.price}</span>
 
           {item.oldPrice ? (
-            <span className="text-[14px] text-[#00000066]">
+            <span className="text-t-12 text-neutral line-through">
               {item.oldPrice}
             </span>
           ) : null}
         </div>
 
         {/* Buttons */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <MotionTap
             as="button"
             onClick={() => onAddToCart?.(item.id)}
-            className="flex h-[40px] flex-1 items-center justify-center rounded-[12px] bg-[#334EAC]"
+            className="flex h-11 flex-1 items-center justify-center rounded-lg bg-primary transition-colors hover:bg-primary-hover"
           >
-            <span className="whitespace-nowrap text-t-17 font-bold leading-none text-[#EBEDF7]">
+            <span className="whitespace-nowrap text-t-14-semibold leading-none text-white">
               Add to cart
             </span>
           </MotionTap>
@@ -121,9 +118,9 @@ export function SavedMedicineCard({
           <MotionTap
             as="button"
             onClick={() => onRemove?.(item.id)}
-            className="flex h-[40px] flex-1 items-center justify-center rounded-[12px] border border-[#334EAC] bg-white"
+            className="flex h-11 flex-1 items-center justify-center rounded-lg border border-primary bg-white transition-colors hover:bg-primary-light"
           >
-            <span className="whitespace-nowrap text-t-17 font-bold leading-none text-[#334EAC]">
+            <span className="whitespace-nowrap text-t-14-semibold leading-none text-primary">
               Remove
             </span>
           </MotionTap>

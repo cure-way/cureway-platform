@@ -2,139 +2,131 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
+import { Search } from "lucide-react";
 
-import { MotionTap } from "@/components/shared/MotionTap";
-import { IconBack } from "@/components/patient/history/Icons";
+import { PageContainer, PageHeader } from "@/components/shared";
 import {
   SavedMedicineCard,
   type SavedMedicine,
 } from "@/components/patient/saved-medicine/SavedMedicineCard";
 import { EmptySavedMedicine } from "@/components/patient/saved-medicine/EmptySavedMedicine";
 
+/**
+ * Six distinct medicines. Every entry used to be the same Voltaren item at the
+ * same price, which read as a rendering bug rather than a saved list.
+ */
+const SAVED: SavedMedicine[] = [
+  {
+    id: "1",
+    name: "Voltaren",
+    sub1: "30 Tablets",
+    sub2: "400 mg",
+    price: "$15.00",
+    oldPrice: "$20.00",
+    discountLabel: "25% Off",
+    imageSrc: "/patient/Voltaren.png",
+  },
+  {
+    id: "2",
+    name: "Vitamin C",
+    sub1: "60 Effervescent",
+    sub2: "1000 mg",
+    price: "$8.50",
+    imageSrc: "/patient/Vitamin C.png",
+  },
+  {
+    id: "3",
+    name: "Zecuf Syrup",
+    sub1: "100 ml",
+    sub2: "Herbal cough relief",
+    price: "$6.25",
+    oldPrice: "$7.50",
+    discountLabel: "17% Off",
+    imageSrc: "/patient/Zecuf.png",
+  },
+  {
+    id: "4",
+    name: "CH Alpha Active",
+    sub1: "30 Sachets",
+    sub2: "Joint support",
+    price: "$32.00",
+    imageSrc: "/patient/CH Alpha Active.png",
+  },
+  {
+    id: "5",
+    name: "Biogen Collagen",
+    sub1: "90 Capsules",
+    sub2: "Marine collagen",
+    price: "$24.75",
+    oldPrice: "$29.00",
+    discountLabel: "15% Off",
+    imageSrc: "/patient/Biogen Collagen.png",
+  },
+  {
+    id: "6",
+    name: "Cold & Flu Relief",
+    sub1: "20 Tablets",
+    sub2: "Day and night",
+    price: "$9.90",
+    imageSrc: "/patient/Cold and Flu medicine.png",
+  },
+];
+
 export default function SavedMedicinePage() {
   const router = useRouter();
+  const [items, setItems] = React.useState<SavedMedicine[]>(SAVED);
+  const [query, setQuery] = React.useState("");
 
-  // UI فقط حالياً (لاحقاً API)
-  const [items, setItems] = React.useState<SavedMedicine[]>([
-    {
-      id: "1",
-      name: "Voltaren",
-      sub1: "30 Tablets",
-      sub2: "400 mg",
-      price: "$15.00",
-      oldPrice: "$20.00",
-      discountLabel: "25% Off",
-      imageSrc: "/patient/profile/voltaren.png",
-    },
-    {
-      id: "2",
-      name: "Voltaren",
-      sub1: "30 Tablets",
-      sub2: "400 mg",
-      price: "$15.00",
-      oldPrice: "$20.00",
-      discountLabel: "25% Off",
-      imageSrc: "/patient/profile/voltaren.png",
-    },
-    {
-      id: "3",
-      name: "Voltaren",
-      sub1: "30 Tablets",
-      sub2: "400 mg",
-      price: "$15.00",
-      oldPrice: "$20.00",
-      discountLabel: "25% Off",
-      imageSrc: "/patient/profile/voltaren.png",
-    },
-    {
-      id: "4",
-      name: "Voltaren",
-      sub1: "30 Tablets",
-      sub2: "400 mg",
-      price: "$15.00",
-      oldPrice: "$20.00",
-      discountLabel: "25% Off",
-      imageSrc: "/patient/profile/voltaren.png",
-    },
-    {
-      id: "5",
-      name: "Voltaren",
-      sub1: "30 Tablets",
-      sub2: "400 mg",
-      price: "$15.00",
-      oldPrice: "$20.00",
-      discountLabel: "25% Off",
-      imageSrc: "/patient/profile/voltaren.png",
-    },
-    {
-      id: "6",
-      name: "Voltaren",
-      sub1: "30 Tablets",
-      sub2: "400 mg",
-      price: "$15.00",
-      oldPrice: "$20.00",
-      discountLabel: "25% Off",
-      imageSrc: "/patient/profile/voltaren.png",
-    },
-  ]);
-
-  const hasItems = items.length > 0;
+  const visible = items.filter((m) =>
+    m.name.toLowerCase().includes(query.trim().toLowerCase()),
+  );
 
   return (
-    <div className="w-full px-4 py-6">
-      <div className="mx-auto w-full max-w-[1100px]">
-        {/* Header */}
-        <div className="mb-4 flex items-center justify-between">
-          <div className="text-[48px] font-bold leading-[120%] text-black">
-            Saved Medicine
-          </div>
-
-          <MotionTap
-            as="button"
-            onClick={() => router.push("/profile")}
-            className="inline-flex items-center gap-2"
-          >
-            <IconBack />
-            <span className="text-t-25 font-bold leading-[120%] text-black">
-              Back
-            </span>
-          </MotionTap>
-        </div>
-
-        <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="text-t-21 font-medium leading-[120%] text-[#263B81]">
-            Your Frequently used medicines
-          </div>
-
-          <div className="w-full max-w-[418px]">
+    <PageContainer>
+      <PageHeader
+        title="Saved Medicine"
+        subtitle="Your frequently used medicines"
+        showBack
+        backHref="/profile"
+        actions={
+          <div className="relative w-full sm:w-[280px]">
+            <Search
+              className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-neutral"
+              aria-hidden="true"
+            />
             <input
-              placeholder="Search"
-              className="h-[64px] w-full rounded-[16px] border border-[#CAC6C4] bg-white px-4 text-t-17 outline-none"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search saved medicine"
+              aria-label="Search saved medicine"
+              className="h-11 w-full rounded-lg border border-border bg-white pl-10 pr-3 text-t-14 outline-none transition-colors focus:border-primary"
             />
           </div>
-        </div>
+        }
+      />
 
-        {/* Body */}
-        {!hasItems ? (
-          <EmptySavedMedicine onBrowse={() => router.push("/medicines")} />
-        ) : (
-          <div className="rounded-[24px] border border-[#CAC6C4] p-6">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {items.slice(0, 6).map((m) => (
-                <SavedMedicineCard
-                  key={m.id}
-                  item={m}
-                  onOpen={(id) => console.log("open", id)}
-                  onAddToCart={(id) => console.log("add to cart", id)}
-                  onRemove={(id) =>
-                    setItems((prev) => prev.filter((x) => x.id !== id))
-                  }
-                />
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
+      {items.length === 0 ? (
+        <EmptySavedMedicine onBrowse={() => router.push("/medicines")} />
+      ) : visible.length === 0 ? (
+        <p className="py-12 text-center text-t-14 text-neutral-dark">
+          No saved medicine matches “{query}”.
+        </p>
+      ) : (
+        /* No outer bordered wrapper: it double-framed every card. */
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {visible.map((m) => (
+            <SavedMedicineCard
+              key={m.id}
+              item={m}
+              onOpen={(id) => console.log("open", id)}
+              onAddToCart={(id) => console.log("add to cart", id)}
+              onRemove={(id) =>
+                setItems((prev) => prev.filter((x) => x.id !== id))
+              }
+            />
+          ))}
+        </div>
+      )}
+    </PageContainer>
   );
 }
