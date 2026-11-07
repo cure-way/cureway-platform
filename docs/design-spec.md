@@ -16,11 +16,11 @@ Every route, all three roles, at 1440 and 390 — 108 pages measured.
 
 ### Page titles
 
-| Role | Variants at 1440 | Sizes / weights seen |
-| --- | ---: | --- |
-| Patient | **8** | 24/600, 24/700, 30/700, 36/400, 36/600, 36/700, 48/700, 56/800 |
-| Pharmacy | 1 | 18/600 — and it is not the page's first `h1` |
-| Admin | 1 | 17/400 |
+| Role     | Variants at 1440 | Sizes / weights seen                                           |
+| -------- | ---------------: | -------------------------------------------------------------- |
+| Patient  |            **8** | 24/600, 24/700, 30/700, 36/400, 36/600, 36/700, 48/700, 56/800 |
+| Pharmacy |                1 | 18/600 — and it is not the page's first `h1`                   |
+| Admin    |                1 | 17/400                                                         |
 
 A patient page title is **48px**; the same thing in admin is **17px and not
 even semibold**. That single spread is most of why the three areas feel like
@@ -38,11 +38,11 @@ second `h1`.
 
 Left edge of the first content block:
 
-| Role | At 1440 | At 390 |
-| --- | --- | --- |
-| Patient | **7 different edges** — 0, 64, 80, 96, 170, 208, 516 | 6 — 0, 12, 16, 24, 51, 64 |
-| Pharmacy | 280, 288 | 24, 32 |
-| Admin | 280 | 0 |
+| Role     | At 1440                                              | At 390                    |
+| -------- | ---------------------------------------------------- | ------------------------- |
+| Patient  | **7 different edges** — 0, 64, 80, 96, 170, 208, 516 | 6 — 0, 12, 16, 24, 51, 64 |
+| Pharmacy | 280, 288                                             | 24, 32                    |
+| Admin    | 280                                                  | 0                         |
 
 On Upload Prescription the header block sits at x=80 and the content cards at
 x=208: the two halves of one page do not share an edge. On Saved Medicine the
@@ -64,11 +64,11 @@ found in the previous pass.
 
 Three systems, in near-equal use:
 
-| System | Uses |
-| --- | ---: |
-| Design tokens (`text-t-*`) | ~480 |
-| Stock Tailwind (`text-sm`, `text-2xl`, …) | 519 |
-| Arbitrary pixels (`text-[14px]`) | 167 |
+| System                                    | Uses |
+| ----------------------------------------- | ---: |
+| Design tokens (`text-t-*`)                | ~480 |
+| Stock Tailwind (`text-sm`, `text-2xl`, …) |  519 |
+| Arbitrary pixels (`text-[14px]`)          |  167 |
 
 The single most common text style in the app is **17px at weight 400** — 308
 occurrences. That is the "oversized, light-weight card text": body copy one
@@ -79,7 +79,7 @@ Weight census over all visible text at 1440: `400` 1193, `500` 701, `600` 619,
 `700` 198, `900` 26.
 
 **`text-t-N font-semibold` does not work.** The `.text-t-*` classes are defined
-inside `@layer utilities`, *after* Tailwind generates `.font-semibold`, and each
+inside `@layer utilities`, _after_ Tailwind generates `.font-semibold`, and each
 one sets `font-weight` itself. Same layer, same specificity, later wins — so
 `text-t-21 font-semibold` renders at **weight 400**. There are **176 such
 combinations across 61 files**, every one of them silently losing its weight.
@@ -95,12 +95,12 @@ Two fixes, both needed:
 
 ### Controls
 
-| Element | Distinct variants at 1440 |
-| --- | ---: |
-| Input / search height | **9** — 20, 24, 36, 38, 46, 48, 54, 56, 64px |
-| Button (height + size + weight + radius) | **40** |
-| Card (radius + padding) | **28** |
-| SVG icon size | **19** |
+| Element                                  |                    Distinct variants at 1440 |
+| ---------------------------------------- | -------------------------------------------: |
+| Input / search height                    | **9** — 20, 24, 36, 38, 46, 48, 54, 56, 64px |
+| Button (height + size + weight + radius) |                                       **40** |
+| Card (radius + padding)                  |                                       **28** |
+| SVG icon size                            |                                       **19** |
 
 Saved Medicine's search field is 64px tall with a 16px radius; the same control
 in admin is 38px with a pill radius.
@@ -115,11 +115,11 @@ nine times the type size.
 
 Three separate `PageHeader` components, none of them shared:
 
-| File | Title | Subtitle | Back | Actions |
-| --- | --- | --- | --- | --- |
-| `patient/PageHeader.tsx` | `text-t-36` bold | `text-t-21` semibold | `text-t-21` bold | no |
-| `pharmacy/shared/PageHeader.tsx` | `text-lg` semibold + icon | `text-sm` | no | no |
-| `admin/shared/PageHeader.tsx` | `text-t-17 sm:text-t-25` bold + icon | `text-t-14 sm:text-t-17` | no | **yes** |
+| File                             | Title                                | Subtitle                 | Back             | Actions |
+| -------------------------------- | ------------------------------------ | ------------------------ | ---------------- | ------- |
+| `patient/PageHeader.tsx`         | `text-t-36` bold                     | `text-t-21` semibold     | `text-t-21` bold | no      |
+| `pharmacy/shared/PageHeader.tsx` | `text-lg` semibold + icon            | `text-sm`                | no               | no      |
+| `admin/shared/PageHeader.tsx`    | `text-t-17 sm:text-t-25` bold + icon | `text-t-14 sm:text-t-17` | no               | **yes** |
 
 Plus `prescriptions/UploadHeader.tsx` (48px title, 24px subtitle, 20px Back)
 and pages that inline their own.
@@ -138,18 +138,18 @@ One component, `src/components/shared/PageContainer.tsx`. Every page's header
 and body go inside the same instance, so they always share a left and right
 edge.
 
-| Breakpoint | Horizontal padding |
-| --- | ---: |
-| base (<768) | 16px |
-| md (≥768) | 24px |
-| lg (≥1024) | 32px |
+| Breakpoint  | Horizontal padding |
+| ----------- | -----------------: |
+| base (<768) |               16px |
+| md (≥768)   |               24px |
+| lg (≥1024)  |               32px |
 
 Max content width:
 
-| Variant | Width | Use |
-| --- | ---: | --- |
-| `default` | **1120px** | every content page in all three roles |
-| `wide` | **1440px** | dashboards and full-bleed data tables only |
+| Variant   |      Width | Use                                        |
+| --------- | ---------: | ------------------------------------------ |
+| `default` | **1120px** | every content page in all three roles      |
+| `wide`    | **1440px** | dashboards and full-bleed data tables only |
 
 `wide` is justified only where a page is a grid of charts and tables that would
 otherwise be squeezed: the admin dashboard, admin list pages and the pharmacy
@@ -185,12 +185,12 @@ every role.
         Subtitle
 ```
 
-| Part | Desktop (≥768) | Mobile | Token |
-| --- | --- | --- | --- |
-| Title | 30px semibold | 21px semibold | `text-t-21-semibold md:text-t-30-semibold` |
-| Subtitle | 14px regular, muted | 14px regular, muted | `text-t-14 text-neutral-dark` |
-| Back | 14px medium + 20px chevron | same | `text-t-14 font-medium` |
-| Actions | right-aligned slot | wraps below on mobile | — |
+| Part     | Desktop (≥768)             | Mobile                | Token                                      |
+| -------- | -------------------------- | --------------------- | ------------------------------------------ |
+| Title    | 30px semibold              | 21px semibold         | `text-t-21-semibold md:text-t-30-semibold` |
+| Subtitle | 14px regular, muted        | 14px regular, muted   | `text-t-14 text-neutral-dark`              |
+| Back     | 14px medium + 20px chevron | same                  | `text-t-14 font-medium`                    |
+| Actions  | right-aligned slot         | wraps below on mobile | —                                          |
 
 Rules:
 
@@ -210,17 +210,17 @@ dashboard areas keep their visual cue.
 
 Every role maps to an existing token. No new sizes.
 
-| Role | Token | Size / weight |
-| --- | --- | --- |
-| Page title | `text-t-30-semibold` (`text-t-21-semibold` mobile) | 30 / 21, 600 |
-| Section title | `text-t-21-semibold` | 21, 600 |
-| Card title | `text-t-17-semibold` | 17, 600 |
-| Body | `text-t-14` | 14, 400 |
-| Body emphasis | `text-t-14-semibold` | 14, 600 |
-| Meta / caption | `text-t-12` | 12, 400 |
-| Price | `text-t-17-semibold` (`text-t-21-semibold` on a detail page) | 17 / 21, 600 |
-| Label | `text-t-12-semibold` | 12, 600 |
-| Button text | `text-t-14-semibold` (`text-t-12-semibold` on `sm`) | 14 / 12, 600 |
+| Role           | Token                                                        | Size / weight |
+| -------------- | ------------------------------------------------------------ | ------------- |
+| Page title     | `text-t-30-semibold` (`text-t-21-semibold` mobile)           | 30 / 21, 600  |
+| Section title  | `text-t-21-semibold`                                         | 21, 600       |
+| Card title     | `text-t-17-semibold`                                         | 17, 600       |
+| Body           | `text-t-14`                                                  | 14, 400       |
+| Body emphasis  | `text-t-14-semibold`                                         | 14, 600       |
+| Meta / caption | `text-t-12`                                                  | 12, 400       |
+| Price          | `text-t-17-semibold` (`text-t-21-semibold` on a detail page) | 17 / 21, 600  |
+| Label          | `text-t-12-semibold`                                         | 12, 600       |
+| Button text    | `text-t-14-semibold` (`text-t-12-semibold` on `sm`)          | 14 / 12, 600  |
 
 Rules:
 
@@ -242,11 +242,11 @@ Display type above 36px is allowed **only** in the marketing hero on `/`.
 
 ### Buttons
 
-| Size | Height | Text | Padding | Radius |
-| --- | ---: | --- | ---: | --- |
-| `sm` | 36px | `text-t-12-semibold` | 12px | `rounded-lg` |
-| `md` | 44px | `text-t-14-semibold` | 16px | `rounded-lg` |
-| `lg` | 52px | `text-t-17-semibold` | 24px | `rounded-lg` |
+| Size | Height | Text                 | Padding | Radius       |
+| ---- | -----: | -------------------- | ------: | ------------ |
+| `sm` |   36px | `text-t-12-semibold` |    12px | `rounded-lg` |
+| `md` |   44px | `text-t-14-semibold` |    16px | `rounded-lg` |
+| `lg` |   52px | `text-t-17-semibold` |    24px | `rounded-lg` |
 
 `md` is the default. `lg` is for a single primary action that owns the view (a
 form submit, "Upload file"). Radius is `rounded-lg` (8px) everywhere — not 12,
@@ -267,14 +267,14 @@ Saved Medicine's 64px search becomes 44px.
 
 ### Cards
 
-| Property | Value |
-| --- | --- |
-| Radius | `rounded-xl` (12px); `rounded-2xl` (16px) for a feature card |
-| Padding | `p-4` (16px) base, `p-6` (24px) from `md` |
-| Gap inside | `gap-3` (12px) |
-| Gap between | `gap-4` (16px) |
-| Shadow | `shadow-card` |
-| Border | `border border-border`, or shadow — **not both** |
+| Property    | Value                                                        |
+| ----------- | ------------------------------------------------------------ |
+| Radius      | `rounded-xl` (12px); `rounded-2xl` (16px) for a feature card |
+| Padding     | `p-4` (16px) base, `p-6` (24px) from `md`                    |
+| Gap inside  | `gap-3` (12px)                                               |
+| Gap between | `gap-4` (16px)                                               |
+| Shadow      | `shadow-card`                                                |
+| Border      | `border border-border`, or shadow — **not both**             |
 
 A card never nests inside another bordered container that repeats its frame.
 Saved Medicine's grid currently sits inside a `rounded-[24px] border` wrapper
@@ -300,13 +300,13 @@ muted, one `md` primary action. Centred, `py-12`.
 
 ### Illustrations and icons
 
-| Use | Max size |
-| --- | ---: |
-| Inline with text | 16px |
-| Control / button icon | 20px |
-| Header icon | 24px |
-| Feature or empty-state illustration | **120px** |
-| Hero illustration (`/` only) | unrestricted |
+| Use                                 |     Max size |
+| ----------------------------------- | -----------: |
+| Inline with text                    |         16px |
+| Control / button icon               |         20px |
+| Header icon                         |         24px |
+| Feature or empty-state illustration |    **120px** |
+| Hero illustration (`/` only)        | unrestricted |
 
 The Upload Prescription paperclip drops from 144px to 120px.
 
@@ -338,18 +338,18 @@ controls it rebuilds.
 Four pages implemented against this spec. Before/after at 1440 and 390 in
 `docs/design-screenshots/`.
 
-| | Before | After |
-| --- | --- | --- |
-| Page title | 48px bold `<div>` (saved medicine), 48px `<h1>` (upload), 18px (pharmacy), 17px regular (admin) | **30px semibold `<h1>`** everywhere, 21px on mobile |
-| Subtitle | 21–24px semibold | **14px regular, muted** |
-| Back | 25px bold, floated right | **14px medium control, left, above the title** |
-| Search / input | 64px tall, 16px radius | **44px, `rounded-lg`** |
-| Card body text | 17px regular | **14px regular**, titles 17px semibold |
-| Card frame | `rounded-[24px]` + border + shadow, inside another bordered box | **`rounded-xl`, shadow only, no double frame** |
-| Container | 7 different left edges across patient pages | **one `PageContainer`**, header and body always aligned |
-| Illustration | 144px paperclip | **120px** |
-| Table rows | 64px, 14px semibold headers | **56px, 12px semibold headers**, 14px body |
-| Sample data | six identical Voltaren entries | **six distinct medicines** with their own images and prices |
+|                | Before                                                                                          | After                                                       |
+| -------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| Page title     | 48px bold `<div>` (saved medicine), 48px `<h1>` (upload), 18px (pharmacy), 17px regular (admin) | **30px semibold `<h1>`** everywhere, 21px on mobile         |
+| Subtitle       | 21–24px semibold                                                                                | **14px regular, muted**                                     |
+| Back           | 25px bold, floated right                                                                        | **14px medium control, left, above the title**              |
+| Search / input | 64px tall, 16px radius                                                                          | **44px, `rounded-lg`**                                      |
+| Card body text | 17px regular                                                                                    | **14px regular**, titles 17px semibold                      |
+| Card frame     | `rounded-[24px]` + border + shadow, inside another bordered box                                 | **`rounded-xl`, shadow only, no double frame**              |
+| Container      | 7 different left edges across patient pages                                                     | **one `PageContainer`**, header and body always aligned     |
+| Illustration   | 144px paperclip                                                                                 | **120px**                                                   |
+| Table rows     | 64px, 14px semibold headers                                                                     | **56px, 12px semibold headers**, 14px body                  |
+| Sample data    | six identical Voltaren entries                                                                  | **six distinct medicines** with their own images and prices |
 
 Also fixed while piloting:
 
@@ -376,44 +376,44 @@ Every route in all three roles. Pages of the same type share one variant and
 therefore land on identical left and right edges at every breakpoint. No page
 sets its own max-width.
 
-| Variant | Max width | Measured content edge @1440 | @390 |
-| --- | ---: | ---: | ---: |
-| `list` | 1120px | x=192, 1056px wide | x=16, 358px |
-| `detail` | 960px | x=272, 896px | x=16, 358px |
-| `form` | 880px | x=312, 816px | x=16, 358px |
-| `account` | 960px | x=272, 896px | x=16, 358px |
-| `auth` | 1280px | inside the split-screen form column | x=16, 358px |
-| `dashboard` | 1440px | x=288 (pharmacy) / x=312 (admin), after the sidebar | x=16 |
+| Variant     | Max width |                         Measured content edge @1440 |        @390 |
+| ----------- | --------: | --------------------------------------------------: | ----------: |
+| `list`      |    1120px |                                  x=192, 1056px wide | x=16, 358px |
+| `detail`    |     960px |                                        x=272, 896px | x=16, 358px |
+| `form`      |     880px |                                        x=312, 816px | x=16, 358px |
+| `account`   |     960px |                                        x=272, 896px | x=16, 358px |
+| `auth`      |    1280px |                 inside the split-screen form column | x=16, 358px |
+| `dashboard` |    1440px | x=288 (pharmacy) / x=312 (admin), after the sidebar |        x=16 |
 
 Horizontal padding is 16 / 24 / 32 at base / md / lg for every variant.
 
 ### Patient
 
-| Route | Page type | Variant |
-| --- | --- | --- |
-| `/` | landing (marketing) | `list` for the content block; the promo banner and hero stay full-bleed |
-| `/medicines` | listing | `list` |
-| `/categories` | listing | `list` |
-| `/categories/[id]` | listing | `list` |
-| `/pharmacies` | listing | `list` |
-| `/search` | listing | `list` |
-| `/profile/saved-medicine` | listing | `list` |
-| `/cart` | purchase flow (two-column) | `list` |
-| `/checkout` | purchase flow (two-column) | `list` |
-| `/medicines/[id]` | detail | `detail` |
-| `/pharmacies/[id]` | detail | `detail` |
-| `/prescriptions` | form / flow | `form` |
-| `/profile/edit-profile` | form / flow | `form` |
-| `/report-issue` | form / flow | `form` |
-| `/location-access` | form / flow | `form` |
-| `/Orderconfirmation` | form / flow | `form` |
-| `/profile` | account | `account` |
-| `/profile/history` | account | `account` |
-| `/orders` | account | `account` |
-| `/notifications` | account | `account` |
-| `/help` | account | `account` |
-| `/privacy` | account | `account` |
-| `/terms` | account | `account` |
+| Route                     | Page type                  | Variant                                                                 |
+| ------------------------- | -------------------------- | ----------------------------------------------------------------------- |
+| `/`                       | landing (marketing)        | `list` for the content block; the promo banner and hero stay full-bleed |
+| `/medicines`              | listing                    | `list`                                                                  |
+| `/categories`             | listing                    | `list`                                                                  |
+| `/categories/[id]`        | listing                    | `list`                                                                  |
+| `/pharmacies`             | listing                    | `list`                                                                  |
+| `/search`                 | listing                    | `list`                                                                  |
+| `/profile/saved-medicine` | listing                    | `list`                                                                  |
+| `/cart`                   | purchase flow (two-column) | `list`                                                                  |
+| `/checkout`               | purchase flow (two-column) | `list`                                                                  |
+| `/medicines/[id]`         | detail                     | `detail`                                                                |
+| `/pharmacies/[id]`        | detail                     | `detail`                                                                |
+| `/prescriptions`          | form / flow                | `form`                                                                  |
+| `/profile/edit-profile`   | form / flow                | `form`                                                                  |
+| `/report-issue`           | form / flow                | `form`                                                                  |
+| `/location-access`        | form / flow                | `form`                                                                  |
+| `/Orderconfirmation`      | form / flow                | `form`                                                                  |
+| `/profile`                | account                    | `account`                                                               |
+| `/profile/history`        | account                    | `account`                                                               |
+| `/orders`                 | account                    | `account`                                                               |
+| `/notifications`          | account                    | `account`                                                               |
+| `/help`                   | account                    | `account`                                                               |
+| `/privacy`                | account                    | `account`                                                               |
+| `/terms`                  | account                    | `account`                                                               |
 
 ### Auth
 
@@ -453,3 +453,68 @@ their own stagger container).
 - **The dashboard content edge differs by 24px between pharmacy and admin**
   because their sidebars are different widths. The containers are identical;
   only the space left over differs.
+
+---
+
+## 10. Rollout result
+
+### Design audit — 108 pages, 3 roles, 1440 and 390
+
+| Measure                                    | Before                                                                    | After                                                                   |
+| ------------------------------------------ | ------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Page-title styles                          | **8** in patient alone (24→56px), 18px in pharmacy, 17px regular in admin | **1** role (`text-page-title`): 30px semibold desktop, 21px mobile      |
+| Pages with no visible title                | 5                                                                         | **0** (the one `NONE` is an empty-state render of `/Orderconfirmation`) |
+| Patient content left edges @1440           | **7** (0, 64, 80, 96, 170, 208, 516)                                      | **4**, one per variant in use                                           |
+| Content edge per variant                   | n/a                                                                       | exactly **one** `(left, width)` pair per variant at each width          |
+| Pages inside a shared container            | 0                                                                         | **106 / 108**                                                           |
+| Dead container classes                     | 19 uses                                                                   | **0**                                                                   |
+| `text-t-N font-semibold` losing its weight | 176 across 61 files                                                       | **0**                                                                   |
+| Header components                          | 4                                                                         | **1**                                                                   |
+
+The one remaining 56px title is the landing page's marketing hero, which §4
+exempts. The two pages without a container are `/Orderconfirmation`'s empty
+and loading states.
+
+### Technical audit — 324 pages
+
+| Category                                    |                                          Result |
+| ------------------------------------------- | ----------------------------------------------: |
+| Horizontal scroll                           |                                           **0** |
+| Heading order                               |                                           **0** |
+| Text under 12px                             |                                           **0** |
+| Currency formats                            |                                           **0** |
+| Placeholder text / missing alt / navigation |                                           **0** |
+| Console errors                              |                                           **0** |
+| Touch targets under 44px                    | 238, **all** in the three documented exclusions |
+
+The 238 are 258 text-input occurrences, 30 running-text links (`Sign Up`,
+`Login Here`) and 6 of the dial-code `<select>`. No button, card action,
+breadcrumb or navigation item is under 44px at any width in any role.
+
+### Verification
+
+```
+routes checked (role x route) : 76
+external requests ATTEMPTED   : 0
+benign framework warnings     : 4
+pages with issues             : 0
+```
+
+Purchase flow completes end to end; the order list goes from 6 to 7. Lint 0
+errors with 1 known `exhaustive-deps` warning, typecheck clean, build 53/53.
+
+### Contact sheets
+
+`docs/review-screenshots/sheet-{role}-{width}-{before,after}.png` — one grid
+per role per width, grouped by container variant, so pages of the same type sit
+side by side and their edges can be compared directly.
+
+### Known gaps
+
+- **Admin sidebar rows stay at 48px.** A navigation row is not a button; the
+  spec's three button sizes do not apply to it.
+- **The dashboard content edge differs by 24px** between pharmacy and admin
+  because the two sidebars are different widths. The containers are identical.
+- **Hardcoded hex colours are still outstanding** — 474 values, unchanged from
+  `docs/site-review-plan.md`. They are invisible to a visitor and remain the
+  main piece of cleanup, worth its own PR.
