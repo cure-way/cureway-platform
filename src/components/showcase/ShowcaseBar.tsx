@@ -5,8 +5,8 @@
  *
  * Always-visible strip above every portal. It states that this deployment runs
  * on sample data and carries the controls a visitor needs: the role switcher
- * and a button that reopens the welcome dialog. The controls lead and the
- * notice follows them.
+ * and a button that reopens the welcome dialog. The notice leads and the
+ * controls sit together at the end.
  *
  * There is no reset control: the fixtures live in memory, so any reload
  * already restores them.
@@ -130,8 +130,14 @@ export function ShowcaseBar() {
       <div
         className={`${FRAME} flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-4 py-2`}
       >
-        {/* Controls lead, notice follows. They stay one group in this order
-            on every page and in all three areas. */}
+        <p className="measure text-t-12 sm:text-t-14 text-primary-light min-w-0 lg:flex-1">
+          <span className="font-bold text-white">{SHOWCASE_NOTICE.lead}</span>{" "}
+          <span className="font-medium">{SHOWCASE_NOTICE.body}</span>
+        </p>
+
+        {/* The notice leads; the role switcher and About this demo sit together
+            at the end, nothing else with them. Same order on every page and in
+            all three areas; below lg they wrap underneath the notice. */}
         <div className="flex items-center flex-wrap gap-x-2 gap-y-1.5 shrink-0">
           <div
             className="flex items-center gap-1 bg-white/15 rounded-lg p-0.5"
@@ -168,11 +174,6 @@ export function ShowcaseBar() {
             About this demo
           </button>
         </div>
-
-        <p className="measure text-t-12 sm:text-t-14 text-primary-light min-w-0 lg:flex-1">
-          <span className="font-bold text-white">{SHOWCASE_NOTICE.lead}</span>{" "}
-          <span className="font-medium">{SHOWCASE_NOTICE.body}</span>
-        </p>
       </div>
     </div>
   );
