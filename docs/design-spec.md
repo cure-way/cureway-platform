@@ -130,50 +130,90 @@ brand blue.
 
 ---
 
-## 2. Layout
+## 2. The frame
 
-### PageContainer
+One container system for all three areas, after besterra.io.
 
-One component, `src/components/shared/PageContainer.tsx`. Every page's header
-and body go inside the same instance, so they always share a left and right
-edge.
+### Tokens
 
-| Breakpoint  | Horizontal padding |
-| ----------- | -----------------: |
-| base (<768) |               16px |
-| md (≥768)   |               24px |
-| lg (≥1024)  |               32px |
+Declared in `src/styles/global.css`, consumed **only** by `PageContainer`.
+No page or component sets a page max-width or horizontal page padding.
 
-Max content width:
+| Token             | Value                       | Role                                    |
+| ----------------- | --------------------------- | --------------------------------------- |
+| `--container-max` | `105rem` (1680px)           | the frame: page chrome and page content |
+| `--container-px`  | `clamp(1.25rem, 5vw, 3rem)` | the one gutter, 20px → 48px             |
+| `--content-xl`    | 1280px                      | wide multi-column, inside the frame     |
+| `--content-lg`    | 1200px                      | standard, inside the frame              |
+| `--content-md`    | 768px                       | forms and narrow content                |
+| `--content-sm`    | 640px                       | long text, legal                        |
 
-| Variant   |      Width | Use                                        |
-| --------- | ---------: | ------------------------------------------ |
-| `default` | **1120px** | every content page in all three roles      |
-| `wide`    | **1440px** | dashboards and full-bleed data tables only |
+### Components
 
-`wide` is justified only where a page is a grid of charts and tables that would
-otherwise be squeezed: the admin dashboard, admin list pages and the pharmacy
-report. Everything else is `default`. 1120px keeps a comfortable measure for
-cards and forms; 1440px matches `--container-2xl`, which is already defined.
+- **`PageContainer`** always fills the frame. Every route uses it.
+- **`ContentColumn width="xl|lg|md|sm"`** is a narrower column _inside_ the
+  frame. It is **left-aligned** (`mr-auto`), never centred, so the page header
+  above stays at full width and the column starts on the same left edge.
+- **`FRAME` / `SHELL_RAIL`** is the same class string, exported for page chrome
+  that cannot use the component.
 
-Vertical rhythm inside the container: `py-6` (24px) at base, `py-8` (32px) from
-`md`. Sections are separated by `space-y-6` (24px).
+### Patient
 
-**Never** use `max-w-xs`, `max-w-3xl`, `max-w-4xl`, `max-w-5xl`, `max-w-6xl` or
-`max-w-7xl` — they are dead classes. Use `PageContainer`, or an explicit value
-such as `max-w-[28rem]` for a dialog or a form column.
+The showcase strip, the announcements bar, the header (logo, search, location,
+cart, avatar), the quick-action chip row, the page header and the page content
+all sit on the frame. Backgrounds and borders stay full-bleed; only the content
+is constrained, so every left and right edge in the area matches at every
+breakpoint.
 
-### Dashboard shell
+Page content fills the frame by default. Forms (upload prescription, edit
+profile, report issue, location access, order confirmation) use
+`ContentColumn width="md"`; long text (privacy, terms) uses `width="sm"`.
 
-Pharmacy and admin share one shell so the two portals match:
+Full-bleed visuals — the landing hero and promo banner — stay full-bleed, and
+their text and buttons align to the frame.
 
-- sidebar, then `PageContainer` with `wide`
-- `PageHeader` at the top of every route, with the optional icon
-- `space-y-6` between sections
-- stat cards in a `grid gap-4` (16px), tables in a card
-- the sidebar logo is **not** an `h1`; the page title is the only `h1`
+### Pharmacy and admin
 
----
+The two shells are structurally identical:
+
+|                  | Value                                                           |
+| ---------------- | --------------------------------------------------------------- |
+| Sidebar width    | **280px** (pharmacy was 256px — the whole 24px edge difference) |
+| Top bar height   | **80px**, content on the frame                                  |
+| Sidebar logo row | **80px**, matching the top bar                                  |
+| Page header      | first child of the page container, `mb-6` to content            |
+| Section spacing  | `space-y-6` (24px)                                              |
+
+The showcase strip spans the viewport above both shells and sits on the same
+frame as the patient area. Dashboard narrow content (settings and profile
+forms) follows the patient rule: a left-aligned `ContentColumn` inside the
+frame.
+
+Five pharmacy route layouts used to add their own `px-4` wrapper and a second
+scroll container on top of the shell; they are gone.
+
+## 2b. Scrollbars
+
+One style everywhere — sidebars, tables, modals, dropdowns, horizontal tab and
+chip strips, and the page itself.
+
+| Property       | Value                                                              |
+| -------------- | ------------------------------------------------------------------ |
+| Width / height | 8px                                                                |
+| Track          | transparent                                                        |
+| Thumb          | `hsl(var(--neutral) / 0.35)`, fully rounded, 2px transparent inset |
+| Thumb hover    | `hsl(var(--neutral) / 0.55)`                                       |
+
+Firefox gets `scrollbar-width: thin` and `scrollbar-color`; WebKit and Blink
+get `::-webkit-scrollbar*`. On a desktop pointer (`hover: hover and pointer:
+fine`) the thumb is transparent until the pointer is over the scroll area;
+touch devices keep their platform overlay scrollbars. **The page scrollbar is
+the exception** and stays visible, because it is the reader's position
+indicator for the document.
+
+Only the painting changes: the scrollbar keeps its width and every scroll
+input — wheel, drag, touch, keyboard — is untouched. `.scrollbar-none` is the
+opt-out for a carousel that must never show one.
 
 ## 3. PageHeader
 
@@ -370,91 +410,36 @@ it does not change every patient page at once.
 
 ---
 
-## 9. Route → page type → container variant
+## 9. Route → page type → container
 
-Every route in all three roles. Pages of the same type share one variant and
-therefore land on identical left and right edges at every breakpoint. No page
-sets its own max-width.
+Every route fills the frame. The "column" column is the narrower
+`ContentColumn` inside it, where a page has one; `—` means the page fills the
+frame.
 
-| Variant     | Max width |                         Measured content edge @1440 |        @390 |
-| ----------- | --------: | --------------------------------------------------: | ----------: |
-| `list`      |    1120px |                                  x=192, 1056px wide | x=16, 358px |
-| `detail`    |     960px |                                        x=272, 896px | x=16, 358px |
-| `form`      |     880px |                                        x=312, 816px | x=16, 358px |
-| `account`   |     960px |                                        x=272, 896px | x=16, 358px |
-| `auth`      |    1280px |                 inside the split-screen form column | x=16, 358px |
-| `dashboard` |    1440px | x=288 (pharmacy) / x=312 (admin), after the sidebar |        x=16 |
-
-Horizontal padding is 16 / 24 / 32 at base / md / lg for every variant.
-
-### Patient
-
-| Route                     | Page type                  | Variant                                                                 |
-| ------------------------- | -------------------------- | ----------------------------------------------------------------------- |
-| `/`                       | landing (marketing)        | `list` for the content block; the promo banner and hero stay full-bleed |
-| `/medicines`              | listing                    | `list`                                                                  |
-| `/categories`             | listing                    | `list`                                                                  |
-| `/categories/[id]`        | listing                    | `list`                                                                  |
-| `/pharmacies`             | listing                    | `list`                                                                  |
-| `/search`                 | listing                    | `list`                                                                  |
-| `/profile/saved-medicine` | listing                    | `list`                                                                  |
-| `/cart`                   | purchase flow (two-column) | `list`                                                                  |
-| `/checkout`               | purchase flow (two-column) | `list`                                                                  |
-| `/medicines/[id]`         | detail                     | `detail`                                                                |
-| `/pharmacies/[id]`        | detail                     | `detail`                                                                |
-| `/prescriptions`          | form / flow                | `form`                                                                  |
-| `/profile/edit-profile`   | form / flow                | `form`                                                                  |
-| `/report-issue`           | form / flow                | `form`                                                                  |
-| `/location-access`        | form / flow                | `form`                                                                  |
-| `/Orderconfirmation`      | form / flow                | `form`                                                                  |
-| `/profile`                | account                    | `account`                                                               |
-| `/profile/history`        | account                    | `account`                                                               |
-| `/orders`                 | account                    | `account`                                                               |
-| `/notifications`          | account                    | `account`                                                               |
-| `/help`                   | account                    | `account`                                                               |
-| `/privacy`                | account                    | `account`                                                               |
-| `/terms`                  | account                    | `account`                                                               |
-
-### Auth
-
-`/auth`, `/auth/sign-in`, `/auth/sign-up`, `/auth/verify-phone`,
-`/auth/verify-otp`, `/auth/registration-submitted`, `/auth/forgot-password`,
-`/auth/forgot-password/verify`, `/auth/forgot-password/new-password`,
-`/auth/pharmacy/sign-in`, `/auth/pharmacy/sign-up` — all **`auth`**, applied
-once in `AuthShell`'s form column.
-
-### Pharmacy
-
-`/pharmacy`, `/pharmacy/home`, `/pharmacy/orders`, `/pharmacy/orders/[orderId]`,
-`/pharmacy/inventory`, `/pharmacy/inventory/[medicineId]`,
-`/pharmacy/notifications`, `/pharmacy/profile`, `/pharmacy/report` — all
-**`dashboard`**, applied once in `DashboardLayout`.
-
-### Admin
-
-`/admin`, `/admin/dashboard`, `/admin/patients`, `/admin/pharmacies`,
-`/admin/orders`, `/admin/deliveries`, `/admin/products`, `/admin/notifications`,
-`/admin/settings`, `/admin/settings/profile`, `/admin/settings/security` — all
-**`dashboard`**, applied once in `PageShell` (and in the two pages that render
-their own stagger container).
-
-### Judgment calls
-
-- **Cart and checkout are `list`, not `form`.** Both are two-column at `xl`;
-  an 880px form column would cramp the order summary beside the items. They
-  share one variant with each other, which is what the rule asks for.
-- **`form` is 880px, not 720px**, so a two-column step inside a flow still has
-  room.
-- **`account` and `detail` are both 960px.** They are separate names because
-  they answer different questions and may diverge; today they measure the same.
-- **The landing page keeps its full-bleed promo banner and hero.** Only its
-  bordered content block sits on the container, so it aligns with the shell and
-  with every listing page.
-- **The dashboard content edge differs by 24px between pharmacy and admin**
-  because their sidebars are different widths. The containers are identical;
-  only the space left over differs.
-
----
+| Route                             | Page type     | Column                                                    |
+| --------------------------------- | ------------- | --------------------------------------------------------- |
+| `/`                               | landing       | — (content block on the frame; hero and promo full-bleed) |
+| `/medicines`                      | listing       | —                                                         |
+| `/categories`, `/categories/[id]` | listing       | —                                                         |
+| `/pharmacies`                     | listing       | —                                                         |
+| `/search`                         | listing       | —                                                         |
+| `/profile/saved-medicine`         | listing       | —                                                         |
+| `/cart`, `/checkout`              | purchase flow | — (two-column)                                            |
+| `/medicines/[id]`                 | detail        | —                                                         |
+| `/pharmacies/[id]`                | detail        | —                                                         |
+| `/orders`                         | account       | —                                                         |
+| `/notifications`                  | account       | —                                                         |
+| `/profile`, `/profile/history`    | account       | —                                                         |
+| `/help`                           | account       | `md` (768px)                                              |
+| `/privacy`, `/terms`              | long text     | `sm` (640px)                                              |
+| `/prescriptions`                  | form          | `md` (768px)                                              |
+| `/profile/edit-profile`           | form          | `md`                                                      |
+| `/report-issue`                   | form          | `md`                                                      |
+| `/location-access`                | form          | `md`                                                      |
+| `/Orderconfirmation`              | form          | `md`                                                      |
+| all 11 `/auth/*`                  | auth          | own split-screen shell, frame in the form column          |
+| all 9 `/pharmacy/*`               | dashboard     | — (settings/profile forms: `md`)                          |
+| all 11 `/admin/*`                 | dashboard     | — (settings forms: `md`)                                  |
 
 ## 10. Rollout result
 
