@@ -77,7 +77,7 @@ export default function UploadSidePanel() {
   const recent = recentPrescriptions();
 
   return (
-    <aside className="flex flex-col gap-4">
+    <aside data-section="side panel" className="flex flex-col gap-4">
       {/* How it works */}
       <section className="rounded-xl border border-border bg-white p-4 md:p-6">
         <h2 className="text-t-17-semibold text-primary-darker">How it works</h2>

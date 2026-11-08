@@ -17,7 +17,10 @@ import {
  */
 export function HomeNearbyPharmacies() {
   return (
-    <section className="w-full bg-primary-light/50 rounded-tr-3xl py-8">
+    <section
+      data-section="nearby pharmacies"
+      className="w-full bg-primary-light/50 rounded-tr-3xl py-8"
+    >
       <div className="flex flex-col gap-6">
         {/* Title row */}
         <FadeUp inView offset={10} duration={0.4}>

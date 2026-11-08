@@ -15,7 +15,7 @@ export function HomeCategories() {
   const { categories, loading, error } = useCategories(1, 4);
 
   return (
-    <section className="flex flex-col gap-6 w-full">
+    <section data-section="categories" className="flex flex-col gap-6 w-full">
       {/* Title row */}
       <FadeUp inView offset={10} duration={0.4}>
         <div className="flex justify-between items-center">

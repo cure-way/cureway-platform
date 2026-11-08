@@ -20,8 +20,8 @@ export function HomeHero() {
   const { heading, subheading, ctas } = heroData;
 
   return (
-    <section className="w-full">
-      <div className="flex flex-col lg:flex-row items-center gap-6 md:gap-8 lg:gap-[100px] py-4 md:py-6 lg:py-8">
+    <section data-section="hero" className="w-full">
+      <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-6 md:gap-8 lg:gap-[100px] py-4 md:py-6 lg:py-8">
         {/* Left column */}
         <SlideIn
           direction="left"

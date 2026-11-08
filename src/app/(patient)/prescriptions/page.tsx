@@ -224,7 +224,7 @@ export default function UploadPrescriptionPage() {
           progress bar and all three end states keep identical edges. Below lg
           the columns stack with the flow first. */}
       <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_400px]">
-        <div className="flex min-w-0 flex-col gap-4">
+        <div data-section="upload flow" className="flex min-w-0 flex-col gap-4">
           <AnimatePresence mode="wait">
             <motion.div
               key={state.step}

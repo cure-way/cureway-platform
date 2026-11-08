@@ -39,26 +39,24 @@ export default function PatientHomePage() {
       </PageContainer>
 
       <PageContainer className="py-0">
-        <div className="border-2 md:border-4 border-primary/10 rounded-2xl bg-white overflow-hidden">
-          <div className="flex flex-col gap-8 md:gap-10 lg:gap-14 px-4 md:px-6 lg:px-8 pt-4 md:pt-6 lg:pt-8">
-            {/* 2. Hero section */}
-            <HomeHero />
+        <div className="flex flex-col gap-8 md:gap-10 lg:gap-14 pt-4 md:pt-6 lg:pt-8">
+          {/* 2. Hero section */}
+          <HomeHero />
 
-            {/* 3. Upload prescription CTA */}
-            <HomeUploadPrescription />
+          {/* 3. Upload prescription CTA */}
+          <HomeUploadPrescription />
 
-            {/* 4. Categories grid */}
-            <HomeCategories />
+          {/* 4. Categories grid */}
+          <HomeCategories />
 
-            {/* 5. Nearby pharmacies */}
-            <HomeNearbyPharmacies />
+          {/* 5. Nearby pharmacies */}
+          <HomeNearbyPharmacies />
 
-            {/* 6. Most sales products */}
-            <HomeMostSales />
+          {/* 6. Most sales products */}
+          <HomeMostSales />
 
-            {/* 7. Bottom CTA — free delivery + find pharmacy */}
-            <HomeBottomCTA />
-          </div>
+          {/* 7. Bottom CTA — free delivery + find pharmacy */}
+          <HomeBottomCTA />
         </div>
       </PageContainer>
     </div>

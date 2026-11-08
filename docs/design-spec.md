@@ -165,12 +165,31 @@ all sit on the frame. Backgrounds and borders stay full-bleed; only the content
 is constrained, so every left and right edge in the area matches at every
 breakpoint.
 
-Page content fills the frame by default. Forms (upload prescription, edit
-profile, report issue, location access, order confirmation) use
+Page content fills the frame by default. Single-column forms (edit profile,
+report issue, location access, order confirmation) use
 `ContentColumn width="md"`; long text (privacy, terms) uses `width="sm"`.
 
-Full-bleed visuals — the landing hero and promo banner — stay full-bleed, and
-their text and buttons align to the frame.
+Upload prescription is **not** a narrow-column page: it is a two-column layout
+on the frame — the upload flow on the left, context on the right (how it works,
+accepted files, the privacy note, recent prescriptions). The grid wraps every
+step of the flow, so all six steps keep identical edges, and the columns stack
+with the flow first below `lg`.
+
+**What may be full-bleed.** Only a true background image or colour band — a
+band of colour or a photograph that is meant to run to the viewport edge.
+Everything else goes inside the frame: every card, every bordered box, every
+content block, every section. A bordered card is not a background band, however
+wide it looks. Text and buttons inside a full-bleed visual still align to the
+frame.
+
+The landing page has no full-bleed block: the promo banner is a bordered card,
+so it sits on the frame like every other section. It previously ran edge to
+edge with its border against the viewport and its illustration clipped.
+
+A decorative wrapper around a group of sections is not allowed to inset them:
+it adds its own padding, so no section inside it lines up with the header. The
+landing page's bordered wrapper was removed for this reason, and its sections
+sit on the frame directly.
 
 ### Pharmacy and admin
 
@@ -432,7 +451,7 @@ frame.
 | `/profile`, `/profile/history`    | account       | —                                                         |
 | `/help`                           | account       | `md` (768px)                                              |
 | `/privacy`, `/terms`              | long text     | `sm` (640px)                                              |
-| `/prescriptions`                  | form          | `md` (768px)                                              |
+| `/prescriptions`                  | form, two-col | — (flow + side panel fill the frame)                      |
 | `/profile/edit-profile`           | form          | `md`                                                      |
 | `/report-issue`                   | form          | `md`                                                      |
 | `/location-access`                | form          | `md`                                                      |
@@ -560,3 +579,45 @@ Lint 0 errors with 1 known `exhaustive-deps` warning, typecheck clean, build
 
 - `docs/review-screenshots/sheet-{role}-{1440,1920}-{before,after}.png`
 - `docs/review-screenshots/scrollbar-admin-sidebar-{before,after}.png`
+
+---
+
+## 12. Home and upload-flow edge alignment
+
+Left edge in px of every section against the header's, measured on the built
+app. Within a page they are identical at every width.
+
+| Element                   | 390 | 768 | 1440 | 1920 |
+| ------------------------- | --: | --: | ---: | ---: |
+| **Header (topbar)**       |  20 |  38 |   48 |  168 |
+| Showcase strip            |  20 |  38 |   48 |  168 |
+| Quick-action chips        |  20 |  38 |   48 |  168 |
+| Promo banner              |  20 |  38 |   48 |  168 |
+| Hero                      |  20 |  38 |   48 |  168 |
+| Upload-prescription CTA   |  20 |  38 |   48 |  168 |
+| Categories                |  20 |  38 |   48 |  168 |
+| Nearby pharmacies         |  20 |  38 |   48 |  168 |
+| Most sales                |  20 |  38 |   48 |  168 |
+| Bottom CTA                |  20 |  38 |   48 |  168 |
+| Home page title (hero h1) |  20 |  38 |   48 |  168 |
+
+`/prescriptions`, every step of the flow:
+
+| Element             | 390 | 768 | 1440 | 1920 |
+| ------------------- | --: | --: | ---: | ---: |
+| **Header (topbar)** |  20 |  38 |   48 |  168 |
+| Showcase strip      |  20 |  38 |   48 |  168 |
+| Page title          |  20 |  38 |   48 |  168 |
+| Upload flow column  |  20 |  38 |   48 |  168 |
+| Side panel          |  20 |  38 |  992 | 1352 |
+
+The side panel is the second column from `lg` up and stacks under the flow
+below it, which is why its edge differs at the two wide widths and matches at
+the two narrow ones.
+
+Two fixes came out of this measurement:
+
+- The landing page's bordered wrapper inset every section inside it by its own
+  padding, so no section matched the header. It is gone.
+- The hero used `items-center` on its stacked layout, which centred the text
+  column and pushed the `h1` to x=112 at 768. It stretches below `lg` now.

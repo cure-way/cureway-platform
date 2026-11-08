@@ -12,7 +12,7 @@ export function HomeUploadPrescription() {
   const router = useRouter();
   return (
     <FadeUp inView offset={14} duration={0.45}>
-      <section className="w-full">
+      <section data-section="upload cta" className="w-full">
         <div className="bg-primary-hover flex flex-row items-center gap-3 md:gap-8 overflow-hidden shadow-[0px_2px_4px_rgba(0,0,0,0.15)] border-t border-black/10 h-auto min-h-[100px] sm:h-32 md:h-36 lg:h-[156px]">
           {/* Left illustration */}
           <div className="relative w-24 sm:w-44 md:w-52 lg:w-[218px] h-[100px] sm:h-32 md:h-36 lg:h-[156px] shrink-0">

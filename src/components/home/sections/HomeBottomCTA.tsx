@@ -53,7 +53,7 @@ export function HomeBottomCTA() {
   };
 
   return (
-    <section className="w-full flex flex-col gap-8">
+    <section data-section="bottom cta" className="w-full flex flex-col gap-8">
       {/* Free delivery promo strip */}
       <FadeUp inView offset={14} duration={0.5}>
         <div className="bg-primary-light flex items-center gap-6 md:gap-10 px-4 md:px-6 py-4 md:py-6 h-auto md:h-[140px] relative overflow-visible">
