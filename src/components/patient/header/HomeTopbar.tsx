@@ -43,6 +43,7 @@ export function HomeTopbar({
        the page below it instead of running to the viewport edge. */
     <div className="bg-white border-b border-black/10 w-full">
       <div
+        data-topbar-inner=""
         className={`${SHELL_RAIL} flex items-center justify-center gap-3 md:gap-6 py-2 h-auto md:h-16`}
       >
         {/* Logo */}

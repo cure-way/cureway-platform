@@ -44,7 +44,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <PageContainer variant="account">
+    <PageContainer>
       <PageHeader
         title="Profile"
         subtitle="Your account, preferences and saved items"

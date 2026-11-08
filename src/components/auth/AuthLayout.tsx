@@ -47,9 +47,7 @@ export function AuthLayout({
 
       {/* Right side - Content */}
       <div className="flex flex-col w-full lg:w-1/2 min-h-screen overflow-y-auto">
-        <PageContainer
-          variant="auth"
-          className="flex flex-col items-center justify-center flex-1 gap-3.5"
+        <PageContainer className="flex flex-col items-center justify-center flex-1 gap-3.5"
         >
           <div className="w-full max-w-[34.5rem]">
             {/* Back Button */}

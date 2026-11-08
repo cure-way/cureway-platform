@@ -51,6 +51,7 @@ import {
 import { exposeShowcaseDiagnostics } from "@/lib/showcase/adapter";
 import { resetDb } from "@/lib/showcase/db";
 import { STORAGE_KEYS } from "@/constants/cart.constants";
+import { FRAME } from "@/components/shared";
 
 /** Per-viewer state that a reset should clear along with the fixtures. */
 const RESETTABLE_KEYS = [
@@ -150,7 +151,9 @@ export function ShowcaseBar() {
         Wraps to two rows below `lg`: the notice takes the full first row and
         the controls sit on the second, so nothing is ever truncated.
       */}
-      <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-4 px-3 sm:px-4 md:px-6 lg:px-8 py-2">
+      <div
+        className={`${FRAME} flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-4 py-2`}
+      >
         <p className="text-t-12 sm:text-t-14 text-primary-light min-w-0 lg:flex-1">
           <span className="font-bold text-white">{SHOWCASE_NOTICE.lead}</span>{" "}
           <span className="font-medium">{SHOWCASE_NOTICE.body}</span>

@@ -37,7 +37,7 @@ export default function HistoryPage() {
   ];
 
   return (
-    <PageContainer variant="account">
+    <PageContainer>
       <PageHeader
         title="History"
         subtitle="Medicines you have ordered before"

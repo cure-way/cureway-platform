@@ -3,5 +3,6 @@ export default function InventoryLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="px-4 pb-4 h-full overflow-y-auto">{children}</div>;
+  // The shell owns the frame, the gutter and the scroll container.
+  return <>{children}</>;
 }

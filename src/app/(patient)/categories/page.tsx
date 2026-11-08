@@ -32,7 +32,7 @@ export default function CategoriesPage() {
   const recommended = getRecommendedMedicines(medicines);
 
   return (
-    <PageContainer variant="list" className="space-y-8">
+    <PageContainer className="space-y-8">
       <CategoriesHeader />
       <FeaturedCategories
         categories={featured}

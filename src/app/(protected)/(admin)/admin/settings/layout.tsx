@@ -40,9 +40,7 @@ export default function AdminSettingsLayout({
   const parent = parentLabels[lastSegment];
 
   return (
-    <PageContainer
-      variant="dashboard"
-      as={MotionStagger}
+    <PageContainer as={MotionStagger}
       className="bg-neutral-light-hover space-y-6"
     >
       {/* Page Header + Breadcrumb */}

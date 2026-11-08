@@ -20,7 +20,7 @@ export default function CategoryPage() {
   const filteredMedicines = applyCategoryFilters(medicines, sort);
 
   return (
-    <PageContainer variant="list" className="space-y-8">
+    <PageContainer className="space-y-8">
       <div className="flex flex-wrap justify-between items-center gap-4">
         <h1 className="text-page-title text-primary-darker">
           {medicines[0]?.categoryName || "Category"}

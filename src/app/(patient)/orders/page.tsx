@@ -80,7 +80,7 @@ export default function OrdersPage() {
 
   return (
     <div className="min-h-screen bg-background font-[var(--font-montserrat)]">
-      <PageContainer variant="account">
+      <PageContainer>
         <PageHeader
           title="My Orders"
           subtitle="Track and manage your orders"

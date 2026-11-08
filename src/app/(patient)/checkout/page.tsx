@@ -153,7 +153,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-neutral-light font-[var(--font-montserrat)]">
-      <PageContainer variant="list">
+      <PageContainer>
         <PageHeader
           title="Checkout"
           subtitle={`${totalItems} items in total`}

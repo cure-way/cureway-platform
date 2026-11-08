@@ -52,7 +52,7 @@ export default function MedicineDetailsPage() {
 
   return (
     <div className="bg-gray-50 pb-12 min-h-screen">
-      <PageContainer variant="detail" className="space-y-8">
+      <PageContainer className="space-y-8">
         <MedicineOverviewCard medicine={medicine} stock={addFromStock} />
 
         <NearbyPharmaciesSection pharmacies={sortedPharmacies} />

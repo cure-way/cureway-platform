@@ -21,7 +21,7 @@ export default function NearbyPharmaciesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <PageContainer variant="list">
+      <PageContainer>
         <PageHeader
           title="Nearby Pharmacies"
           subtitle="Pharmacies near your location"

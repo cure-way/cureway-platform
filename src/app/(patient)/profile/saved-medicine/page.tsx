@@ -82,7 +82,7 @@ export default function SavedMedicinePage() {
   );
 
   return (
-    <PageContainer variant="list">
+    <PageContainer>
       <PageHeader
         title="Saved Medicine"
         subtitle="Your frequently used medicines"

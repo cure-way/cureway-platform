@@ -92,9 +92,7 @@ export default function AdminNotificationsPage() {
   ];
 
   return (
-    <PageContainer
-      variant="dashboard"
-      as={MotionStagger}
+    <PageContainer as={MotionStagger}
       className="flex flex-col bg-neutral-light-hover gap-4"
     >
       <MotionStaggerItem>

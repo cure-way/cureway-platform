@@ -320,12 +320,12 @@ export default function AdminSidebar() {
       {/* â”€â”€ Mobile drawer â”€â”€ */}
       <aside
         className={cn(
-          "fixed top-[var(--showcase-bar-h,0px)] bottom-0 left-0 z-50 w-80 bg-white flex flex-col border-r border-[#EFEDED] transition-transform duration-300 lg:hidden",
+          "fixed top-[var(--showcase-bar-h,0px)] bottom-0 left-0 z-50 w-[280px] bg-white flex flex-col border-r border-[#EFEDED] transition-transform duration-300 lg:hidden",
           isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
         {/* Mobile header */}
-        <div className="h-[96px] flex items-center pl-[20px] pr-[16px] border-b border-[#EFEDED] shrink-0">
+        <div className="h-20 flex items-center pl-[20px] pr-[16px] border-b border-[#EFEDED] shrink-0">
           <Link
             href="/admin/dashboard"
             className="flex items-center gap-[12px]"
@@ -364,7 +364,7 @@ export default function AdminSidebar() {
         {/* Desktop header */}
         <div
           className={cn(
-            "h-[96px] flex items-center border-b border-[#EFEDED] shrink-0",
+            "h-20 flex items-center border-b border-[#EFEDED] shrink-0",
             collapsed ? "justify-center px-[12px]" : "pl-[20px] pr-[16px]",
           )}
         >

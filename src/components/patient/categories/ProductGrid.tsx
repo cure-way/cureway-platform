@@ -13,7 +13,7 @@ interface Props {
 export default function ProductGrid({ medicines, loading, error }: Props) {
   if (loading) {
     return (
-      <div className="gap-6 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+      <div className="gap-6 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
         {Array.from({ length: 10 }).map((_, i) => (
           <div key={i} className="bg-gray-200 rounded-2xl h-60 animate-pulse" />
         ))}
@@ -34,7 +34,7 @@ export default function ProductGrid({ medicines, loading, error }: Props) {
   }
 
   return (
-    <div className="gap-6 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+    <div className="gap-6 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
       {medicines.map((medicine) => (
         <div
           key={medicine.id}

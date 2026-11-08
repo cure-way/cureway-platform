@@ -3,7 +3,7 @@
 import { useReducer, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { PageContainer, PageHeader } from "@/components/shared";
+import { ContentColumn, PageContainer, PageHeader } from "@/components/shared";
 import UploadInitial from "@/components/patient/prescriptions/UploadInitial";
 import UploadPicker from "@/components/patient/prescriptions/UploadPicker";
 import UploadProgress from "@/components/patient/prescriptions/UploadProgress";
@@ -210,7 +210,7 @@ export default function UploadPrescriptionPage() {
     /* One container for the header and the body, so the two halves of the page
        share a left and right edge. They used to sit at x=80 and x=208 because
        each half set its own (dead) max-w-* class. */
-    <PageContainer variant="form">
+    <PageContainer>
       <PageHeader
         title={headerTitle}
         subtitle={headerSubtitle}
@@ -218,61 +218,63 @@ export default function UploadPrescriptionPage() {
         onBack={() => dispatch({ type: "BACK" })}
       />
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={state.step}
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.32, ease: "easeOut" }}
-        >
-          {state.step === "initial" && (
-            <UploadInitial
-              onUploadClick={() => dispatch({ type: "GO_PICKER" })}
-            />
-          )}
+      <ContentColumn width="md" className="flex flex-col gap-4">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={state.step}
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.32, ease: "easeOut" }}
+          >
+            {state.step === "initial" && (
+              <UploadInitial
+                onUploadClick={() => dispatch({ type: "GO_PICKER" })}
+              />
+            )}
 
-          {state.step === "picker" && (
-            <UploadPicker
-              onSelect={() => inputRef.current?.click()}
-              onClose={() => dispatch({ type: "BACK" })}
-            />
-          )}
+            {state.step === "picker" && (
+              <UploadPicker
+                onSelect={() => inputRef.current?.click()}
+                onClose={() => dispatch({ type: "BACK" })}
+              />
+            )}
 
-          {state.step === "uploading" && (
-            <UploadProgress
-              progress={state.progress}
-              onCancel={() => dispatch({ type: "BACK" })}
-            />
-          )}
+            {state.step === "uploading" && (
+              <UploadProgress
+                progress={state.progress}
+                onCancel={() => dispatch({ type: "BACK" })}
+              />
+            )}
 
-          {state.step === "error" && <UploadError onRetry={handleRetry} />}
+            {state.step === "error" && <UploadError onRetry={handleRetry} />}
 
-          {state.step === "unsupported" && (
-            <UploadUnsupported
-              onUploadAgain={() => dispatch({ type: "RESET" })}
-            />
-          )}
+            {state.step === "unsupported" && (
+              <UploadUnsupported
+                onUploadAgain={() => dispatch({ type: "RESET" })}
+              />
+            )}
 
-          {state.step === "success" && (
-            <UploadSuccess
-              onClose={() => dispatch({ type: "RESET" })}
-              onTrack={() => {
-                // لاحقاً: route لصفحة تتبع status (غير موجودة حالياً)
-                console.log("Track status");
-              }}
-            />
-          )}
-        </motion.div>
-      </AnimatePresence>
+            {state.step === "success" && (
+              <UploadSuccess
+                onClose={() => dispatch({ type: "RESET" })}
+                onTrack={() => {
+                  // لاحقاً: route لصفحة تتبع status (غير موجودة حالياً)
+                  console.log("Track status");
+                }}
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
 
-      <input
-        ref={inputRef}
-        type="file"
-        hidden
-        accept=".png,.jpg,.jpeg,.pdf"
-        onChange={handleFileSelected}
-      />
+        <input
+          ref={inputRef}
+          type="file"
+          hidden
+          accept=".png,.jpg,.jpeg,.pdf"
+          onChange={handleFileSelected}
+        />
+      </ContentColumn>
     </PageContainer>
   );
 }

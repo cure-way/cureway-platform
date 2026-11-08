@@ -1,6 +1,6 @@
 export function ProductGridSkeleton() {
   return (
-    <div className="gap-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
+    <div className="gap-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7">
       {Array.from({ length: 6 }).map((_, i) => (
         <div
           key={i}

@@ -14,7 +14,7 @@ export function HomePromoBanner() {
 
   return (
     <FadeUp inView offset={16} duration={0.5}>
-      <section className="w-full px-3 md:px-6 lg:px-12 pt-4 md:pt-6 lg:pt-12">
+      <section className="w-full pt-4 md:pt-6 lg:pt-12">
         <div className="relative bg-error-light border border-error-hover shadow-[0px_2px_10px_rgba(193,62,62,0.1)] rounded-lg md:rounded-xl flex items-center gap-3 md:gap-8 px-4 md:px-8 lg:pl-60 py-3 md:py-4 h-auto min-h-24 md:h-30 lg:h-35 overflow-visible">
           {/* 3D first-aid kit — overflows top-left on large screens */}
           <Floating

@@ -15,7 +15,7 @@ export default function CategoryGrid({ categories, loading, error }: Props) {
     <div className="space-y-6">
       <SectionTitle title="All Categories" />
       {loading && (
-        <div className="gap-4 grid sm:grid-cols-2 lg:grid-cols-3">
+        <div className="gap-4 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {Array.from({ length: categories.length }).map((_, i) => (
             <div
               key={i}
@@ -35,7 +35,7 @@ export default function CategoryGrid({ categories, loading, error }: Props) {
       )}
       {!loading && error && <SectionError message={error} />}
       {!loading && !error && (
-        <div className="gap-4 grid sm:grid-cols-2 lg:grid-cols-3">
+        <div className="gap-4 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {categories.map((category) => (
             <Link
               key={category.id}

@@ -56,7 +56,7 @@ export function HomeBottomCTA() {
     <section className="w-full flex flex-col gap-8">
       {/* Free delivery promo strip */}
       <FadeUp inView offset={14} duration={0.5}>
-        <div className="bg-primary-light flex items-center gap-6 md:gap-10 px-4 md:px-6 lg:px-10 py-4 md:py-6 h-auto md:h-[140px] relative overflow-visible">
+        <div className="bg-primary-light flex items-center gap-6 md:gap-10 px-4 md:px-6 py-4 md:py-6 h-auto md:h-[140px] relative overflow-visible">
           <div className="relative w-28 h-28 md:w-[160px] md:h-[160px] shrink-0 md:absolute md:left-8 md:top-1">
             <Image
               src="/patient/Free Delivery.png"
@@ -74,7 +74,7 @@ export function HomeBottomCTA() {
       </FadeUp>
 
       {/* Find pharmacy — two columns */}
-      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 px-4 md:px-6 lg:px-10 pb-8">
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 pb-8">
         {/* Left — steps */}
         <div className="flex-1 flex flex-col gap-8 md:gap-10">
           <FadeUp inView offset={12} duration={0.45}>

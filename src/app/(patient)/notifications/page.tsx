@@ -10,7 +10,7 @@ export default async function NotificationsPage() {
   await requirePatient();
 
   return (
-    <PageContainer variant="account">
+    <PageContainer>
       <h1 className="text-page-title text-primary-darker mb-4">
         Notifications
       </h1>

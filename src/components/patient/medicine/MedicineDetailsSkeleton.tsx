@@ -1,7 +1,7 @@
 export default function MedicineDetailsSkeleton() {
   return (
     <div className="bg-gray-50 pb-12 min-h-screen">
-      <div className="space-y-8 mx-auto w-full max-w-[960px] px-4 md:px-6 lg:px-8 py-6 md:py-8">
+      <div className="space-y-8 w-full">
         <div className="bg-white shadow-sm p-6 sm:p-8 border border-gray-200 rounded-2xl animate-pulse">
           <div className="gap-8 grid grid-cols-1 lg:grid-cols-2">
             {/* Image */}

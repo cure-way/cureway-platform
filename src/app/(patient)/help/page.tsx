@@ -8,7 +8,7 @@ import {
   FileText,
   ShieldCheck,
 } from "lucide-react";
-import { PageContainer, PageHeader } from "@/components/shared";
+import { ContentColumn, PageContainer, PageHeader } from "@/components/shared";
 import { HelpAccordion } from "@/components/patient/HelpAccordion";
 
 const faqItems = [
@@ -90,13 +90,15 @@ const helpSections = [
 
 export default function HelpCenterPage() {
   return (
-    <PageContainer variant="account" className="flex flex-col gap-4">
+    <PageContainer className="flex flex-col gap-4">
       <PageHeader
         title="Help Center"
         subtitle="Get help, FAQs, and contact support"
       />
 
-      <HelpAccordion items={helpSections} />
+      <ContentColumn width="md" className="flex flex-col gap-4">
+        <HelpAccordion items={helpSections} />
+      </ContentColumn>
     </PageContainer>
   );
 }

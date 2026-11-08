@@ -67,6 +67,7 @@ export function HomeQuickChips() {
        left and right edges. */
     <div className="bg-white w-full">
       <StaggerContainer
+        data-quick-chips=""
         className={`${SHELL_RAIL} flex items-center gap-2 flex-wrap md:flex-nowrap py-3`}
         stagger={0.06}
         delayChildren={0.2}

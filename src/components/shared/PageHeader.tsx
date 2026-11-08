@@ -46,7 +46,10 @@ export function PageHeader({
   };
 
   return (
-    <div className={cn("mb-6 flex flex-col gap-2", className)}>
+    <div
+      data-page-header=""
+      className={cn("mb-6 flex flex-col gap-2", className)}
+    >
       {/* Back sits above the title, aligned to the same left edge — it is a
           small control, not a heading. It used to be floated to the far right
           at 20-26px, as large as the title it sat beside. */}
@@ -75,7 +78,9 @@ export function PageHeader({
           <div className="min-w-0">
             <h1 className="text-page-title text-primary-darker">{title}</h1>
             {subtitle && (
-              <p className="mt-1 text-t-14 text-neutral-dark">{subtitle}</p>
+              <p className="measure mt-1 text-t-14 text-neutral-dark">
+                {subtitle}
+              </p>
             )}
           </div>
         </div>

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import PharmacyMenu from "./PharmacyMenu";
 import GlobalSearchPanel from "./GlobalSearchModal";
 import { useGlobalSearch } from "@/hooks/pharmacy/useGlobalSearch";
+import { FRAME } from "@/components/shared";
 
 interface TopBarProps {
   onMenuClick: () => void;
@@ -17,8 +18,11 @@ export default function TopBar({ onMenuClick }: TopBarProps) {
     useGlobalSearch();
 
   return (
-    <header className="bg-white px-4 lg:px-6 py-4 border-b">
-      <div className="flex items-center gap-4">
+    <header className="bg-white border-b">
+      <div
+        data-topbar-inner=""
+        className={`${FRAME} flex items-center gap-4 h-20`}
+      >
         {/* Menu button (mobile only) */}
         <button
           onClick={onMenuClick}

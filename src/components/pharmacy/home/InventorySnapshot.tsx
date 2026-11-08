@@ -38,7 +38,7 @@ export default function InventorySnapshot() {
 
       {/* Data */}
       {!loading && !error && data.length > 0 && (
-        <div className="gap-4 grid sm:grid-cols-2 lg:grid-cols-3">
+        <div className="gap-4 grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {data.map((item) => (
             <InventoryItemCard
               key={item.id}
@@ -55,7 +55,7 @@ export default function InventorySnapshot() {
 
 function InventorySnapshotSkeleton() {
   return (
-    <div className="gap-4 grid sm:grid-cols-2 lg:grid-cols-3 animate-pulse">
+    <div className="gap-4 grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 animate-pulse">
       {Array.from({ length: 3 }).map((_, i) => (
         <div key={i} className="space-y-3 p-4 border rounded-xl">
           <div className="bg-gray-200 rounded w-24 h-4" />

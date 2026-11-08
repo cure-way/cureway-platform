@@ -47,7 +47,7 @@ export default function PharmacyDetailsPage() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <PageContainer variant="detail">
+      <PageContainer>
         <PageHeader
           title={pharmacy.name}
           subtitle={pharmacy.address}

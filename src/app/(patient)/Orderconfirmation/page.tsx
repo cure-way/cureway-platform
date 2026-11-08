@@ -11,7 +11,7 @@ import { ROUTES } from "@/constants/cart.constants";
 // <Toaster/>, so sonner toasts never actually appeared.
 import toast from "react-hot-toast";
 import { formatCurrency } from "@/lib/format";
-import { PageContainer, PageHeader } from "@/components/shared";
+import { ContentColumn, PageContainer, PageHeader } from "@/components/shared";
 
 const MOCK_CART_ERROR =
   "Please clear your cart and add items from the real store";
@@ -102,195 +102,199 @@ function OrderConfirmationContent() {
 
   return (
     <div className="min-h-screen bg-neutral-light font-[var(--font-montserrat)]">
-      <PageContainer variant="form">
+      <PageContainer>
         <PageHeader
           title="Order Confirmation"
           subtitle="Your order has been placed"
         />
 
-        <div>
-          <div className="bg-card rounded-2xl border border-border shadow-card overflow-hidden">
-            {/* Checkmark */}
-            <div className="flex items-center px-8 pt-8 pb-2">
-              <div className="flex-1 h-px bg-border" />
-              <div className="mx-4 w-16 h-16 rounded-full bg-success flex items-center justify-center shadow-md flex-shrink-0">
-                <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
+        <ContentColumn width="md" className="flex flex-col gap-4">
+          <div>
+            <div className="bg-card rounded-2xl border border-border shadow-card overflow-hidden">
+              {/* Checkmark */}
+              <div className="flex items-center px-8 pt-8 pb-2">
+                <div className="flex-1 h-px bg-border" />
+                <div className="mx-4 w-16 h-16 rounded-full bg-success flex items-center justify-center shadow-md flex-shrink-0">
+                  <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </div>
+                <div className="flex-1 h-px bg-border" />
               </div>
-              <div className="flex-1 h-px bg-border" />
-            </div>
 
-            {/* Title */}
-            <div className="text-center px-8 pb-6">
-              <h2 className="text-t-25-bold text-primary m-0 mb-1">
-                Order Confirmation
-              </h2>
-              <p className="text-t-17 text-muted-foreground m-0">
-                Review your order before confirming
-              </p>
-            </div>
-
-            {/* ── Stale-cart error banner ── */}
-            {cartError && (
-              <div className="mx-6 mb-4 rounded-xl border border-destructive/40 bg-destructive/5 px-5 py-4">
-                <p className="text-t-14-semibold text-destructive m-0 mb-3">
-                  ⚠️ Your cart contains old test data that the server does not
-                  recognise. Please clear your cart and re-add items from the
-                  official store.
+              {/* Title */}
+              <div className="text-center px-8 pb-6">
+                <h2 className="text-t-25-bold text-primary m-0 mb-1">
+                  Order Confirmation
+                </h2>
+                <p className="text-t-17 text-muted-foreground m-0">
+                  Review your order before confirming
                 </p>
+              </div>
+
+              {/* ── Stale-cart error banner ── */}
+              {cartError && (
+                <div className="mx-6 mb-4 rounded-xl border border-destructive/40 bg-destructive/5 px-5 py-4">
+                  <p className="text-t-14-semibold text-destructive m-0 mb-3">
+                    ⚠️ Your cart contains old test data that the server does not
+                    recognise. Please clear your cart and re-add items from the
+                    official store.
+                  </p>
+                  <button
+                    onClick={handleClearCart}
+                    disabled={clearing}
+                    className="h-11 px-5 rounded-lg bg-destructive text-white text-t-14-semibold
+                                   border-none cursor-pointer hover:opacity-90 transition-opacity
+                                   flex items-center gap-2 disabled:opacity-60 disabled:cursor-default"
+                  >
+                    {clearing ? (
+                      <>
+                        <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Clearing…
+                      </>
+                    ) : (
+                      "Clear Cart & Go to Store"
+                    )}
+                  </button>
+                </div>
+              )}
+
+              {/* Address row */}
+              {addressText && (
+                <div className="mx-6 mb-3 bg-accent rounded-xl px-4 py-3 flex items-start gap-2">
+                  <svg
+                    className="mt-0.5 flex-shrink-0"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="hsl(var(--primary))"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                    <circle cx="12" cy="9" r="2.5" />
+                  </svg>
+                  <span className="text-t-14 text-foreground">
+                    {addressText}
+                  </span>
+                </div>
+              )}
+
+              {/* Pharmacy groups */}
+              <div className="px-6 flex flex-col gap-3 mb-3">
+                {cart.groups.map((group, gi) => {
+                  const images = group.items
+                    .map((i) => i.image)
+                    .filter((src): src is string => Boolean(src));
+                  const shownImages = images.slice(0, 3);
+                  const totalQty = group.items.reduce(
+                    (s, i) => s + i.quantity,
+                    0,
+                  );
+                  const extraQty = totalQty - shownImages.length;
+
+                  return (
+                    <div
+                      key={gi}
+                      className="flex items-center gap-4 bg-neutral-light rounded-2xl border border-border p-4"
+                    >
+                      {/* Image strip */}
+                      <div className="relative flex-shrink-0 w-[100px] h-[72px] bg-accent rounded-xl flex items-center justify-center overflow-hidden">
+                        {shownImages.length > 0 ? (
+                          <div className="flex items-center gap-1 px-2">
+                            {shownImages.map((src, idx) => (
+                              <div
+                                key={idx}
+                                className="w-9 h-9 flex-shrink-0 flex items-center justify-center"
+                              >
+                                <Image
+                                  src={src}
+                                  alt=""
+                                  width={36}
+                                  height={36}
+                                  className="object-contain w-full h-full"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="text-t-25">💊</span>
+                        )}
+                        {extraQty > 0 && (
+                          <div className="absolute bottom-1 right-1 bg-white text-primary text-t-12 font-bold rounded-md px-1.5 py-0.5 border border-border shadow-sm leading-none">
+                            +{extraQty}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-t-17-bold text-foreground m-0 truncate">
+                          {group.pharmacy.name}
+                        </p>
+                        <p className="text-t-14 text-muted-foreground m-0 truncate">
+                          {group.pharmacy.address}
+                        </p>
+                        <p className="text-t-14 text-muted-foreground m-0 mt-1">
+                          {totalQty} items
+                          <span className="mx-1 text-border">|</span>
+                          {formatCurrency(group.subtotal)}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Total */}
+              <div className="mx-6 mb-6 bg-neutral-light rounded-xl border border-border px-5 py-4 flex items-center justify-between">
+                <span className="text-t-17-semibold text-foreground">
+                  Total{" "}
+                  <span className="font-normal text-muted-foreground">
+                    ({totalItems} items)
+                  </span>
+                </span>
+                <span className="text-t-25-bold text-primary">
+                  {formatCurrency(checkoutData.total)}
+                </span>
+              </div>
+
+              {/* Confirm & Place Order button */}
+              <div className="px-6 pb-8">
                 <button
-                  onClick={handleClearCart}
-                  disabled={clearing}
-                  className="h-11 px-5 rounded-lg bg-destructive text-white text-t-14-semibold
-                           border-none cursor-pointer hover:opacity-90 transition-opacity
-                           flex items-center gap-2 disabled:opacity-60 disabled:cursor-default"
+                  onClick={handleSave}
+                  disabled={isWorking || cartError}
+                  className={`w-full h-[56px] rounded-xl text-white text-t-17-semibold border-none
+                                 flex items-center justify-center gap-2 transition-colors ${
+                                   isWorking || cartError
+                                     ? "bg-secondary cursor-default opacity-60"
+                                     : "bg-primary cursor-pointer hover:bg-primary-hover"
+                                 }`}
                 >
-                  {clearing ? (
+                  {placing ? (
                     <>
-                      <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Clearing…
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Placing Order…
                     </>
                   ) : (
-                    "Clear Cart & Go to Store"
+                    "Confirm & Place Order"
                   )}
                 </button>
               </div>
-            )}
-
-            {/* Address row */}
-            {addressText && (
-              <div className="mx-6 mb-3 bg-accent rounded-xl px-4 py-3 flex items-start gap-2">
-                <svg
-                  className="mt-0.5 flex-shrink-0"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="hsl(var(--primary))"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-                  <circle cx="12" cy="9" r="2.5" />
-                </svg>
-                <span className="text-t-14 text-foreground">{addressText}</span>
-              </div>
-            )}
-
-            {/* Pharmacy groups */}
-            <div className="px-6 flex flex-col gap-3 mb-3">
-              {cart.groups.map((group, gi) => {
-                const images = group.items
-                  .map((i) => i.image)
-                  .filter((src): src is string => Boolean(src));
-                const shownImages = images.slice(0, 3);
-                const totalQty = group.items.reduce(
-                  (s, i) => s + i.quantity,
-                  0,
-                );
-                const extraQty = totalQty - shownImages.length;
-
-                return (
-                  <div
-                    key={gi}
-                    className="flex items-center gap-4 bg-neutral-light rounded-2xl border border-border p-4"
-                  >
-                    {/* Image strip */}
-                    <div className="relative flex-shrink-0 w-[100px] h-[72px] bg-accent rounded-xl flex items-center justify-center overflow-hidden">
-                      {shownImages.length > 0 ? (
-                        <div className="flex items-center gap-1 px-2">
-                          {shownImages.map((src, idx) => (
-                            <div
-                              key={idx}
-                              className="w-9 h-9 flex-shrink-0 flex items-center justify-center"
-                            >
-                              <Image
-                                src={src}
-                                alt=""
-                                width={36}
-                                height={36}
-                                className="object-contain w-full h-full"
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <span className="text-t-25">💊</span>
-                      )}
-                      {extraQty > 0 && (
-                        <div className="absolute bottom-1 right-1 bg-white text-primary text-t-12 font-bold rounded-md px-1.5 py-0.5 border border-border shadow-sm leading-none">
-                          +{extraQty}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-t-17-bold text-foreground m-0 truncate">
-                        {group.pharmacy.name}
-                      </p>
-                      <p className="text-t-14 text-muted-foreground m-0 truncate">
-                        {group.pharmacy.address}
-                      </p>
-                      <p className="text-t-14 text-muted-foreground m-0 mt-1">
-                        {totalQty} items
-                        <span className="mx-1 text-border">|</span>
-                        {formatCurrency(group.subtotal)}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Total */}
-            <div className="mx-6 mb-6 bg-neutral-light rounded-xl border border-border px-5 py-4 flex items-center justify-between">
-              <span className="text-t-17-semibold text-foreground">
-                Total{" "}
-                <span className="font-normal text-muted-foreground">
-                  ({totalItems} items)
-                </span>
-              </span>
-              <span className="text-t-25-bold text-primary">
-                {formatCurrency(checkoutData.total)}
-              </span>
-            </div>
-
-            {/* Confirm & Place Order button */}
-            <div className="px-6 pb-8">
-              <button
-                onClick={handleSave}
-                disabled={isWorking || cartError}
-                className={`w-full h-[56px] rounded-xl text-white text-t-17-semibold border-none
-                         flex items-center justify-center gap-2 transition-colors ${
-                           isWorking || cartError
-                             ? "bg-secondary cursor-default opacity-60"
-                             : "bg-primary cursor-pointer hover:bg-primary-hover"
-                         }`}
-              >
-                {placing ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Placing Order…
-                  </>
-                ) : (
-                  "Confirm & Place Order"
-                )}
-              </button>
             </div>
           </div>
-        </div>
+        </ContentColumn>
       </PageContainer>
     </div>
   );

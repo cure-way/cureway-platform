@@ -1,75 +1,91 @@
 import { cn } from "@/lib/utils";
 
 /**
- * The one page container.
+ * The frame.
  *
- * Pages of the same kind share a variant, so they land on exactly the same
- * left and right edges and the same top spacing at every breakpoint. A page
- * never sets its own max-width — before this, patient routes alone started at
- * seven different left edges at 1440.
+ * One container system for all three areas, after besterra.io: a 1680px outer
+ * frame with a single `clamp(1.25rem, 5vw, 3rem)` gutter. Page chrome — the
+ * showcase strip, the patient header and chip row, the dashboard top bar — and
+ * page content all sit on it, so their left and right edges line up exactly at
+ * every breakpoint.
  *
- * Horizontal padding is 16 / 24 / 32 across every variant, so the gutters match
- * even where the measure differs.
- *
- * Do NOT reach for `max-w-3xl` / `4xl` / `5xl` / `6xl` / `7xl` / `xs`: those
- * classes resolve to `var(--container-Nxl)`, which the theme does not define,
- * so the declaration is invalid and no width is applied at all. See
- * docs/design-spec.md §1.
+ * Widths and the gutter come from tokens in `global.css` (`--container-max`,
+ * `--container-px`, `--content-*`). Nothing else in the app sets a page
+ * max-width or horizontal page padding.
  */
-export type PageContainerVariant =
-  /** Listings and grids: medicines, categories, pharmacies, saved medicine, search. */
-  | "list"
-  /** Detail pages: a medicine, a pharmacy, an order. */
-  | "detail"
-  /** Forms and flows: cart, checkout, upload prescription, edit profile. 880px
-   * rather than a narrow 720px column because cart and checkout are two-column. */
-  | "form"
-  /** Account pages: profile, orders, notifications, history, legal text. */
-  | "account"
-  /** Auth screens, which own the whole viewport. */
-  | "auth"
-  /** Pharmacy and admin dashboards: charts and wide data tables. */
-  | "dashboard";
 
-const VARIANT: Record<PageContainerVariant, string> = {
-  list: "max-w-[1120px] py-6 md:py-8",
-  detail: "max-w-[960px] py-6 md:py-8",
-  form: "max-w-[880px] py-6 md:py-8",
-  account: "max-w-[960px] py-6 md:py-8",
-  auth: "max-w-[1280px] py-6 md:py-10",
-  dashboard: "max-w-[1440px] py-4 md:py-6",
-};
+/** The frame: used by PageContainer and by the shell chrome. */
+export const FRAME =
+  "mx-auto w-full max-w-[var(--container-max)] px-[var(--container-px)]";
 
 /**
- * The shell rail: the topbar, the announcements bar and the quick-action chips
- * are part of the patient shell rather than any one page, but they must line up
- * with page content rather than running to the viewport edge. They share the
- * "list" measure, which is the widest content variant, and the same gutters.
+ * Shell chrome — the showcase strip, the patient topbar, the announcements bar
+ * and the quick-action chips — keeps a full-bleed background and puts only its
+ * *content* on the frame, so the chrome lines up with the page beneath it.
  */
-export const SHELL_RAIL = "mx-auto w-full max-w-[1120px] px-4 md:px-6 lg:px-8";
+export const SHELL_RAIL = FRAME;
 
+/**
+ * Every page's outer container. It always fills the frame; a page that needs a
+ * narrower column puts a <ContentColumn> inside it, which keeps the page header
+ * at full width.
+ */
 export function PageContainer({
   children,
-  variant = "list",
   className,
   as: Tag = "div",
 }: {
   children: React.ReactNode;
-  variant?: PageContainerVariant;
   className?: string;
   as?: React.ElementType;
 }) {
   return (
-    <Tag
-      data-page-container={variant}
-      className={cn(
-        "mx-auto w-full px-4 md:px-6 lg:px-8",
-        VARIANT[variant],
-        className,
-      )}
-    >
+    <Tag data-page-container="frame" className={cn(FRAME, "py-6 md:py-8", className)}>
       {children}
     </Tag>
+  );
+}
+
+/**
+ * A narrower column inside the frame, for forms and long text.
+ *
+ * It is **left-aligned**, not centred: the page header above it stays at the
+ * full frame width, and the column starts on the same left edge, so a form's
+ * first field sits directly under the title.
+ */
+export type ContentWidth =
+  /** 1280px: wide multi-column. */
+  | "xl"
+  /** 1200px: standard. */
+  | "lg"
+  /** 768px: forms and narrow content. */
+  | "md"
+  /** 640px: long text, legal. */
+  | "sm";
+
+const WIDTH: Record<ContentWidth, string> = {
+  xl: "max-w-[var(--content-xl)]",
+  lg: "max-w-[var(--content-lg)]",
+  md: "max-w-[var(--content-md)]",
+  sm: "max-w-[var(--content-sm)]",
+};
+
+export function ContentColumn({
+  children,
+  width = "md",
+  className,
+}: {
+  children: React.ReactNode;
+  width?: ContentWidth;
+  className?: string;
+}) {
+  return (
+    <div
+      data-content-column={width}
+      className={cn("w-full mr-auto", WIDTH[width], className)}
+    >
+      {children}
+    </div>
   );
 }
 

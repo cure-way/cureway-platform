@@ -41,7 +41,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
       />
 
       <aside
-        className={`fixed top-[var(--showcase-bar-h,0px)] bottom-0 left-0 z-50 w-64 border-r bg-white px-6 py-6
+        className={`fixed top-[var(--showcase-bar-h,0px)] bottom-0 left-0 z-50 w-[280px] border-r bg-white px-6 py-6
         transition-transform
         lg:static lg:translate-x-0 lg:min-h-screen
         ${open ? "translate-x-0" : "-translate-x-full"}`}

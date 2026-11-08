@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { CONTACT_PHONE } from "@/lib/constants";
 import { SHOWCASE_MODE } from "@/lib/showcase/config";
+import { SHELL_RAIL } from "@/components/shared";
 
 const CURRENCIES = ["USD", "EUR", "ILS"] as const;
 const LANGUAGES = [
@@ -62,10 +63,11 @@ export function AnnouncementsBar() {
   if (SHOWCASE_MODE) return null;
 
   return (
-    <div
-      className="bg-primary flex justify-between items-center w-full px-4 md:px-6 lg:px-8 py-2 lg:py-2.5 gap-3"
-      aria-label="Announcements bar"
-    >
+    /* Full-bleed background, content on the frame. */
+    <div className="bg-primary w-full" aria-label="Announcements bar">
+      <div
+        className={`${SHELL_RAIL} flex justify-between items-center py-2 lg:py-2.5 gap-3`}
+      >
       {/* Help Line (desktop only) */}
       <div className="hidden lg:flex items-center gap-3 flex-1">
         <FaPhoneAlt className="text-primary-light w-4 h-4" />
@@ -209,6 +211,7 @@ export function AnnouncementsBar() {
             )}
           </AnimatePresence>
         </div>
+      </div>
       </div>
     </div>
   );

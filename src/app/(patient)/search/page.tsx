@@ -135,7 +135,7 @@ function SearchPageContent() {
   const spellSuggestion = useMemo(() => getSuggestion(query), [query]);
 
   return (
-    <PageContainer variant="list">
+    <PageContainer>
       <PageHeader title="Search" subtitle="Medicines and pharmacies near you" />
 
       {/* Results Header */}

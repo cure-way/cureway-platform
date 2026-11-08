@@ -445,7 +445,32 @@
   --breakpoint-2xl: 1536px;
 
   /* --------------------------------------------------------
-     CONTAINER MAX WIDTHS
+     THE FRAME
+
+     One container system for all three areas, after besterra.io.
+
+     --container-max is the frame: the outer limit for page chrome
+     (showcase strip, header, chip row, dashboard top bar) and for
+     page content alike. --container-px is the single horizontal
+     gutter, 20px on phones growing to 48px on large screens.
+
+     The --content-* widths are narrower columns used only INSIDE
+     the frame, never to replace it, and always left-aligned to the
+     frame's left edge rather than centred.
+
+     Only PageContainer consumes these. No page or component sets
+     its own max-width or horizontal page padding.
+     -------------------------------------------------------- */
+  --container-max: 105rem; /* 1680px — the frame */
+  --container-px: clamp(1.25rem, 5vw, 3rem); /* 20px → 48px gutter */
+
+  --content-xl: 1280px; /* wide multi-column */
+  --content-lg: 1200px; /* standard */
+  --content-md: 768px; /* forms, narrow content */
+  --content-sm: 640px; /* long text, legal */
+
+  /* --------------------------------------------------------
+     CONTAINER MAX WIDTHS (Tailwind max-w-* scale)
      -------------------------------------------------------- */
   --container-sm: 640px;
   --container-md: 768px;
@@ -786,6 +811,16 @@
      back to source order, where the 21 rule comes last and wins at every
      width. These single classes carry their own media query instead.
      -------------------------------------------------------- */
+  /*
+    Reading measure. At the 1680px frame a full-width paragraph runs well past
+    a comfortable line length, so running text is capped at ~70 characters.
+    Applied to the page-header subtitle and to prose blocks, never to a table
+    cell, a label or a card line, which are not running text.
+  */
+  .measure {
+    max-width: 70ch;
+  }
+
   .text-page-title {
     font-size: var(--font-size-t-21);
     line-height: var(--line-height-t-21);
@@ -1153,5 +1188,97 @@
   li a[href]::after,
   a[href] a[href]::after {
     content: none;
+  }
+}
+
+/* ============================================================
+   SCROLLBARS
+
+   One thin, muted scrollbar everywhere — sidebars, tables,
+   modals, dropdowns, horizontal tab and chip strips, and the
+   page itself. The default chrome scrollbar is heavy and grey
+   and read as unfinished next to the rest of the UI.
+
+   The thumb uses the neutral token at low opacity so it reads
+   as part of the theme rather than an OS control, and the track
+   stays transparent so it never draws a grey channel.
+
+   On a desktop pointer the thumb is invisible until the pointer
+   is over the scroll area (or it is being scrolled); on touch
+   the platform's own overlay scrollbar is left alone. Scrolling
+   by wheel, drag, touch and keyboard is untouched — only the
+   painting changes, and the scrollbar still has its full width,
+   so nothing becomes unreachable.
+   ============================================================ */
+
+@layer base {
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--neutral) / 0.35) transparent;
+  }
+
+  /* WebKit / Blink */
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--neutral) / 0.35);
+    border-radius: 9999px;
+    /* Inset the thumb so it reads as a slim pill, not a full-width bar. */
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--neutral) / 0.55);
+  }
+
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  /*
+    Desktop only: hide the thumb until the pointer is over the
+    scrollable area. `hover: hover` keeps touch devices on their
+    own overlay scrollbars, which already fade on their own.
+  */
+  @media (hover: hover) and (pointer: fine) {
+    *:not(:hover)::-webkit-scrollbar-thumb {
+      background-color: transparent;
+    }
+
+    *:not(:hover) {
+      scrollbar-color: transparent transparent;
+    }
+
+    /*
+      The page scrollbar is the exception: it stays visible, because
+      it is the reader's position indicator for the whole document.
+    */
+    html::-webkit-scrollbar-thumb,
+    html:not(:hover)::-webkit-scrollbar-thumb {
+      background-color: hsl(var(--neutral) / 0.35);
+    }
+
+    html,
+    html:not(:hover) {
+      scrollbar-color: hsl(var(--neutral) / 0.35) transparent;
+    }
+  }
+
+  /* Opt-out for anything that must never show one (e.g. a carousel). */
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
   }
 }

@@ -42,7 +42,7 @@ export function AuthShell({ children, hero, className }: AuthShellProps) {
           hero ? "w-full lg:w-1/2" : "w-full",
         )}
       >
-        <PageContainer variant="auth" className="flex flex-1 flex-col">
+        <PageContainer className="flex flex-1 flex-col">
           {children}
         </PageContainer>
       </div>

@@ -14,7 +14,7 @@ export default function MedicinesPage() {
   const { medicines, loading, error, totalPages } = useMedicines(page, limit);
 
   return (
-    <PageContainer variant="list" className="space-y-8">
+    <PageContainer className="space-y-8">
       <PageHeader title="Medicines" subtitle="Browse all available medicines" />
 
       <ProductGrid medicines={medicines} loading={loading} error={error} />

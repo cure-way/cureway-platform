@@ -39,9 +39,9 @@ export default function PatientHomePage() {
           deliberately full-bleed. The bordered content block below sits on the
           list container so it shares its edges with the shell and with every
           listing page. */}
-      <PageContainer variant="list" className="py-0">
+      <PageContainer className="py-0">
         <div className="border-2 md:border-4 border-primary/10 rounded-2xl bg-white overflow-hidden">
-          <div className="flex flex-col gap-8 md:gap-10 lg:gap-14 pt-4 md:pt-6 lg:pt-8">
+          <div className="flex flex-col gap-8 md:gap-10 lg:gap-14 px-4 md:px-6 lg:px-8 pt-4 md:pt-6 lg:pt-8">
             {/* 2. Hero section */}
             <HomeHero />
 

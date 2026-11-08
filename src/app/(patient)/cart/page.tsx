@@ -40,7 +40,7 @@ export default function CartPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <PageContainer variant="list">
+      <PageContainer>
         <CartHeader totalItems={totalItems} />
         <main>
           {view === "detailed" ? <CartPageDetailed /> : <CartPageSummary />}

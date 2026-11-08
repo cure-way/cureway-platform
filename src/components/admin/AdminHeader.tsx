@@ -8,6 +8,7 @@ import { useSidebar } from "@/contexts/SidebarContext";
 import { useClickOutside } from "@/hooks";
 import { useAuth } from "@/features/auth";
 import { transition } from "@/components/admin/shared/motion";
+import { FRAME } from "@/components/shared";
 import {
   HeaderSearchIcon,
   HeaderVoiceIcon,
@@ -42,7 +43,11 @@ export default function AdminHeader() {
         : (user?.role ?? "Admin");
 
   return (
-    <header className="sticky top-0 z-20 flex items-center gap-3 lg:gap-6 px-4 lg:px-6 py-4 bg-white border-b border-[#EFEDED]">
+    <header className="sticky top-0 z-20 bg-white border-b border-[#EFEDED]">
+      <div
+        data-topbar-inner=""
+        className={`${FRAME} flex items-center gap-3 lg:gap-6 h-20`}
+      >
       {/* Hamburger — mobile/tablet only */}
       <button
         onClick={open}
@@ -202,6 +207,7 @@ export default function AdminHeader() {
             </motion.div>
           )}
         </AnimatePresence>
+      </div>
       </div>
     </header>
   );

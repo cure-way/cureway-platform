@@ -18,7 +18,7 @@ interface PageShellProps {
 export default function PageShell({ children, className }: PageShellProps) {
   return (
     <div className="flex-1 bg-neutral-light">
-      <PageContainer variant="dashboard" className={cn("space-y-4", className)}>
+      <PageContainer className={cn("space-y-4", className)}>
         {children}
       </PageContainer>
     </div>
