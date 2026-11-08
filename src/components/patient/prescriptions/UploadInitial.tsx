@@ -5,49 +5,40 @@ interface Props {
   onUploadClick: () => void;
 }
 
+/**
+ * The drop zone.
+ *
+ * The privacy note that used to sit above it has moved to the side panel,
+ * where it belongs with the rest of the context — it was repeating the same
+ * reassurance directly above the control it describes. What is left is one
+ * sized drop zone rather than a tall empty card.
+ */
 export default function UploadInitial({ onUploadClick }: Props) {
   return (
-    <div className="flex flex-col gap-6">
-      {/* Warning banner */}
-      <div className="rounded-xl bg-[#FFF8E6] p-5 sm:p-6 flex flex-col gap-4">
-        <p className="text-t-17-semibold text-black/80 leading-[1.2]">
-          A licensed pharmacist will review it
+    <div
+      className="flex flex-col items-center justify-center gap-5 rounded-2xl border-2 border-dashed border-primary bg-primary-light/25 px-6 py-10 text-center md:py-14"
+      role="group"
+      aria-label="Upload a prescription"
+    >
+      <Image
+        src="/icons/prescriptions/upload.png"
+        alt=""
+        width={120}
+        height={120}
+        className="h-20 w-20 md:h-[120px] md:w-[120px]"
+      />
+
+      <div className="flex flex-col gap-1">
+        <p className="text-t-17-semibold text-primary-darker">
+          Add a photo of your prescription
         </p>
-
-        <div className="flex items-center gap-4">
-          <div className="shrink-0 w-14 h-14 rounded-full bg-[#73694E] shadow-sm flex items-center justify-center">
-            <Image
-              src="/icons/prescriptions/secure.png"
-              alt="Secure"
-              width={22}
-              height={22}
-            />
-          </div>
-
-          <p className="text-t-14 text-[#73694E] leading-[1.2]">
-            Your prescription is secure and only shared with the selected
-            pharmacy.
-          </p>
-        </div>
+        <p className="measure text-t-14 text-neutral-dark">
+          JPG, PNG or PDF · up to 10 MB · at least 600 × 600 px
+        </p>
       </div>
 
-      {/* Upload box */}
-      <div className="bg-white border-2 border-[#334EAC] shadow-[0px_4px_7.3px_0px_rgba(46,70,155,0.25)] rounded-2xl p-6 sm:p-10 flex flex-col items-center gap-8">
-        <Image
-          src="/icons/prescriptions/upload.png"
-          alt="Upload"
-          width={150}
-          height={150}
-          className="w-24 h-24 sm:w-[120px] sm:h-[120px]"
-        />
-
-        <p className="text-center text-black/60 text-t-14 leading-[1.5]">
-          JPG or PNG · Max size 10 MB · Minimum 600×600 px
-        </p>
-
-        <div className="w-full max-w-[26rem]">
-          <PrimaryButton onClick={onUploadClick}>Upload file</PrimaryButton>
-        </div>
+      <div className="w-full max-w-[20rem]">
+        <PrimaryButton onClick={onUploadClick}>Upload file</PrimaryButton>
       </div>
     </div>
   );

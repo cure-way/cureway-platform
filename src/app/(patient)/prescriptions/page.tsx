@@ -3,13 +3,14 @@
 import { useReducer, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { ContentColumn, PageContainer, PageHeader } from "@/components/shared";
+import { PageContainer, PageHeader } from "@/components/shared";
 import UploadInitial from "@/components/patient/prescriptions/UploadInitial";
 import UploadPicker from "@/components/patient/prescriptions/UploadPicker";
 import UploadProgress from "@/components/patient/prescriptions/UploadProgress";
 import UploadError from "@/components/patient/prescriptions/UploadError";
 import UploadUnsupported from "@/components/patient/prescriptions/UploadUnsupported";
 import UploadSuccess from "@/components/patient/prescriptions/UploadSuccess";
+import UploadSidePanel from "@/components/patient/prescriptions/UploadSidePanel";
 import {
   fileUploadService,
   prescriptionApiService,
@@ -218,63 +219,71 @@ export default function UploadPrescriptionPage() {
         onBack={() => dispatch({ type: "BACK" })}
       />
 
-      <ContentColumn width="md" className="flex flex-col gap-4">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={state.step}
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.32, ease: "easeOut" }}
-          >
-            {state.step === "initial" && (
-              <UploadInitial
-                onUploadClick={() => dispatch({ type: "GO_PICKER" })}
-              />
-            )}
+      {/* Two columns on desktop: the flow on the left, context on the right.
+          The same grid wraps every step, so the upload box, the picker, the
+          progress bar and all three end states keep identical edges. Below lg
+          the columns stack with the flow first. */}
+      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_400px]">
+        <div className="flex min-w-0 flex-col gap-4">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={state.step}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.32, ease: "easeOut" }}
+            >
+              {state.step === "initial" && (
+                <UploadInitial
+                  onUploadClick={() => dispatch({ type: "GO_PICKER" })}
+                />
+              )}
 
-            {state.step === "picker" && (
-              <UploadPicker
-                onSelect={() => inputRef.current?.click()}
-                onClose={() => dispatch({ type: "BACK" })}
-              />
-            )}
+              {state.step === "picker" && (
+                <UploadPicker
+                  onSelect={() => inputRef.current?.click()}
+                  onClose={() => dispatch({ type: "BACK" })}
+                />
+              )}
 
-            {state.step === "uploading" && (
-              <UploadProgress
-                progress={state.progress}
-                onCancel={() => dispatch({ type: "BACK" })}
-              />
-            )}
+              {state.step === "uploading" && (
+                <UploadProgress
+                  progress={state.progress}
+                  onCancel={() => dispatch({ type: "BACK" })}
+                />
+              )}
 
-            {state.step === "error" && <UploadError onRetry={handleRetry} />}
+              {state.step === "error" && <UploadError onRetry={handleRetry} />}
 
-            {state.step === "unsupported" && (
-              <UploadUnsupported
-                onUploadAgain={() => dispatch({ type: "RESET" })}
-              />
-            )}
+              {state.step === "unsupported" && (
+                <UploadUnsupported
+                  onUploadAgain={() => dispatch({ type: "RESET" })}
+                />
+              )}
 
-            {state.step === "success" && (
-              <UploadSuccess
-                onClose={() => dispatch({ type: "RESET" })}
-                onTrack={() => {
-                  // لاحقاً: route لصفحة تتبع status (غير موجودة حالياً)
-                  console.log("Track status");
-                }}
-              />
-            )}
-          </motion.div>
-        </AnimatePresence>
+              {state.step === "success" && (
+                <UploadSuccess
+                  onClose={() => dispatch({ type: "RESET" })}
+                  onTrack={() => {
+                    // لاحقاً: route لصفحة تتبع status (غير موجودة حالياً)
+                    console.log("Track status");
+                  }}
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
 
-        <input
-          ref={inputRef}
-          type="file"
-          hidden
-          accept=".png,.jpg,.jpeg,.pdf"
-          onChange={handleFileSelected}
-        />
-      </ContentColumn>
+          <input
+            ref={inputRef}
+            type="file"
+            hidden
+            accept=".png,.jpg,.jpeg,.pdf"
+            onChange={handleFileSelected}
+          />
+        </div>
+
+        <UploadSidePanel />
+      </div>
     </PageContainer>
   );
 }
