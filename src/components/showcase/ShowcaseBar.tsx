@@ -138,7 +138,7 @@ export function ShowcaseBar() {
         {/* The notice leads; the role switcher and About this demo sit together
             at the end, nothing else with them. Same order on every page and in
             all three areas; below lg they wrap underneath the notice. */}
-        <div className="flex items-center flex-wrap gap-x-2 gap-y-1.5 shrink-0">
+        <div className="flex items-center flex-wrap gap-x-2 gap-y-1.5 shrink-0 lg:ml-auto">
           <div
             className="flex items-center gap-1 bg-white/15 rounded-lg p-0.5"
             role="group"
