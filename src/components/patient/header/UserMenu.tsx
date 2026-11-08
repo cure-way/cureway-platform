@@ -99,7 +99,7 @@ export function UserMenu({ cartCount = 0 }: UserMenuProps) {
       {/* Cart */}
       <Link
         href="/cart"
-        className="relative flex items-center justify-center w-10 h-11 bg-primary-light-active rounded-full hover:bg-primary-light transition-colors"
+        className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary-light-active transition-colors hover:bg-primary-light"
         aria-label={`Cart${cartCount > 0 ? `, ${cartCount} item${cartCount > 1 ? "s" : ""}` : ""}`}
       >
         <IoCartOutline className="w-5 h-5 text-secondary-darker" />
@@ -114,7 +114,7 @@ export function UserMenu({ cartCount = 0 }: UserMenuProps) {
       <div ref={menuRef} className="relative">
         <button
           onClick={() => setOpen((p) => !p)}
-          className="w-10 h-10 rounded-full overflow-hidden bg-primary-light flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary/40"
+          className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full bg-primary-light cursor-pointer transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary/40"
           aria-label="User menu"
           aria-haspopup="true"
           aria-expanded={open}

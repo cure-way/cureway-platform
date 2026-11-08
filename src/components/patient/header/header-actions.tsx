@@ -72,7 +72,7 @@ export function HeaderActions({
       </motion.button>
 
       {/* Location selector - Desktop only */}
-      <div className="hidden md:flex bg-secondary-light items-center gap-2 h-11 px-2 rounded-lg w-40 lg:w-45">
+      <div className="hidden md:flex bg-secondary-light items-center gap-2 h-10 px-3 rounded-lg w-40 lg:w-45">
         <FiMapPin className="w-4 h-4 text-black/60 shrink-0" />
         <div className="flex-1 flex flex-col gap-1 justify-center">
           <p className="text-t-12 font-semibold text-black/50">
