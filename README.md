@@ -434,7 +434,7 @@ above the transport is untouched.
 What a visitor gets:
 
 - First visit lands straight on the patient home with content — no login wall
-- A slim notice strip with a **Patient / Pharmacy / Admin** role switcher and **Reset demo**
+- A slim notice strip with a **Patient / Pharmacy / Admin** role switcher and **About this demo**
 - Reads come from fixtures; writes change in-memory state and reset on reload
 - Actions that genuinely need a backend are disabled with an explanatory toast
 

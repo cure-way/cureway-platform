@@ -79,7 +79,7 @@ const POINTS: Point[] = [
         unusable. {SHOWCASE_AUTHOR.name} rebuilt it to run standalone: every
         screen is served from realistic sample data in your browser, with no
         backend and no network calls. Orders, the cart and dashboard actions all
-        work locally and reset on reload or with <strong>Reset demo</strong>.
+        work locally and reset whenever the page is reloaded.
       </>
     ),
   },
