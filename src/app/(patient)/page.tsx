@@ -30,16 +30,17 @@ export const metadata: Metadata = {
 
 export default function PatientHomePage() {
   return (
-    <div className="flex flex-col gap-6 pb-12 overflow-x-hidden">
+    <div className="overflow-x-hidden pb-12">
       {/* Every block on this page is a card or a content block, so every one
           of them sits on the frame. Only a true background image or colour
-          band may be full-bleed, and this page has none. */}
-      <PageContainer className="py-0">
-        <HomePromoBanner />
-      </PageContainer>
+          band may be full-bleed, and this page has none.
 
+          One flex column with one gap token, so every section is separated by
+          the same distance. Sections do not add vertical padding of their own. */}
       <PageContainer className="py-0">
-        <div className="flex flex-col gap-8 md:gap-10 lg:gap-14 pt-4 md:pt-6 lg:pt-8">
+        <div className="flex flex-col gap-8 md:gap-10">
+          <HomePromoBanner />
+
           {/* 2. Hero section */}
           <HomeHero />
 

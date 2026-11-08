@@ -24,7 +24,13 @@ export function HomePromoBanner() {
 
   return (
     <FadeUp inView offset={16} duration={0.5}>
-      <section data-section="promo banner" className="w-full">
+      <section
+        data-section="promo banner"
+        /* The kit overflows the card upward by ~84px, so the section
+           reserves that room: the image is fully visible and never
+           reaches the quick-action chips above it. */
+        className="w-full lg:pt-24"
+      >
         <div className="relative flex items-center gap-4 overflow-visible rounded-xl border border-error-hover bg-error-light px-4 py-4 shadow-[0px_2px_10px_rgba(193,62,62,0.1)] md:gap-8 md:px-8 lg:min-h-35 lg:pl-56">
           {/* 3D first-aid kit. Anchored to the card's bottom edge so it
               overflows upward only, and `left-2` keeps it inside the card
