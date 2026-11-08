@@ -41,30 +41,34 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
       />
 
       <aside
-        className={`fixed top-[var(--showcase-bar-h,0px)] bottom-0 left-0 z-50 w-[280px] border-r bg-white px-6 py-6
+        className={`fixed top-[var(--showcase-bar-h,0px)] bottom-0 left-0 z-50 flex w-[280px] flex-col border-r bg-white
         transition-transform
         lg:static lg:translate-x-0 lg:min-h-screen lg:shrink-0
         ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
-        {/* Logo */}
-        <div className="flex items-center gap-2 mb-10">
-          <Image
-            src="/logo.png"
-            alt="CureWay Logo"
-            width={32}
-            height={32}
-            className="w-8 h-8"
-          />
-          <div>
-            <span className="block text-t-21-semibold text-(--color-primary)">
-              CureWay
-            </span>
-            <p className="text-t-12 text-(--color-primary)">{displayName}</p>
-          </div>
+        {/* Logo row — identical to the admin sidebar: 80px tall to match the
+            top bar, 40px mark, same wordmark and the same gap. */}
+        <div className="flex h-20 shrink-0 items-center border-b border-[#EFEDED] pl-[20px] pr-[16px]">
+          <Link href="/pharmacy/home" className="flex items-center gap-[12px]">
+            <Image
+              src="/logo.png"
+              alt="CUREWAY"
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+            <span className="text-t-25 font-bold text-[#121B3C]">CUREWAY</span>
+          </Link>
         </div>
 
+        {/* The signed-in pharmacy, which admin has no equivalent of, sits
+            above the nav rather than squeezing the logo row. */}
+        <p className="shrink-0 truncate px-6 pt-4 text-t-12-semibold text-neutral-dark">
+          {displayName}
+        </p>
+
         {/* Navigation */}
-        <nav className="space-y-4">
+        <nav className="flex-1 space-y-4 overflow-y-auto px-6 py-4">
           {NAV_ITEMS.map((item) => {
             const isActive =
               pathname === item.href || pathname.startsWith(item.href + "/");
