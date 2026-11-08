@@ -503,3 +503,60 @@ side by side and their edges can be compared directly.
 - **Hardcoded hex colours are still outstanding** — 474 values, unchanged from
   `docs/site-review-plan.md`. They are invisible to a visitor and remain the
   main piece of cleanup, worth its own PR.
+
+---
+
+## 11. The frame rollout
+
+### Edge alignment, measured
+
+Left edge in px of each element, every route in the area, at the five widths.
+Within an area the figures are identical, and pharmacy matches admin exactly.
+
+| Area     | Width | Strip | Top bar | Chips | Page header | Content |
+| -------- | ----: | ----: | ------: | ----: | ----------: | ------: |
+| Patient  |   390 |    20 |      20 |    20 |          20 |      20 |
+| Patient  |   768 |    38 |      38 |    38 |          38 |      38 |
+| Patient  |  1024 |    48 |      48 |    48 |          48 |      48 |
+| Patient  |  1440 |    48 |      48 |    48 |          48 |      48 |
+| Patient  |  1920 |   168 |     168 |   168 |         168 |     168 |
+| Pharmacy |   390 |    20 |      20 |     — |          20 |      20 |
+| Pharmacy |   768 |    38 |      38 |     — |          38 |      38 |
+| Pharmacy |  1024 |    48 |     328 |     — |         328 |     328 |
+| Pharmacy |  1440 |    48 |     328 |     — |         328 |     328 |
+| Pharmacy |  1920 |   168 |     328 |     — |         328 |     328 |
+| Admin    |   390 |    20 |      20 |     — |          20 |      20 |
+| Admin    |   768 |    38 |      38 |     — |          38 |      38 |
+| Admin    |  1024 |    48 |     328 |     — |         328 |     328 |
+| Admin    |  1440 |    48 |     328 |     — |         328 |     328 |
+| Admin    |  1920 |   168 |     328 |     — |         328 |     328 |
+
+The dashboard strip sits above the sidebar and spans the viewport, so it keeps
+the patient area's frame edge (48 / 168) while the dashboard content begins
+after the 280px sidebar (280 + 48 = 328). That is the intended relationship,
+not a mismatch.
+
+Auth routes are excluded: they have their own split-screen shell, and the frame
+applies inside the form column.
+
+### Audits
+
+| Check                          |                               Result |
+| ------------------------------ | -----------------------------------: |
+| Horizontal overflow            |                                **0** |
+| Text under 12px                |                                **0** |
+| Heading order                  |                                **0** |
+| Currency formats               |                                **0** |
+| Console errors                 |                                **0** |
+| Touch targets                  | 238, all three documented exclusions |
+| External requests attempted    |                                **0** |
+| Routes verified (role × route) |                                   76 |
+| Purchase flow                  |                 intact, orders 6 → 7 |
+
+Lint 0 errors with 1 known `exhaustive-deps` warning, typecheck clean, build
+53/53.
+
+### Evidence
+
+- `docs/review-screenshots/sheet-{role}-{1440,1920}-{before,after}.png`
+- `docs/review-screenshots/scrollbar-admin-sidebar-{before,after}.png`
