@@ -37,7 +37,7 @@ const stats: StatCard[] = [
 
 export default function QuickStatsCards() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {stats.map((stat) => (
         <div
           key={stat.label}
@@ -51,7 +51,7 @@ export default function QuickStatsCards() {
           {/* Text */}
           <div className="flex-1 min-w-0 flex flex-col gap-[8px] justify-center">
             <p
-              className="text-t-17 font-semibold leading-[1.2]"
+              className="text-t-17-semibold leading-[1.2]"
               style={{ color: stat.labelColor }}
             >
               {stat.label}

@@ -17,12 +17,15 @@ import {
  */
 export function HomeNearbyPharmacies() {
   return (
-    <section className="w-full bg-primary-light/50 rounded-tr-3xl px-4 md:px-6 lg:px-10 py-8">
+    <section
+      data-section="nearby pharmacies"
+      className="w-full rounded-2xl border border-border bg-primary-light/40 p-4 md:p-6"
+    >
       <div className="flex flex-col gap-6">
         {/* Title row */}
         <FadeUp inView offset={10} duration={0.4}>
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl md:text-3xl lg:text-t-36 font-bold text-primary-darker">
+            <h2 className="text-t-21-semibold md:text-t-25-semibold lg:text-t-30-semibold text-primary-darker">
               Nearby pharmacies
             </h2>
             <Link
@@ -37,7 +40,7 @@ export function HomeNearbyPharmacies() {
 
         {/* Cards */}
         <StaggerContainer
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-[42px]"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
           stagger={0.1}
         >
           {nearbyPharmacies.map((pharmacy) => (

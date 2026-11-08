@@ -2,7 +2,6 @@
 // SKELETON LOADER COMPONENT
 // ===================================================================
 
-
 interface SkeletonProps {
   className?: string;
   variant?: "text" | "circular" | "rectangular";

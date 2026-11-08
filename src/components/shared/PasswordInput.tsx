@@ -56,7 +56,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
       <div className="flex flex-col gap-1 w-full">
         <div
           className={cn(
-            "flex flex-col w-full h-[61px] justify-center gap-1 px-4 py-2 bg-white rounded-md border transition-colors",
+            "flex flex-col w-full min-h-[52px] justify-center gap-1 px-4 py-2 bg-white rounded-md border transition-colors",
             error
               ? "border-red-500 focus-within:border-red-600"
               : "border-black focus-within:border-gray-600",
@@ -64,14 +64,16 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
           )}
         >
           {label && (
-            <label className="text-sm font-medium text-black">{label}</label>
+            <label className="text-t-12-semibold text-neutral-dark">
+              {label}
+            </label>
           )}
           <div className="flex items-center justify-between gap-2">
             <input
               ref={ref}
               type={showPassword ? "text" : "password"}
               value={value || ""}
-              className="flex-1 text-sm text-gray-900 placeholder:text-gray-400 outline-none bg-transparent"
+              className="flex-1 text-t-14 text-gray-900 placeholder:text-gray-400 outline-none bg-transparent"
               {...props}
             />
             <button
@@ -97,15 +99,15 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
                 style={{ width: `${strength}%` }}
               />
             </div>
-            <span className="text-xs text-gray-600 min-w-16">
+            <span className="text-t-12 text-gray-600 min-w-16">
               {strengthLabel}
             </span>
           </div>
         )}
 
-        {error && <p className="text-xs text-red-500 px-1">{error}</p>}
+        {error && <p className="text-t-12 text-error px-1">{error}</p>}
         {helperText && !error && (
-          <p className="text-xs text-gray-500 px-1">{helperText}</p>
+          <p className="text-t-12 text-neutral px-1">{helperText}</p>
         )}
       </div>
     );

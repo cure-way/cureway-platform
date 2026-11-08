@@ -67,7 +67,7 @@ export function SearchEmptyState({
         {/* Suggestions section – rendered first (above icon) */}
         {suggestion && (
           <div className="w-full mb-8">
-            <h3 className="text-2xl md:text-[30px] font-bold text-primary-darker mb-4">
+            <h3 className="text-t-21 md:text-[30px] font-bold text-primary-darker mb-4">
               Suggestions
             </h3>
             <div className="flex flex-col gap-3">
@@ -76,7 +76,7 @@ export function SearchEmptyState({
                   key={i}
                   className="w-full bg-primary-light rounded-2xl flex items-center px-5 py-5 md:py-6"
                 >
-                  <span className="text-lg md:text-xl font-semibold text-primary-darker">
+                  <span className="text-t-17 md:text-t-17 font-semibold text-primary-darker">
                     Brand names (e.g., Panadol)
                   </span>
                 </div>
@@ -91,12 +91,12 @@ export function SearchEmptyState({
         </div>
 
         {/* Title */}
-        <h2 className="text-2xl md:text-[30px] font-bold text-primary-darker text-center mb-2">
+        <h2 className="text-t-21 md:text-[30px] font-bold text-primary-darker text-center mb-2">
           {title}
         </h2>
 
         {/* Subtitle */}
-        <p className="text-lg md:text-xl font-medium text-neutral-dark text-center mb-8">
+        <p className="text-t-17 md:text-t-17 font-medium text-neutral-dark text-center mb-8">
           {config.subtitle}
         </p>
 
@@ -104,7 +104,7 @@ export function SearchEmptyState({
         {suggestion && (
           <button
             onClick={() => onSearchSuggestion?.(suggestion)}
-            className="w-full max-w-3xl h-14 md:h-16 bg-primary hover:bg-primary/90 text-primary-light font-semibold text-base md:text-lg rounded-2xl transition-colors cursor-pointer"
+            className="w-full max-w-[26rem] h-11 bg-primary hover:bg-primary-hover text-white text-t-14-semibold rounded-lg transition-colors cursor-pointer"
           >
             Search for &ldquo;{suggestion}&rdquo;
           </button>
@@ -122,12 +122,12 @@ export function SearchEmptyState({
       </div>
 
       {/* Title */}
-      <h2 className="text-xl md:text-2xl font-bold text-black text-center mb-2">
+      <h2 className="text-t-17 md:text-t-21 font-bold text-black text-center mb-2">
         {title}
       </h2>
 
       {/* Subtitle */}
-      <p className="text-neutral-dark text-sm text-center mb-8">
+      <p className="text-neutral-dark text-t-14 text-center mb-8">
         {config.subtitle}
       </p>
 

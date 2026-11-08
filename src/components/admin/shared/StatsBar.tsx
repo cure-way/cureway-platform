@@ -39,7 +39,7 @@ export default function StatsBar({
             "flex items-center sm:border-r sm:border-neutral-light-active sm:pr-4 shrink-0",
           )}
         >
-          <span className="text-t-17 sm:text-t-21 leading-normal font-extrabold text-secondary-darker">
+          <span className="text-t-17 sm:text-t-21 leading-normal font-bold text-secondary-darker">
             {count}
           </span>
         </div>
@@ -59,7 +59,7 @@ export default function StatsBar({
 
       {/* Collapse chevron */}
       <button
-        className="hidden sm:flex w-12 h-12 items-center justify-center rounded-xl p-3 hover:bg-neutral-light transition-colors shrink-0"
+        className="hidden sm:flex w-12 h-11 items-center justify-center rounded-xl p-3 hover:bg-neutral-light transition-colors shrink-0"
         aria-label="Collapse stats"
       >
         <ChevronDown className="w-6 h-6 text-neutral-dark" />
@@ -127,7 +127,7 @@ export function KpiPill({
           {icon}
         </span>
         <span
-          className={`text-t-14 sm:text-t-17 leading-normal font-extrabold ${s.valueText}`}
+          className={`text-t-14 sm:text-t-17 leading-normal font-bold ${s.valueText}`}
         >
           {value}
         </span>

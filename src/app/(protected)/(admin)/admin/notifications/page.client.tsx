@@ -14,6 +14,7 @@ import LeftPanel, {
 import RightPanel from "@/components/admin/notifications/right-panel";
 import NotificationsLayout from "@/components/admin/notifications/notifications-layout";
 import { MotionStagger, MotionStaggerItem } from "@/components/admin/shared";
+import { PageContainer, PageHeader } from "@/components/shared";
 
 /* ------------------------------------------------------------------
    PAGE
@@ -91,25 +92,22 @@ export default function AdminNotificationsPage() {
   ];
 
   return (
-    <MotionStagger className="flex-1 flex flex-col bg-neutral-light-hover px-3 sm:pl-4 sm:pr-6 py-3 sm:py-4 gap-3 sm:gap-4">
-      {/* Page Header */}
+    <PageContainer as={MotionStagger}
+      className="flex flex-col bg-neutral-light-hover gap-4"
+    >
       <MotionStaggerItem>
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-3">
-          <div className="space-y-0.5 sm:space-y-1">
-            <h1 className="text-t-17 sm:text-t-25 font-bold text-primary-darker leading-snug">
-              All Notifications
-            </h1>
-            <p className="text-t-14 sm:text-t-17 font-normal text-neutral">
-              Stay updated with your all notifications and activities
-            </p>
-          </div>
-          <div className="flex items-center gap-2 sm:gap-4 px-3 sm:px-4 py-1 bg-white border border-border rounded-xl shrink-0 self-start">
-            <Calendar className="w-4 h-4 sm:w-[18px] sm:h-[18px] text-neutral" />
-            <span className="text-[12px] sm:text-t-14 font-medium text-neutral-darker">
-              Today · Jan, 01
-            </span>
-          </div>
-        </div>
+        <PageHeader
+          title="All Notifications"
+          subtitle="Stay updated with your notifications and activities"
+          actions={
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-border rounded-lg">
+              <Calendar className="w-4 h-4 text-neutral" />
+              <span className="text-t-12-semibold text-neutral-dark">
+                Today · Jan, 01
+              </span>
+            </div>
+          }
+        />
       </MotionStaggerItem>
 
       {/* Two-column layout */}
@@ -138,6 +136,6 @@ export default function AdminNotificationsPage() {
           }
         />
       </MotionStaggerItem>
-    </MotionStagger>
+    </PageContainer>
   );
 }

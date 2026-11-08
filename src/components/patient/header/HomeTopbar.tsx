@@ -15,6 +15,7 @@ import { SearchDropdown } from "@/components/patient/header/search/SearchDropdow
 import { BRAND_NAME, CONTACT_PHONE } from "@/lib/constants";
 import { UserMenu } from "./UserMenu";
 import { useAuth } from "@/features/auth";
+import { SHELL_RAIL } from "@/components/shared";
 
 /* ------------------------------------------------------------------
    HomeTopbar
@@ -38,41 +39,48 @@ export function HomeTopbar({
   onMobileSearchOpen,
 }: HomeTopbarProps) {
   return (
-    <div className="bg-white border-b border-black/10 flex items-center justify-center gap-3 md:gap-6 w-full px-3 md:px-6 lg:px-8 py-2 h-auto md:h-16">
-      {/* Logo */}
-      <Link
-        href="/"
-        className="flex items-center gap-2 shrink-0"
-        aria-label="Go to home page"
+    /* Full-bleed bar, content on the shell rail so the header lines up with
+       the page below it instead of running to the viewport edge. */
+    <div className="bg-white border-b border-black/10 w-full">
+      <div
+        data-topbar-inner=""
+        className={`${SHELL_RAIL} flex items-center justify-center gap-3 md:gap-6 py-2 h-auto md:h-16`}
       >
-        <div className="w-7 h-7 md:w-8 md:h-8 relative flex items-center justify-center">
-          <Image
-            src="/logo.png"
-            alt={`${BRAND_NAME} Logo`}
-            width={32}
-            height={32}
-            className="object-contain"
-            priority
-          />
+        {/* Logo */}
+        <Link
+          href="/"
+          className="flex items-center gap-2 shrink-0"
+          aria-label="Go to home page"
+        >
+          <div className="w-7 h-7 md:w-8 md:h-8 relative flex items-center justify-center">
+            <Image
+              src="/logo.png"
+              alt={`${BRAND_NAME} Logo`}
+              width={32}
+              height={32}
+              className="object-contain"
+              priority
+            />
+          </div>
+          <p className="text-t-17-bold md:text-t-21-bold text-primary-hover leading-none">
+            {BRAND_NAME}
+          </p>
+        </Link>
+
+        {/* Desktop Search */}
+        <div className="hidden md:flex flex-1 min-w-0 max-w-full">
+          <HomeSearchBar />
         </div>
-        <p className="text-base md:text-t-21 font-black text-primary-hover leading-none">
-          {BRAND_NAME}
-        </p>
-      </Link>
 
-      {/* Desktop Search */}
-      <div className="hidden md:flex flex-1 min-w-0 max-w-full">
-        <HomeSearchBar />
+        {/* Right side actions */}
+        <HomeActions
+          isAuthenticated={isAuthenticated}
+          cartCount={cartCount}
+          mobileMenuOpen={mobileMenuOpen}
+          onToggleMobileMenu={onToggleMobileMenu}
+          onMobileSearchOpen={onMobileSearchOpen}
+        />
       </div>
-
-      {/* Right side actions */}
-      <HomeActions
-        isAuthenticated={isAuthenticated}
-        cartCount={cartCount}
-        mobileMenuOpen={mobileMenuOpen}
-        onToggleMobileMenu={onToggleMobileMenu}
-        onMobileSearchOpen={onMobileSearchOpen}
-      />
     </div>
   );
 }
@@ -258,14 +266,14 @@ export function HomeMobileMenu({ isOpen }: HomeMobileMenuProps) {
         >
           <div className="px-3 py-4 space-y-4">
             {/* Mobile location */}
-            <div className="bg-secondary-light flex items-center gap-3 h-12 px-3 rounded-xl">
+            <div className="bg-secondary-light flex items-center gap-3 h-11 px-3 rounded-xl">
               <FiMapPin className="w-5 h-5 text-primary shrink-0" />
               <div className="flex-1 flex flex-col gap-1 justify-center">
-                <p className="text-xs font-semibold text-primary-darker">
+                <p className="text-t-12 font-semibold text-primary-darker">
                   Select Location
                 </p>
                 <div className="flex items-center gap-1">
-                  <p className="flex-1 text-xs text-primary truncate">
+                  <p className="flex-1 text-t-12 text-primary truncate">
                     26 Salah El Din St...
                   </p>
                   <FaChevronRight className="w-2 h-2 text-primary shrink-0" />
@@ -276,7 +284,7 @@ export function HomeMobileMenu({ isOpen }: HomeMobileMenuProps) {
             {/* Mobile help */}
             <div className="flex items-center gap-2 px-2">
               <FaPhoneAlt className="text-primary w-4 h-4" />
-              <p className="text-sm text-primary-darker">
+              <p className="text-t-14 text-primary-darker">
                 <span className="font-semibold">Need help? call us:</span>{" "}
                 <span className="text-primary-light-active">
                   {CONTACT_PHONE}
@@ -294,7 +302,7 @@ export function HomeMobileMenu({ isOpen }: HomeMobileMenuProps) {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="block px-2 py-2 text-sm font-medium text-primary-darker hover:bg-primary-light rounded-lg transition-colors"
+                  className="block px-2 py-2 text-t-14 font-medium text-primary-darker hover:bg-primary-light rounded-lg transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -304,10 +312,10 @@ export function HomeMobileMenu({ isOpen }: HomeMobileMenuProps) {
                 <>
                   {user && (
                     <div className="px-2 py-2 border-t border-gray-200 mt-2">
-                      <p className="text-sm font-semibold text-gray-900 truncate">
+                      <p className="text-t-14 font-semibold text-gray-900 truncate">
                         {user.name}
                       </p>
-                      <p className="text-xs text-gray-500 truncate">
+                      <p className="text-t-12 text-gray-500 truncate">
                         {user.email}
                       </p>
                     </div>
@@ -320,14 +328,14 @@ export function HomeMobileMenu({ isOpen }: HomeMobileMenuProps) {
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="block px-2 py-2 text-sm font-medium text-primary-darker hover:bg-primary-light rounded-lg transition-colors"
+                      className="block px-2 py-2 text-t-14 font-medium text-primary-darker hover:bg-primary-light rounded-lg transition-colors"
                     >
                       {link.label}
                     </Link>
                   ))}
                   <button
                     onClick={handleLogout}
-                    className="block w-full text-left px-2 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    className="block w-full text-left px-2 py-2 text-t-14 font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                   >
                     Sign Out
                   </button>
@@ -336,13 +344,13 @@ export function HomeMobileMenu({ isOpen }: HomeMobileMenuProps) {
                 <div className="pt-2 space-y-2 border-t border-gray-200">
                   <Link
                     href="/auth/sign-in"
-                    className="block px-2 py-2 text-sm font-medium text-center text-primary-darker border border-neutral rounded-lg hover:bg-primary-light transition-colors"
+                    className="block px-2 py-2 text-t-14 font-medium text-center text-primary-darker border border-neutral rounded-lg hover:bg-primary-light transition-colors"
                   >
                     Sign In
                   </Link>
                   <Link
                     href="/auth/sign-up"
-                    className="block px-2 py-2 text-sm font-medium text-center text-white bg-primary rounded-lg hover:bg-primary-hover transition-colors"
+                    className="block px-2 py-2 text-t-14 font-medium text-center text-white bg-primary rounded-lg hover:bg-primary-hover transition-colors"
                   >
                     Sign Up
                   </Link>

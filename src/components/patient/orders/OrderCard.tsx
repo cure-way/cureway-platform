@@ -30,7 +30,8 @@ export function OrderCard({ order }: { order: Order }) {
   const [showTrack, setShowTrack] = useState(false);
   const [showReorder, setShowReorder] = useState(false);
 
-  const isActive = order.status === "processing" || order.status === "on_the_way";
+  const isActive =
+    order.status === "processing" || order.status === "on_the_way";
   const isDelivered = order.status === "delivered";
   const isCancelled = order.status === "cancelled";
   const isCancelling = cancellingId === order.id;
@@ -38,14 +39,14 @@ export function OrderCard({ order }: { order: Order }) {
 
   // 🔵 Primary Blue Button
   const primaryBtn =
-    "h-12 w-full rounded-xl border border-[#334EAC] bg-[#334EAC] px-[22px] py-[10px]" +
+    "h-11 w-full rounded-xl border border-[#334EAC] bg-[#334EAC] px-[22px] py-[10px]" +
     " transition-all duration-300 ease-in-out hover:bg-[#2C4294]" +
     " active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#334EAC]/35" +
     " disabled:opacity-50 disabled:cursor-not-allowed";
 
   // ⚪ White Outline Button
   const outlineBtn =
-    "h-12 w-full rounded-xl border border-[#334EAC] bg-white px-[22px] py-[10px]" +
+    "h-11 w-full rounded-xl border border-[#334EAC] bg-white px-[22px] py-[10px]" +
     " transition-all duration-300 ease-in-out hover:bg-[#F5F7FF]" +
     " active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#334EAC]/25" +
     " disabled:opacity-50 disabled:cursor-not-allowed";
@@ -68,7 +69,9 @@ export function OrderCard({ order }: { order: Order }) {
       await cancelOrder(order.id);
       toast.success(`Order #${order.id} has been cancelled.`);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to cancel order.");
+      toast.error(
+        err instanceof Error ? err.message : "Failed to cancel order.",
+      );
     }
   };
 
@@ -80,34 +83,48 @@ export function OrderCard({ order }: { order: Order }) {
           <div className="flex-1 min-w-0">
             <div className="flex flex-col gap-5 border-b border-black/20 pb-4">
               <div className="flex items-center gap-4">
-                <div className="text-2xl font-semibold text-black/80">
+                <div className="text-t-21 font-semibold text-black/80">
                   Order ID: #{order.id}
                 </div>
                 <OrderStatusBadge status={order.status} />
               </div>
-              <div className="text-base font-medium text-black/60">
+              <div className="text-t-14 font-medium text-black/60">
                 {formatOrderedLine(order.orderedAtISO)}
               </div>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
-                  <Image src="/icons/hospital.png" alt="pharmacy" width={20} height={20} />
-                  <span className="text-base font-medium text-black/80">
+                  <Image
+                    src="/icons/hospital.png"
+                    alt="pharmacy"
+                    width={20}
+                    height={20}
+                  />
+                  <span className="text-t-14 font-medium text-black/80">
                     {order.pharmacyName}
                   </span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Image src="/icons/location.png" alt="location" width={20} height={20} />
-                  <span className="text-sm text-black/60">{order.address}</span>
+                  <Image
+                    src="/icons/location.png"
+                    alt="location"
+                    width={20}
+                    height={20}
+                  />
+                  <span className="text-t-14 text-black/60">
+                    {order.address}
+                  </span>
                 </div>
               </div>
             </div>
             <div className="flex items-center justify-between pt-4">
-              <div className="text-xl font-semibold text-black/80">
+              <div className="text-t-17 font-semibold text-black/80">
                 {order.itemsCount} items
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-xl font-bold text-black/60">Total :</span>
-                <span className="text-xl font-bold text-black/60">
+                <span className="text-t-17 font-bold text-black/60">
+                  Total :
+                </span>
+                <span className="text-t-17 font-bold text-black/60">
                   {formatCurrency(order.total, order.currency ?? "USD")}
                 </span>
               </div>
@@ -119,8 +136,13 @@ export function OrderCard({ order }: { order: Order }) {
             <div className="flex flex-col gap-4">
               {isActive && (
                 <>
-                  <button onClick={() => setShowTrack(true)} className={primaryBtn}>
-                    <span className="text-xl font-bold text-white">Track Order</span>
+                  <button
+                    onClick={() => setShowTrack(true)}
+                    className={primaryBtn}
+                  >
+                    <span className="text-t-17 font-bold text-white">
+                      Track Order
+                    </span>
                   </button>
 
                   <button
@@ -128,7 +150,7 @@ export function OrderCard({ order }: { order: Order }) {
                     disabled={isFetchingDetails}
                     className={outlineBtn}
                   >
-                    <span className="text-xl font-bold text-[#334EAC]">
+                    <span className="text-t-17 font-bold text-[#334EAC]">
                       {isFetchingDetails ? "Loading…" : "View Details"}
                     </span>
                   </button>
@@ -136,9 +158,9 @@ export function OrderCard({ order }: { order: Order }) {
                   <button
                     onClick={handleCancel}
                     disabled={isCancelling}
-                    className="h-12 w-full rounded-xl border border-red-400 bg-white px-[22px] py-[10px] transition-all duration-300 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="h-11 w-full rounded-xl border border-red-400 bg-white px-[22px] py-[10px] transition-all duration-300 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <span className="text-xl font-bold text-red-500">
+                    <span className="text-t-17 font-bold text-red-500">
                       {isCancelling ? "Cancelling…" : "Cancel Order"}
                     </span>
                   </button>
@@ -152,13 +174,18 @@ export function OrderCard({ order }: { order: Order }) {
                     disabled={isFetchingDetails}
                     className={outlineBtn}
                   >
-                    <span className="text-xl font-bold text-[#334EAC]">
+                    <span className="text-t-17 font-bold text-[#334EAC]">
                       {isFetchingDetails ? "Loading…" : "View Details"}
                     </span>
                   </button>
 
-                  <button onClick={() => setShowReorder(true)} className={primaryBtn}>
-                    <span className="text-xl font-bold text-white">Reorder</span>
+                  <button
+                    onClick={() => setShowReorder(true)}
+                    className={primaryBtn}
+                  >
+                    <span className="text-t-17 font-bold text-white">
+                      Reorder
+                    </span>
                   </button>
                 </>
               )}
@@ -169,7 +196,10 @@ export function OrderCard({ order }: { order: Order }) {
 
       {/* Drawer uses the freshly-fetched detailedOrder */}
       {showDetails && detailedOrder && (
-        <ViewDetailsDrawer order={detailedOrder} onClose={() => setShowDetails(false)} />
+        <ViewDetailsDrawer
+          order={detailedOrder}
+          onClose={() => setShowDetails(false)}
+        />
       )}
       {showTrack && (
         <TrackOrderModal order={order} onClose={() => setShowTrack(false)} />

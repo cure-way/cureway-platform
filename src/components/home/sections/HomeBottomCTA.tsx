@@ -53,10 +53,10 @@ export function HomeBottomCTA() {
   };
 
   return (
-    <section className="w-full flex flex-col gap-8">
+    <section data-section="bottom cta" className="w-full flex flex-col gap-8">
       {/* Free delivery promo strip */}
       <FadeUp inView offset={14} duration={0.5}>
-        <div className="bg-primary-light flex items-center gap-6 md:gap-10 px-4 md:px-6 lg:px-10 py-4 md:py-6 h-auto md:h-[140px] relative overflow-visible">
+        <div className="bg-primary-light flex items-center gap-6 md:gap-10 rounded-2xl px-4 md:px-6 py-4 md:py-6 h-auto md:h-[140px] relative overflow-visible">
           <div className="relative w-28 h-28 md:w-[160px] md:h-[160px] shrink-0 md:absolute md:left-8 md:top-1">
             <Image
               src="/patient/Free Delivery.png"
@@ -66,7 +66,7 @@ export function HomeBottomCTA() {
               sizes="160px"
             />
           </div>
-          <p className="text-2xl md:text-3xl lg:text-t-36 font-black leading-tight md:ml-[180px]">
+          <p className="text-t-25-bold md:text-t-30-bold lg:text-t-36-bold leading-tight md:ml-[180px]">
             <span className="text-error-hover">Free </span>
             <span className="text-primary-hover">Delivery on first order</span>
           </p>
@@ -74,12 +74,12 @@ export function HomeBottomCTA() {
       </FadeUp>
 
       {/* Find pharmacy — two columns */}
-      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 px-4 md:px-6 lg:px-10 pb-8">
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
         {/* Left — steps */}
         <div className="flex-1 flex flex-col gap-8 md:gap-10">
           <FadeUp inView offset={12} duration={0.45}>
             <div className="flex flex-col gap-4">
-              <h2 className="text-2xl md:text-3xl lg:text-[36px] font-semibold leading-snug">
+              <h2 className="text-t-21 md:text-t-25 lg:text-[36px] font-semibold leading-snug">
                 Find the{" "}
                 <span className="font-bold bg-gradient-to-r from-primary-hover to-neutral bg-clip-text text-transparent">
                   Nearby Pharmacy
@@ -175,7 +175,7 @@ export function HomeBottomCTA() {
 
             {/* Search now button */}
             <button
-              className="bg-primary text-primary-light text-t-17 md:text-t-21 font-semibold rounded-2xl h-14 md:h-16 flex items-center justify-center gap-3 hover:bg-primary-hover transition-colors w-full"
+              className="bg-primary text-primary-light text-t-17 md:text-t-21 font-semibold rounded-2xl h-11 md:h-16 flex items-center justify-center gap-3 hover:bg-primary-hover transition-colors w-full"
               type="button"
               aria-label="Search for nearby pharmacy"
             >

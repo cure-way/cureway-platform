@@ -90,7 +90,7 @@ const PaymentMethods = memo(function PaymentMethods({
         <div className="bg-accent rounded-2xl p-3 flex flex-col gap-2">
           {methods.map((method) => {
             const sel = selected?.id === method.id;
-          
+
             const isCard = method.icon === "credit";
             return (
               <button

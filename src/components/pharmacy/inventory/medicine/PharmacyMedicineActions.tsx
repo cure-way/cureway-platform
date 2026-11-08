@@ -33,36 +33,40 @@ export default function PharmacyMedicineActions({
   return (
     <>
       <div className="space-y-4 bg-white p-5 border rounded-xl">
-        <h3 className="font-semibold text-gray-900 text-sm">Alert & Actions</h3>
+        <h3 className="font-semibold text-gray-900 text-t-14">
+          Alert & Actions
+        </h3>
 
         {expiry.status === "safe" ? (
-          <div className="flex items-center gap-2 bg-green-50 p-3 rounded-lg text-green-700 text-sm">
+          <div className="flex items-center gap-2 bg-green-50 p-3 rounded-lg text-green-700 text-t-14">
             <CheckCircle className="w-4 h-4" />
             <span>No alerts</span>
           </div>
         ) : (
           <div
-            className={`p-3 rounded-lg text-sm ${
+            className={`p-3 rounded-lg text-t-14 ${
               expiry.status === "expired"
                 ? "bg-red-100 text-red-800"
                 : "bg-yellow-100 text-yellow-800"
             }`}
           >
             <p>{expiry.label}</p>
-            <p className="opacity-80 text-xs">Expiry date: {item.expiryDate}</p>
+            <p className="opacity-80 text-t-12">
+              Expiry date: {item.expiryDate}
+            </p>
           </div>
         )}
 
         <button
           onClick={() => handleMedicineAction("mark_out", item)}
-          className="hover:bg-gray-50 py-2 border rounded-lg w-full text-sm"
+          className="hover:bg-gray-50 py-2 border rounded-lg w-full text-t-14"
         >
           Mark as Out of stock
         </button>
 
         <button
           onClick={() => handleMedicineAction("delete", item)}
-          className="bg-red-700 py-2 rounded-lg w-full text-white text-sm"
+          className="bg-red-700 py-2 rounded-lg w-full text-white text-t-14"
         >
           Delete medicine
         </button>

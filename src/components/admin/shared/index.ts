@@ -5,11 +5,7 @@ export type { BadgeVariant } from "./StatusBadge";
 export { default as TablePagination } from "./TablePagination";
 export { default as TableSearch } from "./TableSearch";
 export { default as PageShell } from "./PageShell";
-export {
-  default as PageHeader,
-  HeaderPrimaryButton,
-  HeaderIconButton,
-} from "./PageHeader";
+export { HeaderPrimaryButton, HeaderIconButton } from "./HeaderActions";
 export { default as StatsBar, KpiPill } from "./StatsBar";
 export { default as DataTable } from "./DataTable";
 export type { ColumnDef, DataTableProps } from "./DataTable";

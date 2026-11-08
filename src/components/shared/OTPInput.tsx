@@ -154,7 +154,7 @@ export const OTPInput = forwardRef<OTPInputRef, OTPInputProps>(
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: index * 0.05 }}
               className={cn(
-                "w-12 h-14 text-center text-xl font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed",
+                "w-12 h-14 text-center text-t-17 font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed",
                 error
                   ? "bg-red-50 border-2 border-red-500 text-red-900 focus:border-red-600 focus:ring-red-500"
                   : "bg-gray-100 border border-gray-200 text-gray-900 focus:bg-white focus:border-gray-400 focus:ring-gray-300",
@@ -168,7 +168,7 @@ export const OTPInput = forwardRef<OTPInputRef, OTPInputProps>(
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="text-xs text-red-500 text-center"
+              className="text-t-12 text-red-500 text-center"
               role="alert"
             >
               {error}

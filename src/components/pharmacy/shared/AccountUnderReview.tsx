@@ -16,7 +16,7 @@ export default function AccountUnderReview() {
   return (
     <div className="flex justify-center items-center px-4 h-screen">
       <div className="bg-white shadow p-6 border rounded-xl w-full max-w-md text-center">
-        <h2 className="mb-2 font-semibold text-lg">Account Under Review</h2>
+        <h2 className="mb-2 font-semibold text-t-17">Account Under Review</h2>
 
         <p className="mb-6 text-gray-600">
           Your pharmacy account is currently under review. You will gain access

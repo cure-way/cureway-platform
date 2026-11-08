@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import PharmacyMenu from "./PharmacyMenu";
 import GlobalSearchPanel from "./GlobalSearchModal";
 import { useGlobalSearch } from "@/hooks/pharmacy/useGlobalSearch";
+import { FRAME } from "@/components/shared";
 
 interface TopBarProps {
   onMenuClick: () => void;
@@ -17,8 +18,11 @@ export default function TopBar({ onMenuClick }: TopBarProps) {
     useGlobalSearch();
 
   return (
-    <header className="bg-white px-4 lg:px-6 py-4 border-b">
-      <div className="flex items-center gap-4">
+    <header className="bg-white border-b">
+      <div
+        data-topbar-inner=""
+        className={`${FRAME} flex items-center gap-4 h-20`}
+      >
         {/* Menu button (mobile only) */}
         <button
           onClick={onMenuClick}
@@ -38,7 +42,7 @@ export default function TopBar({ onMenuClick }: TopBarProps) {
             onFocus={() => setIsOpen(true)}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="What do you want to find?"
-            className="px-4 py-2 border border-gray-200 focus:border-(--color-primary-active) rounded-full focus:outline-none w-full text-sm"
+            className="px-4 py-2 border border-gray-200 focus:border-(--color-primary-active) rounded-full focus:outline-none w-full text-t-14"
           />
 
           <div className="top-full right-0 left-0 z-50 absolute mt-2">
@@ -71,7 +75,7 @@ export default function TopBar({ onMenuClick }: TopBarProps) {
           onFocus={() => setIsOpen(true)}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="What do you want to find?"
-          className="px-4 py-2 border border-gray-200 focus:border-(--color-primary-active) rounded-full focus:outline-none w-full text-sm"
+          className="px-4 py-2 border border-gray-200 focus:border-(--color-primary-active) rounded-full focus:outline-none w-full text-t-14"
         />
 
         <div className="top-full right-0 left-0 z-50 absolute mt-2">

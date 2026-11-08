@@ -93,7 +93,7 @@ export default function AdminSettingsSecurityPage() {
             Change Password
           </h3>
 
-          <div className="grid grid-cols-1 gap-4 max-w-md">
+          <div className="grid grid-cols-1 gap-4 max-w-[var(--content-md)]">
             {/* Current Password */}
             <div className="space-y-1.5">
               <label className="text-t-14 font-medium text-neutral-darker">

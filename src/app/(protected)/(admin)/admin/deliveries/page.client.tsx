@@ -15,7 +15,6 @@ import {
 import { useState } from "react";
 import {
   PageShell,
-  PageHeader,
   HeaderPrimaryButton,
   HeaderIconButton,
   StatsBar,
@@ -31,6 +30,7 @@ import { DeliveriesPageIcon } from "@/components/admin/shared/icons";
 import { useAdminDeliveries } from "@/hooks/admin.hooks";
 import type { AdminDelivery } from "@/services/admin.service";
 import { formatCurrency } from "@/lib/format";
+import { PageHeader } from "@/components/shared";
 
 /* ------------------------------------------------------------------
    HELPERS
@@ -91,7 +91,7 @@ const columns: ColumnDef<AdminDelivery>[] = [
       }
       return (
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-full bg-warning-light flex items-center justify-center shrink-0">
+          <div className="w-10 h-11 rounded-full bg-warning-light flex items-center justify-center shrink-0">
             <span className="text-[14px] leading-[1.2] font-bold text-warning-dark">
               {d.driver.name.charAt(0)}
             </span>
@@ -321,11 +321,11 @@ export default function AdminDeliveriesPage() {
                   value={trackCode}
                   onChange={(e) => setTrackCode(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleTrack()}
-                  className="flex-1 min-w-0 h-10 sm:h-12 px-3 sm:px-4 border border-border rounded-xl text-[14px] sm:text-t-17 leading-[1.2] font-semibold text-primary-darker placeholder:text-neutral focus:outline-none focus:ring-2 focus:ring-primary-dark/20 transition-shadow"
+                  className="flex-1 min-w-0 h-11 sm:h-11 px-3 sm:px-4 border border-border rounded-xl text-[14px] sm:text-t-17 leading-[1.2] font-semibold text-primary-darker placeholder:text-neutral focus:outline-none focus:ring-2 focus:ring-primary-dark/20 transition-shadow"
                 />
                 <button
                   onClick={handleTrack}
-                  className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 h-10 sm:h-12 bg-primary-dark text-white rounded-xl text-[12px] sm:text-[14px] leading-[1.2] font-semibold hover:bg-primary-dark-hover transition-colors shrink-0"
+                  className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 h-11 sm:h-11 bg-primary-dark text-white rounded-xl text-[12px] sm:text-[14px] leading-[1.2] font-semibold hover:bg-primary-dark-hover transition-colors shrink-0"
                 >
                   Track Order
                   <ArrowUpRight className="w-4 h-4" />

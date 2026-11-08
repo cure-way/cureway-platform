@@ -14,6 +14,7 @@ import {
   HomeMostSales,
   HomeBottomCTA,
 } from "@/components/home/sections";
+import { PageContainer } from "@/components/shared";
 
 // Self-referencing canonical for the site root. The relative paths below are
 // resolved against `metadataBase` (see `@/lib/site`), so the origin stays
@@ -29,13 +30,17 @@ export const metadata: Metadata = {
 
 export default function PatientHomePage() {
   return (
-    <div className="flex flex-col gap-6 pb-12 overflow-x-hidden">
-      {/* 1. Promo banner — sits OUTSIDE the bordered container */}
-      <HomePromoBanner />
+    <div className="overflow-x-hidden pb-12">
+      {/* Every block on this page is a card or a content block, so every one
+          of them sits on the frame. Only a true background image or colour
+          band may be full-bleed, and this page has none.
 
-      {/* 2-7. Main content — bordered container per Figma node 1209:375 */}
-      <div className="mx-3 md:mx-6 lg:mx-12 border-2 md:border-4 border-primary/10 rounded-2xl md:rounded-3xl bg-white overflow-hidden">
-        <div className="flex flex-col gap-8 md:gap-10 lg:gap-14 pt-4 md:pt-6 lg:pt-8">
+          One flex column with one gap token, so every section is separated by
+          the same distance. Sections do not add vertical padding of their own. */}
+      <PageContainer className="py-0">
+        <div className="flex flex-col gap-8 md:gap-10">
+          <HomePromoBanner />
+
           {/* 2. Hero section */}
           <HomeHero />
 
@@ -54,7 +59,7 @@ export default function PatientHomePage() {
           {/* 7. Bottom CTA — free delivery + find pharmacy */}
           <HomeBottomCTA />
         </div>
-      </div>
+      </PageContainer>
     </div>
   );
 }

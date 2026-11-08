@@ -44,7 +44,7 @@ export default function ActionsDropdown<TActionId extends string>({
               left: position.left,
             }}
           >
-            <div className="px-3 py-2 font-medium text-gray-700 text-sm">
+            <div className="px-3 py-2 font-medium text-gray-700 text-t-14">
               Actions
             </div>
 
@@ -59,7 +59,7 @@ export default function ActionsDropdown<TActionId extends string>({
                   close();
                   onAction(action.id);
                 }}
-                className={`block w-full px-4 py-2 text-left text-sm transition
+                className={`block w-full px-4 py-2 text-left text-t-14 transition
                   ${
                     action.disabled
                       ? "cursor-not-allowed text-gray-400"

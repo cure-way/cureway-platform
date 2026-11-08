@@ -11,6 +11,7 @@ import { usePharmaciesByMedicine } from "@/hooks/medicine/usePharmaciesByMedicin
 import { useSimilarMedicines } from "@/hooks/medicine/useSimilarMedicines";
 import SimilarProductsSection from "@/components/patient/medicine/SimilarProductsSection";
 import MedicineDetailsSkeleton from "@/components/patient/medicine/MedicineDetailsSkeleton";
+import { PageContainer } from "@/components/shared";
 
 export default function MedicineDetailsPage() {
   const params = useParams();
@@ -51,7 +52,7 @@ export default function MedicineDetailsPage() {
 
   return (
     <div className="bg-gray-50 pb-12 min-h-screen">
-      <div className="space-y-8 mx-auto px-4 sm:px-6 py-8 max-w-5xl">
+      <PageContainer className="space-y-8">
         <MedicineOverviewCard medicine={medicine} stock={addFromStock} />
 
         <NearbyPharmaciesSection pharmacies={sortedPharmacies} />
@@ -59,7 +60,7 @@ export default function MedicineDetailsPage() {
         <MedicineInfoCard medicine={medicine} />
 
         <SimilarProductsSection medicines={similarMedicines} />
-      </div>
+      </PageContainer>
     </div>
   );
 }

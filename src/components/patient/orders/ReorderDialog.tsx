@@ -8,13 +8,21 @@ import type { Order } from "@/types/order";
 // <Toaster/>, so sonner toasts never actually appeared.
 import toast from "react-hot-toast";
 
-export function ReorderDialog({ order, onClose }: { order: Order; onClose: () => void }) {
+export function ReorderDialog({
+  order,
+  onClose,
+}: {
+  order: Order;
+  onClose: () => void;
+}) {
   const [state, setState] = useState<"idle" | "loading" | "success">("idle");
-  const router    = useRouter();
+  const router = useRouter();
   const fetchCart = useCartStore((s) => s.fetchCart);
 
   useEffect(() => {
-    const h = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const h = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
     document.addEventListener("keydown", h);
     return () => document.removeEventListener("keydown", h);
   }, [onClose]);
@@ -34,18 +42,23 @@ export function ReorderDialog({ order, onClose }: { order: Order; onClose: () =>
       await fetchCart();
 
       setState("success");
-      setTimeout(() => { onClose(); router.push("/cart"); }, 1200);
+      setTimeout(() => {
+        onClose();
+        router.push("/cart");
+      }, 1200);
     } catch (err) {
       setState("idle");
       toast.error(
-        err instanceof Error ? err.message : "Failed to reorder. Please try again.",
+        err instanceof Error
+          ? err.message
+          : "Failed to reorder. Please try again.",
       );
     }
   };
 
-  const items        = order.items ?? [];
+  const items = order.items ?? [];
   const previewItems = items.slice(0, 3);
-  const moreCount    = items.length - 3;
+  const moreCount = items.length - 3;
 
   return (
     <>
@@ -55,42 +68,74 @@ export function ReorderDialog({ order, onClose }: { order: Order; onClose: () =>
         className="fixed inset-0 bg-black/40 z-[1000] flex items-center justify-center p-4 backdrop-blur-sm"
       >
         <div
-          className="reorder-dialog w-full max-w-[400px] bg-card rounded-3xl p-6 shadow-2xl font-[var(--font-montserrat)]"
+          className="reorder-dialog w-full max-w-[400px] bg-card rounded-2xl p-6 shadow-2xl font-[var(--font-montserrat)]"
           onClick={(e) => e.stopPropagation()}
         >
           {state === "success" ? (
             <div className="flex flex-col items-center py-4 gap-4">
               <div className="w-16 h-16 rounded-full bg-success-light flex items-center justify-center">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--success))" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                  <path className="check-path" d="M20 6 9 17l-5-5"/>
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="hsl(var(--success))"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path className="check-path" d="M20 6 9 17l-5-5" />
                 </svg>
               </div>
-              <h3 className="text-t-21-bold text-foreground m-0">Added to Cart!</h3>
-              <p className="text-t-14 text-muted-foreground m-0">Redirecting to your cart…</p>
+              <h3 className="text-t-21-bold text-foreground m-0">
+                Added to Cart!
+              </h3>
+              <p className="text-t-14 text-muted-foreground m-0">
+                Redirecting to your cart…
+              </p>
             </div>
           ) : (
             <>
               <div className="w-14 h-14 rounded-2xl bg-accent flex items-center justify-center mb-4">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="hsl(var(--primary))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="hsl(var(--primary))"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
                 </svg>
               </div>
-              <h3 className="text-t-21-bold text-foreground mb-1">Reorder #{order.id}?</h3>
+              <h3 className="text-t-21-bold text-foreground mb-1">
+                Reorder #{order.id}?
+              </h3>
               <p className="text-t-14 text-muted-foreground mb-4">
-                This will add {items.length} item{items.length !== 1 ? "s" : ""} from {order.pharmacyName} back to your cart
+                This will add {items.length} item{items.length !== 1 ? "s" : ""}{" "}
+                from {order.pharmacyName} back to your cart
               </p>
               {previewItems.length > 0 && (
                 <div className="bg-neutral-light rounded-xl p-3 mb-5 flex flex-col gap-2">
                   {previewItems.map((item) => (
                     <div key={item.id} className="flex items-center gap-2">
-                      <span className="text-base">💊</span>
-                      <span className="text-t-14 text-foreground truncate flex-1">{item.name}</span>
-                      <span className="text-t-12 text-muted-foreground flex-shrink-0">×{item.quantity}</span>
+                      <span className="text-t-14">💊</span>
+                      <span className="text-t-14 text-foreground truncate flex-1">
+                        {item.name}
+                      </span>
+                      <span className="text-t-12 text-muted-foreground flex-shrink-0">
+                        ×{item.quantity}
+                      </span>
                     </div>
                   ))}
                   {moreCount > 0 && (
-                    <p className="text-t-12 text-muted-foreground m-0 pl-7">+{moreCount} more items</p>
+                    <p className="text-t-12 text-muted-foreground m-0 pl-7">
+                      +{moreCount} more items
+                    </p>
                   )}
                 </div>
               )}
@@ -112,7 +157,10 @@ export function ReorderDialog({ order, onClose }: { order: Order; onClose: () =>
                   }`}
                 >
                   {state === "loading" ? (
-                    <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Adding…</>
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Adding…
+                    </>
                   ) : (
                     "Reorder"
                   )}

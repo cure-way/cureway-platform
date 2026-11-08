@@ -44,7 +44,11 @@ const generalSubItems: SettingsSubItem[] = [
   { label: "Profile", href: "/admin/settings/profile" },
   { label: "Security", href: "/admin/settings/security" },
   { label: "Notification", href: "/admin/notifications" },
-  { label: "Connected App", href: "/admin/settings/connected-app", unbuilt: true },
+  {
+    label: "Connected App",
+    href: "/admin/settings/connected-app",
+    unbuilt: true,
+  },
 ];
 
 const navItems: SettingsNavItem[] = [

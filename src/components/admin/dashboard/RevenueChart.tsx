@@ -44,7 +44,7 @@ function BarTooltip({
       <span className="text-t-12 font-medium leading-[1.2] opacity-70">
         {label}
       </span>
-      <span className="text-t-14 font-semibold leading-[1.2]">
+      <span className="text-t-14-semibold leading-[1.2]">
         {value >= 1000 ? `${(value / 1000).toFixed(0)}K` : `${value}K`}
       </span>
       <div
@@ -86,7 +86,7 @@ export default function RevenueChart() {
   );
 
   return (
-    <div className="bg-white rounded-2xl border border-[#EFEDED] pt-3 sm:pt-5 px-3 sm:px-5 pb-3 sm:pb-4 flex flex-col gap-3 sm:gap-4">
+    <div className="bg-white rounded-xl border border-border pt-3 sm:pt-5 px-3 sm:px-5 pb-3 sm:pb-4 flex flex-col gap-3 sm:gap-4">
       {/* Header + Metrics */}
       <div className="flex flex-col gap-3 sm:gap-5">
         {/* Title Row */}
@@ -96,7 +96,7 @@ export default function RevenueChart() {
               <RevenueActivityIcon />
             </div>
             <div className="flex-1 flex flex-col gap-1 sm:gap-2 min-w-0">
-              <h2 className="text-t-17 sm:text-t-21 font-semibold leading-[1.2] text-[#212F4D]">
+              <h2 className="text-t-17-semibold sm:text-t-21-semibold leading-[1.2] text-[#212F4D]">
                 System Revenue Overview
               </h2>
               <p className="text-[12px] sm:text-[14px] leading-[1.2] text-[#989593]">
@@ -126,7 +126,7 @@ export default function RevenueChart() {
               ))}
             </div>
             <button
-              className="bg-white border border-[#EFEDED] rounded-lg h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center shrink-0 hover:bg-gray-50 transition-colors"
+              className="bg-white border border-[#EFEDED] rounded-lg h-11 w-10 sm:h-12 sm:w-12 flex items-center justify-center shrink-0 hover:bg-gray-50 transition-colors"
               aria-label="Export report"
             >
               <RevenueExportIcon />
@@ -151,12 +151,12 @@ export default function RevenueChart() {
                 {m.label}
               </p>
               <div className="flex items-end justify-between gap-1">
-                <span className="text-t-17 sm:text-t-25 font-semibold leading-[1.2] text-[#393737]">
+                <span className="text-t-17-semibold sm:text-t-25-semibold leading-[1.2] text-[#393737]">
                   {m.value}
                 </span>
                 <div className="flex flex-col items-end gap-1 sm:gap-2">
                   <span
-                    className={`inline-flex items-center px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-t-12 font-semibold leading-[1.2] ${
+                    className={`inline-flex items-center px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-t-12-semibold leading-[1.2] ${
                       m.positive
                         ? "bg-[#EBF9EE] text-[#12461F]"
                         : "bg-error-light text-error-dark"
@@ -164,7 +164,7 @@ export default function RevenueChart() {
                   >
                     {m.change}
                   </span>
-                  <span className="text-t-12 sm:text-t-10 leading-[1.2] text-[#393737] whitespace-nowrap">
+                  <span className="text-t-12 leading-[1.2] text-[#393737] whitespace-nowrap">
                     from last week
                   </span>
                 </div>

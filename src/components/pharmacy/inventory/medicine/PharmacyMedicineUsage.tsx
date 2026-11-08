@@ -18,11 +18,11 @@ export default function PharmacyMedicineUsage({
 
   return (
     <div className="bg-white p-6 border rounded-xl border-t-3 border-t-(--color-primary) h-68 flex flex-col">
-      <h3 className="mb-4 font-semibold text-gray-900 text-sm shrink-0">
+      <h3 className="mb-4 font-semibold text-gray-900 text-t-14 shrink-0">
         Usage & Storage Notes
       </h3>
 
-      <div className="space-y-4 pr-2 overflow-y-auto text-gray-600 text-sm">
+      <div className="space-y-4 pr-2 overflow-y-auto text-gray-600 text-t-14">
         {hasInventoryNote && (
           <div>
             <p className="mb-1 font-medium text-gray-800">Pharmacy Notes</p>

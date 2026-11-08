@@ -8,6 +8,7 @@ import { useSidebar } from "@/contexts/SidebarContext";
 import { useClickOutside } from "@/hooks";
 import { useAuth } from "@/features/auth";
 import { transition } from "@/components/admin/shared/motion";
+import { FRAME } from "@/components/shared";
 import {
   HeaderSearchIcon,
   HeaderVoiceIcon,
@@ -42,18 +43,22 @@ export default function AdminHeader() {
         : (user?.role ?? "Admin");
 
   return (
-    <header className="sticky top-0 z-20 flex items-center gap-3 lg:gap-6 px-4 lg:px-6 py-4 bg-white border-b border-[#EFEDED]">
+    <header className="sticky top-0 z-20 bg-white border-b border-[#EFEDED]">
+      <div
+        data-topbar-inner=""
+        className={`${FRAME} flex items-center gap-3 lg:gap-6 h-20`}
+      >
       {/* Hamburger — mobile/tablet only */}
       <button
         onClick={open}
-        className="w-12 h-12 flex items-center justify-center rounded-full hover:bg-neutral-light transition-colors text-neutral-dark lg:hidden"
+        className="w-12 h-11 flex items-center justify-center rounded-full hover:bg-neutral-light transition-colors text-neutral-dark lg:hidden"
         aria-label="Open sidebar"
       >
         <Menu className="w-6 h-6" />
       </button>
 
       {/* Search Bar */}
-      <div className="hidden sm:flex items-center flex-1 min-w-0 h-12 rounded-3xl bg-[#EFF3FB] pl-4 pr-2 gap-2.5">
+      <div className="hidden sm:flex items-center flex-1 min-w-0 h-11 rounded-2xl bg-[#EFF3FB] pl-4 pr-2 gap-2.5">
         <div className="shrink-0 w-6 h-6">
           <HeaderSearchIcon />
         </div>
@@ -64,7 +69,7 @@ export default function AdminHeader() {
           aria-label="Search"
         />
         <button
-          className="shrink-0 w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#DFE5F5] transition-colors"
+          className="shrink-0 w-10 h-11 flex items-center justify-center rounded-full hover:bg-[#DFE5F5] transition-colors"
           aria-label="Voice search"
         >
           <HeaderVoiceIcon />
@@ -77,7 +82,7 @@ export default function AdminHeader() {
       {/* Add New Button */}
       <button
         aria-label="Add new"
-        className="flex items-center gap-2 px-4 py-3 rounded-lg bg-[#263B81] text-[#EBEDF7] text-base font-semibold leading-[1.2] hover:bg-[#1E2F68] transition-colors whitespace-nowrap shrink-0"
+        className="flex items-center gap-2 px-4 py-3 rounded-lg bg-[#263B81] text-[#EBEDF7] text-t-14 font-semibold leading-[1.2] hover:bg-[#1E2F68] transition-colors whitespace-nowrap shrink-0"
       >
         <div className="w-6 h-6 shrink-0">
           <HeaderAddIcon />
@@ -89,7 +94,7 @@ export default function AdminHeader() {
       <div className="flex items-center gap-2 lg:gap-3 shrink-0">
         <a
           href="/admin/notifications"
-          className="relative w-12 h-12 flex items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-0.75 hover:bg-neutral-light transition-colors"
+          className="relative w-12 h-11 flex items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-0.75 hover:bg-neutral-light transition-colors"
           aria-label="Notifications — 3 unread"
         >
           <HeaderNotificationIcon />
@@ -99,14 +104,14 @@ export default function AdminHeader() {
         </a>
 
         <button
-          className="w-12 h-12 flex items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-0.75 hover:bg-neutral-light transition-colors"
+          className="w-12 h-11 flex items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-0.75 hover:bg-neutral-light transition-colors"
           aria-label="Change language"
         >
           <HeaderTranslateIcon />
         </button>
 
         <button
-          className="hidden sm:flex w-12 h-12 items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-0.75 hover:bg-neutral-light transition-colors"
+          className="hidden sm:flex w-12 h-11 items-center justify-center rounded-full border border-[#C0C8E5] bg-white p-0.75 hover:bg-neutral-light transition-colors"
           aria-label="Messages"
         >
           <HeaderMailIcon />
@@ -117,7 +122,7 @@ export default function AdminHeader() {
       <div className="relative shrink-0" ref={profileRef}>
         <button
           onClick={() => setProfileOpen((v) => !v)}
-          className="w-12 h-12 rounded-full overflow-hidden hover:ring-2 hover:ring-primary/20 transition-all shrink-0 bg-primary-light flex items-center justify-center text-primary font-semibold text-t-14"
+          className="w-12 h-11 rounded-full overflow-hidden hover:ring-2 hover:ring-primary/20 transition-all shrink-0 bg-primary-light flex items-center justify-center text-primary font-semibold text-t-14"
           aria-label="User profile"
           aria-expanded={profileOpen}
         >
@@ -146,7 +151,7 @@ export default function AdminHeader() {
             >
               {/* User Info */}
               <div className="flex items-center gap-3 px-4 py-3">
-                <div className="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center text-primary font-semibold text-t-12 shrink-0">
+                <div className="w-10 h-11 rounded-full bg-primary-light flex items-center justify-center text-primary font-semibold text-t-12 shrink-0">
                   {initials}
                 </div>
                 <div className="min-w-0">
@@ -202,6 +207,7 @@ export default function AdminHeader() {
             </motion.div>
           )}
         </AnimatePresence>
+      </div>
       </div>
     </header>
   );

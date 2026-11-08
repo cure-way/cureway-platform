@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { NEARBY_PHARMACIES } from "@/services/nearbypharmacies.data";
 import { formatCurrency } from "@/lib/format";
+import { PageContainer, PageHeader } from "@/components/shared";
 
 export default function NearbyPharmaciesPage() {
   const [pharmacies] = useState(NEARBY_PHARMACIES);
@@ -20,39 +21,14 @@ export default function NearbyPharmaciesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              Nearby Pharmacies
-            </h1>
-            <p className="text-sm text-gray-500 mt-1">
-              Pharmacies near your location
-            </p>
-          </div>
-          <button
-            onClick={handleBack}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors font-medium"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            Back
-          </button>
-        </div>
-      </div>
+      <PageContainer>
+        <PageHeader
+          title="Nearby Pharmacies"
+          subtitle="Pharmacies near your location"
+          showBack
+          onBack={handleBack}
+        />
 
-      <div className="max-w-6xl mx-auto px-6 py-8">
         <div className="space-y-4">
           {pharmacies.map((pharmacy, index) => (
             <div
@@ -74,7 +50,7 @@ export default function NearbyPharmaciesPage() {
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
                       <svg
-                        className="w-12 h-12 text-gray-300"
+                        className="w-12 h-11 text-gray-300"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -102,10 +78,10 @@ export default function NearbyPharmaciesPage() {
                       </svg>
                     </div>
                     <div className="flex-1">
-                      <h2 className="text-base font-semibold text-gray-900 leading-tight">
+                      <h2 className="text-t-14 font-semibold text-gray-900 leading-tight">
                         {pharmacy.name}
                       </h2>
-                      <p className="text-sm text-gray-500 mt-0.5 leading-snug">
+                      <p className="text-t-14 text-gray-500 mt-0.5 leading-snug">
                         {pharmacy.address}
                       </p>
                     </div>
@@ -119,10 +95,10 @@ export default function NearbyPharmaciesPage() {
                       >
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
-                      <span className="text-sm font-medium text-gray-700">
+                      <span className="text-t-14 font-medium text-gray-700">
                         {pharmacy.rating}
                       </span>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-t-12 text-gray-500">
                         ({pharmacy.reviewCount}+ Rating)
                       </span>
                     </div>
@@ -147,13 +123,13 @@ export default function NearbyPharmaciesPage() {
                           d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                         />
                       </svg>
-                      <span className="text-sm text-gray-700">
+                      <span className="text-t-14 text-gray-700">
                         {pharmacy.distance}
                       </span>
                     </div>
                   </div>
 
-                  <div className="mt-3 inline-flex items-center gap-1.5 bg-green-50 text-green-700 px-3 py-1.5 rounded-md text-sm font-medium">
+                  <div className="mt-3 inline-flex items-center gap-1.5 bg-green-50 text-green-700 px-3 py-1.5 rounded-md text-t-14 font-medium">
                     <svg
                       className="w-4 h-4"
                       fill="none"
@@ -174,7 +150,7 @@ export default function NearbyPharmaciesPage() {
                 <div className="flex-shrink-0">
                   <button
                     onClick={() => handleViewPharmacy(pharmacy.id)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium text-sm transition-colors shadow-sm"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium text-t-14 transition-colors shadow-sm"
                   >
                     View Pharmacy
                   </button>
@@ -183,7 +159,7 @@ export default function NearbyPharmaciesPage() {
             </div>
           ))}
         </div>
-      </div>
+      </PageContainer>
 
       <style jsx>{`
         @keyframes fadeInUp {

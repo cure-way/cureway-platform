@@ -21,9 +21,8 @@ export function CouponInput({
   const [code, setCode] = useState(appliedCode ?? "");
   const [isLocalLoading, setIsLocalLoading] = useState(false);
 
-
   let currentState: CouponState = "idle";
-  
+
   if (isLocalLoading) {
     currentState = "loading";
   } else if (appliedCode) {
@@ -32,7 +31,6 @@ export function CouponInput({
     currentState = "typing";
   }
 
-  
   useEffect(() => {
     if (!appliedCode) {
       setCode("");
@@ -90,35 +88,35 @@ export function CouponInput({
           disabled={currentState === "loading" || currentState === "applied"}
           className={`flex-1 border-none outline-none bg-transparent text-t-14 min-w-0 font-[var(--font-montserrat)] ${currentState === "applied" ? "text-foreground font-semibold" : "text-neutral-dark"}`}
         />
-        
+
         {currentState === "idle" && (
           <button className="bg-neutral text-card rounded-lg px-3.5 py-1.5 text-t-12 font-medium flex-shrink-0 cursor-default">
             Apply
           </button>
         )}
-        
+
         {currentState === "typing" && (
           <button
             onClick={handleApply}
-            className="w-[68px] h-10 bg-primary text-card rounded-xl text-t-14-semibold flex-shrink-0 hover:bg-primary-hover transition-colors border-none cursor-pointer"
+            className="w-[68px] h-11 bg-primary text-card rounded-xl text-t-14-semibold flex-shrink-0 hover:bg-primary-hover transition-colors border-none cursor-pointer"
           >
             Apply
           </button>
         )}
-        
+
         {currentState === "loading" && (
           <button
             disabled
-            className="w-14 h-10 bg-secondary rounded-xl flex items-center justify-center flex-shrink-0 border-none cursor-not-allowed"
+            className="w-14 h-11 bg-secondary rounded-xl flex items-center justify-center flex-shrink-0 border-none cursor-not-allowed"
           >
             <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
           </button>
         )}
-        
+
         {currentState === "applied" && (
           <button
             onClick={handleRemove}
-            className="w-[104px] h-10 bg-success-light-active rounded-xl flex items-center justify-center gap-1.5 flex-shrink-0 border-none cursor-pointer"
+            className="w-[104px] h-11 bg-success-light-active rounded-xl flex items-center justify-center gap-1.5 flex-shrink-0 border-none cursor-pointer"
           >
             <span className="text-t-12 font-medium text-success-darker whitespace-nowrap">
               Applied
@@ -139,11 +137,12 @@ export function CouponInput({
           </button>
         )}
       </div>
-      
+
       {currentState === "applied" && discountPercent !== undefined && (
         <p className="text-t-14 text-neutral flex items-center gap-1.5 mt-2">
-          <span className="text-base text-neutral">•</span>
-          {"This Promo code will save "}{discountPercent}%
+          <span className="text-t-14 text-neutral">•</span>
+          {"This Promo code will save "}
+          {discountPercent}%
         </p>
       )}
     </div>

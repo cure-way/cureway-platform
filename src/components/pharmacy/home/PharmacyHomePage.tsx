@@ -4,7 +4,7 @@ import OrdersSummaryCards from "@/components/pharmacy/home/OrdersSummaryCards";
 import QuickActionCard from "@/components/pharmacy/home/QuickActionCard";
 import OrdersCard from "@/components/pharmacy/home/OrdersCard";
 import InventorySnapshot from "@/components/pharmacy/home/InventorySnapshot";
-import PageHeader from "@/components/pharmacy/shared/PageHeader";
+import { PageHeader } from "@/components/shared";
 import { useOrdersSnapshot } from "@/hooks/pharmacy/useOrdersSnapshot";
 import { OrderFilter } from "@/types/pharmacyOrders";
 import { useState } from "react";
@@ -20,7 +20,10 @@ export default function PharmacyHomePage() {
   return (
     <div className="gap-6 grid lg:grid-cols-[1fr_320px]">
       <div>
-        <PageHeader title="Pharmacy Home" />
+        <PageHeader
+          title="Pharmacy Home"
+          subtitle="Today's orders and stock at a glance"
+        />
         <OrdersSummaryCards summary={summary} summaryLoading={summaryLoading} />
         <OrdersCard
           data={orders}

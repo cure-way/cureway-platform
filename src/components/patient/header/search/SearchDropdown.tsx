@@ -30,11 +30,11 @@ export function SearchDropdown() {
         aria-label={isTyping ? "Search suggestions" : "Search options"}
       >
         {isLoading && (
-          <div className="p-4 text-neutral-dark text-sm">Searching…</div>
+          <div className="p-4 text-neutral-dark text-t-14">Searching…</div>
         )}
 
         {error && !isLoading && (
-          <div className="p-4 text-error text-sm">{error}</div>
+          <div className="p-4 text-error text-t-14">{error}</div>
         )}
 
         {!isTyping && <SearchDefaultState />}

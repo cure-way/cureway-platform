@@ -32,23 +32,23 @@ export function PharmacyCard({ pharmacy }: PharmacyCardProps) {
         <div className={`mt-1.5 h-2 w-2 rounded-full ${availabilityColor}`} />
 
         <div className="flex-1 min-w-0">
-          <h2 className="mb-1 font-semibold text-gray-900 text-sm truncate">
+          <h2 className="mb-1 font-semibold text-gray-900 text-t-14 truncate">
             {pharmacy.pharmacyName}
           </h2>
 
-          <p className="text-gray-600 text-xs">{pharmacy.cityName}</p>
+          <p className="text-gray-600 text-t-12">{pharmacy.cityName}</p>
 
-          <p className="text-gray-500 text-xs">
+          <p className="text-gray-500 text-t-12">
             {formatDistance(pharmacy.distanceKm)}
           </p>
         </div>
       </div>
 
-      <div className="mb-3 font-semibold text-gray-900 text-sm">
+      <div className="mb-3 font-semibold text-gray-900 text-t-14">
         {formatCurrency(pharmacy.price ?? 0)}
       </div>
 
-      <div className="flex justify-between items-center text-xs">
+      <div className="flex justify-between items-center text-t-12">
         <span className="text-gray-600">
           {pharmacy.deliveryFee
             ? `Delivery ${formatCurrency(pharmacy.deliveryFee)}`

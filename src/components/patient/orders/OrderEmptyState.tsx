@@ -9,7 +9,6 @@ export function OrderEmptyState() {
   return (
     <div className="w-full py-10 font-[var(--font-montserrat)]">
       <div className="flex flex-col items-center gap-6">
-        
         <Image
           src="/icons/empty-order.png"
           alt="no orders"
@@ -19,7 +18,7 @@ export function OrderEmptyState() {
           priority
         />
 
-        <p className="text-center text-2xl font-bold leading-[120%] text-black/80">
+        <p className="text-center text-t-21 font-bold leading-[120%] text-black/80">
           No Order Found , Start Your First Order Now!
         </p>
 
@@ -34,7 +33,7 @@ export function OrderEmptyState() {
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#334EAC]/35",
           ].join(" ")}
         >
-          <span className="text-xl font-bold leading-[120%] text-[#334EAC] active:text-white">
+          <span className="text-t-17 font-bold leading-[120%] text-[#334EAC] active:text-white">
             Order Now
           </span>
         </button>

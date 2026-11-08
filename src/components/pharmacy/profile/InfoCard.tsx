@@ -10,7 +10,7 @@ export default function InfoCard({ icon, children }: Props) {
     <div className="flex items-start gap-3 bg-white px-4 py-4 border border-[#E2E8F0] rounded-lg">
       <div className="mt-1 text-[#64748B]">{icon}</div>
 
-      <div className="text-[#0F172A] text-sm">{children}</div>
+      <div className="text-[#0F172A] text-t-14">{children}</div>
     </div>
   );
 }

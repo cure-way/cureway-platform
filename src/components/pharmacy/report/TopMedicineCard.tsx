@@ -13,7 +13,7 @@ export function TopMedicineCard({ data }: { data: TopMedicine[] | null }) {
 
   return (
     <div className="bg-white p-6 border rounded-xl max-w-full md:max-w-100 grow">
-      <h2 className="mb-8 font-medium text-sm text-center">Top Medicine</h2>
+      <h2 className="mb-8 font-medium text-t-14 text-center">Top Medicine</h2>
 
       <div className="space-y-2">
         {data?.map((item) => (
@@ -25,16 +25,16 @@ export function TopMedicineCard({ data }: { data: TopMedicine[] | null }) {
             {/* Left side */}
             <div className="flex items-center gap-3">
               <div className="flex justify-center items-center bg-(--color-secondary-light) rounded-lg w-10 h-10 text-(--color-primary)">
-                <FaPills className="text-lg" />
+                <FaPills className="text-t-17" />
               </div>
 
-              <span className="text-gray-700 text-sm text-left">
+              <span className="text-gray-700 text-t-14 text-left">
                 {item.medicineName}
               </span>
             </div>
 
             {/* Right side */}
-            <span className="font-medium text-(--color-primary) text-sm">
+            <span className="font-medium text-(--color-primary) text-t-14">
               {item.orderCount} orders
             </span>
           </button>

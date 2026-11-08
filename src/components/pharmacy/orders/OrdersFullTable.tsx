@@ -11,6 +11,7 @@ import ErrorState from "../shared/ErrorState";
 import NullableText from "../shared/NullableText";
 import { OrderRow } from "@/types/pharmacyOrders";
 import { useRouter } from "next/navigation";
+import { formatCurrency } from "@/lib/format";
 
 type Props = {
   data: OrderRow[];
@@ -83,7 +84,7 @@ export default function OrdersFullTable({
               <>
                 {row.preview.firstItemName}
                 {row.preview.remainingCount > 0 && (
-                  <span className="text-gray-500 text-xs">
+                  <span className="text-gray-500 text-t-12">
                     {" +"}
                     {row.preview.remainingCount}
                   </span>
@@ -94,6 +95,12 @@ export default function OrdersFullTable({
 
           if (col.key === "status") {
             return <StatusBadge value={row.status} type="order" />;
+          }
+
+          // The Total column rendered the raw number ("7.5"), the one place
+          // in the app still showing an unformatted price.
+          if (col.key === "totalAmount") {
+            return formatCurrency(row.totalAmount ?? 0);
           }
 
           const value = row[col.key as keyof OrderRow];

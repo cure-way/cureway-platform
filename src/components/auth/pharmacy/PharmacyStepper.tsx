@@ -83,7 +83,7 @@ export function PharmacyStepper({
               {/* Label */}
               <span
                 className={cn(
-                  "text-sm font-medium text-center transition-colors max-w-[100px]",
+                  "text-t-14 font-medium text-center transition-colors max-w-[100px]",
                   isActive || isCompleted ? "text-[#334eac]" : "text-[#797776]",
                 )}
               >

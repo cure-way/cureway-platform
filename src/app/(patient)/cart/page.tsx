@@ -6,6 +6,7 @@ import CartHeader from "@/components/patient/cart/CartHeader";
 import CartPageDetailed from "@/components/patient/cart/CartPageDetailed";
 import CartPageSummary from "@/components/patient/cart/CartPageSummary";
 import { LoadingSpinner } from "@/components/shared/LoadingSpinner";
+import { PageContainer } from "@/components/shared";
 
 export default function CartPage() {
   const { cart, fetchCart, loading } = useCartStore();
@@ -14,13 +15,14 @@ export default function CartPage() {
     fetchCart();
   }, [fetchCart]);
 
-
   const view = useMemo(() => {
     if (!cart || cart.groups.length === 0) {
       return "detailed";
     }
 
-    const pending = getPendingPrescriptionItems(cart.groups.flatMap(g => g.items));
+    const pending = getPendingPrescriptionItems(
+      cart.groups.flatMap((g) => g.items),
+    );
     const isReadyForSummary = cart.totalItems > 0 && pending.length === 0;
 
     return isReadyForSummary ? "summary" : "detailed";
@@ -38,14 +40,12 @@ export default function CartPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <CartHeader totalItems={totalItems} />
-      <main>
-        {view === "detailed" ? (
-          <CartPageDetailed />
-        ) : (
-          <CartPageSummary />
-        )}
-      </main>
+      <PageContainer>
+        <CartHeader totalItems={totalItems} />
+        <main>
+          {view === "detailed" ? <CartPageDetailed /> : <CartPageSummary />}
+        </main>
+      </PageContainer>
     </div>
   );
 }

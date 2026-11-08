@@ -16,7 +16,7 @@ export default function OrderSummary({
   onContinueShopping,
 }: Props) {
   return (
-    <div className="bg-card rounded-3xl border-t-4 border-t-secondary p-6 shadow-card font-[var(--font-montserrat)] sticky top-6">
+    <div className="bg-card rounded-2xl border-t-4 border-t-secondary p-6 shadow-card font-[var(--font-montserrat)] sticky top-6">
       <div className="pb-3 mb-4 border-b border-border">
         <h3 className="text-t-21-bold text-foreground">Order summary</h3>
       </div>
@@ -26,7 +26,8 @@ export default function OrderSummary({
           <span>
             <span className="text-t-17-semibold text-foreground">Subtotal</span>
             <span className="text-t-17 text-muted-foreground">
-              {" "}({totalItems} items)
+              {" "}
+              ({totalItems} items)
             </span>
           </span>
           <span className="text-t-25-bold text-primary">
@@ -36,10 +37,11 @@ export default function OrderSummary({
         </div>
       </div>
 
-    
-         
       <p className="text-t-12 text-muted-foreground mb-6">
-        · {"This price isn't final. Shipping and VAT will be added in the next step."}
+        ·{" "}
+        {
+          "This price isn't final. Shipping and VAT will be added in the next step."
+        }
       </p>
 
       <button

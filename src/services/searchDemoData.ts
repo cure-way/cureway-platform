@@ -31,14 +31,14 @@ export const SEEDED_RECENTS: SearchResult[] = [
   {
     id: "recent-2",
     type: "pharmacy",
-    title: "City Pharmacy",
+    title: "Al-Shifa Pharmacy",
     subtitle: "Deliver · 15 minutes | 2.55 km",
   },
   {
     id: "recent-3",
     type: "medicine",
-    title: "Panadol 500mg",
-    subtitle: "Tablet · 12 tablets",
+    title: "Ventolin Inhaler",
+    subtitle: "Inhaler · 200 doses",
   },
 ];
 
@@ -89,7 +89,7 @@ export const SUGGESTION_PHARMACIES: SearchResult[] = [
   {
     id: "sug-p1",
     type: "pharmacy",
-    title: "City Pharmacy",
+    title: "Al-Shifa Pharmacy",
     subtitle: "Deliver · 15 minutes | 2.55 km",
   },
   {
@@ -459,7 +459,7 @@ export const SPELL_CHECK: Record<string, string> = {
 export const NEARBY_PHARMACIES: NearbyPharmacy[] = [
   {
     id: "np-1",
-    name: "City Pharmacy",
+    name: "Amal Pharmacy",
     location: "26 Salah El Din St, Gaza City",
     rating: 4.8,
     deliveryRange: "30 min",

@@ -65,7 +65,7 @@ export const CheckboxField = forwardRef<HTMLInputElement, CheckboxFieldProps>(
           />
           <span
             className={cn(
-              "text-sm text-gray-700 select-none",
+              "text-t-14 text-gray-700 select-none",
               disabled && "opacity-60",
             )}
           >

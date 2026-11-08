@@ -77,10 +77,10 @@ export function SocialButton({
       type="button"
       onClick={handleClick}
       disabled={disabled}
-      className="flex items-center justify-center gap-3 w-full h-12 px-6 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 active:bg-gray-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      className="flex items-center justify-center gap-3 w-full h-11 px-6 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 active:bg-gray-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {icons[provider]}
-      <span className="text-sm font-medium text-gray-900">
+      <span className="text-t-14 font-medium text-gray-900">
         {labels[provider]}
       </span>
     </button>

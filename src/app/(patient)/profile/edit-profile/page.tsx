@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { MotionTap } from "@/components/shared/MotionTap";
-import { IconBack } from "@/components/patient/settings/Icons";
+import { ContentColumn, PageContainer, PageHeader } from "@/components/shared";
 import { useProfile } from "@/hooks/useProfile";
 import { useAuth } from "@/features/auth";
 import { SHOWCASE_MODE } from "@/lib/showcase/config";
@@ -39,7 +39,7 @@ function TextInput({
   rightIcon?: React.ReactNode;
 }) {
   return (
-    <div className="flex h-[56px] w-full items-center gap-3 rounded-[16px] border border-[#EFEDED] bg-white px-4">
+    <div className="flex h-11 w-full items-center gap-3 rounded-[16px] border border-[#EFEDED] bg-white px-4">
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -150,22 +150,15 @@ export default function EditProfilePage() {
   };
 
   return (
-    <div className="w-full px-4 py-6">
-      <div className="mx-auto w-full max-w-[1100px]">
-        {/* ✅ Header row (مثل Settings) */}
-        <div className="mb-4 flex items-center justify-between">
-          <div className="text-t-25 font-bold text-black">Edit Profile</div>
+    <PageContainer>
+      <PageHeader
+        title="Edit Profile"
+        subtitle="Update your name, contact details and address"
+        showBack
+        backHref="/profile"
+      />
 
-          <MotionTap
-            as="button"
-            onClick={() => router.push("/profile")}
-            className="flex items-center gap-2"
-          >
-            <IconBack />
-            <span className="text-t-17 font-bold">Back</span>
-          </MotionTap>
-        </div>
-
+      <ContentColumn width="md" className="flex flex-col gap-4">
         {/* ✅ Cards start at the same top line */}
         <div className="grid items-start gap-6 lg:grid-cols-12">
           {/* LEFT CARD */}
@@ -188,7 +181,7 @@ export default function EditProfilePage() {
                 <MotionTap
                   as="button"
                   onClick={() => console.log("change photo")}
-                  className="flex h-[50px] w-full max-w-[220px] items-center justify-center rounded-[24px] bg-[#EBEDF7]"
+                  className="flex h-11 w-full max-w-[220px] items-center justify-center rounded-[24px] bg-[#EBEDF7]"
                 >
                   <span className="text-t-17 font-semibold text-[#334EAC]">
                     Change photo
@@ -238,7 +231,7 @@ export default function EditProfilePage() {
 
                 <div>
                   <FieldLabel>Phone Number</FieldLabel>
-                  <div className="flex h-[56px] w-full items-center gap-3 rounded-[16px] border border-[#EFEDED] bg-white px-4">
+                  <div className="flex h-11 w-full items-center gap-3 rounded-[16px] border border-[#EFEDED] bg-white px-4">
                     <select
                       value={country.code}
                       onChange={(e) => {
@@ -272,7 +265,7 @@ export default function EditProfilePage() {
                     as="button"
                     onClick={handleSave}
                     disabled={updating || loading}
-                    className="flex h-[50px] w-full max-w-[360px] items-center justify-center rounded-[24px] bg-[#334EAC] disabled:opacity-50"
+                    className="flex h-11 w-full max-w-[360px] items-center justify-center rounded-[24px] bg-[#334EAC] disabled:opacity-50"
                   >
                     <span className="text-t-21 font-semibold text-white">
                       {updating ? "Saving..." : "Save changes"}
@@ -282,7 +275,7 @@ export default function EditProfilePage() {
                   <MotionTap
                     as="button"
                     onClick={handleLogout}
-                    className="flex h-[50px] w-full max-w-[360px] items-center justify-center rounded-[24px] border border-[#263B81]"
+                    className="flex h-11 w-full max-w-[360px] items-center justify-center rounded-[24px] border border-[#263B81]"
                   >
                     <span className="text-t-21 font-semibold text-[#334EAC]">
                       Logout
@@ -294,7 +287,7 @@ export default function EditProfilePage() {
           </div>
           {/* end */}
         </div>
-      </div>
-    </div>
+      </ContentColumn>
+    </PageContainer>
   );
 }

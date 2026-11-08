@@ -61,7 +61,7 @@ export const NEARBY_PHARMACIES: Pharmacy[] = [
     rating: 4.5,
     reviewCount: 198,
     deliveryFee: 3.5,
-    imageUrl: "/patient/Pharnacy-shelves.png",
+    imageUrl: "/patient/Amal Pharmacy.png",
     isOpen: false,
     openingHours: "Open: 8:00 AM - 8:00 PM",
   },

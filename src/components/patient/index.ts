@@ -13,7 +13,6 @@ export {
   HomeTopbar,
   HomeQuickChips,
 } from "./header";
-export { PageHeader } from "./PageHeader";
 export { HelpAccordion } from "./HelpAccordion";
 // - PrescriptionUploader
 // - PharmacyCard

@@ -78,7 +78,7 @@ export function UserMenu({ cartCount = 0 }: UserMenuProps) {
       <div className="flex items-center">
         <Link
           href="/pharmacy/home"
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary-darker bg-primary-light hover:bg-primary-light-active rounded-lg transition-colors"
+          className="flex items-center gap-2 px-4 py-2 text-t-14 font-medium text-primary-darker bg-primary-light hover:bg-primary-light-active rounded-lg transition-colors"
         >
           Pharmacy Dashboard
         </Link>
@@ -99,7 +99,7 @@ export function UserMenu({ cartCount = 0 }: UserMenuProps) {
       {/* Cart */}
       <Link
         href="/cart"
-        className="relative flex items-center justify-center w-10 h-10 bg-primary-light-active rounded-full hover:bg-primary-light transition-colors"
+        className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary-light-active transition-colors hover:bg-primary-light"
         aria-label={`Cart${cartCount > 0 ? `, ${cartCount} item${cartCount > 1 ? "s" : ""}` : ""}`}
       >
         <IoCartOutline className="w-5 h-5 text-secondary-darker" />
@@ -114,7 +114,7 @@ export function UserMenu({ cartCount = 0 }: UserMenuProps) {
       <div ref={menuRef} className="relative">
         <button
           onClick={() => setOpen((p) => !p)}
-          className="w-10 h-10 rounded-full overflow-hidden bg-primary-light flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-primary/40"
+          className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full bg-primary-light cursor-pointer transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary/40"
           aria-label="User menu"
           aria-haspopup="true"
           aria-expanded={open}
@@ -128,7 +128,7 @@ export function UserMenu({ cartCount = 0 }: UserMenuProps) {
               className="object-cover rounded-full"
             />
           ) : (
-            <span className="text-sm font-semibold text-primary-darker select-none">
+            <span className="text-t-14 font-semibold text-primary-darker select-none">
               {initials}
             </span>
           )}
@@ -146,10 +146,12 @@ export function UserMenu({ cartCount = 0 }: UserMenuProps) {
             >
               {/* User info */}
               <div className="px-4 py-3 border-b border-gray-100">
-                <p className="text-sm font-semibold text-gray-900 truncate">
+                <p className="text-t-14 font-semibold text-gray-900 truncate">
                   {user?.name}
                 </p>
-                <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                <p className="text-t-12 text-gray-500 truncate">
+                  {user?.email}
+                </p>
               </div>
 
               {/* Links */}
@@ -178,7 +180,7 @@ export function UserMenu({ cartCount = 0 }: UserMenuProps) {
               <div className="border-t border-gray-100 pt-1">
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                  className="flex items-center gap-3 w-full px-4 py-2.5 text-t-14 text-red-600 hover:bg-red-50 transition-colors"
                 >
                   <IoLogOutOutline className="w-4 h-4" />
                   Sign Out
@@ -209,7 +211,7 @@ function DropdownLink({
     <Link
       href={href}
       onClick={onClick}
-      className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+      className="flex items-center gap-3 px-4 py-2.5 text-t-14 text-gray-700 hover:bg-gray-50 transition-colors"
     >
       {icon}
       {label}

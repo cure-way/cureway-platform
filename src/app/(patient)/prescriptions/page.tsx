@@ -3,14 +3,18 @@
 import { useReducer, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import UploadHeader from "@/components/patient/prescriptions/UploadHeader";
+import { PageContainer, PageHeader } from "@/components/shared";
 import UploadInitial from "@/components/patient/prescriptions/UploadInitial";
 import UploadPicker from "@/components/patient/prescriptions/UploadPicker";
 import UploadProgress from "@/components/patient/prescriptions/UploadProgress";
 import UploadError from "@/components/patient/prescriptions/UploadError";
 import UploadUnsupported from "@/components/patient/prescriptions/UploadUnsupported";
 import UploadSuccess from "@/components/patient/prescriptions/UploadSuccess";
-import { fileUploadService, prescriptionApiService } from "@/services/api.service";
+import UploadSidePanel from "@/components/patient/prescriptions/UploadSidePanel";
+import {
+  fileUploadService,
+  prescriptionApiService,
+} from "@/services/api.service";
 
 type UploadStep =
   | "initial"
@@ -132,9 +136,7 @@ export default function UploadPrescriptionPage() {
   // is created — the console will log a warning.
   // -------------------------------
 
-  const handleFileSelected = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -157,9 +159,10 @@ export default function UploadPrescriptionPage() {
       dispatch({ type: "SET_PROGRESS", value: 65 });
 
       // Step 2: Create prescription record — POST /prescriptions
-      const pharmacyIdStr = typeof window !== "undefined"
-        ? new URLSearchParams(window.location.search).get("pharmacyId")
-        : null;
+      const pharmacyIdStr =
+        typeof window !== "undefined"
+          ? new URLSearchParams(window.location.search).get("pharmacyId")
+          : null;
       const pharmacyId = pharmacyIdStr ? Number(pharmacyIdStr) : null;
 
       if (!pharmacyId) {
@@ -205,67 +208,82 @@ export default function UploadPrescriptionPage() {
       : "Upload a clear photo of your prescription to help us prepare your order accurately";
 
   return (
-    <div className="min-h-screen bg-white px-4 sm:px-8 lg:px-16 py-8">
-      <UploadHeader
+    /* One container for the header and the body, so the two halves of the page
+       share a left and right edge. They used to sit at x=80 and x=208 because
+       each half set its own (dead) max-w-* class. */
+    <PageContainer>
+      <PageHeader
         title={headerTitle}
         subtitle={headerSubtitle}
+        showBack
         onBack={() => dispatch({ type: "BACK" })}
       />
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={state.step}
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.32, ease: "easeOut" }}
-          className="mt-8"
-        >
-          {state.step === "initial" && (
-            <UploadInitial onUploadClick={() => dispatch({ type: "GO_PICKER" })} />
-          )}
+      {/* Two columns on desktop: the flow on the left, context on the right.
+          The same grid wraps every step, so the upload box, the picker, the
+          progress bar and all three end states keep identical edges. Below lg
+          the columns stack with the flow first. */}
+      <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_400px]">
+        <div data-section="upload flow" className="flex min-w-0 flex-col gap-4">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={state.step}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.32, ease: "easeOut" }}
+            >
+              {state.step === "initial" && (
+                <UploadInitial
+                  onUploadClick={() => dispatch({ type: "GO_PICKER" })}
+                />
+              )}
 
-          {state.step === "picker" && (
-            <UploadPicker
-              onSelect={() => inputRef.current?.click()}
-              onClose={() => dispatch({ type: "BACK" })}
-            />
-          )}
+              {state.step === "picker" && (
+                <UploadPicker
+                  onSelect={() => inputRef.current?.click()}
+                  onClose={() => dispatch({ type: "BACK" })}
+                />
+              )}
 
-          {state.step === "uploading" && (
-            <UploadProgress
-              progress={state.progress}
-              onCancel={() => dispatch({ type: "BACK" })}
-            />
-          )}
+              {state.step === "uploading" && (
+                <UploadProgress
+                  progress={state.progress}
+                  onCancel={() => dispatch({ type: "BACK" })}
+                />
+              )}
 
-          {state.step === "error" && (
-            <UploadError onRetry={handleRetry} />
-          )}
+              {state.step === "error" && <UploadError onRetry={handleRetry} />}
 
-          {state.step === "unsupported" && (
-            <UploadUnsupported onUploadAgain={() => dispatch({ type: "RESET" })} />
-          )}
+              {state.step === "unsupported" && (
+                <UploadUnsupported
+                  onUploadAgain={() => dispatch({ type: "RESET" })}
+                />
+              )}
 
-          {state.step === "success" && (
-            <UploadSuccess
-              onClose={() => dispatch({ type: "RESET" })}
-              onTrack={() => {
-                // لاحقاً: route لصفحة تتبع status (غير موجودة حالياً)
-                console.log("Track status");
-              }}
-            />
-          )}
-        </motion.div>
-      </AnimatePresence>
+              {state.step === "success" && (
+                <UploadSuccess
+                  onClose={() => dispatch({ type: "RESET" })}
+                  onTrack={() => {
+                    // لاحقاً: route لصفحة تتبع status (غير موجودة حالياً)
+                    console.log("Track status");
+                  }}
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
 
-      <input
-        ref={inputRef}
-        type="file"
-        hidden
-        accept=".png,.jpg,.jpeg,.pdf"
-        onChange={handleFileSelected}
-      />
-    </div>
+          <input
+            ref={inputRef}
+            type="file"
+            hidden
+            accept=".png,.jpg,.jpeg,.pdf"
+            onChange={handleFileSelected}
+          />
+        </div>
+
+        <UploadSidePanel />
+      </div>
+    </PageContainer>
   );
 }

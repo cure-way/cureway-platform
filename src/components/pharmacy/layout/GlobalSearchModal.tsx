@@ -38,7 +38,7 @@ export default function GlobalSearchPanel({
       <div className="flex border-b">
         <button
           onClick={() => setActiveTab("medicines")}
-          className={`flex-1 py-2 text-sm font-medium ${
+          className={`flex-1 py-2 text-t-14 font-medium ${
             activeTab === "medicines"
               ? "text-(--color-primary) border-b-2 border-(--color-primary)"
               : "text-gray-500"
@@ -49,7 +49,7 @@ export default function GlobalSearchPanel({
 
         <button
           onClick={() => setActiveTab("orders")}
-          className={`flex-1 py-2 text-sm font-medium ${
+          className={`flex-1 py-2 text-t-14 font-medium ${
             activeTab === "orders"
               ? "text-(--color-primary) border-b-2 border-(--color-primary)"
               : "text-gray-500"
@@ -61,7 +61,9 @@ export default function GlobalSearchPanel({
 
       <div className="p-3 max-h-72 overflow-y-auto">
         {isLoading && (
-          <p className="py-4 text-gray-500 text-sm text-center">Searching...</p>
+          <p className="py-4 text-gray-500 text-t-14 text-center">
+            Searching...
+          </p>
         )}
 
         {!isLoading &&
@@ -74,14 +76,14 @@ export default function GlobalSearchPanel({
                   router.push(`/pharmacy/inventory/${m.id}`);
                   onItemClick?.();
                 }}
-                className="hover:bg-gray-100 p-2 rounded-lg text-sm cursor-pointer"
+                className="hover:bg-gray-100 p-2 rounded-lg text-t-14 cursor-pointer"
               >
                 <p className="font-medium">{m.medicineName}</p>
-                <p className="text-gray-500 text-xs">{m.categoryName}</p>
+                <p className="text-gray-500 text-t-12">{m.categoryName}</p>
               </div>
             ))
           ) : (
-            <p className="py-4 text-gray-500 text-sm text-center">
+            <p className="py-4 text-gray-500 text-t-14 text-center">
               No medicines found
             </p>
           ))}
@@ -96,11 +98,11 @@ export default function GlobalSearchPanel({
                   router.push(`/pharmacy/orders/${order.orderId}`);
                   onItemClick?.();
                 }}
-                className="hover:bg-gray-100 p-2 rounded-lg text-sm cursor-pointer"
+                className="hover:bg-gray-100 p-2 rounded-lg text-t-14 cursor-pointer"
               >
                 <p className="font-medium">Order #{order.orderId}</p>
 
-                <p className="text-gray-500 text-xs">
+                <p className="text-gray-500 text-t-12">
                   {order.firstMedicineName}
                   {order.remainingItemsCount > 0 &&
                     ` +${order.remainingItemsCount} more`}
@@ -108,7 +110,7 @@ export default function GlobalSearchPanel({
               </div>
             ))
           ) : (
-            <p className="py-4 text-gray-500 text-sm text-center">
+            <p className="py-4 text-gray-500 text-t-14 text-center">
               No orders found
             </p>
           ))}

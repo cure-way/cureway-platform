@@ -8,7 +8,7 @@ export default function NullableText({
   className = "",
 }: NullableTextProps) {
   if (value === null || value === undefined || value === "") {
-    return <span className={`text-gray-400 text-sm ${className}`}>—</span>;
+    return <span className={`text-gray-400 text-t-14 ${className}`}>—</span>;
   }
 
   return <>{String(value)}</>;

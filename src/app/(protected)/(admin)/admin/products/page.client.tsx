@@ -4,7 +4,6 @@ import { RefreshCw, MoreVertical, Package, PackageX } from "lucide-react";
 import Image from "next/image";
 import {
   PageShell,
-  PageHeader,
   HeaderPrimaryButton,
   HeaderIconButton,
   StatsBar,
@@ -20,6 +19,7 @@ import { ProductsPageIcon } from "@/components/admin/shared/icons";
 import { useAdminInventory } from "@/hooks/admin.hooks";
 import type { AdminInventoryItem } from "@/services/admin.service";
 import { formatCurrency } from "@/lib/format";
+import { PageHeader } from "@/components/shared";
 
 /* ------------------------------------------------------------------
    HELPERS
@@ -65,7 +65,7 @@ const columns: ColumnDef<AdminInventoryItem>[] = [
     cell: (p) => (
       <div className="flex items-center gap-2">
         {p.medicineImageUrl ? (
-          <div className="w-10 h-10 rounded border border-neutral/50 flex items-center justify-center overflow-hidden shrink-0 p-1">
+          <div className="w-10 h-11 rounded border border-neutral/50 flex items-center justify-center overflow-hidden shrink-0 p-1">
             <Image
               src={p.medicineImageUrl}
               alt={p.medicineName}
@@ -75,7 +75,7 @@ const columns: ColumnDef<AdminInventoryItem>[] = [
             />
           </div>
         ) : (
-          <div className="w-10 h-10 rounded border border-neutral/50 flex items-center justify-center shrink-0 bg-neutral-light">
+          <div className="w-10 h-11 rounded border border-neutral/50 flex items-center justify-center shrink-0 bg-neutral-light">
             <Package className="w-5 h-5 text-neutral" />
           </div>
         )}

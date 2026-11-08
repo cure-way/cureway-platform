@@ -178,11 +178,11 @@ export default function SignUpPage() {
             transition={{ delay: 0.15 }}
             className="flex flex-col gap-2 items-center text-center mb-6"
           >
-            <h1 className="text-4xl font-semibold">
+            <h1 className="text-page-title">
               <span className="text-[#2e469b]">Welcome To </span>
               <span className="text-[#334eac] font-bold">CUREWAY</span>
             </h1>
-            <p className="text-lg font-medium text-[#334eac]">
+            <p className="text-t-17 font-medium text-[#334eac]">
               Your trusted way to better health
             </p>
           </motion.div>
@@ -238,7 +238,7 @@ export default function SignUpPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="p-3 bg-red-50 border border-red-200 rounded-lg"
               >
-                <p className="text-sm text-red-600">{globalError}</p>
+                <p className="text-t-14 text-red-600">{globalError}</p>
               </motion.div>
             )}
 
@@ -330,7 +330,7 @@ export default function SignUpPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.35 }}
-            className="text-center mt-4 text-base font-semibold"
+            className="text-center mt-4 text-t-14 font-semibold"
           >
             <span className="text-[#797776]">Already have an account? </span>
             <Link

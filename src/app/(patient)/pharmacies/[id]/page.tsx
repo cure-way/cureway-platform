@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { NEARBY_PHARMACIES } from "@/services/nearbypharmacies.data";
 import { InventoryItem } from "@/types/pharmacyTypes";
+import { PageContainer, PageHeader } from "@/components/shared";
 
 type TabType = "All" | "Most sells" | "Offers" | "Rare";
 
@@ -22,7 +23,7 @@ export default function PharmacyDetailsPage() {
     return (
       <div className="flex justify-center items-center bg-gray-50 min-h-screen">
         <div className="text-center">
-          <h2 className="mb-2 font-bold text-gray-900 text-2xl">
+          <h2 className="mb-2 font-bold text-gray-900 text-t-21">
             Pharmacy not found
           </h2>
           <button
@@ -46,40 +47,18 @@ export default function PharmacyDetailsPage() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <div className="top-0 z-10 sticky bg-white border-gray-200 border-b">
-        <div className="flex justify-between items-center mx-auto px-6 py-6 max-w-6xl">
-          <div>
-            <h1 className="font-bold text-gray-900 text-2xl">
-              {pharmacy.name}
-            </h1>
-          </div>
-          <button
-            onClick={() => router.back()}
-            className="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            <span className="font-medium">Back</span>
-          </button>
-        </div>
-      </div>
+      <PageContainer>
+        <PageHeader
+          title={pharmacy.name}
+          subtitle={pharmacy.address}
+          showBack
+          onBack={() => router.back()}
+        />
 
-      <div className="mx-auto px-6 py-8 max-w-6xl">
         <div className="bg-white shadow-sm mb-8 p-8 border border-gray-200 rounded-2xl">
           <div className="flex items-start gap-2 mb-6">
             <div className="bg-blue-600 mt-2 rounded-full w-2 h-2"></div>
-            <h2 className="font-semibold text-blue-600 text-xl">
+            <h2 className="font-semibold text-blue-600 text-t-17">
               Pharmacy Information
             </h2>
           </div>
@@ -113,7 +92,7 @@ export default function PharmacyDetailsPage() {
                 )}
               </div>
 
-              <div className="flex items-center gap-4 text-sm">
+              <div className="flex items-center gap-4 text-t-14">
                 <div className="flex items-center gap-2 text-gray-700">
                   <svg
                     className="w-5 h-5 text-blue-600"
@@ -137,38 +116,38 @@ export default function PharmacyDetailsPage() {
 
             <div className="space-y-6">
               <div>
-                <h3 className="mb-2 font-semibold text-blue-600 text-sm">
+                <h3 className="mb-2 font-semibold text-blue-600 text-t-14">
                   Address
                 </h3>
-                <p className="text-gray-700 text-sm leading-relaxed">
+                <p className="text-gray-700 text-t-14 leading-relaxed">
                   {pharmacy.address}
                 </p>
               </div>
 
               <div>
-                <h3 className="mb-2 font-semibold text-blue-600 text-sm">
+                <h3 className="mb-2 font-semibold text-blue-600 text-t-14">
                   Nearest landmark
                 </h3>
-                <p className="text-gray-700 text-sm">
+                <p className="text-gray-700 text-t-14">
                   Avenue Habib Bourguiba, 0.14 mi / 220m
                 </p>
               </div>
 
               <div>
-                <h3 className="mb-2 font-semibold text-blue-600 text-sm">
+                <h3 className="mb-2 font-semibold text-blue-600 text-t-14">
                   Working hours
                 </h3>
-                <p className="text-gray-700 text-sm">
+                <p className="text-gray-700 text-t-14">
                   {pharmacy.openingHours ||
                     "Open Now - 24/7 | Friday 14:00 - 23:00"}
                 </p>
               </div>
 
               <div>
-                <h3 className="mb-2 font-semibold text-blue-600 text-sm">
+                <h3 className="mb-2 font-semibold text-blue-600 text-t-14">
                   Phone number
                 </h3>
-                <p className="text-gray-700 text-sm">99922991</p>
+                <p className="text-gray-700 text-t-14">99922991</p>
               </div>
             </div>
           </div>
@@ -177,7 +156,7 @@ export default function PharmacyDetailsPage() {
         <div className="bg-white shadow-sm p-8 border border-gray-200 rounded-2xl">
           <div className="flex items-start gap-2 mb-6">
             <div className="bg-blue-600 mt-2 rounded-full w-2 h-2"></div>
-            <h2 className="font-semibold text-gray-900 text-xl">Available</h2>
+            <h2 className="font-semibold text-gray-900 text-t-17">Available</h2>
           </div>
 
           <div className="flex items-center gap-3 mb-8 pb-2 overflow-x-auto">
@@ -186,7 +165,7 @@ export default function PharmacyDetailsPage() {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-6 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                  className={`px-6 py-2 rounded-full text-t-14 font-medium whitespace-nowrap transition-all ${
                     activeTab === tab
                       ? "bg-blue-600 text-white shadow-sm"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -204,7 +183,7 @@ export default function PharmacyDetailsPage() {
             ))}
           </div>
         </div>
-      </div>
+      </PageContainer>
     </div>
   );
 }
@@ -219,7 +198,7 @@ function MedicineCard({ medicine }: MedicineCardProps) {
   return (
     <div className="group relative bg-gray-50 hover:shadow-md p-4 rounded-xl transition-shadow duration-200 cursor-pointer">
       {hasDiscount && (
-        <div className="top-2 left-2 z-10 absolute bg-green-500 px-2 py-1 rounded-md font-bold text-white text-xs">
+        <div className="top-2 left-2 z-10 absolute bg-green-500 px-2 py-1 rounded-md font-bold text-white text-t-12">
           -25%
         </div>
       )}
@@ -267,7 +246,7 @@ function MedicineCard({ medicine }: MedicineCardProps) {
         )}
       </div>
 
-      <h3 className="mb-1 min-h-[2.5rem] font-medium text-gray-900 text-sm line-clamp-2">
+      <h3 className="mb-1 min-h-[2.5rem] font-medium text-gray-900 text-t-14 line-clamp-2">
         {medicine.medicineName}
       </h3>
     </div>

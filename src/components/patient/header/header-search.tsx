@@ -29,13 +29,13 @@ export function HeaderSearch() {
 
   return (
     <div ref={containerRef} className="relative z-50 w-full">
-      <div className="relative z-50 flex items-center gap-2 md:gap-3 bg-gray-100 px-3 md:px-4 py-2 rounded-xl h-10 md:h-12 focus-within:ring-2 focus-within:ring-primary/40 transition-shadow">
+      <div className="relative z-50 flex items-center gap-2 md:gap-3 bg-gray-100 px-3 md:px-4 rounded-lg h-11 focus-within:ring-2 focus-within:ring-primary/40 transition-shadow">
         <FaSearch className="text-gray-400 w-3.5 h-3.5 md:w-4 md:h-4" />
         <input
           ref={inputRef}
           type="text"
           placeholder="Search medicine, pharmacy..."
-          className="bg-transparent outline-none w-full text-xs md:text-sm focus-visible:outline-none"
+          className="bg-transparent outline-none w-full text-t-12 md:text-t-14 focus-visible:outline-none"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}

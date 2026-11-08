@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import {
   PageShell,
-  PageHeader,
   HeaderIconButton,
   StatsBar,
   KpiPill,
@@ -26,6 +25,7 @@ import { OrdersPageIcon } from "@/components/admin/shared/icons";
 import { useAdminOrders } from "@/hooks/admin.hooks";
 import type { AdminOrder } from "@/services/admin.service";
 import { formatCurrency } from "@/lib/format";
+import { PageHeader } from "@/components/shared";
 
 /* ------------------------------------------------------------------
    HELPERS

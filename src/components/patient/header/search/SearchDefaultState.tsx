@@ -70,14 +70,16 @@ export function SearchDefaultState() {
       {/* Quick Actions */}
       {quickActions.length > 0 && (
         <div>
-          <p className="font-semibold text-black text-sm mb-2">Quick actions</p>
+          <p className="font-semibold text-black text-t-14 mb-2">
+            Quick actions
+          </p>
           <div className="flex flex-wrap gap-2">
             {quickActions.map((action) => {
               const idx = globalIdx++;
               return (
                 <button
                   key={action.id}
-                  className={`flex items-center gap-1.5 text-primary text-xs font-medium px-3 py-1.5 rounded-full transition-colors ${
+                  className={`flex items-center gap-1.5 text-primary text-t-12 font-medium px-3 py-1.5 rounded-full transition-colors ${
                     idx === activeIndex
                       ? "bg-primary-light ring-2 ring-primary/40"
                       : "bg-primary-light hover:bg-primary-light/80"
@@ -108,10 +110,10 @@ export function SearchDefaultState() {
       {/* Recents */}
       <div>
         <div className="flex justify-between items-center mb-2">
-          <p className="font-semibold text-black text-sm">Recents</p>
+          <p className="font-semibold text-black text-t-14">Recents</p>
           {recents.length > 0 && (
             <button
-              className="text-primary text-xs hover:text-primary-dark transition-colors"
+              className="text-primary text-t-12 hover:text-primary-dark transition-colors"
               onClick={clearRecents}
             >
               Delete all
@@ -125,7 +127,7 @@ export function SearchDefaultState() {
               return (
                 <li
                   key={item.id}
-                  className={`flex items-center justify-between px-2 md:px-3 py-2.5 rounded-lg text-xs md:text-sm cursor-pointer transition-colors ${
+                  className={`flex items-center justify-between px-2 md:px-3 py-2.5 rounded-lg text-t-12 md:text-t-14 cursor-pointer transition-colors ${
                     idx === activeIndex
                       ? "bg-primary-light"
                       : "hover:bg-gray-50"
@@ -137,15 +139,15 @@ export function SearchDefaultState() {
                 >
                   <div className="flex items-center gap-3">
                     {item.type === "medicine" ? (
-                      <span className="text-base">💊</span>
+                      <span className="text-t-14">💊</span>
                     ) : (
-                      <span className="text-base">🏥</span>
+                      <span className="text-t-14">🏥</span>
                     )}
                     <div>
-                      <p className="font-semibold text-black text-sm">
+                      <p className="font-semibold text-black text-t-14">
                         {item.title}
                       </p>
-                      <p className="text-gray-500 text-xs">{item.subtitle}</p>
+                      <p className="text-gray-500 text-t-12">{item.subtitle}</p>
                     </div>
                   </div>
                   <FaHistory className="text-gray-400 w-3.5 h-3.5 shrink-0" />
@@ -154,7 +156,7 @@ export function SearchDefaultState() {
             })}
           </ul>
         ) : (
-          <p className="py-6 md:py-4 text-gray-500 text-xs md:text-sm text-center">
+          <p className="py-6 md:py-4 text-gray-500 text-t-12 md:text-t-14 text-center">
             No recent searches
           </p>
         )}
@@ -176,10 +178,12 @@ export function SearchDefaultState() {
             <MapPin className="w-4 h-4 text-primary" />
           </div>
           <div className="text-left">
-            <p className="text-sm font-semibold text-black">
+            <p className="text-t-14 font-semibold text-black">
               {CURRENT_LOCATION.title}
             </p>
-            <p className="text-xs text-gray-500">{CURRENT_LOCATION.address}</p>
+            <p className="text-t-12 text-gray-500">
+              {CURRENT_LOCATION.address}
+            </p>
           </div>
         </div>
         <ChevronRight className="w-5 h-5 text-gray-400 shrink-0" />

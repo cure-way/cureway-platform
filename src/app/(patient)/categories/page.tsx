@@ -7,6 +7,7 @@ import MostSalesSection from "@/components/patient/categories/MostSalesSection";
 import RecommendedSection from "@/components/patient/categories/RecommendedSection";
 import { useCategories } from "@/hooks/categories/useCategories";
 import { useMedicines } from "@/hooks/categories/useMedicines";
+import { PageContainer } from "@/components/shared";
 import {
   getFeaturedCategories,
   getRecommendedMedicines,
@@ -31,7 +32,7 @@ export default function CategoriesPage() {
   const recommended = getRecommendedMedicines(medicines);
 
   return (
-    <div className="space-y-10 px-6 sm:px-10 lg:px-16 py-8">
+    <PageContainer className="space-y-8">
       <CategoriesHeader />
       <FeaturedCategories
         categories={featured}
@@ -56,6 +57,6 @@ export default function CategoriesPage() {
         loading={medLoading}
         error={medError}
       />
-    </div>
+    </PageContainer>
   );
 }

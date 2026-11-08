@@ -4,7 +4,7 @@
  * Seeded from the fixtures on first access. Local-only mutations (place an
  * order, accept a pharmacy order, edit stock, approve a pharmacy) write here,
  * so changes persist across navigation within a session and reset on reload
- * or when the visitor clicks "Reset demo".
+ * on every reload, which is the only reset the showcase needs.
  *
  * Nothing here is persisted — there is no backend and no storage write.
  */
@@ -132,7 +132,7 @@ export function getDb(): ShowcaseDb {
   return db;
 }
 
-/** Restore pristine fixtures — backs the "Reset demo" action. */
+/** Restore pristine fixtures. Used when the in-memory db is re-seeded. */
 export function resetDb(): void {
   db = seed();
 }

@@ -11,6 +11,7 @@ import {
 } from "@/components/patient/search";
 import type { FilterTag } from "@/components/patient/search";
 import { Loader2 } from "lucide-react";
+import { PageContainer, PageHeader } from "@/components/shared";
 import {
   DEFAULT_FILTER_TAGS,
   searchMedicines,
@@ -134,22 +135,24 @@ function SearchPageContent() {
   const spellSuggestion = useMemo(() => getSuggestion(query), [query]);
 
   return (
-    <div className="max-w-[1280px] mx-auto px-4 md:px-6 py-6">
+    <PageContainer>
+      <PageHeader title="Search" subtitle="Medicines and pharmacies near you" />
+
       {/* Results Header */}
       {pageState === "results" && results.length > 0 && (
         <div className="mb-4">
           <p className="text-primary-darker">
-            <span className="font-semibold text-xl md:text-2xl">
+            <span className="font-semibold text-t-17 md:text-t-21">
               ({resultCount})
             </span>
-            <span className="text-2xl md:text-[30px] font-normal leading-[1.2]">
+            <span className="text-t-21 md:text-[30px] font-normal leading-[1.2]">
               {" "}
               results · delivery in{" "}
             </span>
-            <span className="font-semibold text-xl md:text-2xl">
+            <span className="font-semibold text-t-17 md:text-t-21">
               ({deliveryTime})
             </span>
-            <span className="text-lg md:text-xl font-normal leading-[1.2]">
+            <span className="text-t-17 md:text-t-17 font-normal leading-[1.2]">
               {" "}
               min
             </span>
@@ -228,7 +231,7 @@ function SearchPageContent() {
       {pageState === "network-error" && (
         <SearchEmptyState state="network-error" onTryAgain={handleTryAgain} />
       )}
-    </div>
+    </PageContainer>
   );
 }
 

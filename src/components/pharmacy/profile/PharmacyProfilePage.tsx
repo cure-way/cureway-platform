@@ -57,7 +57,7 @@ export default function PharmacyProfilePage() {
       />
 
       <div className="flex flex-1 justify-center p-10">
-        <div className="w-full max-w-4xl">
+        <div className="w-full max-w-[44rem]">
           <ProfileHeader
             name={profile.name}
             onEdit={() => setIsEditModalOpen(true)}
@@ -67,14 +67,14 @@ export default function PharmacyProfilePage() {
 
           {/* PHARMACY INFO */}
 
-          <h2 className="mb-4 font-semibold text-(--color-primary) text-lg">
+          <h2 className="mb-4 font-semibold text-(--color-primary) text-t-17">
             Pharmacy Information
           </h2>
 
           <div className="space-y-3 mb-8">
             <InfoCard icon={<FiMapPin />}>
               <p>{profile.address}</p>
-              <p className="text-gray-500 text-sm">{profile.city}</p>
+              <p className="text-gray-500 text-t-14">{profile.city}</p>
             </InfoCard>
 
             <InfoCard icon={<FiPhone />}>{profile.phone}</InfoCard>
@@ -86,7 +86,7 @@ export default function PharmacyProfilePage() {
 
           {/* ACTIVITY */}
 
-          <h2 className="mb-4 font-semibold text-(--color-primary) text-lg">
+          <h2 className="mb-4 font-semibold text-(--color-primary) text-t-17">
             Activity
           </h2>
 

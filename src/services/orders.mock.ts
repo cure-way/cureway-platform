@@ -4,7 +4,7 @@ export const mockOrders: Order[] = [
   {
     id: "1245",
     pharmacyId: "1",
-    pharmacyName: "City Pharmacy",
+    pharmacyName: "Al-Shifa Pharmacy",
     address: "Omar Mukhtar Street, Al-Rimal Area",
     itemsCount: 3,
     deliveryFee: 5.0,
@@ -17,7 +17,7 @@ export const mockOrders: Order[] = [
   {
     id: "3321",
     pharmacyId: "1",
-    pharmacyName: "City Pharmacy",
+    pharmacyName: "Amal Pharmacy",
     address: "Omar Mukhtar Street, Al-Rimal Area",
     itemsCount: 1,
     deliveryFee: 2.0,
@@ -29,7 +29,7 @@ export const mockOrders: Order[] = [
   {
     id: "7788",
     pharmacyId: "1",
-    pharmacyName: "City Pharmacy",
+    pharmacyName: "Al-Quds Pharmacy",
     address: "Omar Mukhtar Street, Al-Rimal Area",
     itemsCount: 2,
     deliveryFee: 5.0,

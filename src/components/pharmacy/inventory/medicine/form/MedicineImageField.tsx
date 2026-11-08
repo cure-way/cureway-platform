@@ -34,14 +34,14 @@ export default function MedicineImageField({
           <button
             type="button"
             onClick={onRemove}
-            className="-top-2 -right-2 absolute flex justify-center items-center bg-red-600 rounded-full w-5 h-5 text-white text-xs"
+            className="-top-2 -right-2 absolute flex justify-center items-center bg-red-600 rounded-full w-5 h-5 text-white text-t-12"
           >
             ×
           </button>
         )}
       </div>
 
-      <label className="hover:bg-gray-50 px-3 py-1.5 border rounded-lg text-xs cursor-pointer">
+      <label className="hover:bg-gray-50 px-3 py-1.5 border rounded-lg text-t-12 cursor-pointer">
         Change image
         <input
           type="file"

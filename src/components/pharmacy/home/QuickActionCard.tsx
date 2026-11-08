@@ -20,7 +20,9 @@ export default function QuickActionCard({
 
   return (
     <div className="bg-white p-4 border rounded-xl">
-      <h2 className="mb-4 font-semibold text-gray-900 text-sm">Quick Action</h2>
+      <h2 className="mb-4 font-semibold text-gray-900 text-t-14">
+        Quick Action
+      </h2>
 
       {/* Accept / Pause Toggle */}
       <div
@@ -30,10 +32,10 @@ export default function QuickActionCard({
       >
         <div className="flex justify-between items-center">
           <div>
-            <p className="font-medium text-gray-900 text-sm">
+            <p className="font-medium text-gray-900 text-t-14">
               Accept/Pause New Orders
             </p>
-            <p className="text-gray-500 text-xs">
+            <p className="text-gray-500 text-t-12">
               {acceptingOrders
                 ? "Now you can accept new orders"
                 : "Orders are currently paused"}
@@ -68,8 +70,8 @@ export default function QuickActionCard({
       {/* Data */}
       {!loading && !error && data.length > 0 && (
         <div className="mb-6 p-3 border border-t-4 border-t-yellow-300 rounded-lg">
-          <div className="flex items-center gap-2 mb-3 font-medium text-yellow-700 text-sm">
-            <FiAlertCircle className="text-base" />
+          <div className="flex items-center gap-2 mb-3 font-medium text-yellow-700 text-t-14">
+            <FiAlertCircle className="text-t-14" />
             Alert Stock
           </div>
 
@@ -81,14 +83,16 @@ export default function QuickActionCard({
                 className="flex items-center gap-3 hover:bg-gray-50 rounded-lg transition cursor-pointer"
               >
                 <div className="flex justify-center items-center bg-white shadow-sm rounded-lg w-12 h-12">
-                  <FaCapsules className="text-yellow-600 text-2xl" />
+                  <FaCapsules className="text-yellow-600 text-t-21" />
                 </div>
 
                 <div className="flex-1">
-                  <p className="font-medium text-gray-900 text-sm">
+                  <p className="font-medium text-gray-900 text-t-14">
                     {item.medicineName}
                   </p>
-                  <p className="text-gray-500 text-xs">{item.stock} in stock</p>
+                  <p className="text-gray-500 text-t-12">
+                    {item.stock} in stock
+                  </p>
                 </div>
               </div>
             ))}
@@ -96,7 +100,7 @@ export default function QuickActionCard({
 
           <button
             onClick={() => router.push("/pharmacy/inventory")}
-            className="bg-(--color-primary) mt-3 py-2 rounded-lg w-full font-medium text-white text-sm"
+            className="bg-(--color-primary) mt-3 py-2 rounded-lg w-full font-medium text-white text-t-14"
           >
             Update Stock
           </button>

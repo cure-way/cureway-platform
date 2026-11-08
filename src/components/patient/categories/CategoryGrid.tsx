@@ -15,7 +15,7 @@ export default function CategoryGrid({ categories, loading, error }: Props) {
     <div className="space-y-6">
       <SectionTitle title="All Categories" />
       {loading && (
-        <div className="gap-4 grid sm:grid-cols-2 lg:grid-cols-3">
+        <div className="gap-4 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {Array.from({ length: categories.length }).map((_, i) => (
             <div
               key={i}
@@ -35,7 +35,7 @@ export default function CategoryGrid({ categories, loading, error }: Props) {
       )}
       {!loading && error && <SectionError message={error} />}
       {!loading && !error && (
-        <div className="gap-4 grid sm:grid-cols-2 lg:grid-cols-3">
+        <div className="gap-4 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {categories.map((category) => (
             <Link
               key={category.id}
@@ -43,15 +43,15 @@ export default function CategoryGrid({ categories, loading, error }: Props) {
               className="flex items-center gap-4 bg-white shadow-sm hover:shadow-md p-4 border border-gray-100 rounded-xl transition cursor-pointer"
             >
               <div className="relative flex justify-center items-center bg-gray-100 rounded-lg w-12 h-12 overflow-hidden">
-                <FaPills className="text-2xl text-(--color-primary)" />
+                <FaPills className="text-t-21 text-(--color-primary)" />
               </div>
 
               <div>
-                <h2 className="font-semibold text-gray-800 text-sm">
+                <h2 className="font-semibold text-gray-800 text-t-14">
                   {category.name}
                 </h2>
 
-                <p className="text-gray-500 text-xs">
+                <p className="text-gray-500 text-t-12">
                   {category.description ?? "Explore medicines in this category"}
                 </p>
               </div>

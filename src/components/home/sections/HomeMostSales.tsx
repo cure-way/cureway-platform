@@ -15,11 +15,11 @@ export function HomeMostSales() {
   const { medicines, loading, error } = useMedicines(1, 6);
 
   return (
-    <section className="flex flex-col gap-6 px-4 md:px-6 lg:px-10 pb-8 md:pb-10 border-primary-light-active border-b w-full">
+    <section data-section="most sales" className="flex flex-col gap-6 w-full">
       {/* Title row */}
       <FadeUp inView offset={10} duration={0.4}>
         <div className="flex justify-between items-center">
-          <h2 className="font-bold text-primary-darker lg:text-t-36 text-2xl md:text-3xl">
+          <h2 className="text-t-21-semibold md:text-t-25-semibold lg:text-t-30-semibold text-primary-darker">
             Most Sales
           </h2>
 

@@ -79,7 +79,7 @@ const POINTS: Point[] = [
         unusable. {SHOWCASE_AUTHOR.name} rebuilt it to run standalone: every
         screen is served from realistic sample data in your browser, with no
         backend and no network calls. Orders, the cart and dashboard actions all
-        work locally and reset on reload or with <strong>Reset demo</strong>.
+        work locally and reset whenever the page is reloaded.
       </>
     ),
   },
@@ -176,7 +176,9 @@ export function WelcomeDialog() {
           initial={prefersReducedMotion ? undefined : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={prefersReducedMotion ? undefined : { opacity: 0 }}
-          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.18 }}
+          transition={
+            prefersReducedMotion ? { duration: 0 } : { duration: 0.18 }
+          }
           onClick={handleClose}
         >
           <motion.div
@@ -188,9 +190,9 @@ export function WelcomeDialog() {
             aria-describedby={DESC_ID}
             onClick={(event) => event.stopPropagation()}
             // NOTE: this project remaps Tailwind's container scale to breakpoint
-              // widths (--container-2xl is 1440px), so max-w-2xl would be
-              // full-width here. An explicit value keeps the intent clear.
-              className="bg-white w-full sm:max-w-[40rem] max-h-[92dvh] sm:max-h-[85dvh] rounded-t-2xl sm:rounded-2xl shadow-xl flex flex-col overflow-hidden"
+            // widths (--container-2xl is 1440px), so max-w-2xl would be
+            // full-width here. An explicit value keeps the intent clear.
+            className="bg-white w-full sm:max-w-[40rem] max-h-[92dvh] sm:max-h-[85dvh] rounded-t-2xl sm:rounded-2xl shadow-xl flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-start gap-3 px-5 sm:px-7 pt-5 sm:pt-6 pb-4 border-b border-border">

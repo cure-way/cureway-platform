@@ -16,9 +16,9 @@ export default function SimpleTable<T extends { id: string | number }>({
 }: SimpleTableProps<T>) {
   return (
     <div>
-      <table className="w-full text-sm">
+      <table className="w-full text-t-14">
         <thead>
-          <tr className="text-gray-500 text-xs uppercase tracking-wide">
+          <tr className="text-gray-500 text-t-12 uppercase tracking-wide">
             {columns.map((col) => (
               <th
                 key={String(col.key)}

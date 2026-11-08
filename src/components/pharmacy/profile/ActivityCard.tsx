@@ -14,7 +14,7 @@ export default function ActivityCard({ icon, title, value }: Props) {
       <div>
         <p className="font-medium text-[#0F172A]">{title}</p>
 
-        <div className="text-gray-500 text-sm">{value}</div>
+        <div className="text-gray-500 text-t-14">{value}</div>
       </div>
     </div>
   );

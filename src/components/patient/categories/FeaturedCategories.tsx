@@ -56,7 +56,7 @@ export default function FeaturedCategories({
                   className="object-cover group-hover:scale-105 transition-transform duration-300 ease-out"
                 />
               </div>
-              <span className="font-medium text-gray-700 group-hover:text-(--color-primary) text-xs text-center transition-colors duration-200">
+              <span className="font-medium text-gray-700 group-hover:text-(--color-primary) text-t-12 text-center transition-colors duration-200">
                 {category.name}
               </span>
             </Link>

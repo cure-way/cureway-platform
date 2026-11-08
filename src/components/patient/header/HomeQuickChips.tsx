@@ -8,6 +8,7 @@ import {
   IoNotificationsOutline,
 } from "react-icons/io5";
 import { StaggerContainer, StaggerItem } from "@/components/home/animations";
+import { SHELL_RAIL } from "@/components/shared";
 
 interface QuickChip {
   label: string;
@@ -62,9 +63,12 @@ export function HomeQuickChips() {
   if (visibleChips.length === 0) return null;
 
   return (
-    <div className="bg-white w-full px-3 md:px-6 lg:px-8 py-3">
+    /* Full-bleed bar, content on the shell rail so the chips share the page's
+       left and right edges. */
+    <div className="bg-white w-full">
       <StaggerContainer
-        className="flex items-center gap-2 flex-wrap md:flex-nowrap"
+        data-quick-chips=""
+        className={`${SHELL_RAIL} flex items-center gap-2 flex-wrap md:flex-nowrap py-3`}
         stagger={0.06}
         delayChildren={0.2}
       >

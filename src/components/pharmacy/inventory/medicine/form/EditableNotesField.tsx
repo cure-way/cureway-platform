@@ -23,7 +23,7 @@ export default function EditableNotesField({
         <button
           type="button"
           onClick={() => append({ value: "" })}
-          className="text-blue-600 text-xs"
+          className="text-blue-600 text-t-12"
         >
           + Add Note
         </button>
@@ -40,7 +40,7 @@ export default function EditableNotesField({
           <button
             type="button"
             onClick={() => remove(index)}
-            className="text-red-500 text-xs"
+            className="text-red-500 text-t-12"
           >
             Remove
           </button>

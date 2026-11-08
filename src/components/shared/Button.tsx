@@ -33,24 +33,27 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
+    // Radius, heights and text sizes per docs/design-spec.md section 5.
     const baseStyles =
-      "flex items-center justify-center rounded-3xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+      "flex items-center justify-center rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
 
+    // "primary" was bg-black, which is not in the palette at all — the brand
+    // primary is CureWay blue.
     const variantStyles = {
       primary:
-        "bg-black text-white hover:bg-gray-800 active:bg-gray-900 focus:ring-gray-500",
+        "bg-primary text-white hover:bg-primary-hover active:bg-primary-active focus:ring-primary/40",
       secondary:
-        "bg-gray-200 text-gray-900 hover:bg-gray-300 active:bg-gray-400 focus:ring-gray-400",
+        "bg-primary-light text-primary hover:bg-primary-light-hover active:bg-primary-light-active focus:ring-primary/30",
       outline:
-        "border-2 border-black text-black hover:bg-gray-50 active:bg-gray-100 focus:ring-gray-500",
+        "border border-primary text-primary bg-white hover:bg-primary-light active:bg-primary-light-active focus:ring-primary/30",
       ghost:
-        "text-gray-700 hover:bg-gray-100 active:bg-gray-200 focus:ring-gray-300",
+        "text-neutral-dark hover:bg-neutral-light active:bg-neutral-light-hover focus:ring-neutral/30",
     };
 
     const sizeStyles = {
-      sm: "h-10 px-4 text-sm",
-      md: "h-12 px-6 text-base",
-      lg: "h-15.25 px-8 text-base",
+      sm: "h-9 px-3 text-t-12-semibold",
+      md: "h-11 px-4 text-t-14-semibold",
+      lg: "h-[52px] px-6 text-t-17-semibold",
     };
 
     const widthStyles = fullWidth ? "w-full" : "";

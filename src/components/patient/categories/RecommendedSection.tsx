@@ -57,10 +57,10 @@ export default function RecommendedSection({
               </div>
 
               <div className="flex flex-col flex-1 mt-4">
-                <p className="min-h-8 font-bold text-gray-800 text-sm line-clamp-2">
+                <p className="min-h-8 font-bold text-gray-800 text-t-14 line-clamp-2">
                   {medicine.name}
                 </p>
-                <p className="min-h-8 font-medium text-gray-500 text-xs line-clamp-2">
+                <p className="min-h-8 font-medium text-gray-500 text-t-12 line-clamp-2">
                   {medicine.categoryName}
                 </p>
               </div>

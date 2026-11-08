@@ -23,13 +23,13 @@ export default function InventoryItemCard({
     >
       {/* Icon */}
       <div className="flex justify-center items-center bg-(--color-secondary-light) rounded-lg w-10 h-10 text-(--color-primary)">
-        <FaPills className="text-lg" />
+        <FaPills className="text-t-17" />
       </div>
 
       {/* Text */}
       <div>
-        <p className="font-medium text-gray-900 text-sm">{title}</p>
-        <p className="text-(--color-secondary-dark) text-xs">{extra}</p>
+        <p className="font-medium text-gray-900 text-t-14">{title}</p>
+        <p className="text-(--color-secondary-dark) text-t-12">{extra}</p>
       </div>
     </div>
   );

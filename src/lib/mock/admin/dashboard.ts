@@ -224,7 +224,7 @@ export interface RevenueMetric {
 
 export const revenueMetrics: RevenueMetric[] = [
   {
-    label: "Avgarage order",
+    label: "Average order",
     value: "$32.00",
     change: "+2.43%",
     positive: true,

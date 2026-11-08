@@ -31,7 +31,7 @@ export default function CategoryFilters({
             key={filter.label}
             href={href}
             className={`
-              px-4 py-2 rounded-xl text-sm font-medium
+              px-4 py-2 rounded-xl text-t-14 font-medium
               transition-all duration-200
               whitespace-nowrap
               ${

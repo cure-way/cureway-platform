@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import StateGrid from "@/components/pharmacy/report/StateGrid";
 import { TopMedicineCard } from "@/components/pharmacy/report/TopMedicineCard";
-import PageHeader from "@/components/pharmacy/shared/PageHeader";
+import { PageHeader } from "@/components/shared";
 import { FiBarChart2 } from "react-icons/fi";
 import { usePharmacyReport } from "@/hooks/pharmacy/usePharmacyReport";
 import ErrorState from "@/components/pharmacy/shared/ErrorState";
@@ -56,9 +56,13 @@ export default function PharmacyReportPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title="Pharmacy Performance Report" icon={FiBarChart2} />
+      <PageHeader
+        title="Performance Report"
+        subtitle="Sales, orders and inventory over time"
+        icon={<FiBarChart2 />}
+      />
       {weeklyStats?.totalOrders === 0 && (
-        <div className="p-2 font-medium text-gray-500 text-sm">
+        <div className="p-2 font-medium text-gray-500 text-t-14">
           No orders recorded in the last 7 days.
         </div>
       )}

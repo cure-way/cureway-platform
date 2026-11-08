@@ -15,7 +15,7 @@ import type {
   CheckoutData,
   OrderConfirmation,
   DeliveryAddress,
-  CartItem, 
+  CartItem,
 } from "@/types/cart";
 import type { CreateOrderDto, PatientAddressResponse } from "@/types/api.types";
 import { formatCurrency } from "@/lib/format";
@@ -56,19 +56,17 @@ export const cartService = {
     return cloneCart(_cart);
   },
 
-
- async addItem(): Promise<Cart> { // حذفنا الـ parameters لأنها mock
-  await delay();
-  return cloneCart(_cart);
-},
+  async addItem(): Promise<Cart> {
+    // حذفنا الـ parameters لأنها mock
+    await delay();
+    return cloneCart(_cart);
+  },
 
   async updateQuantity(itemId: string, quantity: number): Promise<Cart> {
     await delay(200);
     _cart.groups = _cart.groups.map((g) => ({
       ...g,
-      items: g.items.map((i) =>
-        i.id === itemId ? { ...i, quantity } : i,
-      ),
+      items: g.items.map((i) => (i.id === itemId ? { ...i, quantity } : i)),
     }));
     _cart = recomputeCart(_cart);
     return cloneCart(_cart);
@@ -85,9 +83,7 @@ export const cartService = {
 
   async removePharmacyGroup(pharmacyId: string): Promise<void> {
     await delay();
-    _cart.groups = _cart.groups.filter(
-      (g) => g.pharmacy.id !== pharmacyId,
-    );
+    _cart.groups = _cart.groups.filter((g) => g.pharmacy.id !== pharmacyId);
     _cart = recomputeCart(_cart);
   },
 
@@ -131,9 +127,7 @@ export const cartService = {
     return cloneCart(_cart);
   },
 
-  async applyCoupon(
-    code: string,
-  ): Promise<{ cart: Cart; discount: string }> {
+  async applyCoupon(code: string): Promise<{ cart: Cart; discount: string }> {
     await delay(600);
     const upperCode = code.toUpperCase();
     const coupon = MOCK_COUPONS[upperCode];
@@ -179,30 +173,30 @@ export const checkoutService = {
     errors?: Record<string, string>;
   }> {
     const errors: Record<string, string> = {};
-    if (!data.deliveryAddress) errors.deliveryAddress = "Delivery address is required";
-    if (!data.deliveryOption)  errors.deliveryOption  = "Delivery option is required";
-    if (!data.paymentMethod)   errors.paymentMethod   = "Payment method is required";
+    if (!data.deliveryAddress)
+      errors.deliveryAddress = "Delivery address is required";
+    if (!data.deliveryOption)
+      errors.deliveryOption = "Delivery option is required";
+    if (!data.paymentMethod)
+      errors.paymentMethod = "Payment method is required";
     return { valid: Object.keys(errors).length === 0, errors };
   },
 
-  async placeOrder(
-    data: CheckoutData,
-    cart: Cart,
-  ): Promise<OrderConfirmation> {
+  async placeOrder(data: CheckoutData, cart: Cart): Promise<OrderConfirmation> {
     const addressId = data.deliveryAddress?.apiId;
 
     if (!addressId) {
       await delay(1200);
       const confirmation: OrderConfirmation = {
         ...MOCK_ORDER_CONFIRMATION,
-        orderId:     `ORD-${Date.now()}`,
+        orderId: `ORD-${Date.now()}`,
         orderNumber: `#${Math.floor(Math.random() * 900_000 + 100_000)}`,
-        subtotal:     data.total - data.deliveryFee + data.discount,
+        subtotal: data.total - data.deliveryFee + data.discount,
         deliveryFee: data.deliveryFee,
-        discount:     data.discount,
-        total:        data.total,
-        placedAt:     new Date(),
-        status:       "pending",
+        discount: data.discount,
+        total: data.total,
+        placedAt: new Date(),
+        status: "pending",
       };
       cartService.clearMockCart();
       return confirmation;
@@ -216,7 +210,7 @@ export const checkoutService = {
         pharmacyId: Number(group.pharmacy.id),
         items: group.items.map((item) => ({
           inventoryId: item.inventoryId ?? Number(item.id),
-          quantity:    item.quantity,
+          quantity: item.quantity,
           prescriptionId: item.prescriptionId ?? undefined,
         })),
       })),
@@ -225,31 +219,31 @@ export const checkoutService = {
     const response = await ordersApiService.createOrder(dto);
 
     return {
-      orderId:      String(response.id),
+      orderId: String(response.id),
       orderNumber: `#${response.id}`,
       groups: response.pharmacies.map((p) => ({
         pharmacy: {
-          id:      String(p.pharmacyId),
-          name:    p.pharmacyName,
+          id: String(p.pharmacyId),
+          name: p.pharmacyName,
           address: p.pharmacyLocation?.address ?? "",
         },
         items: p.items.map((i) => ({
-          id:                   String(i.inventoryId),
-          name:                 i.medicineName,
-          unitPrice:             i.unitPrice,
-          quantity:              i.quantity,
+          id: String(i.inventoryId),
+          name: i.medicineName,
+          unitPrice: i.unitPrice,
+          quantity: i.quantity,
           requiresPrescription: false,
-          inStock:               true,
+          inStock: true,
         })),
         subtotal: p.subtotal,
       })),
-      totalItems:  response.itemsCount,
-      subtotal:    response.subtotal,
+      totalItems: response.itemsCount,
+      subtotal: response.subtotal,
       deliveryFee: response.deliveryFee,
-      discount:    response.discount,
-      total:       response.total,
-      status:      "pending",
-      placedAt:    new Date(response.createdAt),
+      discount: response.discount,
+      total: response.total,
+      status: "pending",
+      placedAt: new Date(response.createdAt),
     };
   },
 };
@@ -269,13 +263,13 @@ export const addressService = {
     }
 
     const dto = {
-      cityId:       address.apiCityId,
+      cityId: address.apiCityId,
       addressLine1: address.street,
       addressLine2: address.area ?? null,
-      label:        address.label ?? null,
-      isDefault:    address.isDefault ?? false,
-      latitude:     address.coordinates?.lat ?? null,
-      longitude:    address.coordinates?.lng ?? null,
+      label: address.label ?? null,
+      isDefault: address.isDefault ?? false,
+      latitude: address.coordinates?.lat ?? null,
+      longitude: address.coordinates?.lng ?? null,
     };
 
     const created = await patientAddressService.createAddress(dto);
@@ -287,15 +281,18 @@ export const addressService = {
     address: Partial<DeliveryAddress>,
   ): Promise<DeliveryAddress> {
     const dto = {
-      cityId:       address.apiCityId,
+      cityId: address.apiCityId,
       addressLine1: address.street,
       addressLine2: address.area ?? null,
-      label:        address.label ?? null,
-      latitude:     address.coordinates?.lat ?? null,
-      longitude:    address.coordinates?.lng ?? null,
+      label: address.label ?? null,
+      latitude: address.coordinates?.lat ?? null,
+      longitude: address.coordinates?.lng ?? null,
     };
 
-    const updated = await patientAddressService.updateAddress(Number(addressId), dto);
+    const updated = await patientAddressService.updateAddress(
+      Number(addressId),
+      dto,
+    );
     return adaptApiAddress(updated);
   },
 
@@ -311,16 +308,17 @@ export const addressService = {
 /** Adapter: API → UI */
 function adaptApiAddress(dto: PatientAddressResponse): DeliveryAddress {
   return {
-    id:          String(dto.id),
-    apiId:       dto.id,
-    apiCityId:   dto.cityId,
-    street:      dto.addressLine1,
-    city:        dto.cityName ?? String(dto.cityId),
-    area:        dto.addressLine2 ?? undefined,
-    label:       dto.label ?? undefined,
-    isDefault:   dto.isDefault,
-    coordinates: dto.latitude != null && dto.longitude != null
-      ? { lat: dto.latitude, lng: dto.longitude }
-      : undefined,
+    id: String(dto.id),
+    apiId: dto.id,
+    apiCityId: dto.cityId,
+    street: dto.addressLine1,
+    city: dto.cityName ?? String(dto.cityId),
+    area: dto.addressLine2 ?? undefined,
+    label: dto.label ?? undefined,
+    isDefault: dto.isDefault,
+    coordinates:
+      dto.latitude != null && dto.longitude != null
+        ? { lat: dto.latitude, lng: dto.longitude }
+        : undefined,
   };
 }

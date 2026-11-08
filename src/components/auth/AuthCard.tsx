@@ -66,11 +66,11 @@ export function AuthCard({
           transition={{ delay: 0.15 }}
           className="flex flex-col gap-2 items-center text-center mb-6"
         >
-          <h1 className="text-4xl font-semibold">
+          <h1 className="text-page-title">
             <span className="text-[#2e469b]">Welcome To </span>
             <span className="text-[#334eac] font-bold">CUREWAY</span>
           </h1>
-          <p className="text-lg font-medium text-[#334eac]">{subtitle}</p>
+          <p className="text-t-17 font-medium text-[#334eac]">{subtitle}</p>
         </motion.div>
 
         {/* Main Content */}

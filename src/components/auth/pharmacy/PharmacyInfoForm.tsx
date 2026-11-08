@@ -131,7 +131,7 @@ export function PharmacyInfoForm({
         type="submit"
         disabled={isLoading}
         className={cn(
-          "h-14 rounded-xl bg-[#334eac] text-white text-lg font-medium",
+          "h-14 rounded-xl bg-[#334eac] text-white text-t-17 font-medium",
           "transition-all duration-200",
           "hover:bg-[#2e469b] active:bg-[#283d87]",
           "disabled:opacity-50 disabled:cursor-not-allowed",

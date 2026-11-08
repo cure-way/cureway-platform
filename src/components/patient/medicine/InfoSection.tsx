@@ -14,7 +14,7 @@ export default function InfoSection({
   return (
     <div className={!isLast ? "mb-8 pb-8 border-b border-gray-200" : ""}>
       <SectionHeader title={title} />
-      <p className="pl-4 text-gray-700 text-sm leading-relaxed whitespace-pre-line">
+      <p className="pl-4 text-gray-700 text-t-14 leading-relaxed whitespace-pre-line">
         {content}
       </p>
     </div>

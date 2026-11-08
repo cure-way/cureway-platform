@@ -4,8 +4,12 @@
  * ShowcaseBar
  *
  * Always-visible strip above every portal. It states that this deployment runs
- * on sample data and carries the controls a visitor needs: the role switcher,
- * Reset demo, and a button that reopens the welcome dialog.
+ * on sample data and carries the controls a visitor needs: the role switcher
+ * and a button that reopens the welcome dialog. The notice leads and the
+ * controls sit together at the end.
+ *
+ * There is no reset control: the fixtures live in memory, so any reload
+ * already restores them.
  *
  * It is deliberately not dismissible — the switcher is the only way to reach
  * the pharmacy and admin portals, so hiding the strip would strand a visitor.
@@ -20,10 +24,16 @@
  * the viewport subtract the live value rather than a hardcoded number.
  */
 
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
-import { IoInformationCircleOutline, IoRefreshOutline } from "react-icons/io5";
+import { IoInformationCircleOutline } from "react-icons/io5";
 
 import { useAuth } from "@/features/auth";
 import { getRoleHome } from "@/lib/routes";
@@ -43,17 +53,7 @@ import {
   subscribeShowcase,
 } from "@/lib/showcase/store";
 import { exposeShowcaseDiagnostics } from "@/lib/showcase/adapter";
-import { resetDb } from "@/lib/showcase/db";
-import { STORAGE_KEYS } from "@/constants/cart.constants";
-
-/** Per-viewer state that a reset should clear along with the fixtures. */
-const RESETTABLE_KEYS = [
-  STORAGE_KEYS.CART,
-  STORAGE_KEYS.CHECKOUT_DRAFT,
-  STORAGE_KEYS.DELIVERY_ADDRESSES,
-  STORAGE_KEYS.SELECTED_ADDRESS,
-  STORAGE_KEYS.LAST_SYNC,
-];
+import { FRAME } from "@/components/shared";
 
 export function ShowcaseBar() {
   const router = useRouter();
@@ -113,23 +113,6 @@ export function ShowcaseBar() {
     [role, switching, queryClient, refreshIfNeeded, router],
   );
 
-  const handleReset = useCallback(() => {
-    resetDb();
-    queryClient.clear();
-
-    for (const key of RESETTABLE_KEYS) {
-      try {
-        window.localStorage.removeItem(key);
-      } catch {
-        // Ignore — storage may be unavailable; fixtures still reset.
-      }
-    }
-
-    // Fixtures live in memory, so a reload is the honest way to guarantee
-    // every store and cache is back to its seeded state.
-    window.location.reload();
-  }, [queryClient]);
-
   if (!SHOWCASE_MODE) return null;
 
   return (
@@ -144,13 +127,18 @@ export function ShowcaseBar() {
         Wraps to two rows below `lg`: the notice takes the full first row and
         the controls sit on the second, so nothing is ever truncated.
       */}
-      <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-4 px-3 sm:px-4 md:px-6 lg:px-8 py-2">
-        <p className="text-t-12 sm:text-t-14 text-primary-light min-w-0 lg:flex-1">
+      <div
+        className={`${FRAME} flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-4 py-2`}
+      >
+        <p className="measure text-t-12 sm:text-t-14 text-primary-light min-w-0 lg:flex-1">
           <span className="font-bold text-white">{SHOWCASE_NOTICE.lead}</span>{" "}
           <span className="font-medium">{SHOWCASE_NOTICE.body}</span>
         </p>
 
-        <div className="flex items-center flex-wrap gap-x-2 gap-y-1.5 shrink-0">
+        {/* The notice leads; the role switcher and About this demo sit together
+            at the end, nothing else with them. Same order on every page and in
+            all three areas; below lg they wrap underneath the notice. */}
+        <div className="flex items-center flex-wrap gap-x-2 gap-y-1.5 shrink-0 lg:ml-auto">
           <div
             className="flex items-center gap-1 bg-white/15 rounded-lg p-0.5"
             role="group"
@@ -179,18 +167,11 @@ export function ShowcaseBar() {
             onClick={openWelcome}
             className="inline-flex items-center gap-1.5 px-3 py-2 min-h-11 rounded-md text-t-12 sm:text-t-14 font-semibold text-primary-light hover:bg-white/15 transition-colors cursor-pointer"
           >
-            <IoInformationCircleOutline aria-hidden="true" className="w-4 h-4" />
+            <IoInformationCircleOutline
+              aria-hidden="true"
+              className="w-4 h-4"
+            />
             About this demo
-          </button>
-
-          <button
-            type="button"
-            onClick={handleReset}
-            title="Restore the original sample data"
-            className="inline-flex items-center gap-1.5 px-3 py-2 min-h-11 rounded-md text-t-12 sm:text-t-14 font-semibold text-primary-light hover:bg-white/15 transition-colors cursor-pointer"
-          >
-            <IoRefreshOutline aria-hidden="true" className="w-4 h-4" />
-            Reset demo
           </button>
         </div>
       </div>

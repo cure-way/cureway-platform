@@ -3,13 +3,10 @@
 // ===================================================================
 "use client";
 
-
 import { motion } from "framer-motion";
-import { Check, Package, Truck,  } from "lucide-react";
+import { Check, Package, Truck } from "lucide-react";
 
-
-import {  formatDate } from "@/utils/cart.utils";
-
+import { formatDate } from "@/utils/cart.utils";
 
 interface OrderTrackingProps {
   orderId: string;
@@ -67,7 +64,9 @@ export function OrderTracking({
                 >
                   <Icon
                     size={20}
-                    className={isCompleted ? "text-white" : "text-muted-foreground"}
+                    className={
+                      isCompleted ? "text-white" : "text-muted-foreground"
+                    }
                   />
                   {isCurrent && (
                     <motion.div

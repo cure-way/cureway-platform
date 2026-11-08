@@ -17,7 +17,7 @@ export default function MostSales({ products }: MostSalesProps) {
     <div className="mb-12">
       <div className="flex items-center gap-3 mb-6">
         <h2 className="text-t-25 font-bold text-neutral-darker">Most sales</h2>
-        <span className="bg-success-light text-success-dark text-sm font-medium px-3 py-1 rounded-full">
+        <span className="bg-success-light text-success-dark text-t-14 font-medium px-3 py-1 rounded-full">
           Popular
         </span>
       </div>
@@ -31,7 +31,7 @@ export default function MostSales({ products }: MostSalesProps) {
             <h3 className="font-bold text-neutral-darker mb-1">
               {product.title}
             </h3>
-            <p className="text-sm text-neutral mb-3">{product.description}</p>
+            <p className="text-t-14 text-neutral mb-3">{product.description}</p>
 
             <div className="relative mb-3 h-32 flex items-center justify-center">
               <Image
@@ -44,7 +44,7 @@ export default function MostSales({ products }: MostSalesProps) {
             </div>
 
             <button
-              className={`w-full text-white text-sm font-medium py-2 px-4 rounded-lg transition-colors ${
+              className={`w-full text-white text-t-14 font-medium py-2 px-4 rounded-lg transition-colors ${
                 buttonColors[product.buttonColor]
               }`}
             >

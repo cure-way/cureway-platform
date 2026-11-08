@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import {
   PageShell,
-  PageHeader,
   HeaderIconButton,
   StatsBar,
   KpiPill,
@@ -22,6 +21,7 @@ import type { ColumnDef, BadgeVariant } from "@/components/admin/shared";
 import { PharmacyPageIcon } from "@/components/admin/shared/icons";
 import { useAdminPharmacies } from "@/hooks/admin.hooks";
 import type { AdminPharmacy } from "@/services/admin.service";
+import { PageHeader } from "@/components/shared";
 
 /* ------------------------------------------------------------------
    HELPERS

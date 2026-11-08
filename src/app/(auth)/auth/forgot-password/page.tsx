@@ -96,10 +96,10 @@ export default function ForgotPasswordPage() {
 
             {/* Title and description */}
             <div className="flex flex-col gap-2">
-              <h1 className="text-2xl font-semibold text-black/80 leading-tight">
+              <h1 className="text-page-title text-black/80 leading-tight">
                 Forget Your Password
               </h1>
-              <p className="text-base text-[#5b5958]">
+              <p className="text-t-14 text-[#5b5958]">
                 Please write your email to receive a confirmation code to set a
                 new password.
               </p>
@@ -126,7 +126,7 @@ export default function ForgotPasswordPage() {
                 type="submit"
                 disabled={isButtonDisabled}
                 className={cn(
-                  "w-full h-14 rounded-xl text-lg font-medium text-white",
+                  "w-full h-14 rounded-xl text-t-17 font-medium text-white",
                   "transition-all duration-200",
                   "focus:outline-none focus:ring-2 focus:ring-[#334eac]/50 focus:ring-offset-2",
                   isButtonDisabled

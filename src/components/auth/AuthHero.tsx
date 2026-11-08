@@ -38,7 +38,7 @@ export function AuthHero({
   return (
     <div
       className={cn(
-        "relative w-full h-dvh rounded-3xl overflow-hidden",
+        "relative w-full h-dvh rounded-2xl overflow-hidden",
         className,
       )}
     >
@@ -69,10 +69,10 @@ export function AuthHero({
           >
             {/* Decorative hero copy, not a section heading: it renders
                 before the page's own h1 and would break the outline. */}
-            <p className="text-4xl font-bold text-white leading-tight">
+            <p className="text-t-30 font-bold text-white leading-tight">
               {title}
             </p>
-            <p className="text-base text-white/90">{subtitle}</p>
+            <p className="text-t-14 text-white/90">{subtitle}</p>
           </motion.div>
         </AnimatePresence>
 

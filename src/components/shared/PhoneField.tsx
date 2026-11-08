@@ -284,7 +284,7 @@ export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(
     return (
       <div className="flex flex-col gap-1.5 w-full">
         {label && (
-          <label htmlFor={id} className="text-sm font-medium text-gray-700">
+          <label htmlFor={id} className="text-t-14 font-medium text-gray-700">
             {label}
           </label>
         )}
@@ -293,7 +293,7 @@ export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(
         <div className="relative" ref={dropdownRef}>
           <div
             className={cn(
-              "flex items-center h-12 rounded-xl border bg-white transition-all duration-200",
+              "flex items-center h-11 rounded-lg border bg-white transition-all duration-200",
               "focus-within:ring-2 focus-within:ring-[#334eac]/20 focus-within:border-[#334eac]",
               error ? "border-red-500" : "border-gray-200",
               disabled && "bg-gray-50 cursor-not-allowed opacity-60",
@@ -306,7 +306,7 @@ export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(
               onClick={() => !disabled && setIsDropdownOpen(!isDropdownOpen)}
               disabled={disabled}
               className={cn(
-                "flex items-center gap-1 h-full px-3 text-sm text-gray-700",
+                "flex items-center gap-1 h-full px-3 text-t-14 text-gray-700",
                 "hover:bg-gray-50 transition-colors rounded-l-xl",
                 disabled && "cursor-not-allowed",
               )}
@@ -323,7 +323,7 @@ export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(
             </button>
 
             {/* Dial Code Display */}
-            <span className="text-sm font-medium text-gray-600 pr-3">
+            <span className="text-t-14 font-medium text-gray-600 pr-3">
               {countryData.dialCode}
             </span>
 
@@ -343,7 +343,7 @@ export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(
               placeholder={placeholder}
               disabled={disabled}
               className={cn(
-                "flex-1 h-full px-3 text-sm text-gray-900 bg-transparent outline-none rounded-r-xl",
+                "flex-1 h-full px-3 text-t-14 text-gray-900 bg-transparent outline-none rounded-r-xl",
                 "placeholder:text-gray-400",
                 disabled && "cursor-not-allowed",
               )}
@@ -359,12 +359,12 @@ export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(
                   type="button"
                   onClick={() => handleCountrySelect(c.code)}
                   className={cn(
-                    "flex items-center gap-2 w-full px-3 py-2 text-sm text-left",
+                    "flex items-center gap-2 w-full px-3 py-2 text-t-14 text-left",
                     "hover:bg-gray-100 transition-colors",
                     selectedCountry === c.code && "bg-gray-50 font-medium",
                   )}
                 >
-                  <span className="text-lg leading-none">{c.flag}</span>
+                  <span className="text-t-17 leading-none">{c.flag}</span>
                   <span className="flex-1">{c.name}</span>
                   <span className="text-gray-500">{c.dialCode}</span>
                 </button>
@@ -374,7 +374,7 @@ export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(
         </div>
 
         {/* Error Message */}
-        {error && <p className="text-xs text-red-500">{error}</p>}
+        {error && <p className="text-t-12 text-red-500">{error}</p>}
       </div>
     );
   },

@@ -1,4 +1,4 @@
-import { PageHeader } from "@/components/patient/PageHeader";
+import { ContentColumn, PageContainer, PageHeader } from "@/components/shared";
 
 const termsData = [
   {
@@ -45,27 +45,27 @@ const termsData = [
 
 export default function TermsPage() {
   return (
-    <div className="flex flex-col items-center gap-3 px-3 md:px-6 lg:px-12 py-6">
-      <div className="w-full max-w-[1280px]">
-        <PageHeader
-          title="Terms & Conditions"
-          subtitle="By using this application, you agree to the following Terms and Conditions:"
-        />
-      </div>
+    <PageContainer className="flex flex-col gap-4">
+      <PageHeader
+        title="Terms & Conditions"
+        subtitle="By using this application, you agree to the following Terms and Conditions:"
+      />
 
-      <div className="w-full max-w-[1188px] bg-white border-[5px] border-primary-light rounded-3xl shadow-card px-8 md:px-20 py-10">
-        <ol className="list-decimal list-outside space-y-2 pl-6">
-          {termsData.map((item) => (
-            <li key={item.title} className="text-t-14 leading-[1.2]">
-              <span className="font-semibold text-black">{item.title}</span>
-              <br />
-              <span className="font-normal text-neutral-dark-active leading-[1.2]">
-                {item.content}
-              </span>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </div>
+      <ContentColumn width="sm" className="flex flex-col gap-4">
+        <div className="w-full bg-white border-[5px] border-primary-light rounded-2xl shadow-card px-8 md:px-20 py-10">
+          <ol className="list-decimal list-outside space-y-2 pl-6">
+            {termsData.map((item) => (
+              <li key={item.title} className="text-t-14 leading-[1.2]">
+                <span className="font-semibold text-black">{item.title}</span>
+                <br />
+                <span className="font-normal text-neutral-dark-active leading-[1.2]">
+                  {item.content}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </ContentColumn>
+    </PageContainer>
   );
 }

@@ -43,14 +43,14 @@ export default function OrdersSummaryCards({ summary, summaryLoading }: Props) {
             className="flex items-center gap-4 bg-white p-4 border rounded-xl"
           >
             <div className="flex justify-center items-center bg-blue-50 rounded-lg w-10 h-10 text-(--color-primary)">
-              <Icon className="text-lg" />
+              <Icon className="text-t-17" />
             </div>
 
             <div>
-              <p className="text-gray-500 text-sm">{card.label}</p>
-              <p className="font-semibold text-gray-900 text-lg">
+              <p className="text-gray-500 text-t-14">{card.label}</p>
+              <p className="font-semibold text-gray-900 text-t-17">
                 {card.value}{" "}
-                <span className="font-normal text-gray-500 text-sm">
+                <span className="font-normal text-gray-500 text-t-14">
                   {card.unit}
                 </span>
               </p>

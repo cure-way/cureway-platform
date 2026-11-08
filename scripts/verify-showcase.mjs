@@ -277,7 +277,7 @@ function watch(page, role, path) {
     step('app navigated to /orders', afterPlace === '/orders');
 
     // Stay on the client-side navigation: showcase state lives in memory, so a
-    // hard reload re-seeds the fixtures (by design — "Reset demo" does this too).
+    // hard reload re-seeds the fixtures, which is the showcase's only reset.
     const ordersTxt = await page.evaluate(() => document.body.innerText.replace(/\s+/g, ' '));
     const ordersAfter = (() => { const m = ordersTxt.match(/All \((\d+)\)/); return m ? Number(m[1]) : -1; })();
     console.log(`  cart flow: order count ${ordersBefore} -> ${ordersAfter}`);

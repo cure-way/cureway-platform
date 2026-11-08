@@ -48,7 +48,7 @@ export default function EditMedicineDrawer({ open, onClose, item }: Props) {
         )}
       >
         <div className="flex justify-between items-center p-4 border-b">
-          <h2 className="font-semibold text-gray-900 text-sm">
+          <h2 className="font-semibold text-gray-900 text-t-14">
             Edit medicine details
           </h2>
 
@@ -70,14 +70,14 @@ export default function EditMedicineDrawer({ open, onClose, item }: Props) {
             onClick={() => {
               document.querySelector("form")?.requestSubmit();
             }}
-            className="w-full bg-(--color-primary) text-white py-2 rounded-lg text-sm disabled:opacity-50"
+            className="w-full bg-(--color-primary) text-white py-2 rounded-lg text-t-14 disabled:opacity-50"
           >
             {loading ? "Saving..." : "Save changes"}
           </button>
 
           <button
             onClick={onClose}
-            className="py-2 border rounded-lg w-full text-gray-600 text-sm"
+            className="py-2 border rounded-lg w-full text-gray-600 text-t-14"
           >
             Cancel
           </button>

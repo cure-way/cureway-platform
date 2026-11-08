@@ -61,7 +61,7 @@ export default function ProfileAvatar({ image, name, onSave }: Props) {
         {/* Camera button */}
         <button
           onClick={openFilePicker}
-          className="right-0 bottom-0 absolute flex justify-center items-center bg-(--color-primary) hover:bg-(--color-primary-dark) shadow-md rounded-full w-10 h-10 text-white"
+          className="right-0 bottom-0 absolute flex justify-center items-center bg-(--color-primary) hover:bg-(--color-primary-dark) shadow-md rounded-full w-10 h-11 text-white"
         >
           <FiCamera size={18} />
         </button>
@@ -80,7 +80,7 @@ export default function ProfileAvatar({ image, name, onSave }: Props) {
       {selectedFile && (
         <button
           onClick={handleSave}
-          className="hover:bg-(--color-primary) px-4 py-2 border rounded-lg h-fit text-gray-500 hover:text-white text-sm transition-all roundedlg"
+          className="hover:bg-(--color-primary) px-4 py-2 border rounded-lg h-fit text-gray-500 hover:text-white text-t-14 transition-all roundedlg"
         >
           Save Image
         </button>

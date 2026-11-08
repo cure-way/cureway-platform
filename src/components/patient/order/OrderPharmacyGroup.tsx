@@ -2,7 +2,6 @@ import { MapPin } from "lucide-react";
 import Image from "next/image";
 import { formatCurrency } from "@/utils/cart.utils";
 
-
 interface OrderItem {
   id: string;
   name: string;
@@ -18,7 +17,7 @@ interface OrderPharmacyGroupProps {
       name: string;
       address: string;
     };
-    items: OrderItem[]; 
+    items: OrderItem[];
     subtotal: number;
   };
 }

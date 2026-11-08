@@ -5,8 +5,15 @@ import { AlertTriangle, RefreshCw } from "lucide-react";
 // ERROR BOUNDARY
 // ===================================================================
 
-interface Props   { children: ReactNode; fallback?: ReactNode; onReset?: () => void; }
-interface State   { hasError: boolean; error: Error | null; }
+interface Props {
+  children: ReactNode;
+  fallback?: ReactNode;
+  onReset?: () => void;
+}
+interface State {
+  hasError: boolean;
+  error: Error | null;
+}
 
 export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {

@@ -13,7 +13,7 @@ export default function ProfilePageSkeleton() {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 space-y-8 max-w-3xl">
+      <div className="flex-1 space-y-8 max-w-[44rem]">
         {/* Header */}
         <div className="flex items-center gap-6">
           <div className="bg-gray-200 rounded-full w-28 h-28" />

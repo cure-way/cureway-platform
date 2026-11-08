@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { MedicineIcon } from "@/components/shared/MedicineIcon";
 import { ArrowLeft } from "lucide-react";
+import { PageContainer } from "@/components/shared";
 
 export interface AuthLayoutProps {
   children: ReactNode;
@@ -46,8 +47,9 @@ export function AuthLayout({
 
       {/* Right side - Content */}
       <div className="flex flex-col w-full lg:w-1/2 min-h-screen overflow-y-auto">
-        <div className="flex flex-col items-center justify-center flex-1 gap-3.5 px-6 py-12">
-          <div className="w-full max-w-138.75">
+        <PageContainer className="flex flex-col items-center justify-center flex-1 gap-3.5"
+        >
+          <div className="w-full max-w-[34.5rem]">
             {/* Back Button */}
             {showBackButton && (
               <motion.button
@@ -59,7 +61,7 @@ export function AuthLayout({
                 aria-label="Go back"
               >
                 <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                <span className="text-sm font-medium">Back</span>
+                <span className="text-t-14 font-medium">Back</span>
               </motion.button>
             )}
 
@@ -93,7 +95,7 @@ export function AuthLayout({
               {children}
             </motion.div>
           </div>
-        </div>
+        </PageContainer>
       </div>
     </div>
   );
