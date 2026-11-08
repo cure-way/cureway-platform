@@ -31,14 +31,13 @@ export const metadata: Metadata = {
 export default function PatientHomePage() {
   return (
     <div className="flex flex-col gap-6 pb-12 overflow-x-hidden">
-      {/* 1. Promo banner — sits OUTSIDE the bordered container */}
-      <HomePromoBanner />
+      {/* Every block on this page is a card or a content block, so every one
+          of them sits on the frame. Only a true background image or colour
+          band may be full-bleed, and this page has none. */}
+      <PageContainer className="py-0">
+        <HomePromoBanner />
+      </PageContainer>
 
-      {/* 2-7. Main content — bordered container per Figma node 1209:375 */}
-      {/* The landing page is a marketing layout: its promo banner and hero are
-          deliberately full-bleed. The bordered content block below sits on the
-          list container so it shares its edges with the shell and with every
-          listing page. */}
       <PageContainer className="py-0">
         <div className="border-2 md:border-4 border-primary/10 rounded-2xl bg-white overflow-hidden">
           <div className="flex flex-col gap-8 md:gap-10 lg:gap-14 px-4 md:px-6 lg:px-8 pt-4 md:pt-6 lg:pt-8">
