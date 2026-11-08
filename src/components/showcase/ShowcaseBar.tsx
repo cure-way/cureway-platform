@@ -154,7 +154,7 @@ export function ShowcaseBar() {
       <div
         className={`${FRAME} flex flex-col lg:flex-row lg:items-center gap-2 lg:gap-4 py-2`}
       >
-        <p className="text-t-12 sm:text-t-14 text-primary-light min-w-0 lg:flex-1">
+        <p className="measure text-t-12 sm:text-t-14 text-primary-light min-w-0 lg:flex-1">
           <span className="font-bold text-white">{SHOWCASE_NOTICE.lead}</span>{" "}
           <span className="font-medium">{SHOWCASE_NOTICE.body}</span>
         </p>

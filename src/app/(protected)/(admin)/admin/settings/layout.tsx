@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import SettingsSidebar from "@/components/admin/settings/SettingsSidebar";
 import { MotionStagger, MotionStaggerItem } from "@/components/admin/shared";
-import { PageContainer } from "@/components/shared";
+import { ContentColumn, PageContainer } from "@/components/shared";
 
 /* ------------------------------------------------------------------
    BREADCRUMB MAPPING
@@ -40,7 +40,8 @@ export default function AdminSettingsLayout({
   const parent = parentLabels[lastSegment];
 
   return (
-    <PageContainer as={MotionStagger}
+    <PageContainer
+      as={MotionStagger}
       className="bg-neutral-light-hover space-y-6"
     >
       {/* Page Header + Breadcrumb */}
@@ -83,7 +84,11 @@ export default function AdminSettingsLayout({
       <MotionStaggerItem>
         <div className="flex flex-col lg:flex-row gap-3 sm:gap-4 items-stretch lg:items-start">
           <SettingsSidebar />
-          <div className="flex-1 min-w-0">{children}</div>
+          {/* Settings are forms: the same left-aligned narrow column rule as
+              the patient area, so fields do not stretch across the frame. */}
+          <ContentColumn width="md" className="min-w-0 flex-1">
+            {children}
+          </ContentColumn>
         </div>
       </MotionStaggerItem>
     </PageContainer>
